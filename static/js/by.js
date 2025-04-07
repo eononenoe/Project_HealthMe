@@ -79,7 +79,7 @@ loadJQuery(function () {
     $("#header_Q").load("../../../common/header.html");
   });
   $(function () {
-    $("#footer_Q").load("../../../common/header.html");
+    $("#footer_Q").load("../../../common/footer.html");
   });
 });
 

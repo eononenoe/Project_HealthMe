@@ -34,7 +34,7 @@ a{
 /*       메인       */
 /* ================ */
 main{
-  height: 3000px;
+  min-height: 3700px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,7 +48,7 @@ main{
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 70px;
+  gap: 20px;
 }
 
 /* ================ */
@@ -82,19 +82,20 @@ main{
 }
 .Purchase_low_content{
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
+  position: relative;
+  right: -00px;
   gap: 20px;
-  width: 1280px;
   color: gray;
-  margin-top: 100px;
+  margin-top: 200px;
   margin-bottom: 20px;
 }
 /* ================ */
 /*    왼쪽 컨텐츠    */
 /* ================ */
 .Purchase_content>ul{
-  width: 300px;
+  width: 200px;
   gap: 25px;
 }
 .Purchase_left_content>.Purchase_left_title{
@@ -120,6 +121,7 @@ main{
   border-radius: 10px;
   width: 290px;
   gap: 50px;
+  min-height: 500px;
 }
 
 /* ================ */
