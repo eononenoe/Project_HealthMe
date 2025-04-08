@@ -9,9 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- 폰트 -->
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
     <!-- 이모지 -->
     <script src="https://kit.fontawesome.com/b83f799b86.js" crossorigin="anonymous"></script>
     <!-- google icon -->
@@ -25,7 +22,7 @@
     <link rel="stylesheet" href="static/css/common/common.css">
     <!-- js -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../static/js/by.js"></script>
+    <script src="/static/js/by.js"></script>
 
 </head>
 
@@ -41,9 +38,9 @@
                         <!-- Additional required wrapper -->
                         <div class="swiper-wrapper">
                             <!-- Slides -->
-                            <div class="swiper-slide"><img src="/img/main/반찬 배너.jpg" /></div>
-                            <div class="swiper-slide"><img src="/img/main/식단 배너.png" /></div>
-                            <div class="swiper-slide"><img src="/img/main/참외 배너.jpg" /></div>
+                            <div class="swiper-slide"><img src="img/main/반찬 배너.jpg" /></div>
+                            <div class="swiper-slide"><img src="img/main/식단 배너.png" /></div>
+                            <div class="swiper-slide"><img src="img/main/참외 배너.jpg" /></div>
                         </div>
                         <!-- If we need pagination -->
                         <div class="swiper-pagination"></div>
@@ -58,20 +55,20 @@
                 <ul class="main_top_content">
                     <!-- 컨텐츠 -->
                     <li class="are_you_Health">
-                        <a href="/pages/document/document.html">
-                            <img class="are_you_Health" width="400px" height="400px" src="../../img/main/나의 건강은.jpg"
+                        <a href="pages/document/document.html">
+                            <img class="are_you_Health" width="400px" height="400px" src="img/main/나의 건강은.jpg"
                                 alt="건강 찾기">
                         </a>
                     </li>
                     <li class="what_health_food">
-                        <a href="/pages/Purchase/Purchase.html">
-                            <img class="what_health_food" width="400px" height="400px" src="../../img/main/건강식.jpg"
+                        <a href="pages/Purchase/Purchase.html">
+                            <img class="what_health_food" width="400px" height="400px" src="img/main/건강식.jpg"
                                 alt="건강 재료 찾기">
                         </a>
                     </li>
                     <li class="content_news">
                         <ul class="news_card">
-                            <a href="/pages/news/NEWS-index.html">
+                            <a href="pages/news/NEWS-index.html">
                                 <ul class="news_card_top">
                                     <li class="news_card_title">공지사항</li>
                                     <li class="news_card_subtitle">NEW</li>
@@ -328,32 +325,7 @@
             </content>
         </section>
     </main>
-    <footer>
-        <div class="top_info">
-            <ul>
-                <li>주식회사 Jeon</li>
-                <li>/</li>
-                <li>STORE 헬시미 </li>
-                <li>/</li>
-                <li>OWNER 전정현</li>
-                <li>/</li>
-                <li>COMPANY REG.NO</li>
-                <li>/</li>
-                <li> 123.1234.1234</li>
-                <li>/</li>
-                <li>NETWORK REG.NO</li>
-                <li>/</li>
-                <li>제2025-대구광역시-0001호</li>
-                <li>/</li>
-                <li>CHECK</li>
-            </ul>
-        </div>
-        <div class="low_info">
-            <ul>
-                <li>Copyright © 2025-01-01 Inc. All rights reserved. / designed by JeonJeongHyeon ©</li>
-            </ul>
-        </div>
-    </footer>
+    <div id="footer"></div>
     <!-- 스크립트 -->
     <script>
         const swiper_banner = new Swiper('.wrapper>.banner-section>.swiper', {

@@ -1,9 +1,40 @@
+.nanum-gothic-regular {
+  font-family: "Nanum Gothic", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.noto-sans-kr-title {
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400; 
+  font-style: normal;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+* {
+  font-family: "Nanum Gothic", serif;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: grey;
+  cursor: pointer;
+}
 /* ================ */
 /*       메인       */
 /* ================ */
 main{
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
     margin-bottom: 90px;
