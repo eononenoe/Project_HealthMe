@@ -49,7 +49,6 @@ body>div {
 
 .fill_bar {
     height: 100%;
-    width: 10%;
     background-color: orange;
     border-radius: 20px;
     transition: 0.3s ease;
@@ -104,11 +103,11 @@ form {
 
 .option {
     display: flex;
-    width: 80px;
+    width: 150px;
     font-size: 1.5rem;
     font-weight: bold;
     border: 2px solid black;
-    max-height: 40px;
+    height: 40px;
 }
 
 .radio-label {
