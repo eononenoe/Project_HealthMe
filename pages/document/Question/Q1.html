@@ -18,19 +18,36 @@
     <div id="header_Q"></div>
     <div>
         <div class="QBox">
-            <li class="QBox_title">Q1. 햇빛을 거의 쬐지 않고 실내 생활 위주로 생활하시나요?</li>
-            <form id="survey" action="Q2.html">
-                <div class="input_box">
-                    <div class="option">
-                        <input type="radio" id="no" name="answer" value="no" hidden>
-                        <label for="no" class="radio-label">아니요</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" id="yes" name="answer" value="yes" hidden>
-                        <label for="yes" class="radio-label">네</label>
-                    </div>
+            <div class="bar">
+                <li class="bar_state">1/10</li>
+                <button class="go_back"><</button>
+                <div class="goal_bar">
+                    <div class="fill_bar"></div>
                 </div>
-            </form>
+            </div>
+            <li class="QBox_title1">Q1.</li>
+            <li class="QBox_title2">햇빛을 거의 쬐지 않고 실내 생활 위주로 생활하시나요?</li>
+            <div class="Q_contents">
+                <div class="img_box">
+                    <img src="../../../img/survey/Q1.png" alt="#">
+                </div>
+                <form id="survey" action="Q2.html">
+                    <div class="input_box">
+                        <div class="option">
+                            <input type="radio" id="no" name="answer" value="no" hidden>
+                            <label for="no" class="radio-label">아니요</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="dontknow" name="answer" value="dontknow" hidden>
+                            <label for="dontknow" class="radio-label">몰라요</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="yes" name="answer" value="yes" hidden>
+                            <label for="yes" class="radio-label">네</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <script>
@@ -39,6 +56,10 @@
             input.addEventListener("change", function () {
                 document.getElementById("survey").submit();
             });
+        });
+        // go_back 누를 때 이전 페이지로 이동
+        document.querySelector('.go_back').addEventListener('click', function () {
+            window.location.href = "Q1.html"; 
         });
     </script>
 </body>

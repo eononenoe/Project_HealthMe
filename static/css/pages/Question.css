@@ -4,39 +4,113 @@ body>div {
 }
 
 .QBox {
-    width: 80vw;
+    width: 60vw;
     height: 70vh;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     flex-direction: column;
+    gap: 20px;
 }
 
-.QBox_title {
-    margin-top: 60px;
-    font-size: 2.8rem;
+.bar {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 600px;
+    height: 30px;
+    gap: 10px;
+}
+
+.bar_state {
+    position: absolute;
+    right: 0;
+    font-size: 14px;
+}
+
+.go_back {
+    margin-top: 40px;
+    border: none;
+    border-radius: 20px;
+    width: 30px;
+    height: 20px;
+    background-color: orange;
+    cursor: pointer;
+    color: white;
+    font-weight: 900;
+}
+
+.goal_bar {
+    margin-top: 40px;
+    width: 600px;
+    height: 20px;
+    background-color: lightgray;
+    border-radius: 20px;
+}
+
+.fill_bar {
+    height: 100%;
+    width: 10%;
+    background-color: orange;
+    border-radius: 20px;
+    transition: 0.3s ease;
+}
+
+.QBox_title1 {
+    top: 10px;
+    font-size: 3rem;
+    font-weight: 600;
+    color: orange;
+}
+
+.QBox_title2 {
+    top: 10px;
+    font-size: 2rem;
     font-weight: bold;
+}
+
+.Q_contents {
+    width: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.img_box {
+    width: 600px;
+    height: 450px;
+    border: 1px solid;
+    overflow: hidden;
+}
+
+.img_box>img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+}
+
+form {
+    height: 100%;
 }
 
 .input_box {
-    width: 60vw;
     display: flex;
-    font-size: 1.5rem;
+    flex-direction: column;
+    align-items: center;
     justify-content: space-between;
+    height: 100%;
+    font-size: 1.5rem;
 }
 
-.input_box>div {
-    width: 120px;
+.option {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 80px;
     font-size: 1.5rem;
     font-weight: bold;
+    border: 2px solid black;
+    max-height: 40px;
 }
-.option{
-    border: 1px solid gray;
-    margin-bottom: 30px;
-}
+
 .radio-label {
     display: flex;
     justify-content: center;
@@ -45,9 +119,10 @@ body>div {
     cursor: pointer;
     background-color: white;
     color: black;
-  }
+}
+
 input[type="radio"]:hover+.radio-label {
     background-color: orange;
     color: white;
-    
+
 }
