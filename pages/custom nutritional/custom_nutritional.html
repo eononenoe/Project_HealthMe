@@ -61,9 +61,11 @@
                 <span>장바구니</span>
                 <hr>
                 <div class="cart-header">
-                    <input type="checkbox" id="select-all" onchange="toggleSelectAll(this)">
-                    <label for="select-all">전체선택 (<span id="selected-count">0</span>/<span
-                            id="total-count">0</span>)</label>
+                    <div class="cart-header-left">
+                        <input type="checkbox" id="select-all" class="custom-checkbox" onchange="toggleSelectAll(this)">
+                        <label for="select-all">전체선택 (<span id="selected-count">0</span>/<span
+                                id="total-count">0</span>)</label>
+                    </div>
                     <button onclick="deleteSelected()">선택삭제</button>
                 </div>
                 <hr>
@@ -73,6 +75,10 @@
 
                 <div class="cart-footer">
                     총 합계: <span id="total-price">0원</span>
+                </div>
+                
+                <div class="cart-footer-button">
+                    <button onclick="goToCart()">장바구니 담기</button>
                 </div>
             </div>
         </aside>
@@ -150,25 +156,25 @@
             cartItems.forEach((item, index) => {
                 const li = document.createElement('li');
                 li.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
-                <div style="display: flex; gap: 10px;">
-                    <input type="checkbox" ${item.selected ? 'checked' : ''} onchange="toggleItem(${index})">
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <div style="font-weight: bold; font-size: 15px;">
-                            ${item.name}
-                        </div>
-                        <div style="font-size: 14px; color: #333;">
-                            ${item.price.toLocaleString()}원
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 5px; border: 1px solid #ccc; border-radius: 5px; padding: 2px 5px; width: fit-content;">
-                            <button style="border: none; background: white; font-size: 16px; cursor: pointer;" onclick="decreaseQuantity(${index})">-</button>
-                            <span style="width: 20px; text-align: center;">${item.quantity}</span>
-                            <button style="border: none; background: white; font-size: 16px; cursor: pointer;" onclick="increaseQuantity(${index})">+</button>
-                        </div>
-                    </div>
-                </div>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <input type="checkbox" class="custom-checkbox" style="margin-top: 0.5px;" ${item.selected ? 'checked' : ''} onchange="toggleItem(${index})">
+        <div style="display: flex; flex-direction: column; justify-content: center; gap: 8px;">
+            <div style="font-weight: bold; font-size: 15px;">
+                ${item.name}
             </div>
-        `;
+            <div style="font-size: 14px; color: #333;">
+                ${item.price.toLocaleString()}원
+            </div>
+          <div style="display: flex; align-items: center; gap: 5px; border: 1px solid #ccc; border-radius: 5px; padding: 2px 5px; height: 25px; width: fit-content;">
+             <button style="border: none; background: white; font-size: 16px; cursor: pointer; width: 20px; height: 20px; padding: 0;" onclick="decreaseQuantity(${index})">-</button>
+             <span style="width: 20px; text-align: center; font-size: 14px; margin-top:13px">${item.quantity}</span>
+             <button style="border: none; background: white; font-size: 16px; cursor: pointer; width: 20px; height: 20px; padding: 0;" onclick="increaseQuantity(${index})">+</button>
+        </div>
+        </div>
+    </div>
+</div>
+`;
                 cartList.appendChild(li);
             });
 
