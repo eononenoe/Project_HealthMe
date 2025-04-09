@@ -77,7 +77,7 @@ body>div {
 .img_box {
     width: 600px;
     height: 450px;
-    border: 1px solid;
+    /* border: 1px solid; */
     overflow: hidden;
 }
 
@@ -106,7 +106,7 @@ form {
     width: 150px;
     font-size: 1.5rem;
     font-weight: bold;
-    border: 2px solid black;
+    border: 1px solid black;
     height: 40px;
 }
 
@@ -123,5 +123,7 @@ form {
 input[type="radio"]:hover+.radio-label {
     background-color: orange;
     color: white;
-
+}
+.option:hover{
+    border: none;
 }
