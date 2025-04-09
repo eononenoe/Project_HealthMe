@@ -58,13 +58,15 @@
 
             <!-- 장바구니 영역 -->
             <div class="cart-section">
+                <span>장바구니</span>
+                <hr>
                 <div class="cart-header">
                     <input type="checkbox" id="select-all" onchange="toggleSelectAll(this)">
                     <label for="select-all">전체선택 (<span id="selected-count">0</span>/<span
                             id="total-count">0</span>)</label>
                     <button onclick="deleteSelected()">선택삭제</button>
                 </div>
-
+                <hr>
                 <ul class="cart-items" id="cart-items">
                     <!-- 아이템 추가되는 곳 -->
                 </ul>
@@ -130,7 +132,6 @@
         function addToCart(name, price) {
             price = parseInt(price.replace(',', '').replace('원', ''));
 
-            // 이미 담긴 상품이면 수량만 증가
             let exist = cartItems.find(item => item.name === name);
             if (exist) {
                 exist.quantity += 1;
@@ -141,6 +142,7 @@
             renderCart();
         }
 
+
         function renderCart() {
             const cartList = document.getElementById('cart-items');
             cartList.innerHTML = '';
@@ -148,25 +150,31 @@
             cartItems.forEach((item, index) => {
                 const li = document.createElement('li');
                 li.innerHTML = `
-      <div class="cart-item-left">
-        <input type="checkbox" ${item.selected ? 'checked' : ''} onchange="toggleItem(${index})">
-        <span class="cart-item-name">${item.name}</span>
-      </div>
-      <div class="cart-item-right">
-        <div class="cart-item-quantity">
-          <button onclick="decreaseQuantity(${index})">-</button>
-          ${item.quantity}
-          <button onclick="increaseQuantity(${index})">+</button>
-        </div>
-        <span>${(item.price * item.quantity).toLocaleString()}원</span>
-        <button class="cart-item-delete" onclick="deleteItem(${index})">X</button>
-      </div>
-    `;
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                <div style="display: flex; gap: 10px;">
+                    <input type="checkbox" ${item.selected ? 'checked' : ''} onchange="toggleItem(${index})">
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div style="font-weight: bold; font-size: 15px;">
+                            ${item.name}
+                        </div>
+                        <div style="font-size: 14px; color: #333;">
+                            ${item.price.toLocaleString()}원
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 5px; border: 1px solid #ccc; border-radius: 5px; padding: 2px 5px; width: fit-content;">
+                            <button style="border: none; background: white; font-size: 16px; cursor: pointer;" onclick="decreaseQuantity(${index})">-</button>
+                            <span style="width: 20px; text-align: center;">${item.quantity}</span>
+                            <button style="border: none; background: white; font-size: 16px; cursor: pointer;" onclick="increaseQuantity(${index})">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
                 cartList.appendChild(li);
             });
 
             updateCartSummary();
         }
+
 
         function toggleItem(index) {
             cartItems[index].selected = !cartItems[index].selected;

@@ -23,11 +23,10 @@ a {
 /* Sidebar */
 .sidebar {
   width: 300px;
-  background-color: #f9f9f9;
+  min-width: 300px;
   padding: 20px;
   box-sizing: border-box;
   height: 100vh;
-  overflow-y: auto;
 }
 
 /* Gauge Section */
@@ -81,7 +80,8 @@ a {
 .cart-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 10px;
   margin-bottom: 15px;
 }
 
@@ -99,6 +99,7 @@ a {
   cursor: pointer;
 }
 
+/* Cart Items */
 .cart-items {
   list-style: none;
   padding: 0;
@@ -106,31 +107,30 @@ a {
 }
 
 .cart-items li {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
   padding: 15px 0;
   border-bottom: 1px solid #eee;
 }
 
 .cart-item-top {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: flex-start;
 }
 
 .cart-item-left {
   display: flex;
-  align-items: center;
   gap: 10px;
 }
 
-.cart-item-name {
-  font-weight: bold;
-  font-size: 14px;
+.cart-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.cart-item-right {
+.cart-item-name {
+  font-size: 15px;
+  font-weight: bold;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -139,29 +139,55 @@ a {
 .cart-item-delete {
   background: none;
   border: none;
-  color: red;
-  font-size: 18px;
+  color: #999;
+  font-size: 16px;
   cursor: pointer;
 }
 
-/* Quantity Section */
+.cart-item-price-line {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cart-item-price {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.cart-item-original-price {
+  font-size: 13px;
+  color: #aaa;
+  text-decoration: line-through;
+}
+
 .cart-item-quantity {
   display: flex;
   align-items: center;
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 2px 5px;
   gap: 5px;
 }
 
 .cart-item-quantity button {
   width: 25px;
   height: 25px;
-  border: 1px solid #ccc;
+  border: none;
   background: white;
   font-size: 16px;
   cursor: pointer;
 }
 
-.cart-item-price {
+.cart-item-quantity span {
+  width: 20px;
+  text-align: center;
+}
+
+.cart-item-total-price {
+  font-size: 16px;
   font-weight: bold;
+  margin-top: 5px;
 }
 
 /* Cart Footer */
@@ -198,14 +224,12 @@ main {
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
 }
-/* ================ */
-/*     아이템 카드    */
-/* ================ */
+
+/* 아이템 카드 */
 .nutritional_content > .item_store {
   display: grid;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
   border-radius: 10px;
   height: 650px;
   width: 290px;
