@@ -76,18 +76,29 @@ a {
 .cart-section {
   margin-top: 30px;
 }
-
+.cart-section span {
+  display: inline-block;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
 .cart-header {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.cart-header-left {
+  display: flex;
+  align-items: center; /* 왼쪽 그룹 세로 가운데 정렬 */
+  gap: 5px;
 }
 
 .cart-header label {
   font-size: 14px;
   color: #333;
+  margin-top: 13px;
 }
 
 .cart-header button {
@@ -97,6 +108,33 @@ a {
   padding: 3px 8px;
   border-radius: 5px;
   cursor: pointer;
+}
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #007bff;
+  border-radius: 50%;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.custom-checkbox:checked {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.custom-checkbox:checked::after {
+  content: '✔';
+  color: white;
+  font-size: 9px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
 }
 
 /* Cart Items */
@@ -189,13 +227,29 @@ a {
   font-weight: bold;
   margin-top: 5px;
 }
-
 /* Cart Footer */
 .cart-footer {
   margin-top: 20px;
   font-size: 16px;
   font-weight: bold;
   text-align: right;
+}
+.cart-footer-button button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  position: relative;
+  right: -115px;
+}
+
+.cart-footer-button button:hover {
+  background-color: #0056b3;
 }
 
 /* Main */
