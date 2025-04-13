@@ -112,7 +112,7 @@ function renderProducts(products, targetSelector) {
         </a>
         <div class="item_add">
           <i class="fa-solid fa-cart-shopping"></i>
-          <span onclick="alert('장바구니에 담겼습니다')">담기</span>
+          <span onclick="addToCart('${product.id}')">담기</span>
         </div>
         <div class="item_discount_price">
           <del>${product.originalPrice.toLocaleString()}원</del>
@@ -131,4 +131,22 @@ function renderProducts(products, targetSelector) {
     `;
     container.innerHTML += itemHTML;
   });
+
+  function addToCart(productId) {
+    const product = getProductById(productId);
+    if (!product) return;
+  
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  
+    const existingItem = cart.find((item) => item.id === productId);
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cart.push({ ...product, quantity: 1 });
+    }
+  
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("장바구니에 담겼습니다!");
+  }
+  
 }
