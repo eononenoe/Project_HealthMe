@@ -1,3 +1,16 @@
+<div align="center">
+<a href="https://www.gitanimals.org/">
+      <img
+        src="https://render.gitanimals.org/guilds/700211605677653148/draw"
+        width="600"
+        height="300"
+        alt="gitanimals"
+      />
+    </a>
+</div>
+
+---
+
 # 🛠️ 태형 - 작업 폴더
 
 ## 📌 담당 업무
