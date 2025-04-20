@@ -1,19 +1,21 @@
 body {
-  font-family: sans-serif;
-  margin: 100px 50px;
+  font-family: 'Nanum Gothic', sans-serif;
+  margin: 0;
   padding: 0;
+  background: #fff;
 }
 
 main {
-  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  padding: 50px 20px;
 }
 
 .cart-container {
   display: flex;
-  justify-content: space-between;
+  gap: 40px;
   max-width: 1200px;
-  margin: 0 auto;
-  gap: 30px;
+  width: 100%;
 }
 
 .cart-section {
@@ -21,17 +23,31 @@ main {
 }
 
 .cart-section h2 {
-  font-size: 1.5rem;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
   margin-bottom: 20px;
 }
 
 .cart-item {
   display: flex;
   align-items: center;
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin-bottom: 20px;
-  gap: 15px;
+  border-bottom: 1px solid #eee;
+  padding: 15px 0;
+}
+
+.cart-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 20px;
 }
 
 .item-info {
@@ -40,28 +56,29 @@ main {
 
 .item-info .name {
   font-weight: bold;
+  font-size: 1rem;
+}
+
+.item-info .sub {
+  color: #888;
+  font-size: 0.9rem;
+  margin: 5px 0;
 }
 
 .item-info .price {
-  margin: 5px 0;
+  font-weight: bold;
+  font-size: 1rem;
 }
 
 .quantity {
   display: flex;
   align-items: center;
-  gap: 10px;
+  margin-top: 5px;
 }
 
 .quantity button {
-  padding: 5px 10px;
-}
-
-.delete {
-  background: #f44336;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  cursor: pointer;
+  padding: 4px 10px;
+  margin: 0 5px;
 }
 
 .checkout-info {
@@ -71,42 +88,34 @@ main {
   font-size: 0.95rem;
 }
 
-.login-box {
-  border: 1px solid #ccc;
-  padding: 20px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.login-box button {
-  margin-top: 10px;
-  padding: 6px 16px;
-  background: black;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
+.login-box,
 .payment-summary {
   border: 1px solid #ccc;
   padding: 20px;
+  margin-bottom: 20px;
 }
 
-.payment-summary h3 {
-  font-size: 1.1rem;
-  margin-bottom: 10px;
+.login-box button,
+.shop-btn {
+  width: 100%;
+  background: #000;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .payment-summary ul {
   list-style: none;
   padding: 0;
-  margin: 10px 0;
+  margin: 15px 0;
 }
 
 .payment-summary li {
   display: flex;
   justify-content: space-between;
-  margin: 5px 0;
+  margin-bottom: 5px;
 }
 
 .payment-summary strong {
@@ -116,19 +125,7 @@ main {
   margin-top: 15px;
 }
 
-.shop-btn {
-  margin-top: 15px;
-  width: 100%;
-  background: #333;
-  color: white;
-  border: none;
-  padding: 10px 0;
-  font-weight: bold;
-  cursor: pointer;
-}
-
 .npay-banner {
-  margin-top: 40px;
   background: #00c73c;
   color: white;
   text-align: center;
@@ -136,12 +133,14 @@ main {
   font-size: 1.3rem;
   font-weight: bold;
   position: relative;
+  margin-top: 40px;
 }
 
 .npay-icon {
   position: absolute;
   right: 20px;
-  top: 30%;
+  top: 50%;
+  transform: translateY(-50%);
   background: black;
   color: white;
   border-radius: 50%;
