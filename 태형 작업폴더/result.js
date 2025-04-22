@@ -55,11 +55,11 @@ new Chart(ctx2, {
     labels: ['4.16', '4.17', '4.18', '4.19', '4.20', '4.21'],
     datasets: [{
       label: 'My First Dataset',
-      data: [77, 98, 85, 88, 95, 82],
+      data: [47, 68, 75, 68, 95, 82],
       fill: true,
       backgroundColor: 'rgb(75, 192, 192, 0.2)',
       borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1
+      // tension: 0.1
     }]
   }
 });
