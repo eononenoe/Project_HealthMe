@@ -1,0 +1,32 @@
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+h1{
+    font-weight: 400;
+}
+.nav{
+    width: 1000px;
+    height: 60px;
+    display: flex;
+    text-align: center;
+    border-bottom: 1px solid gainsboro;
+    gap: 20px;
+
+}
+.nav_btn{
+    display: flex;
+   
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.nav > a{
+    color : black;
+    display: block;
+}
+.nav>a:hover .nav_btn{
+    border-bottom: 1px solid orange;
+}
