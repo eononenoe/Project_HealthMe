@@ -16,87 +16,293 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <!-- css -->
-    <link rel="stylesheet" href="../../static/css/pages/custom_nutritional.css">
-    <link rel="stylesheet" href="../../static/css/common/common.css">
-    
+    <link rel="stylesheet" href="/static/css/common/common.css">
+    <link rel="stylesheet" href="/static/css/pages/custom_nutritional.css">
+
+    <!-- js -->
+    <script src="/static/js/by.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../../static/js/by.js"></script>
 </head>
 
 <body>
-    <div id="header_Q"></div>
-    <main>
-        <ul class="nutritional_low_content">
-            <li><a href="#">추천순</a></li>
-            <li>|</li>
-            <li><a href="#">신상품순</a></li>
-            <li>|</li>
-            <li><a href="#">판매량순</a></li>
-            <li>|</li>
-            <li><a href="#">낮은 가격순</a></li>
-            <li>|</li>
-            <li><a href="#">높은 가격순</a></li>
-        </ul>
-        <ul class="nutritional_content">
-            <li class="item_store">
-                <div class="item_img">
-                    <img src="https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/e9079270-38bb-4d73-ad3a-51c632ac9610.jpg"
-                        alt="">
+    <div id="header"></div>
+
+    <div class="container">
+        <!-- 왼쪽 사이드바 -->
+        <aside class="sidebar">
+            <div class="gauge-container">
+                <div class="gauge-info">
+                    <span>비타민</span>
+                    <span>철분</span>
+                    <span>단백질</span>
+                    <span>칼슘</span>
+                    <span>식이섬유</span>
+                    <span>마그네슘</span>
+                    <span>칼슘</span>
+                    <span>비오틴</span>
+                    <span>아연</span>
+                    <span>아르기닌</span>
                 </div>
-                <div class="item_add">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span onclick="alert('장바구니에 담겼습니다')">담기</span>
+                <div class="gauge-bars">
+                    <div class="gauge-bar">
+                        <div class="gauge-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="gauge-bar">
+                        <div class="gauge-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="gauge-bar">
+                        <div class="gauge-fill" style="width: 0%;"></div>
+                    </div>
                 </div>
-                <div class="item_name">
-                    <span>생고등어 100g X 4개</span>
+            </div>
+
+            <!-- 장바구니 영역 -->
+            <div class="cart-section">
+                <span>장바구니</span>
+                <hr>
+                <div class="cart-header">
+                    <div class="cart-header-left">
+                        <input type="checkbox" id="select-all" class="custom-checkbox" onchange="toggleSelectAll(this)">
+                        <label for="select-all">전체선택 (<span id="selected-count">0</span>/<span
+                                id="total-count">0</span>)</label>
+                    </div>
+                    <button onclick="deleteSelected()">선택삭제</button>
                 </div>
-                <div class="item_Nutritional_ingredients">
-                    <ul>
-                        <li>아미노산 16,942mg</li>
-                        <li>아르기닌 1,014mg</li>
-                        <li>비타민 D 7.19mg</li>
-                        <li>칼슘 13.04㎎</li>
-                    </ul>
+                <hr>
+                <ul class="cart-items" id="cart-items">
+                    <!-- 아이템 추가되는 곳 -->
+                </ul>
+
+                <div class="cart-footer">
+                    총 합계: <span id="total-price">0원</span>
                 </div>
-                <div class="item_price">
-                    <ul>
-                        <li class="discount">3%</li>
-                        <li class="price">6,980원~</li>
-                    </ul>
+                
+                <div class="cart-footer-button">
+                    <button onclick="goToCart()">장바구니 담기</button>
                 </div>
-                <div class="item_review">
-                    <i class="fa-regular fa-comment-dots"></i>
-                    <span>999+</span>
-                </div>
-            </li>
-        </ul>
-    </main>
-    <footer>
-        <div class="top_info">
-            <ul>
-                <li>주식회사 Jeon</li>
-                <li>/</li>
-                <li>STORE 헬시미 </li>
-                <li>/</li>
-                <li>OWNER 전정현</li>
-                <li>/</li>
-                <li>COMPANY REG.NO</li>
-                <li>/</li>
-                <li> 123.1234.1234</li>
-                <li>/</li>
-                <li>NETWORK REG.NO</li>
-                <li>/</li>
-                <li>제2025-대구광역시-0001호</li>
-                <li>/</li>
-                <li>CHECK</li>
+            </div>
+        </aside>
+
+        <!-- 메인 콘텐츠 -->
+        <main>
+            <ul class="nutritional_low_content">
+                <li><a href="#">추천순</a></li>
+                <li>|</li>
+                <li><a href="#">신상품순</a></li>
+                <li>|</li>
+                <li><a href="#">판매량순</a></li>
+                <li>|</li>
+                <li><a href="#">낮은 가격순</a></li>
+                <li>|</li>
+                <li><a href="#">높은 가격순</a></li>
             </ul>
-        </div>
-        <div class="low_info">
-            <ul>
-                <li>Copyright © 2025-01-01 Inc. All rights reserved. / designed by JeonJeongHyeon ©</li>
+
+            <ul class="nutritional_content">
+                <!-- 상품 아이템 -->
+                <li class="item_store">
+                    <div class="item_img">
+                        <img src="https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/e9079270-38bb-4d73-ad3a-51c632ac9610.jpg"
+                            alt="">
+                    </div>
+                    <div class="item_add" onclick="addToCart('생고등어 100g X 4개', '6,980원')">
+                        <i class="fas fa-cart-shopping"></i> 담기
+                    </div>
+                    <div class="item_name">생고등어 100g × 4개</div>
+                    <div class="item_Nutritional_ingredients">
+                        <ul>
+                            <li>아미노산 16,942mg</li>
+                            <li>아르기닌 1,014mg</li>
+                            <li>비타민 D 7.19mg</li>
+                            <li>칼슘 13.04mg</li>
+                        </ul>
+                    </div>
+                    <div class="item_price">
+                        <span class="discount">3%</span>
+                        <span class="price">6,980원~</span>
+                    </div>
+                    <div class="item_review">
+                        <i class="far fa-comment-dots"></i> 999+
+                    </div>
+                </li>
+                <li class="item_store">
+                    <div class="item_img">
+                        <img src="https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/e9079270-38bb-4d73-ad3a-51c632ac9610.jpg"
+                            alt="">
+                    </div>
+                    <div class="item_add" onclick="addToCart('생고등어 100g X 4개', '6,980원')">
+                        <i class="fas fa-cart-shopping"></i> 담기
+                    </div>
+                    <div class="item_name">생고등어 100g × 4개</div>
+                    <div class="item_Nutritional_ingredients">
+                        <ul>
+                            <li>아미노산 16,942mg</li>
+                            <li>아르기닌 1,014mg</li>
+                            <li>비타민 D 7.19mg</li>
+                            <li>칼슘 13.04mg</li>
+                        </ul>
+                    </div>
+                    <div class="item_price">
+                        <span class="discount">3%</span>
+                        <span class="price">6,980원~</span>
+                    </div>
+                    <div class="item_review">
+                        <i class="far fa-comment-dots"></i> 999+
+                    </div>
+                </li>
+                <li class="item_store">
+                    <div class="item_img">
+                        <img src="https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/e9079270-38bb-4d73-ad3a-51c632ac9610.jpg"
+                            alt="">
+                    </div>
+                    <div class="item_add" onclick="addToCart('생고등어 100g X 4개', '6,980원')">
+                        <i class="fas fa-cart-shopping"></i> 담기
+                    </div>
+                    <div class="item_name">생고등어 100g × 4개</div>
+                    <div class="item_Nutritional_ingredients">
+                        <ul>
+                            <li>아미노산 16,942mg</li>
+                            <li>아르기닌 1,014mg</li>
+                            <li>비타민 D 7.19mg</li>
+                            <li>칼슘 13.04mg</li>
+                        </ul>
+                    </div>
+                    <div class="item_price">
+                        <span class="discount">3%</span>
+                        <span class="price">6,980원~</span>
+                    </div>
+                    <div class="item_review">
+                        <i class="far fa-comment-dots"></i> 999+
+                    </div>
+                </li>
+                <li class="item_store">
+                    <div class="item_img">
+                        <img src="https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/e9079270-38bb-4d73-ad3a-51c632ac9610.jpg"
+                            alt="">
+                    </div>
+                    <div class="item_add" onclick="addToCart('생고등어 100g X 4개', '6,980원')">
+                        <i class="fas fa-cart-shopping"></i> 담기
+                    </div>
+                    <div class="item_name">생고등어 100g × 4개</div>
+                    <div class="item_Nutritional_ingredients">
+                        <ul>
+                            <li>아미노산 16,942mg</li>
+                            <li>아르기닌 1,014mg</li>
+                            <li>비타민 D 7.19mg</li>
+                            <li>칼슘 13.04mg</li>
+                        </ul>
+                    </div>
+                    <div class="item_price">
+                        <span class="discount">3%</span>
+                        <span class="price">6,980원~</span>
+                    </div>
+                    <div class="item_review">
+                        <i class="far fa-comment-dots"></i> 999+
+                    </div>
+                </li>
             </ul>
+        </main>
+    </div>
+
+    <div id="footer"></div>
+
+    <script>
+        // 장바구니 데이터
+        let cartItems = [];
+
+        function addToCart(name, price) {
+            price = parseInt(price.replace(',', '').replace('원', ''));
+
+            let exist = cartItems.find(item => item.name === name);
+            if (exist) {
+                exist.quantity += 1;
+            } else {
+                cartItems.push({ name, price, quantity: 1, selected: true });
+            }
+
+            renderCart();
+        }
+
+
+        function renderCart() {
+            const cartList = document.getElementById('cart-items');
+            cartList.innerHTML = '';
+
+            cartItems.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <input type="checkbox" class="custom-checkbox" style="margin-top: 0.5px;" ${item.selected ? 'checked' : ''} onchange="toggleItem(${index})">
+        <div style="display: flex; flex-direction: column; justify-content: center; gap: 8px;">
+            <div style="font-weight: bold; font-size: 15px;">
+                ${item.name}
+            </div>
+            <div style="font-size: 14px; color: #333;">
+                ${item.price.toLocaleString()}원
+            </div>
+          <div style="display: flex; align-items: center; gap: 5px; border: 1px solid #ccc; border-radius: 5px; padding: 2px 5px; height: 25px; width: fit-content;">
+             <button style="border: none; background: white; font-size: 16px; cursor: pointer; width: 20px; height: 20px; padding: 0;" onclick="decreaseQuantity(${index})">-</button>
+             <span style="width: 20px; text-align: center; font-size: 14px; margin-top:13px">${item.quantity}</span>
+             <button style="border: none; background: white; font-size: 16px; cursor: pointer; width: 20px; height: 20px; padding: 0;" onclick="increaseQuantity(${index})">+</button>
         </div>
-    </footer>
+        </div>
+    </div>
+</div>
+`;
+                cartList.appendChild(li);
+            });
+
+            updateCartSummary();
+        }
+
+
+        function toggleItem(index) {
+            cartItems[index].selected = !cartItems[index].selected;
+            updateCartSummary();
+        }
+
+        function toggleSelectAll(checkbox) {
+            cartItems.forEach(item => item.selected = checkbox.checked);
+            renderCart();
+        }
+
+        function increaseQuantity(index) {
+            cartItems[index].quantity += 1;
+            renderCart();
+        }
+
+        function decreaseQuantity(index) {
+            if (cartItems[index].quantity > 1) {
+                cartItems[index].quantity -= 1;
+                renderCart();
+            }
+        }
+
+        function deleteItem(index) {
+            cartItems.splice(index, 1);
+            renderCart();
+        }
+
+        function deleteSelected() {
+            cartItems = cartItems.filter(item => !item.selected);
+            renderCart();
+        }
+
+        function updateCartSummary() {
+            const selected = cartItems.filter(item => item.selected);
+            const selectedCount = selected.length;
+            const totalCount = cartItems.length;
+            const totalPrice = selected.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            document.getElementById('selected-count').innerText = selectedCount;
+            document.getElementById('total-count').innerText = totalCount;
+            document.getElementById('total-price').innerText = totalPrice.toLocaleString() + '원';
+
+            // 전체 선택 체크 상태 자동 반영
+            document.getElementById('select-all').checked = (selectedCount === totalCount && totalCount > 0);
+        }
+
+    </script>
 </body>
 
 </html>

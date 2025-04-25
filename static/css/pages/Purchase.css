@@ -11,7 +11,6 @@
 * {
   margin: 0;
   padding: 0;
-
   box-sizing: border-box;
   list-style-type: none;
   list-style: none;
@@ -24,176 +23,203 @@ html, body {
   height: 100%;
 }
 
-a{
+a {
   text-decoration: none;
   color: grey;
   cursor: pointer;
 }
 
 /* ================ */
-/*       메인       */
+/*     메인 구조     */
 /* ================ */
-main{
-  height: 3000px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin-bottom: 50px;
-}
-.Purchase_content {
+.purchase-wrapper {
   width: 1280px;
-  margin-top: 30px;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 70px;
-}
-
-/* ================ */
-/*     메인 네비    */
-/* ================ */
-
-.Purchase_title{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: sans-serif;
-  margin: 50px auto;
-  font-size: 2rem;
-  font-weight: 600;
-  color: rgb(45, 45, 45);
-}
-.Purchase_top_content{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 1280px;
-  height: 200px;
-  margin-bottom: 70px;
-  gap: 100px;
-  box-shadow: 0 0 3px gray;
-  font-size: 1.2rem;
-  color: rgb(45, 45, 45);
-}
-.Purchase_top_content>li>a{
-  color: rgb(45, 45, 45);
-}
-.Purchase_low_content{
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  gap: 20px;
-  width: 1280px;
-  color: gray;
-  margin-top: 100px;
-  margin-bottom: 20px;
-}
-/* ================ */
-/*    왼쪽 컨텐츠    */
-/* ================ */
-.Purchase_content>ul{
-  width: 300px;
-  gap: 25px;
-}
-.Purchase_left_content>.Purchase_left_title{
-  border-bottom: 1px solid lightgray;
-  padding: 10px;
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-}
-.Purchase_left_detail{
-  margin: 10px;
-}
-
-/* ================ */
-/*   오른쪽 컨텐츠   */
-/* ================ */
-.Purchase_right_content {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  justify-content: center;
-  align-items: center;
-
+  min-width: 1280px; /* << 추가해 */
   margin: 0 auto;
+  display: flex;
+  padding-top: 50px;
+}
+
+.purchase-left-content {
+  width: 220px;
+  flex-shrink: 0;
+  border-right: 1px solid #eee;
+}
+
+.purchase-left-title>h2 {
+  font-size: 1.8rem;
+  margin-bottom: 5px;
+  color: black;
+}
+.purchase-left-title>a {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  right: -40px;
+  align-items: center;
+}
+.purchase-left-title {
+  font-size: 1.2rem;
+  color: gray;
+  display: flex;
+  align-items: center; /* << 추가: 세로 가운데 정렬 */
+  gap: 10px; /* h2와 a 사이 간격 */
+}
+
+.purchase-left-title h2, 
+.purchase-left-title a {
+  margin: 0; /* 기본 마진 제거 */
+  padding: 0;
+}
+
+.purchase-left-menu {
+  margin-top: 20px;
+}
+
+.purchase-left-menu li {
+  margin: 10px 0;
+  color: gray;
+  font-size: 1.2rem;
+}
+.custom-radio input[type="radio"] {
+  display: none; /* 라디오 버튼 숨기기 */
+}
+
+.custom-radio {
+  cursor: pointer; /* 마우스 올리면 포인터 손가락 모양 */
+  text-decoration: none; /* a 태그 느낌 */
+  color: inherit; /* 글자색 상속 */
+  font-weight: normal; /* 필요에 따라 굵게/얇게 */
+}
+
+/* ================ */
+/*    오른쪽 컨텐츠   */
+/* ================ */
+.purchase-right-content {
+  flex-grow: 1;
+  min-width: 0; /* << flex 안에서는 overflow 터지는 걸 막으려고 이거 추가하면 안정감 있음 */
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding:  0 30px;
+}
+
+.purchase-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* ================ */
+/*      배너         */
+/* ================ */
+.purchase-banner {
+  width: 100%;
+  height: 250px;
+  background: #f0f0f0;
   border-radius: 10px;
-  width: 290px;
-  gap: 50px;
+  overflow: hidden;
+}
+
+.purchase-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* ================ */
-/*      아이템       */
+/*   추천순 메뉴바    */
 /* ================ */
-.item_store{
-  height: 570px;
+.purchase-sort-menu {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  font-size: 1rem;
+  color: gray;
 }
+
+/* ================ */
+/*     상품 리스트    */
+/* ================ */
+.purchase-product-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  
+  min-height: 1000px; /* 최소 높이 확보 */
+  margin-bottom: 100px; /* 푸터랑 거리 벌리기 */
+}
+
+
+/* ================ */
+/*     아이템 카드    */
+/* ================ */
+.item_store {
+  width: 100%;
+  height: auto;
+}
+
 .item_img > img {
-  width: 290px;
+  width: 100%;
   height: 350px;
+  object-fit: cover;
   border-radius: 5px;
-
-  margin-bottom: 2px;
 }
 
-.item_store > .item_add {
+.item_add {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-
   border: 1px solid lightgray;
   border-radius: 5px;
   color: gray;
-  width: 290px;
+  width: 100%;
   height: 45px;
-
   font-size: 1.15rem;
-}
-.item_store>.item_add:hover{
   cursor: pointer;
+  margin-top: 5px;
 }
 
-.item_store > .item_name {
-  width: 290px;
+.item_name {
+  width: 100%;
   height: 50px;
   margin-top: 15px;
-
   font-size: 1.3rem;
   color: black;
   margin-bottom: 10px;
 }
 
-.item_store > .item_discount_price {
-  width: 290px;
-
+.item_discount_price {
+  width: 100%;
   font-size: 1.2rem;
   color: rgb(171, 171, 171);
   margin-bottom: 8px;
 }
-.item_store > .item_price {
-  width: 290px;
+
+.item_price {
+  width: 100%;
   margin-bottom: 8px;
   font-size: 1.3rem;
 }
-.item_store > .item_price > ul {
+
+.item_price ul {
   display: flex;
   gap: 5px;
 }
 
-.item_price > ul > .discount {
+.item_price .discount {
   color: #e80000;
   font-weight: 600;
 }
 
-.item_price > ul > .price {
+.item_price .price {
   color: black;
   font-weight: 600;
 }
 
-.item_store > .item_review {
+.item_review {
+  width: 100%;
   color: rgb(171, 171, 171);
-  width: 290px;
-
   font-size: 1rem;
 }
