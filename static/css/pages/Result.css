@@ -2,7 +2,6 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
 }
 .result_box{
     width: 1200px;
