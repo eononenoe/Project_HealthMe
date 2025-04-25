@@ -22,7 +22,7 @@ h5{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 66px;
+    height: 56px;
     width: 481px;
     padding : 11px 16px;
     border-color: rgb(238, 234, 234);
@@ -100,4 +100,47 @@ h5{
 .hypertext a:not(:last-child) {
     border-right: 1px solid lightgray;
     padding-right: 15px;
+}
+.btn2 {
+    background-color: orange;
+    color: white;
+    border-radius: 5px;
+    width: 100px;
+    height: 40px;
+    font-size: 14px;
+    margin-top: 0;
+    padding: 0;
+}
+.btn2:hover {
+    background-color: rgb(218, 141, 0);
+}
+/* 주소 */
+.useraddress{
+    display: flex;
+    gap: 15px;
+}
+#zip{
+    width: 370px;
+    height: 40px;
+}
+.address{
+    display: flex;
+    height: 50px;
+}
+
+/* 휴대전화 */
+h6{
+    color: gray;
+}
+.tel{
+    display: flex;
+    gap: 10px;
+}
+#tel1{
+    width: 80px;
+    height: 40px;
+}
+#tel2,#tel3{
+    width: 135px;
+    height: 40px;
 }

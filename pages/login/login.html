@@ -13,120 +13,67 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 
-
-    <style>
-        * {
-            box-sizing: border-box;
-            font-size: .8rem;
-        }
-
-        body {
-            padding: 0;
-            margin: 0;
-            width: 100%;
-            height: 100%;
-            align-items: center;
-            justify-items: center;
-        }
-
-        a {
-            text-decoration: none;
-            color: black;
-        }
-
-        /* 폼속성 */
-        form {
-            width: 380px !important;
-            margin-top: 50px;
-            text-align: center;
-            /* border : 1px solid; */
-        }
-
-        /* 위치조정 아래 4개*/
-        form>.right-position {
-            float: right;
-        }
-
-        form>.left-position {
-            float: left;
-        }
-
-        form>.container {
-            float: block;
-        }
-
-        /* 버튼 투명색 */
-        .transparent-button {
-            background-color: transparent;
-            border: 0px;
-            color: #000;
-            /* padding: 10px 20px; */
-            cursor: pointer;
-            outline: none;
-        }
-
-        .button-center {
-            text-align: center;
-        }
-    </style>
+    <!-- 로그인 css -->
+    <link rel="stylesheet" href="/static/css/login/login.css">
 
 </head>
 
 <body>
 
 
-    <form action="/test.jsp" method="get" class="m-0 p-2 ">
-        <div>
-            <img src="../../../당근.png" alt="">
-        </div>
-        <!-- 제목 -->
-        <div class="row m-0 p-0 mb-5">
-            <h2 class="fw-bold">로그인</h2>
-        </div>
-        <!-- 아이디 -->
-        <div class="row  m-0 p-0 mb-2">
-            <label for=""></label>
-            <input type="text" name="username" placeholder="아이디를 입력해주세요" class="col form-control" />
-        </div>
-        <!-- 비번 -->
-        <div class="row  m-0 p-0 mb-2">
-            <label for=""></label>
-            <input type="password" name="password" placeholder="비밀번호를 입력해주세요" class="col form-control" />
-        </div>
-        <!--가로 컨텐츠-->
-        <div class="row m-0 p-0">
-            <!-- <div class=" m-0 p-0 col-4 " >
-                <input class="form-check-input" type="checkbox" id="">
-                <label class="" for="">로그인 상태를 유지</label>
-            </div> -->
-            <div class="col-4 m-0 form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                <label class="m-0 p-0 form-check-label" for="flexSwitchCheckDefault">로그인 상태 유지</label>
-            </div>
-            <div class="col-8 row m-0 p-0 d-flex justify-content-end ">
-                <div class="col-4 m-0 p-0">
-                    <button class="w-100 transparent-button">아이디 찾기</button>
-                </div>
-                <span class="col-1 m-0 p-0 ">|</span>
-                <div class="col-4 m-0 p-0">
-                    <button class="w-100 transparent-button">비밀번호 찾기</button>
+    <form action="/login.jsp" method="post" class="mt-5 p-0 m-0">
+        
+        <div class="box1">
+            <h5> 로그인</h5>
+            <!-- 이메일 입력 -->
+            <div class="custom-input">
+                <div class="col">
+                    <input type="text" name="userid" class="form-control custom-input" placeholder="아이디 또는 이메일" id="userid">
                 </div>
             </div>
+            <!-- 비밀번호 입력 -->
+            <div class="custom-input">
+                <div class="col">
+                    <input type="password" name="userpw" class="form-control custom-input" placeholder="비밀번호" id = "userid">
+                </div>
+            </div>
+            <!-- 로그인유지 체크박스 -->
+            <div class="cb mb-3">
+                <div>
+                    <input type="checkbox" id="login">
+                    <label for="login">로그인 상태 유지</label>
+                </div>
+            </div>
+            <!-- 로그인 -->
+            <div class="row mt-4">
+                <div class="col">
+                    <button type="submit" class="btn1 btn-custom">로그인</button>
+                </div>
+            </div>
+            <div class="line">
+                <hr><span>또는</span><hr>
+            </div>
+            <!-- 구글로 로그인 -->
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn2 btn-custom">
+                        <img src="/img/google.png" alt="카카오" class="logo_google">구글로 로그인</button>
+                </div>
+            </div>
+            <!-- 카카오로 로그인 -->
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn3 btn-custom">
+                        <img src="/img/kakao.png" alt="네이버" class="logo_kakao">카카오로 로그인</button>
+                </div>
+            </div>
         </div>
-        <!-- 로그인 -->
-        <div class="button-center">
-            <label for=""></label>
-            <button class="btn btn-primary w-100">로그인</button>
+        <div class="hypertext">
+            <a href="">아이디/비밀번호 찾기</a>
+            <a href="">회원가입</a>
         </div>
-        <!-- 회원가입 -->
-        <div class="button-center">
-            <label for=""></label>
-            <button class="btn btn-light w-100">회원가입</button>
-        </div>
-
-
     </form>
-
+   
 </body>
 
 </html>

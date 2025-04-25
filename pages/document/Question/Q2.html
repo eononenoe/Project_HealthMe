@@ -18,26 +18,48 @@
     <div id="header_Q"></div>
     <div>
         <div class="QBox">
-            <li class="QBox_title">Q2. 자주 피로하거나 어지럽고 집중력이 떨어지시나요?	철분</li>
-            <form id="survey" action="Q3.html">
-                <div class="input_box">
-                    <div class="option">
-                        <input type="radio" id="no" name="answer" value="no" hidden>
-                        <label for="no" class="radio-label">아니요</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" id="yes" name="answer" value="yes" hidden>
-                        <label for="yes" class="radio-label">네</label>
-                    </div>
+            <div class="bar">
+                <li class="bar_state">2/10</li>
+                <button class="go_back"><</button>
+                <div class="goal_bar">
+                    <div class="fill_bar" style="width: 20%;"></div>
                 </div>
-            </form>
+            </div>
+            <li class="QBox_title1">Q2.</li>
+            <li class="QBox_title2">자주 피로하거나 어지럽고 집중력이 떨어지시나요?</li>
+            <div class="Q_contents">
+                <div class="img_box">
+                    <img src="../../../img/survey/Q2.png" alt="#">
+                </div>
+                <form id="survey" action="Q3.html">
+                    <div class="input_box">
+                        <div class="option">
+                            <input type="radio" id="answer1" name="answer" value="answer1" hidden>
+                            <label for="answer1" class="radio-label">자주 그렇다</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="answer2" name="answer" value="answer2" hidden>
+                            <label for="answer2" class="radio-label">가끔 그렇다</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="answer3" name="answer" value="answer3" hidden>
+                            <label for="answer3" class="radio-label">전혀 아니다</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <script>
+        // 라디오 버튼 클릭 시 폼 자동 제출
         document.querySelectorAll('input[name="answer"]').forEach(function (input) {
             input.addEventListener("change", function () {
                 document.getElementById("survey").submit();
             });
+        });
+        // go_back 누를 때 이전 페이지로 이동
+        document.querySelector('.go_back').addEventListener('click', function () {
+            window.location.href = "Q1.html"; 
         });
     </script>
 </body>
