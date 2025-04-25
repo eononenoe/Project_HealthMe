@@ -62,13 +62,13 @@ a {
   font-size: 1.2rem;
   color: gray;
   display: flex;
-  align-items: center; /* << 추가: 세로 가운데 정렬 */
-  gap: 10px; /* h2와 a 사이 간격 */
+  align-items: center; 
+  gap: 10px; 
 }
 
 .purchase-left-title h2, 
 .purchase-left-title a {
-  margin: 0; /* 기본 마진 제거 */
+  margin: 0; 
   padding: 0;
 }
 
@@ -80,6 +80,11 @@ a {
   margin: 10px 0;
   color: gray;
   font-size: 1.2rem;
+  
+}
+.purchase-left-menu>li>label:hover {
+  color: #333;
+  font-weight: 600;
 }
 .custom-radio input[type="radio"] {
   display: none; /* 라디오 버튼 숨기기 */

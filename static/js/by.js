@@ -61,19 +61,13 @@ loadJQuery(function () {
     $("#footer").load("/common/footer.html", function () {
       adjustMainHeight();
     });
-    $("#header_Q").load("/common/header.html", function () {
-      adjustMainHeight();
-    });
-    $("#footer_Q").load("/common/footer.html", function () {
-      adjustMainHeight();
-    });
   });
 });
 
 // 4. 메인 높이 조정 함수
 function adjustMainHeight() {
   const main = document.querySelector('main');
-  const footer = document.getElementById('footer_Q') || document.getElementById('footer');
+  const footer = document.getElementById('footer');
 
   if (main && footer) {
     const windowHeight = window.innerHeight;
