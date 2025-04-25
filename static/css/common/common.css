@@ -75,7 +75,7 @@ header {
 .logo {
   position: absolute;
   left: 60px;
-  top: 15px;
+  top: 12px;
   display: flex;
   gap: 5px;
 }
@@ -109,6 +109,7 @@ header {
   display: flex;
   align-items: center;
   padding: 5px 15px;
+  margin-left: 40px;
 }
 
 .search_txt {
@@ -207,7 +208,7 @@ header {
 /* ================ */
 /*       푸터       */
 /* ================ */
-footer {
+#footer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -221,19 +222,19 @@ footer {
   background-color: rgb(240, 240, 240);
 }
 
-footer>.top_info {
+#footer > .top_info {
   color: gray;
   font-size: 0.75rem;
   margin-bottom: 5px;
 }
 
-footer>.top_info>ul {
+#footer > .top_info > ul {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 8px;
 }
 
-footer>.low_info {
+#footer > .low_info {
   font-size: 0.75rem;
 }

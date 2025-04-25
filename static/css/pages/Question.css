@@ -1,129 +1,102 @@
-body>div {
-    display: flex;
-    justify-content: center;
+* {
+    margin: 0;
+    padding: 0;
 }
 
-.QBox {
-    width: 60vw;
-    height: 70vh;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 20px;
+#quiz-container,
+#result-container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 500px;
+    margin: auto;
+    margin-top: 80px;
 }
 
-.bar {
-    display: flex;
-    align-items: center;
-    position: relative;
-    width: 600px;
-    height: 30px;
-    gap: 10px;
+#question-title {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-.bar_state {
-    position: absolute;
-    right: 0;
-    font-size: 14px;
+#question-text {
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 80px;
 }
 
-.go_back {
-    margin-top: 40px;
+#options button {
+    display: block;
+    width: 100%;
+    margin: 30px 0;
+    padding: 12px;
+    font-size: 16px;
     border: none;
-    border-radius: 20px;
-    width: 30px;
-    height: 20px;
-    background-color: orange;
-    cursor: pointer;
+    background: #4CAF50;
     color: white;
-    font-weight: 900;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
-.goal_bar {
-    margin-top: 40px;
-    width: 600px;
-    height: 20px;
-    background-color: lightgray;
-    border-radius: 20px;
+#options button:hover {
+    background: #357d39;
 }
 
-.fill_bar {
-    height: 100%;
-    background-color: orange;
-    border-radius: 20px;
-    transition: 0.3s ease;
+#results {
+    text-align: left;
+    font-size: 16px;
+    margin-top: 20px;
 }
 
-.QBox_title1 {
-    top: 10px;
-    font-size: 3rem;
-    font-weight: 600;
-    color: orange;
-}
-
-.QBox_title2 {
-    top: 10px;
-    font-size: 2rem;
-    font-weight: bold;
-}
-
-.Q_contents {
-    width: 800px;
+#progress-bar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 8px;
+    margin: 20px 0;
+    padding: 0 8px;
 }
 
-.img_box {
-    width: 600px;
-    height: 450px;
-    /* border: 1px solid; */
+#back-button {
+    background: #333;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+}
+
+.material-symbols-outlined {
+    font-size: 12px !important;
+    color: white;
+    padding-left: 5px;
+}
+
+#bar-track {
+    flex-grow: 1;
+    height: 15px;
+    background: #efecde;
+    border-radius: 6px;
     overflow: hidden;
-}
-
-.img_box>img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-
-}
-
-form {
-    height: 100%;
-}
-
-.input_box {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+}
+
+#bar-fill {
     height: 100%;
-    font-size: 1.5rem;
+    width: 0%;
+    background: #333;
+    transition: width 0.3s ease;
+    border-radius: 6px;
 }
 
-.option {
-    display: flex;
-    width: 150px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    border: 1px solid black;
-    height: 40px;
-}
-
-.radio-label {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    cursor: pointer;
-    background-color: white;
-    color: black;
-}
-
-input[type="radio"]:hover+.radio-label {
-    background-color: orange;
-    color: white;
-}
-.option:hover{
-    border: none;
+#progress-text {
+    font-size: 12px;
+    color: #999;
+    width: 40px;
+    text-align: right;
 }

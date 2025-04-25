@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>영양설문</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <!-- css -->
+    <link rel="stylesheet" href="/static/css/common/common.css">
+    <link rel="stylesheet" href="/static/css/pages/Question.css">
+    <!-- 헤더용 js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/static/js/by.js"></script>
+    <script src="/static/js/Question.js"></script>
+</head>
+
+<body>
+    <div id="header"></div>
+    <div id="app">
+        <div id="quiz-container">
+            <div id="progress-bar">
+                <button id="back-button" onclick="goBack()"><span class="material-symbols-outlined">
+                    arrow_back_ios
+                    </span></button>
+                <div id="bar-track">
+                  <div id="bar-fill"></div>
+                </div>
+                <div id="progress-text">1 / 10</div>
+              </div>      
+            <h2 id="question-title">Q1.</h2>
+            <p id="question-text">질문 내용</p>
+            <div id="options"></div>
+        </div>
+    </div>
+    <div id="footer"></div>
+</body>
+
+</html>
