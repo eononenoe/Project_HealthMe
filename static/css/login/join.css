@@ -4,7 +4,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    font-family: sans-serif;
 }
 
 
@@ -70,11 +70,7 @@ h5{
 }
 
 .box1 {
-    border: 1px solid;
-    border-radius: 17px;
     padding: 48px 36px;
-    border-color: rgb(238, 234, 234);
-    box-shadow: 0 0 5px rgba(0,0,0,0.19), 0 0px 0px rgba(0,0,0,0.23);
 }
 
 .btn1 {
