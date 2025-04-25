@@ -155,21 +155,23 @@ header {
   text-underline-offset: 8px;
 }
 
+
 @media (max-width: 600px) {
   header {
-    min-width: 250px;
+    min-width: 300px;
     padding: 15px 10px;
+    height: 250px;
   }
 
-  /* 로그인/회원가입을 오른쪽 상단에 고정 */
+
   .top_of_top_header {
-    justify-content: flex-end; /* ← 핵심: 오른쪽 정렬 */
+    justify-content: flex-end; 
     align-items: center;
     font-size: 0.75rem;
     flex-wrap: nowrap;
     padding: 0 10px;
     gap: 10px;
-    position: absolute; /* 상단 고정 위치 */
+    position: absolute; 
     right: 10px;
     top: 10px;
   }
@@ -179,7 +181,7 @@ header {
     align-items: center;
     height: auto;
     gap: 10px;
-    margin-top: 30px; /* 로그인 메뉴가 상단에 있으니 공간 확보 */
+    margin-top: 30px; 
   }
 
   .logo {
@@ -200,6 +202,7 @@ header {
     padding: 10px 0;
   }
 }
+
 
 /* ================ */
 /*       푸터       */
