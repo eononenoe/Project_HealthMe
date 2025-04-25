@@ -61,12 +61,6 @@ loadJQuery(function () {
     $("#footer").load("/common/footer.html", function () {
       adjustMainHeight();
     });
-    $("#header_Q").load("/common/header.html", function () {
-      adjustMainHeight();
-    });
-    $("#footer_Q").load("/common/footer.html", function () {
-      adjustMainHeight();
-    });
   });
 });
 
