@@ -1,0 +1,109 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Nanum Gothic", sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.mypage-wrapper {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  margin: 40px auto;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar {
+  width: 250px;
+  padding: 20px;
+  border-right: 1px solid #eee;
+  background-color: #fafafa;
+}
+
+.sidebar h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #111;
+}
+
+.user-info p {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.sidebar-menu ul {
+  list-style: none;
+  margin-top: 20px;
+}
+
+.sidebar-menu li {
+  padding: 10px 0;
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+}
+
+.sidebar-menu li:hover {
+  color: #ff6f00;
+  font-weight: bold;
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+}
+
+.main-content h3 {
+  font-size: 22px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.login-info,
+.member-info {
+  margin-bottom: 40px;
+}
+
+.member-info form label {
+  display: block;
+  margin-bottom: 15px;
+  font-size: 15px;
+}
+
+.member-info input[type="text"],
+.member-info input[type="email"],
+.member-info input[type="password"] {
+  width: 300px;
+  padding: 8px;
+  margin-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.member-info input[type="radio"] {
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
+.member-info button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #ff6f00;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.member-info button:hover {
+  background-color: #e65c00;
+}

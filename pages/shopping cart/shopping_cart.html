@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>장바구니</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- 폰트 -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
+      rel="stylesheet"
+    />
+    <!-- 이모지 -->
+    <script
+      src="https://kit.fontawesome.com/b83f799b86.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- google icon -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+
+    <!-- css -->
+    <link rel="stylesheet" href="/static/css/common/common.css" />
+    <link rel="stylesheet" href="/static/css/pages/Purchase.css" />
+    <link rel="stylesheet" href="/static/css/pages/shopping-cart.css" />
+    <link rel="stylesheet" href="/static/css/pages/shopping-cart.css" />
+
+    <script src="https://kit.fontawesome.com/b83f799b86.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/static/js/by.js"></script>
+  </head>
+
+  <body>
+    <div id="header"></div>
+    <main>
+      <div class="cart-container">
+        <section class="cart-section">
+          <h2>장바구니</h2>
+          <div class="cart-header">
+            <span>✅ 전체선택(2/2)</span>
+            <button>선택삭제</button>
+          </div>
+
+          <div class="cart-item">
+            <img src="https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/2806a17d-deba-4bc4-b6ec-d6dc0c96e575.jpg" alt="채소믹스" />
+            <div class="item-info">
+              <p class="name">[YSB111] 유기농 채소믹스 600g (냉동)</p>
+              <p class="sub">월,수,금 16시 전 재입고</p>
+              <p class="price">6,490원</p>
+              <div class="quantity">
+                <button>-</button><span>1</span><button>+</button>
+              </div>
+            </div>
+            <button class="delete">✖</button>
+          </div>
+
+          <div class="cart-item">
+            <img src="https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/4c36b050-06f9-4ce1-9597-27bf4c2563fb.jpg" alt="한우" />
+            <div class="item-info">
+              <p class="name">[JJH365] 한돈 부위별 대용량 가성비
+                7종</p>
+              <p class="sub">100g당 11,445원 | 16시 전 재입고</p>
+              <p class="price">38,990원</p>
+              <div class="quantity">
+                <button>-</button><span>1</span><button>+</button>
+              </div>
+            </div>
+            <button class="delete">✖</button>
+          </div>
+        </section>
+
+        <aside class="checkout-info">
+          <div class="login-box">
+            <span class="material-symbols-outlined">person</span>
+            <p>로그인을 하시면 지금 보고있는 제품을<br />나중에도 확인하실 수 있습니다.</p>
+            <button>로그인하기</button>
+          </div>
+
+          <div class="payment-summary">
+            <h3>결제정보</h3>
+            <p style="color: #888">* 최종 할인혜택은 주문서에서 적용됩니다.</p>
+            <p style="color: red">* 최종결제금액에 따라 증정품이 변경될 수 있습니다.</p>
+            <ul>
+              <li>주문금액 <span>45,480원</span></li>
+              <li>제품할인 <span>0원</span></li>
+              <li>배송비 <span>무료</span></li>
+            </ul>
+            <strong>결제예정금액 <span>45,480원</span></strong>
+            <button class="shop-btn">쇼핑하러 가기</button>
+          </div>
+        </aside>
+      </div>
+    </main>
+    <div class="npay-banner">
+      <strong>네이버페이 결제 시</strong>
+      <p>최대 7천원 혜택</p>
+      <div class="npay-icon">N</div>
+    </div>
+    <div id="footer"></div>
+    <script src="/static/js/shopping-cart.js"></script>
+  </body>
+</html>
