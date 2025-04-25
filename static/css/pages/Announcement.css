@@ -1,5 +1,4 @@
 
-
 body{
     display: flex;
     flex-direction: column;
@@ -11,6 +10,7 @@ body{
     width: 1000px;
     display: flex;
     flex-direction: column;
+    margin-bottom: 100px;
 }
 h1{
     font-weight: 400;
