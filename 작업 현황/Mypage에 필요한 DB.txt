@@ -1,0 +1,40 @@
+public class UserDto {
+    private String userid;           // 아이디
+    private String username;         // 이름
+    private String password;         // 비밀번호
+    private String phone;            // 전화번호
+    private String grade;            // 등급
+    private int totalPurchaseAmount; // 누적 구매 금액
+    private Long defaultAddressId;  // 기본 배송지 id (AddressDto의 id 참조FK)
+}
+
+// 등급제도
+
+🌱  ->  🔥	-> 🏆  -> 👑
+새싹 -> 열정 -> 우수 -> 명예
+기본    10만원  50만원  100만원
+
+
+등급이름만 테이블에 저장한뒤 jsp에서 출력할때 아이콘 붙이면 된다. (DB에 아이콘 저장할 필요 X)
+
+등급이름이랑 누적금액은 처음에는 새싹과 0원으로 DB에 넣어두면 된다.
+
+구매할때 누적금액에 구매액 더해주면 된다.
+
+누적금액에 따라서 등급을 결정해주면 된다.
+
+등급에 따라서 등급 아이콘을 붙여주면 된다.
+
+public class AddressDto {
+    private Long AddressId;      // 배송지 ID (PK, AUTO_INCREMENT)
+    private String userid;        // 이 배송지를 가진 회원의 ID (UserDto의 userid FK)
+    private String postcode;      // 우편번호
+    private String roadAddress;   // 도로명 주소
+    private String detailAddress; // 상세 주소
+    private String recipient;     // 받는 사람 이름
+    private String phone;         // 받는 사람 전화번호
+    private Boolean isDefault;    // 기본 배송지 여부 (true/false)
+}
+
+전체 흐름 (insert 2번 update 1번)
+UserDto insert → AddressDto insert → AddressDto AddressId 조회 → UserDto defaultAddressId update
