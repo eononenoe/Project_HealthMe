@@ -50,7 +50,9 @@ body {
   border-radius: 8px;
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 20px; /* 아래 여백 */
+
+  max-width: 1100px;
+  margin: 20px auto;
 }
 
 .user-box h2 {
@@ -241,12 +243,12 @@ body {
 }
 
 .submit-btn {
-  background-color: #ffa500;
+  background-color: #007bff;
   color: white;
 }
 
 .submit-btn:hover {
-  background-color: #e09201;
+  background-color: #0058b7;
 }
 
 /* 배송 주소 관리 */
