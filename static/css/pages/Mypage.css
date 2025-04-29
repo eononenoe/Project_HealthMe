@@ -7,19 +7,23 @@ body {
 
 .container {
   display: flex;
+  justify-content: center;
+  gap: 30px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 30px 20px;
   min-height: 100vh;
-  padding-left: 60px;
-  padding-top: 30px;
 }
 
 .sidebar {
   width: 240px;
-  height: 400px;
   background-color: white;
-  padding: 20px 20px 20px 20px;
-  margin: 30px;
+  padding: 20px;
+  margin: 0;
+  margin-right: 10px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  height: 500px;
 }
 
 .sidebar h3 {
@@ -40,7 +44,8 @@ body {
 
 .main {
   flex: 1;
-  padding: 30px;
+  max-width: 950px;
+  padding: 30px 0;
 }
 
 .user-box {
@@ -50,7 +55,6 @@ body {
   border-radius: 8px;
   font-size: 24px;
   font-weight: bold;
-
   max-width: 1100px;
   margin: 20px auto;
 }
@@ -84,14 +88,14 @@ body {
 
 .deliver {
   display: flex;
-  justify-content: center; /*아이콘 가운데 정렬렬*/
-  gap: 110px; /* 이미지들 사이 간격 */
+  justify-content: center;
+  gap: 110px;
 }
 
 .deliver img {
   width: 38px;
   height: 80px;
-  object-fit: contain; /* 이미지 비율 맞추기 */
+  object-fit: contain;
 }
 
 #deliver_finish {
@@ -123,8 +127,6 @@ body {
   line-height: 1.5;
 }
 
-/* 회원 정보 수정 */
-
 .form-box {
   background-color: #ffffff;
   padding: 30px;
@@ -141,12 +143,10 @@ body {
   width: 100%;
 }
 
-/* form 안 레이아웃 */
 .profile-edit-form {
   width: 100%;
 }
 
-/* input 하나하나 묶음 */
 .input-row {
   display: flex;
   align-items: center;
@@ -172,7 +172,6 @@ body {
   max-width: 600px;
 }
 
-/* 휴대폰 인증 박스 */
 .phone-box {
   display: flex;
   gap: 15px;
@@ -181,7 +180,7 @@ body {
 
 .verify-btn {
   padding: 10px;
-  background-color: #ffa500; /* 기본 배경 */
+  background-color: #ffa500;
   color: white;
   border: none;
   border-radius: 4px;
@@ -198,7 +197,6 @@ body {
   background-color: #e09201;
 }
 
-/* 약관 */
 .terms-box {
   margin-top: 0px;
   font-size: 13px;
@@ -215,7 +213,6 @@ body {
   text-decoration: underline;
 }
 
-/* 탈퇴/수정 버튼 그룹 */
 .button-group {
   margin-top: 30px;
   display: flex;
@@ -230,7 +227,7 @@ body {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  white-space: nowrap; /* 버튼 줄바꿈 방지 */
+  white-space: nowrap;
 }
 
 .withrdraw-btn {
@@ -250,8 +247,6 @@ body {
 .submit-btn:hover {
   background-color: #0058b7;
 }
-
-/* 배송 주소 관리 */
 
 .description {
   display: block;
@@ -342,4 +337,83 @@ body {
 
 .new_Address_add button {
   background-color: #ffa500;
+}
+
+.order-list {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.order-box {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #fff;
+}
+
+.order-date {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.order-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.order-info {
+  flex: 1 1 60%;
+}
+
+.order-status {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.product-title {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.product-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
+
+.product-detail .title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.product-detail .price {
+  color: #777;
+  font-size: 14px;
+}
+
+.order-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-outline {
+  padding: 8px 12px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.green {
+  color: #1aaa1a;
+  font-weight: bold;
 }

@@ -43,7 +43,7 @@
             </a>
           </li>
         </ul>
-        <h3>구매 관리</h3>
+        <h3>구매관리</h3>
         <ul>
           <li>
             <a href="/pages/mypage/address_edit.html"> 배송 주소 수정 </a>
@@ -311,26 +311,67 @@
           </div>
         </div>
 
-        <div class="form-box">
-          <h3>계정 삭제</h3>
-          <input
-            type="text"
-            placeholder="충전 금액을 입력하세요. (최소 100원)"
-          />
-          <button>충전 신청</button>
+        <div class="order-list">
+          <!-- 주문 1 -->
+          <div class="order-box">
+            <div class="order-date">2025. 3. 10 주문</div>
+            <div class="order-content">
+              <div class="order-info">
+                <div class="order-status">
+                  배송완료 · <span class="green">3/10(월)</span> 도착
+                </div>
+                <div class="product-title">
+                  <img
+                    src="/img/sample_book.png"
+                    alt="상품 이미지"
+                    class="product-img"
+                  />
+                  <div class="product-detail">
+                    <p class="title">
+                      코딩 테스트 합격자 되기: 자바 편, 골든래빗, 김희성
+                    </p>
+                    <p class="price">37,800원 · 1개</p>
+                  </div>
+                </div>
+              </div>
+              <div class="order-buttons">
+                <button class="btn-outline">배송조회</button>
+                <button class="btn-outline">교환, 반품 신청</button>
+                <button class="btn-outline">리뷰 작성하기</button>
+              </div>
+            </div>
+          </div>
 
-          <div class="warnings">
-            ▶충전 완료 후 취소 불가합니다.<br />
-            ▶충전 후 자동처리까지 최대 10분이 소요됩니다.<br />
-            ▶게시 방침은 충전 완료 후 마지막에 한번 이동이 필요합니다.<br />
-            ▶이미 사용한 게시가 존재할 경우 충전이 최종 완료되지 않을 수
-            있습니다.<br />
-            ▶충전 중에 도입을 통해 특정 상황이 발생할 경우 여러 번의 잡지가
-            사용되어야 합니다.
+          <!-- 주문 2 -->
+          <div class="order-box">
+            <div class="order-date">2025. 2. 22 주문</div>
+            <div class="order-content">
+              <div class="order-info">
+                <div class="order-status">
+                  배송완료 · <span class="green">2/22(토)</span> 도착
+                </div>
+                <div class="product-title">
+                  <img
+                    src="/img/sample_earpad.png"
+                    alt="상품 이미지"
+                    class="product-img"
+                  />
+                  <div class="product-detail">
+                    <p class="title">
+                      구스페리 에어팟 프로/프로2 실리콘 이어팁 4P, 화이트
+                    </p>
+                    <p class="price">4,799원 · 1개</p>
+                  </div>
+                </div>
+              </div>
+              <div class="order-buttons">
+                <button class="btn-outline">배송조회</button>
+                <button class="btn-outline">교환, 반품 신청</button>
+                <button class="btn-outline">리뷰 작성하기</button>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div class="response-box">피처렉 신청 정보가 없습니다.</div>
       </div>
     </div>
     <div id="footer"></div>
