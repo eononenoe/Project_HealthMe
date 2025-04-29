@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>맞춤형 성분</title>
+    <!-- css -->
+    <link rel="stylesheet" href="/static/css/common/common.css">
+    <link rel="stylesheet" href="/static/css/pages/Result2.css">
+    <!-- js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/static/js/by.js"></script>
+    
+
+    <!-- chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  
+
+
+</head>
+<body>
+    <div id="header"></div>
+    
+    <div class="result_box">
+
+        <div class="nutrient_graph">
+            <div class="content-left">
+                <div class="nutrient-box">
+                    <div class="box-side">
+                        <li>0%</li>
+                        <li>부족</li>
+                    </div>
+                    <div class="box-center">
+                        <li>탄수화물</li>
+                        <div class="nutrient-bar">
+                            <div class="nutrient-bar-result carbohydrate" style="width: 60%;"></div>
+                        </div>
+                        <li></li>
+                    </div>
+                    <div class="box-side">
+                        <li>100%</li>
+                        <li>과다</li>
+                    </div>
+                </div>
+                <div class="nutrient-box">
+                    <div class="box-side">
+                        <li>0%</li>
+                        <li>부족</li>
+                    </div>
+                    <div class="box-center">
+                        <li>단백질</li>
+                        <div class="nutrient-bar">
+                            <div class="nutrient-bar-result protein" style="width: 77%;"></div>
+                        </div>
+                        <li></li>
+                    </div>
+                    <div class="box-side">
+                        <li>100%</li>
+                        <li>과다</li>
+                    </div>
+                </div>
+                <div class="nutrient-box">
+                    <div class="box-side">
+                        <li>0%</li>
+                        <li>부족</li>
+                    </div>
+                    <div class="box-center">
+                        <li>지방</li>
+                        <div class="nutrient-bar">
+                            <div class="nutrient-bar-result fat" style="width: 88%;"></div>
+                        </div>
+                        <li></li>
+                    </div>
+                    <div class="box-side">
+                        <li>100%</li>
+                        <li>과다</li>
+                    </div>
+                </div>
+                
+                <div class="nutrient-box">
+                    <div class="box-side">
+                        <li>0%</li>
+                        <li>부족</li>
+                    </div>
+                    <div class="box-center">
+                        <li>비타민</li>
+                        <div class="nutrient-bar">
+                            <div class="nutrient-bar-result vitamins" style="width: 38%;"></div>
+                        </div>
+                        <li></li>
+                    </div>
+                    <div class="box-side">
+                        <li>100%</li>
+                        <li>과다</li>
+                    </div>
+                </div>
+                
+                <div class="nutrient-box">
+                    <div class="box-side">
+                        <li>0%</li>
+                        <li>부족</li>
+                    </div>
+                    <div class="box-center">
+                        <li>철분</li>
+                        <div class="nutrient-bar">
+                            <div class="nutrient-bar-result iron" style="width: 45%;"></div>
+                        </div>
+                        <li></li>
+                    </div>
+                    <div class="box-side">
+                        <li>100%</li>
+                        <li>과다</li>
+                    </div>
+                </div>
+                
+                <div class="nutrient-box">
+                    <div class="box-side">
+                        <li>0%</li>
+                        <li>부족</li>
+                    </div>
+                    <div class="box-center">
+                        <li>칼슘</li>
+                        <div class="nutrient-bar">
+                            <div class="nutrient-bar-result calcium" style="width: 77%;"></div>
+                        </div>
+                        <li></li>
+                    </div>
+                    <div class="box-side">
+                        <li>100%</li>
+                        <li>과다</li>
+                    </div>
+                </div>
+               
+                
+            </div>
+            <div class="content-center">
+                <div class="score-top">
+                    <button class="score-btn">🍖 먹었어요</button>
+                    <button class="score-btn">🔥 태웠어요</button>
+                    <button class="score-btn">🕕 단식했어요</button>
+                </div>
+                <div class="score">
+                    <li>82 / 100점</li>
+                    <li>전날 대비 -13점 (4.12 : 95점 > 4.13 : 82점)</li>
+                </div>
+                <div class="day_score">
+                    <canvas id="myChart" width="250" height="350"></canvas>
+                </div>
+            </div>
+            <div class="content-right">
+                <h2>줄여야 할 것</h2>
+                <div class="nnn">🥇단백질</div>
+                <div class="nnn">🥈지방</div>
+                <div class="nnn">🥉탄수화물</div>
+                <h2>먹어야 할 것</h2>
+                <div class="nnn">🥇단백질</div>
+                <div class="nnn">🥈지방</div>
+                <div class="nnn">🥉탄수화물</div>
+            
+            </div>
+        </div>
+
+    </div>
+    
+    <div id="footer"></div>
+    <script src="/static/js/result.js"></script>
+</body>
+</html>
