@@ -7,7 +7,7 @@ new Chart(ctx1, {
     datasets: [{
       data: [75, 68, 95, 82],
       fill: true,
-      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      backgroundColor: 'rgb(34,69,123)',
       borderColor: 'rgb(75, 192, 192)',
     }]
   },
@@ -16,14 +16,34 @@ new Chart(ctx1, {
     maintainAspectRatio: false,
     layout: {
       padding: {
-        top: 30  // 상단 패딩 추가
+        top: 30  
+      }
+    },
+    datasets: {
+      bar: {
+        borderRadius: 8,
+        borderSkipped: false
       }
     },
     scales: {
       x: {
+        border: {
+          color: 'transparent'  // 축 선까지 완전 제거
+        },
+        ticks: {
+          color: function(context) {
+            const index = context.index;
+            const total = context.chart.data.labels.length;
+            return index === total - 1 ? 'white' : 'rgb(34,69,123)';
+          },
+          font: {
+            weight: 'bold',
+            size: 14
+          }
+        },
         grid: {
           display: false
-        }
+        },
       },
       y: {
         display: false,
@@ -36,16 +56,25 @@ new Chart(ctx1, {
       legend: {
         display: false
       },
-      datalabels: {         // 추가 부분
+      datalabels: {       
         anchor: 'end',
         align: 'end',
-        color: '#000',       // 수치 글자 색
+        color: function(context) {
+          const index = context.dataIndex;
+          const total = context.chart.data.labels.length;
+    
+          // 마지막 데이터만 색상 다르게
+          return index === total - 1 ? 'white' : 'rgb(34,69,123)';
+        },
         font: {
-          weight: '200',
-          size: 12
-        }
-      }
+          weight: 'bold',
+          size: 14
+        },
+        anchor: 'end',
+        align: 'end',
+      },
     }
   },
-  plugins: [ChartDataLabels] // plugins 배열에 ChartDataLabels 추가
+  plugins: [ChartDataLabels] 
 });
+
