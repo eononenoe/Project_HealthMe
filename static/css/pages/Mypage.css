@@ -86,22 +86,6 @@ body {
   background-color: #f5f5f5;
 }
 
-.deliver {
-  display: flex;
-  justify-content: center;
-  gap: 110px;
-}
-
-.deliver img {
-  width: 38px;
-  height: 80px;
-  object-fit: contain;
-}
-
-#deliver_finish {
-  color: green;
-}
-
 .form-box input[type="text"] {
   width: 100%;
   padding: 10px;
@@ -382,8 +366,8 @@ body {
 }
 
 .product-img {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
 }
 
@@ -416,4 +400,89 @@ body {
 .green {
   color: #1aaa1a;
   font-weight: bold;
+}
+
+/* 헤더 배송 상태 */
+.delivery-status-summary {
+  margin: 20px 0;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  font-size: 16px;
+}
+.badge {
+  display: inline-block;
+  background-color: #2ecc71;
+  color: white;
+  border-radius: 10px;
+  padding: 4px 8px;
+  font-size: 14px;
+}
+
+.delivery-detail-button {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.delivery-detail-button button {
+  padding: 8px 14px;
+  background-color: #434343;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+.delivery-detail-button button:hover {
+  background-color: #696969;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  min-width: 400px;
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.modal.show {
+  display: flex;
+}
+.modal-content h4 {
+  margin-top: 0;
+}
+.delivery-group {
+  flex: 1 1 45%;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  box-sizing: border-box;
+  margin-bottom: 24px;
+}
+.delivery-detail {
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.delivery-status-list {
+  list-style: none;
+  padding: 0;
+  font-size: 13px;
+}
+.delivery-status-list li {
+  padding: 4px 0;
+  border-bottom: 1px solid #eee;
 }
