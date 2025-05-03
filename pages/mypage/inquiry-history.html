@@ -81,25 +81,73 @@
         </div>
 
         <div class="form-box">
-          <h3>문의내역</h3>
-          <input
-            type="text"
-            placeholder="충전 금액을 입력하세요. (최소 100원)"
-          />
-          <button>충전 신청</button>
-
-          <div class="warnings">
-            ▶충전 완료 후 취소 불가합니다.<br />
-            ▶충전 후 자동처리까지 최대 10분이 소요됩니다.<br />
-            ▶게시 방침은 충전 완료 후 마지막에 한번 이동이 필요합니다.<br />
-            ▶이미 사용한 게시가 존재할 경우 충전이 최종 완료되지 않을 수
-            있습니다.<br />
-            ▶충전 중에 도입을 통해 특정 상황이 발생할 경우 여러 번의 잡지가
-            사용되어야 합니다.
+          <h3>상품문의</h3>
+          <div class="inquiry-list">
+            <table class="inquiry-table">
+              <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>문의유형</th>
+                  <th>내용</th>
+                  <th>문의일</th>
+                  <th>답변상태</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>상품</td>
+                  <td class="inquiry-content">
+                    <a href="/pages/Details/Details.html">
+                      <!-- 나중에 URL로 바꿀거다 예) /product/detail/${product.id} -->
+                      <img
+                        src="/img/2월 제철음식.png"
+                        alt="상품 이미지"
+                        class="product-thumb"
+                      />
+                    </a>
+                    <a href="">
+                      <div class="text-wrap">
+                        <div class="title">언제 잡은 건가요?</div>
+                        <div class="subtitle">
+                          한돈 부위별 대용량 가성비 7종
+                        </div>
+                      </div>
+                    </a>
+                  </td>
+                  <td>2022-03-23</td>
+                  <td><button class="status-btn waiting">답변대기</button></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>상품</td>
+                  <td class="inquiry-content">
+                    <a href="/pages/Details/Details.html">
+                      <!-- 나중에 URL로 바꿀거다 예) /product/detail/${product.id} -->
+                      <img
+                        src="/img/1월 제철음식.png"
+                        alt="상품 이미지"
+                        class="product-thumb"
+                      />
+                    </a>
+                    <a href="">
+                      <!-- 나중에 이 부분도 클릭했을때 해당 상세페이지의 문의하기로 이동해야 한다.  -->
+                      <div class="text-wrap with-icon">
+                        <span class="lock-icon">🔒</span>
+                        <div class="text">
+                          <div class="title">문의드립니다</div>
+                          <div class="subtitle">동물복지 백색 유정란 20구</div>
+                        </div>
+                      </div>
+                    </a>
+                  </td>
+                  <td>2022-01-20</td>
+                  <td><button class="status-btn complete">답변완료</button></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-
-        <div class="response-box">피처렉 신청 정보가 없습니다.</div>
       </div>
     </div>
     <div id="footer"></div>
