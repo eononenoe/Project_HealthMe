@@ -1,11 +1,11 @@
 public class UserDto {
-    private String userid;           // 아이디
+    private String userid;           // 아이디 (PK)
     private String username;         // 이름
     private String password;         // 비밀번호
     private String phone;            // 전화번호
     private String grade;            // 등급
     private int totalPurchaseAmount; // 누적 구매 금액
-    private Long defaultAddressId;  // 기본 배송지 id (AddressDto의 id 참조FK)
+    private Long defaultAddressId;  // 기본 배송지 id (AddressDto의 AddressId 참조FK)
 }
 
 // 등급제도
@@ -25,6 +25,8 @@ public class UserDto {
 
 등급에 따라서 등급 아이콘을 붙여주면 된다.
 
+-----------------------------------------------------------------------------------------------------------
+
 public class AddressDto {
     private Long AddressId;      // 배송지 ID (PK, AUTO_INCREMENT)
     private String userid;        // 이 배송지를 가진 회원의 ID (UserDto의 userid FK)
@@ -38,3 +40,99 @@ public class AddressDto {
 
 전체 흐름 (insert 2번 update 1번)
 UserDto insert → AddressDto insert → AddressDto AddressId 조회 → UserDto defaultAddressId update
+
+-----------------------------------------------------------------------------------------------------------
+주문 테이블 구조 (정규화된 구조)
+1. OrderDto – 주문 전체 테이블
+public class OrderDto {
+    private Long orderId;             // 주문 ID (PK)
+    private String userid;            // 주문자 ID (FK to UserDto)
+    private LocalDateTime orderDate;  // 주문 일시
+    private String status;            // 주문 상태 (예: 결제완료, 배송중, 배송완료)
+    private Long addressId;           // 배송지 ID (FK to AddressDto)
+    private int totalPrice;           // 전체 결제 금액 (전체 상품 합계)
+}
+2. OrderItemDto – 주문 상세 테이블
+public class OrderItemDto {
+    private Long orderItemId;   // 주문 상세 항목 ID (PK)
+    private Long orderId;       // 주문 ID (FK to OrderDto)
+    private Long productId;     // 상품 ID (FK to ProductDto)
+    private int quantity;       // 수량
+    private int unitPrice;      // 단가
+    private int itemTotal;      // 수량 × 단가 (항목별 총액)
+}
+
+주문관계
+1개의 OrderDto → 여러 개의 OrderItemDto를 가짐 (1:N 관계)
+
+주문 전체 금액은 OrderItemDto의 itemTotal들을 더한 값
+
+productId는 상품 테이블과 연결되면 좋음
+
+예시 데이터
+
+OrderDto
+orderId	userid	orderDate	  status	addressId	totalPrice
+1001	  user01	2025-05-05	배송중	 5	       74,000
+
+OrderItemDto
+orderItemId	orderId	productId	quantity	unitPrice	itemTotal
+1	          1001	  101	      1	        10,000	  10,000
+2	          1001	  102	      2	        12,000	  24,000
+3	          1001	  103	      4	        10,000	  40,000
+
+
+-----------------------------------------------------------------------------------------------------------
+
+이 부분은 아마 조정이 필요할 것이다.
+
+ProductDto 클래스
+
+public class ProductDto {
+    private Long productId;        // 상품 ID (PK)
+    private String name;           // 상품명
+    private String description;    // 상품 설명
+    private int price;             // 가격
+    private int stock;             // 재고 수량
+    private String category;       // 카테고리 (예: 의류, 전자, 식품 등)
+    private String imageUrl;       // 상품 이미지 경로 (nullable)
+    private boolean isAvailable;   // 판매 여부 (true: 판매중, false: 품절 또는 숨김)
+    private LocalDateTime createdAt; // 등록일
+}
+
+-----------------------------------------------------------------------------------------------------------
+
+NoticeDto 클래스
+
+public class NoticeDto {
+    private Long noticeId;           // 공지사항 ID (PK)
+    private String title;            // 제목
+    private String content;          // 내용
+    private LocalDateTime createdAt; // 작성일시(최초등록시간)
+    private LocalDateTime updatedAt; // 수정일시 (nullable)
+    private boolean isPinned;        // 상단 고정 여부 (true/false)
+}
+
+사용자는 목록 조회만 가능. 등록 x, 수정 x, 삭제 x
+관리자페이지에서만 등록, 수정, 삭제 가능
+-----------------------------------------------------------------------------------------------------------
+상품 문의 (ProductQuestion)
+
+public class ProductQuestionDto {
+
+    private Long questionId;              // 문의 ID (PK)
+
+    private String userid;                // 작성자 ID (FK to User.userid)
+    private Long productId;               // 상품 ID (FK to Product.productId)
+    private String answerAdminId;         // 답변 관리자 ID (nullable, FK to User.userid)
+
+    private String title;                 // 문의 제목
+    private String question;              // 문의 내용
+    private Boolean isPrivate;            // 비공개 여부 (true: 비공개)
+    private LocalDateTime createdAt;      // 작성 일시
+
+    private String answer;                // 관리자 답변 (nullable)
+    private LocalDateTime answeredAt;     // 답변 작성 일시 (nullable)
+    
+    private String status;                // 처리 상태 (예: "대기중", "답변완료")
+}
