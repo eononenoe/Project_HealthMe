@@ -1,0 +1,84 @@
+쇼핑 관련 
+
+CartItems (
+    cart_item_id INT PRIMARY KEY,                 -- 장바구니 항목 고유 ID
+    user_id INT,                                  -- 사용자 ID
+    product_id INT,                               -- 상품 ID
+    quantity INT                                  -- 담은 수량
+)
+
+Orders (
+    order_id INT PRIMARY KEY,                     -- 주문 ID
+    user_id INT,                                  -- 주문한 사용자 ID
+    order_date DATETIME,                          -- 주문 날짜
+    total_price DECIMAL(10, 2),                   -- 총 주문 금액
+    status VARCHAR(20)                            -- 주문 상태 (예: 배송중, 완료 등)
+)
+
+OrderItems (
+    order_item_id INT PRIMARY KEY,                -- 주문 상세 항목 ID
+    order_id INT,                                 -- 해당 주문 ID
+    product_id INT,                               -- 상품 ID
+    quantity INT,                                 -- 수량
+    price DECIMAL(10, 2)                          -- 단가
+)
+
+DeliveryAddresses (
+    address_id INT PRIMARY KEY,                   -- 배송지 ID
+    user_id INT,                                  -- 사용자 ID
+    recipient_name VARCHAR(100),                  -- 수령인 이름
+    address TEXT,                                 -- 전체 주소
+    phone VARCHAR(20),                            -- 수령인 연락처
+    is_default BOOLEAN                            -- 기본 배송지 여부
+)
+
+=========================================================
+
+4. 사용자 맞춤 설정 / 결과
+CustomIngredients (
+    id INT PRIMARY KEY,                           -- 고유 ID
+    user_id INT,                                  -- 사용자 ID
+    ingredient_name VARCHAR(100),                 -- 재료 이름
+    avoid BOOLEAN                                 -- 피할 재료 여부
+)
+
+NutritionalPreferences (
+    id INT PRIMARY KEY,                           -- 고유 ID
+    user_id INT,                                  -- 사용자 ID
+    target_calories INT,                          -- 목표 칼로리
+    target_protein INT,                           -- 목표 단백질
+    target_fat INT,                               -- 목표 지방
+    target_carbs INT                              -- 목표 탄수화물
+)
+
+HealthResults (
+    result_id INT PRIMARY KEY,                    -- 결과 ID
+    user_id INT,                                  -- 사용자 ID
+    summary TEXT,                                 -- 결과 요약
+    created_at DATETIME                           -- 분석 일시
+)
+
+=========================================================
+
+상품 상세 페이지
+
+Products (
+    product_id INT PRIMARY KEY,                   -- 상품 ID
+    name VARCHAR(100),                            -- 상품명
+    description TEXT,                             -- 상품 설명
+    price DECIMAL(10, 2),                         -- 가격
+    stock INT,                                    -- 재고 수량
+    image_url VARCHAR(255)                        -- 상품 이미지 경로
+)
+
+
+============================================================
+
+장바구니 담기
+
+CartItems (
+    cart_item_id INT PRIMARY KEY,
+    user_id INT,
+    product_id INT,
+    quantity INT
+)
