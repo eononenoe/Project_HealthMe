@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.domain.dto.UserDto;
 import com.example.demo.domain.entity.User;
 import com.example.demo.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

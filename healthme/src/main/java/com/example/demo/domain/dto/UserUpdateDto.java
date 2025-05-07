@@ -9,18 +9,16 @@ import org.springframework.stereotype.Component;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Component
 @Builder
-public class UserDto {
+public class UserUpdateDto {
     private String userid;
-    private String password;
-    private String repassword;
-    private String name;
-    private String zip;
-    private String addr;
+    private String currentPassword;
+    private String newPassword;
+    private String username;
     private String tel1;
     private String tel2;
     private String tel3;
-    private String currentPassword; // name속성과 이름만 정확하면 바인딩에 영향 없다.
-    private String newPassword;
+
 }
+
+
