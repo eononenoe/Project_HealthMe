@@ -1,66 +1,80 @@
-const ctx = document.getElementById('myChart');
+const ctx1 = document.getElementById('myChart');
 
-new Chart(ctx, {
-    type: 'radar',
-    data: {
-        labels: [
-            // 총 12 가지
-            '단백질',
-            '나트륨',
-            '비타민D',
-            '철분',
-            '칼슘',
-            '식이섬유',
-            '마그네슘',
-            '마그네슘',
-            '칼륨',
-            '비오틴',
-            '아연',
-            '이르기닌',
-        ],
-        datasets: [
-            {
-                label: 'My INFO',
-                data: [59, 90, 81, 56, 55, 40, 35, 24, 67, 78, 67, 86],
-                fill: true,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgb(54, 162, 235)',
-                pointBackgroundColor: 'rgb(54, 162, 235)',
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgb(54, 162, 235)'
-            },
-            {
-                label: 'Recommend INFO',
-                data: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50],
-                fill: false,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgb(255, 99, 132)',
-                pointBackgroundColor: 'rgb(255, 99, 132)',
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgb(255, 99, 132)'
-            }
-
-        ]
-    },
-    // options: {   
-    // }
-});
-const ctx2 = document.getElementById('myChart2');
-
-new Chart(ctx2, {
-  type: 'line',
+new Chart(ctx1, {
+  type: 'bar',
   data: {
-    labels: ['4.16', '4.17', '4.18', '4.19', '4.20', '4.21'],
+    labels: ['4.18', '4.19', '4.20', '4.21'],
     datasets: [{
-      label: 'My First Dataset',
-      data: [47, 68, 75, 68, 95, 82],
+      data: [75, 68, 95, 82],
       fill: true,
-      backgroundColor: 'rgb(75, 192, 192, 0.2)',
+      backgroundColor: 'rgb(34,69,123)',
       borderColor: 'rgb(75, 192, 192)',
-      // tension: 0.1
     }]
-  }
+  },
+  options: {
+    responsive: false,
+    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        top: 30  
+      }
+    },
+    datasets: {
+      bar: {
+        borderRadius: 8,
+        borderSkipped: false
+      }
+    },
+    scales: {
+      x: {
+        border: {
+          color: 'transparent'  // 축 선까지 완전 제거
+        },
+        ticks: {
+          color: function(context) {
+            const index = context.index;
+            const total = context.chart.data.labels.length;
+            return index === total - 1 ? 'white' : 'rgb(34,69,123)';
+          },
+          font: {
+            weight: 'bold',
+            size: 14
+          }
+        },
+        grid: {
+          display: false
+        },
+      },
+      y: {
+        display: false,
+        grid: {
+          display: false
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        display: false
+      },
+      datalabels: {       
+        anchor: 'end',
+        align: 'end',
+        color: function(context) {
+          const index = context.dataIndex;
+          const total = context.chart.data.labels.length;
+    
+          // 마지막 데이터만 색상 다르게
+          return index === total - 1 ? 'white' : 'rgb(34,69,123)';
+        },
+        font: {
+          weight: 'bold',
+          size: 14
+        },
+        anchor: 'end',
+        align: 'end',
+      },
+    }
+  },
+  plugins: [ChartDataLabels] 
 });
 
