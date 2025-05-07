@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,23 +10,23 @@
 
 
     <!-- 로그인 css -->
-    <link rel="stylesheet" href="/static/css/login/login.css">
-    <link rel="stylesheet" href="/static/css/common/common.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/common.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login/login.css">
     <!-- js -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/static/js/by.js"></script>
+    <script src="${pageContext.request.contextPath}/js/by.js"></script>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
     <div id="header"></div>
     <div class="login_box">
-        <form action="/login.jsp" method="post">
+        <form action="/login" method="post">
             <div class="box1">
                 <h2> 로그인</h2>
                 <!-- 이메일 입력 -->
                 <input type="text" name="userid" class="custom-input" placeholder="아이디 또는 이메일" id="userid">
                 <!-- 비밀번호 입력 -->
-                <input type="password" name="userpw" class="custom-input" placeholder="비밀번호" id="userid">
+                <input type="password" name="password" class="custom-input" placeholder="비밀번호" id="password">
                 <!-- 로그인유지 체크박스 -->
                 <div class="cb">
                     <input type="checkbox" id="login">
@@ -63,7 +64,7 @@
         </form>
         <div class="suggest-join">
             <li>아직 회원이 아니세요?</li>
-            <a href="/pages/login/join.html">회원가입</a>
+            <a href="/join">회원가입</a>
         </div>
     </div>
     <div id="footer"></div>

@@ -10,17 +10,34 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="user")
+@Table(name="users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class User {
     @Id
-    @Column(length=100)
-    private String username;
-    @Column(length=255,nullable = false)
+    @Column(length = 100)
+    private String userid;
+
+    @Column(length = 255, nullable = false)
     private String password;
-    @Column(length=255)
-    private String role;
+
+    @Column(length = 100)
+    private String name;
+
+    @Column(length = 20)
+    private String zip;
+
+    @Column(length = 255)
+    private String addr;
+
+    @Column(length = 10)
+    private String tel1;
+
+    @Column(length = 10)
+    private String tel2;
+
+    @Column(length = 10)
+    private String tel3;
 }
