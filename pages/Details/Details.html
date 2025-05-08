@@ -22,6 +22,7 @@
   <!-- js -->
   <script src="/static/js/by.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/static/js/Details.js"></script>
 </head>
 
 <body>
@@ -46,7 +47,7 @@
         </div>
 
         <div class="review-box">
-          <span class="stars">⭐⭐⭐⭐⭐</span>
+          <span class="stars"></span>
           <span class="score">4.9</span>
           <span class="count">(999+개 리뷰)</span>
         </div>
@@ -59,25 +60,17 @@
           <strong><a href="#">로그인</a></strong> 후 쿠폰 최대 할인을 확인하세요!
         </div>
 
-        <div class="benefit-box">
-          <p class="gift-title">🎁 증정 혜택</p>
-          <p>1개 구매 시 1개 증정 (기간: 4.18 ~ 4.30)</p>
-        </div>
-
-        <div class="point-box">💚 뷰티포인트 결제금액의 1% 적립</div>
-        <div class="delivery-box">📦 배송비: 무료배송</div>
-
-        <div class="option-box">
-          <label>구성 선택</label>
-          <select>
-            <option>단일 130mL</option>
-          </select>
-        </div>
+        <div class="point-box"> 뷰티포인트 결제금액의 1% 적립</div>
+        <div class="delivery-box"> 배송비 : 무료배송</div>
 
         <div class="quantity-box">
-          <label>수량</label>
-          <input type="number" value="1" min="1">
+          <div class="quantity-selector">
+            <button class="qty-btn minus">−</button>
+            <span class="qty-number">1</span>
+            <button class="qty-btn plus">+</button>
+          </div>
         </div>
+
 
         <div class="summary-box">
           <div>총 수량 <strong>1개</strong></div>
@@ -90,17 +83,37 @@
         <div class="purchase-btn-box">
           <button class="btn-cart">장바구니</button>
           <button class="btn-buy">바로구매</button>
+          <button class="btn-question">문의하기</button>
         </div>
 
       </div>
     </div>
-    <!-- 상세 설명 -->
-    <div class="product-description-box">
-      <h2>상세정보</h2>
-      <p>메뉴 이미지</p>
-      <img src="https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241227/gv10001628427_1.jpg" alt="상세설명 배너">
+  </div>
+  <!-- 상세 설명 -->
+  <div class="product-description-box">
+    <img
+      src="https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241227/gv10001628427_1.jpg"
+      alt="상세 설명 이미지" />
+  </div>
+  <div class="tab-main">
+    <div class="tab-menu">
+      <button class="tab-btn active" data-target="detail">설명</button>
+      <button class="tab-btn" data-target="inquiry">문의하기</button>
+      <button class="tab-btn" data-target="review">후기(6)</button>
+    </div>
+
+    <div class="tab-content" id="detail">
+      <p>상세 설명은 여기에 표시됩니다.  1</p>
+    </div>
+    <div class="tab-content" id="inquiry" style="display: none;">
+      <p>문의 내역이 여기에 표시됩니다.  2</p>
+    </div>
+    <div class="tab-content" id="review" style="display: none;">
+      <p>후기 내용이 여기에 표시됩니다.  3</p>
     </div>
   </div>
+  <div id="footer"></div>
+
 </body>
 
 </html>
