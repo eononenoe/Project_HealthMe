@@ -24,55 +24,87 @@ a {
 
 /* Sidebar */
 .sidebar {
-  width: 300px;
-  min-width: 300px;
+  width: 280px;
+  min-width: 280px;
+  position: sticky;
+  top: 20px;
+  align-self: flex-start; /* 추가!! flex 환경에서 sticky 동작 필수 */
+  height: fit-content;     /* 필요한 경우 명시 */
+
   padding: 20px;
   box-sizing: border-box;
-  height: 100vh;
+  border-right: 1px solid #eee;
+  position: sticky;
+  top: 20px;
 }
 
 /* Gauge Section */
 .gauge-container {
-  margin-bottom: 30px;
-}
-
-.gauge-top {
-  font-size: 14px;
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.gauge-top strong {
-  font-weight: bold;
-}
-
-.gauge-info {
-  margin-top: 10px;
-  font-size: 13px;
-  color: gray;
-}
-
-/* Gauge Bar */
-.gauge-bars {
-  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
+  margin-bottom: 30px;
+  background-color: 	#5A7FC4;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.gauge-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.gauge-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 6px;
 }
 
 .gauge-bar {
   width: 100%;
   height: 8px;
-  background: #ddd;
+  background-color: #c1c1c135;
   border-radius: 4px;
   overflow: hidden;
 }
 
 .gauge-fill {
   height: 100%;
-  background: #4caf50;
   width: 0;
+  transition: width 0.5s ease-in-out;
 }
+
+.gauge-status-legend {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+}
+
+.gauge-status-legend .circle {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.gauge-status-legend .danger {
+  background-color: #e74c3c; /* 빨강 */
+}
+
+.gauge-status-legend .warning {
+  background-color: #f39c12; /* 주황 */
+}
+
+.gauge-status-legend .safe {
+  background-color: #4caf50; /* 초록 */
+}
+
 
 /* Cart Section */
 .cart-section {
@@ -247,7 +279,7 @@ a {
   cursor: pointer;
   transition: background-color 0.2s;
   position: relative;
-  right: -115px;
+  right: -95px;
 }
 
 .cart-footer-button button:hover {
@@ -355,4 +387,24 @@ main {
   color: rgb(171, 171, 171);
   width: 290px;
   font-size: 1rem;
+}
+
+.purchase-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+}
+.purchase-banner {
+  width: 100%;
+  height: 250px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 30px 0px 30px 0px;
+}
+
+.purchase-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
