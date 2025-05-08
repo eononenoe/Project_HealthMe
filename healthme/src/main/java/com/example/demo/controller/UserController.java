@@ -64,4 +64,19 @@ public class UserController {
 
     }
 
+    @PostMapping("/delete")
+    public String deleteUser(HttpSession session) {
+        User loginUser = (User) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            System.out.println("세션에 로그인된 사용자 없음");
+            return "redirect:/login";
+        }
+
+        String userid = loginUser.getUserid();
+        System.out.println("삭제할 사용자 ID: " + userid);
+
+        userService.delete(userid);
+        session.invalidate();
+        return "redirect:/login";
+    }
 }
