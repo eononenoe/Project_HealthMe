@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   Table,
@@ -8,29 +8,57 @@ import {
   TableHead,
   TableRow,
   Checkbox,
-  Paper,
   Button,
   Box,
 } from "@mui/material";
-
-const products = [
-  {
-    id: 1,
-    category: "주식",
-    name: "코오롱 오조에이씨주&치킨가슴살오조에 80g",
-    price: "42,000원",
-    amount: "24",
-  },
-  {
-    id: 2,
-    category: "의류",
-    name: "여자아이 반려 밀리터리 원피스 - 레이어 오렌지",
-    price: "60,000원",
-    amount: "7",
-  },
-];
+import axios from "axios";
 
 export default function ProductPage() {
+  // const products = [
+  //   {
+  //     id: 1,
+  //     category: "주식",
+  //     name: "코오롱 오조에이씨주&치킨가슴살오조에 80g",
+  //     price: "42,000원",
+  //     amount: 24
+  //   },
+  //   {
+  //     id: 2,
+  //     category: "의류",
+  //     name: "여자아이 반려 밀리터리 원피스 - 레이어 오렌지",
+  //     price: "60,000원",
+  //     amount: 7
+  //   },
+  //   {
+  //     id: 3,
+  //     category: "식자재",
+  //     name: "[만전김]두번구워 더욱 바삭한 만전 김밥용김",
+  //     price: "2,800원",
+  //     amount: 84
+  //   },
+  //   {
+  //     id: 4,
+  //     category: "소스",
+  //     name: "[솔리몬]레몬즙 500ml/900ml (레몬주스 99.9%)",
+  //     price: "5,680원",
+  //     amount: 51
+  //   },
+  //
+  // ];
+  const [products, setPrducts] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8090/product/dbpct")
+      .then((list) => {
+        setPrducts(list);
+      })
+      .catch((error) => {
+        console.log("product불러오기 실패", error);
+      });
+  }, []);
+  // 인자값으로 빈 배열을 넣는 경우 컴포넌트가 처음 렌더링 될때(mount 될 때)만 실행된다.
+
   return (
     <Box>
       <Typography variant="h7" fontWeight="bold">
