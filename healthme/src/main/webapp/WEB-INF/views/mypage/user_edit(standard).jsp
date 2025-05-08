@@ -139,13 +139,14 @@
             </div>
 
             <div class="button-group">
-
               <button type="submit" class="submit-btn">수정하기</button>
             </div>
           </form>
           <form action="">
             <input type="hidden" name="userid" value="${user.name}">
-            <button type="submit" class="withrdraw-btn">탈퇴하기</button>
+            <div class="button-group">
+              <button type="submit" class="withrdraw-btn">탈퇴하기</button>
+            </div>
           </form>
         </div>
       </div>
@@ -153,3 +154,4 @@
     <div id="footer"></div>
   </body>
 </html>
+
