@@ -36,9 +36,17 @@ function loadJQuery(callback) {
   }
 }
 
-// 3. jQuery 코드 실행
+// 3. jQuery 코드 실행 (헤더, 푸터, 슬라이딩 포함)
 loadJQuery(function () {
   $(function () {
+    //  로그인 여부에 따라 헤더 로드
+    loadHeader();
+
+    // 푸터 로드
+    $("#footer").load("/common/footer.html", function () {
+      adjustMainHeight();
+    });
+
     // 옆 슬라이더 바 내려오는 제이쿼리
     var $floating = $(".floating");
     var stopPosition = 150;
@@ -53,16 +61,27 @@ loadJQuery(function () {
         $floating.stop().animate({ top: stopPosition + "px" });
       }
     });
-
-    // 헤더, 푸터 불러오기
-    $("#header").load("/common/header.html", function () {
-      adjustMainHeight();
-    });
-    $("#footer").load("/common/footer.html", function () {
-      adjustMainHeight();
-    });
   });
 });
+
+//  로그인 상태에 따라 알맞은 헤더 로드
+function loadHeader() {
+  const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
+  const headerUrl = isLoggedIn ? "/common/header_member.html" : "/common/header.html";
+
+  $("#header").load(headerUrl, function () {
+    adjustMainHeight();
+    bindLogout(); // 로그아웃 바인딩
+  });
+}
+
+//  로그아웃 처리: 세션 삭제 후 로그인 전 헤더로 전환
+function bindLogout() {
+  $(document).on("click", "a[href='/index.html']", function () {
+    sessionStorage.removeItem("isLoggedIn");
+    loadHeader(); // 헤더 다시 로드 (로그인 전 버전)
+  });
+}
 
 // 4. 메인 높이 조정 함수
 function adjustMainHeight() {
@@ -82,7 +101,7 @@ function adjustMainHeight() {
   }
 }
 
-// 5. 하트 숫자
+// 5. 하트 숫자 증가 기능
 document.addEventListener("DOMContentLoaded", function () {
   const check_btn = document.querySelectorAll(".check_icon");
   const count_btn = document.querySelectorAll(".counter");
