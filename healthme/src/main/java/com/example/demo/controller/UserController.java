@@ -36,28 +36,37 @@ public class UserController {
 
     }
 
-    private User user=null;
+    private User user1 = null;
     @PostMapping("/update")
     public String update(@ModelAttribute UserUpdateDto userDto, HttpSession session){
-        user = (User)session.getAttribute("loginUser"); // login할때 session에 저장된 값
-        if (userDto.getCurrentPassword().equals(user.getPassword())){
-            // form에서 입력한 현재 비밀번호와 로그인 할때 입력한 비밀번호가 같으면 밑에 코드 실행
-            User user = User.builder()
-                    .userid(userDto.getUserid())
-                    .password(userDto.getNewPassword())
-                    .name(userDto.getUsername())
-                    .tel1(userDto.getTel1())
-                    .tel2(userDto.getTel2())
-                    .tel3(userDto.getTel3())
-                    .build();
+        User user1 = (User)session.getAttribute("loginUser");
 
-            userService.join(user);
+        if (userDto.getCurrentPassword().equals(user1.getPassword())) {
+            // 기존의 findById -> findByUserid로 변경
+            Optional<User> optionalUser = userRepository.findByUserid(user1.getUserid());
 
-            session.setAttribute("loginUser",user);
-            return "index";
+            if(optionalUser.isPresent()){
+                User currentUser = optionalUser.get();
+
+                User updatedUser = User.builder()
+                        .userid(currentUser.getUserid())
+                        .password(userDto.getNewPassword())
+                        .name(userDto.getUsername())
+                        .addr(currentUser.getAddr())
+                        .zip(currentUser.getZip())
+                        .tel1(userDto.getTel1())
+                        .tel2(userDto.getTel2())
+                        .tel3(userDto.getTel3())
+                        .build();
+
+                userService.join(updatedUser);
+                session.setAttribute("loginUser", updatedUser);
+                return "index";
+            }
         }
         return "mypage/user_edit(standard)";
-
     }
+
+
 
 }
