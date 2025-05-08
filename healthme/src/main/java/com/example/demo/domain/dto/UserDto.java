@@ -21,6 +21,5 @@ public class UserDto {
     private String tel1;
     private String tel2;
     private String tel3;
-    private String currentPassword; // name속성과 이름만 정확하면 바인딩에 영향 없다.
-    private String newPassword;
+
 }
