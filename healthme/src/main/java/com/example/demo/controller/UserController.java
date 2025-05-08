@@ -36,15 +36,19 @@ public class UserController {
 
     }
 
-    private User user=null;
+
     @PostMapping("/update")
     public String update(@ModelAttribute UserUpdateDto userDto, HttpSession session){
-        user = (User)session.getAttribute("loginUser"); // login할때 session에 저장된 값
-        if (userDto.getCurrentPassword().equals(user.getPassword())){
+
+        User user1= (User)session.getAttribute("loginUser"); // login할때 session에 저장된 값 (아이디, 비밀번호만 존재)
+        if (userDto.getCurrentPassword().equals(user1.getPassword())){
             // form에서 입력한 현재 비밀번호와 로그인 할때 입력한 비밀번호가 같으면 밑에 코드 실행
+
             User user = User.builder()
                     .userid(userDto.getUserid())
                     .password(userDto.getNewPassword())
+                    .addr(user1.getAddr())
+                    .zip(user1.getZip())
                     .name(userDto.getUsername())
                     .tel1(userDto.getTel1())
                     .tel2(userDto.getTel2())
