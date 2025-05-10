@@ -7,7 +7,7 @@
 .noto-sans-kr-title {
   font-family: "Noto Sans KR", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 500; 
+  font-weight: 500;
   font-style: normal;
 }
 
@@ -30,7 +30,8 @@ body {
   margin: 0;
   padding: 0;
 }
-a{
+
+a {
   text-decoration: none;
 }
 
@@ -38,11 +39,11 @@ a{
 /* ================ */
 /*     슬라이더     */
 /* ================ */
-.wrapper{
+.wrapper {
   /* width: 1900px; */
   height: 300px;
   margin: 0 auto;
-  margin-bottom: 50px; 
+  margin-bottom: 50px;
   min-width: none;
   /* display: flex; */
   /* justify-content: center; */
@@ -62,30 +63,23 @@ a{
   max-width: 100vw;
   height: 100%;
 }
-.banner-section>.swiper .swiper-pagination>.swiper-pagination-bullet {
-  width: 25px;
-  height: 10px;
-  border-radius: 2px;
-  background-color: rgb(177, 177, 177);
-}
-.banner-section>.swiper .swiper-pagination>.swiper-pagination-bullet-active {
-  background-color: orange;
-}
 
-.swiper-button-prev,
-.swiper-button-next{
+.wrapper .swiper-pagination {
+  width: 60px;
+  height: 30px;
+
+  position: absolute;
+  bottom: 20px; 
+
+  left: 50%;
+  transform: translateX(970%); 
+
+  background-color: rgba(74, 74, 74, 0.461);
   color: white;
-  background-color: gray;
-  width: 50px;
-  height: 100px;
-  padding: 5px;
-  font-size: 1rem;
-  opacity: 50%;
-  border-radius: 10px;
-}
-.swiper-button-prev::after,
-.swiper-button-next::after{
-  font-size: 1.3rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 17.5px;
+  z-index: 10;
 }
 
 /* ================ */
@@ -102,7 +96,7 @@ main {
   color: black;
 }
 
-main > section > content {
+main>section>content {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -159,31 +153,36 @@ main > section > content {
   display: grid;
   gap: 15px;
 }
-.news_card_top{
+
+.news_card_top {
   display: flex;
   gap: 10px;
   margin-bottom: 8px;
 }
+
 .news_card {
   padding: 20px;
   /* border: 1px solid gray; */
   box-shadow: 0 0 2px gray;
   border-radius: 10px;
 }
-.news_card_subtitle{
+
+.news_card_subtitle {
   color: #E80000;
   font-size: 20px;
   font-weight: 600;
 }
-.news_card_title{
+
+.news_card_title {
   color: black;
   font-size: 20px;
   font-weight: 600;
 }
 
-.news_card_content{
+.news_card_content {
   color: black;
 }
+
 /* ================ */
 /* 메인 하위 컨텐츠  */
 /* ================ */
@@ -215,14 +214,14 @@ main > section > content {
   gap: 40px;
 }
 
-.main_low_top_content > li {
+.main_low_top_content>li {
   margin-top: 5px;
 }
 
 /* ================ */
 /*      아이템       */
 /* ================ */
-.main_low_content > .main_low_low_content > .item_store {
+.main_low_content>.main_low_low_content>.item_store {
   display: grid;
   justify-content: center;
   align-items: center;
@@ -233,7 +232,7 @@ main > section > content {
   width: 290px;
 }
 
-.item_img > img {
+.item_img>img {
   width: 290px;
   height: 350px;
   border-radius: 5px;
@@ -241,7 +240,7 @@ main > section > content {
   margin-bottom: 2px;
 }
 
-.item_store > .item_add {
+.item_store>.item_add {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -255,11 +254,12 @@ main > section > content {
 
   font-size: 1.15rem;
 }
-.item_store>.item_add:hover{
+
+.item_store>.item_add:hover {
   cursor: pointer;
 }
 
-.item_store > .item_name {
+.item_store>.item_name {
   width: 290px;
   height: 50px;
   margin-top: 5px;
@@ -268,35 +268,35 @@ main > section > content {
   color: black;
 }
 
-.item_store > .item_discount_price {
+.item_store>.item_discount_price {
   width: 290px;
 
   font-size: 1rem;
   color: rgb(171, 171, 171);
 }
 
-.item_store > .item_price > ul {
+.item_store>.item_price>ul {
   display: flex;
   gap: 5px;
 }
 
-.item_store > .item_price {
+.item_store>.item_price {
   width: 290px;
 
   font-size: 1.15rem;
 }
 
-.item_price > ul > .discount {
+.item_price>ul>.discount {
   color: #e80000;
   font-weight: 600;
 }
 
-.item_price > ul > .price {
+.item_price>ul>.price {
   color: black;
   font-weight: 600;
 }
 
-.item_store > .item_review {
+.item_store>.item_review {
   color: rgb(171, 171, 171);
   width: 290px;
 
@@ -319,19 +319,19 @@ footer {
   background-color: rgb(240, 240, 240);
 }
 
-footer > .top_info {
+footer>.top_info {
   color: gray;
   font-size: 0.75rem;
   margin-bottom: 5px;
 }
 
-footer > .top_info > ul {
+footer>.top_info>ul {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 8px;
 }
 
-footer > .low_info {
+footer>.low_info {
   font-size: 0.75rem;
 }

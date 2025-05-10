@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: sans-serif;
+}
+.container{
+    width: 1000px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+h1{
+    font-weight: 400;
+    color:  rgb(55, 55, 55);
+    margin-top: 30px;
+    font-weight: 500;
+    font-size: 30px;
+    margin-top: 80px;
+}
+.nav{
+    width: 1000px;
+    height: 60px;
+    display: flex;
+    text-align: center;
+    border-bottom: 1px solid rgb(235, 235, 235);
+
+    gap: 50px;
+    margin-bottom: 20px;
+    margin-top: 50px;
+
+}
+.nav_btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.nav > a{
+    color : rgb(55, 55, 55);
+    display: block;
+}
+.nav>a:hover .nav_btn{
+    border-bottom: 1px solid orange;
+}
+
+.sum_list{
+    display: flex;
+    align-items: end;
+    font-size: 12px;
+    height: 60px;
+    border-bottom: 1px solid;
+    padding: 15px 15px 15px 0;
+    justify-content: flex-start;
+}
+
+.list{
+    width: 1000px;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid gainsboro;
+    font-size: 13px;
+}
+.num{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 100%;
+}
+.title{
+    display:flex;
+    padding: 10px;
+    gap: 10px;
+    width: calc( 100% - 50px - 50px);
+}
+.event_mark, .winner_mark{
+    background-color: rgb(253, 244, 233);
+    color: rgb(255, 153, 0);
+    border-radius: 3px;
+    font-size: 10px;
+    padding: 3px;
+}
+.date{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100px;
+}
+.title>a{
+    display: flex;
+    align-items: center;
+    color: black;
+    font-size: 14px;
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>맞춤형 성분</title>
+    <!-- css -->
+    <link rel="stylesheet" href="/static/css/common/common.css">
+    <link rel="stylesheet" href="/static/css/pages/Result.css">
+    <!-- js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/static/js/by.js"></script>
+    
+
+    <!-- chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+
+
+</head>
+<body>
+    <div id="header"></div>
+    
+    <div class="result_box">
+        <div class="nutrient_info">
+            <div>
+                <li>부족한 영양소</li>
+                <li>비타민 D, 단백질, 철분</li>
+            </div>
+            <div>
+                <li>줄여야 할 영양소</li>
+                <li style="color: red;">나트륨 (112%)</li>
+            </div>
+            <div>
+                <li>추천 식품</li>
+                <li>연어, 브로콜리, 귀리</li>
+            </div>
+        </div>
+
+        <div class="nutrient_graph">
+            <div class="graph_left">
+                <canvas id="myChart"></canvas>
+            </div>
+            <div class="graph_right">
+                <div class="score">
+                    <li>82 / 100점</li>
+                    <li>전날 대비 -13점 (4.12 : 95점 > 4.13 : 82점)</li>
+                </div>
+                <div class="day_score">
+                    <canvas id="myChart2"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <div id="footer"></div>
+    <script src="/static/js/result.js"></script>
+</body>
+</html>

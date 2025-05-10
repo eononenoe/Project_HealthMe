@@ -1,0 +1,232 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.result_box {
+    width: 1100px;
+    height: 700px;
+    margin: 0 auto;
+    margin-top: 80px;
+}
+
+.nutrient_graph {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 600px;
+    padding: 10px;
+}
+
+/* 왼쪽 영역 */
+.content-left {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* 영양소 항목 박스 */
+.nutrient-vertical-box {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 30px;
+}
+
+/* 영양소 이름 */
+.nutrient-label {
+    margin-left: 10px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* 퍼센트 + 바 */
+.nutrient-bar-row {
+    display: flex;
+    align-items: flex-start; /* 위로 정렬 */
+    gap: 10px;
+    position: relative;
+}
+
+.nutrient-percent {
+    width: 40px;
+    font-size: 13px;
+    text-align: right;
+    margin-top: 3px; /* 바와 수평 정렬 보정 */
+}
+
+/* 바 전체 감싸는 래퍼 */
+.nutrient-bar-wrapper {
+    position: relative;
+    flex-grow: 1;
+    height: 38px; /* 텍스트 공간 확보 */
+}
+
+/* 바 자체 */
+.nutrient-bar-container {
+    width: 100%;
+    height: 12px;
+    background-color: #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* 채워진 바 */
+.nutrient-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+}
+
+/* 기준선 라인 */
+.nutrient-bar-container.has-thresholds::before,
+.nutrient-bar-container.has-thresholds::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #000;
+    z-index: 2;
+}
+.nutrient-bar-container.has-thresholds::before {
+    left: 33.33%;
+}
+.nutrient-bar-container.has-thresholds::after {
+    left: 66.66%;
+}
+
+/* 기준 텍스트 (정확히 아래 정렬) */
+.threshold-text {
+    position: absolute;
+    top: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #111;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+.threshold-text.left {
+    left: 0%;
+}
+.threshold-text.middle {
+    left: 33.33%;
+}
+.threshold-text.right {
+    left: 66.66%;
+}
+
+
+/* 색상 클래스 */
+.protein {
+    background-color: #6BA368;
+}
+.iron {
+    background-color: #B45F5F;
+}
+.calcium {
+    background-color: #8B85C1;
+}
+.vitaminD {
+    background-color: #F2C94C;
+}
+.fiber {
+    background-color: #e47c37;
+}
+.magnesium {
+    background-color: #6A7FDB;
+}
+.potassium {
+    background-color: #DAA35F;
+}
+.biotin {
+    background-color: #769E8E;
+}
+.zinc {
+    background-color: #7D7C7C;
+}
+.arginine {
+    background-color: #4D7EA8;
+}
+
+/* 가운데 영역 */
+.content-middle {
+    width: 300px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.score-top {
+    display: flex;
+    width: 100%;
+    height: 60px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.score-btn {
+    width: 30%;
+    height: 35px;
+    background-color: rgba(220, 220, 220, 0.507);
+    border: none;
+    border-radius: 20px;
+}
+.score-btn:hover {
+    background-color: rgb(94, 93, 93);
+}
+
+.score {
+    width: 100%;
+    height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+}
+.score > li:nth-child(1) {
+    font-weight: 800;
+    font-size: 30px;
+}
+.score > li:nth-child(2) {
+    font-size: 13px;
+    color: gray;
+}
+
+.day_score {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 400px;
+    background-color: rgb(55, 89, 137);
+    border-radius: 10px;
+}
+
+/* 오른쪽 영역 */
+.content-right {
+    width: 350px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: rgb(248, 248, 248);
+    align-items: center;
+}
+.content-right h2 {
+    position: relative;
+    left: -100px;
+}
+.nnn {
+    width: 330px;
+    height: 80px;
+    border-radius: 15px;
+    padding: 10px;
+    background-color: white;
+}
+.nnn:hover {
+    border: 1px solid orange;
+}
