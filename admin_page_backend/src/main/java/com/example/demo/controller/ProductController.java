@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.domain.dto.InsertProductDto;
 import com.example.demo.domain.entity.Product;
 import com.example.demo.domain.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,12 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/dbpct")
-    public List<Product> deleteLine(){
-        List<Product> list = productService.selectAllProduct();
-        if(!list.isEmpty()){
-            return list; // 프론트에 JSON으로 전달된다.
+    @PostMapping("/insert/data")
+    public void insertProduct(@ModelAttribute InsertProductDto insertProductDto){
+        if (insertProductDto!=null){
+            productService.insert_product(insertProductDto);
         }
-        return null;
+
     }
 
 }

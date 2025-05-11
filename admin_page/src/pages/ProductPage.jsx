@@ -10,54 +10,72 @@ import {
   Checkbox,
   Button,
   Box,
+  Pagination,
 } from "@mui/material";
 import axios from "axios";
+import ProductRegisterDialog from "./ProductRegisterDialog";
 
 export default function ProductPage() {
-  // const products = [
-  //   {
-  //     id: 1,
-  //     category: "주식",
-  //     name: "코오롱 오조에이씨주&치킨가슴살오조에 80g",
-  //     price: "42,000원",
-  //     amount: 24
-  //   },
-  //   {
-  //     id: 2,
-  //     category: "의류",
-  //     name: "여자아이 반려 밀리터리 원피스 - 레이어 오렌지",
-  //     price: "60,000원",
-  //     amount: 7
-  //   },
-  //   {
-  //     id: 3,
-  //     category: "식자재",
-  //     name: "[만전김]두번구워 더욱 바삭한 만전 김밥용김",
-  //     price: "2,800원",
-  //     amount: 84
-  //   },
-  //   {
-  //     id: 4,
-  //     category: "소스",
-  //     name: "[솔리몬]레몬즙 500ml/900ml (레몬주스 99.9%)",
-  //     price: "5,680원",
-  //     amount: 51
-  //   },
-  //
-  // ];
-  const [products, setPrducts] = useState([]);
+  // DB조회와 상품 등록후 재조회
+  const [products, setPrducts] = useState([]); // db에 저장된 등록된 상품
 
+  // 페이지네이션
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  // 제품등록 모달창
+  const [open, setOpen] = useState(false);
+  const [update, setUpdate] = useState(false); // 제품등록 후 다시 db를 가져오기 위한 트리거
+
+  // 로직 함수
+
+  // 페이지 버튼 클릭 이벤트 정의
+  const handlePageChange = (event, value) => {
+    // event : 클릭 이벤트 객체, value : 사용자가 선택한 페이지 번호(1부터 시작) MUI의 Pagination 컴포넌트가 넘겨주는 매개변수이다.
+    console.log(event);
+    console.log(value);
+    setPage(value);
+  };
+  // 제품등록 이벤트 정의
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const onsubmit = () => {
+    window.alert("제품이 등록 되었습니다.");
+    setPage(1);
+    setUpdate((state) => !state);
+    // setPage(1)	사용자가 1페이지로 이동하도록 함 (신규 등록된 제품이 최신순 맨 앞이기 때문)
+    // setUpdate(state => !state)	현재 page가 이미 1일 때도 목록을 강제로 다시 불러오도록 유도
+  };
+
+  // useEffect
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const list = await axios.get("/product/dbpct");
+  //       console.log("전체데이터", list);
+  //       setPrducts(list.data);
+  //     } catch (error) {
+  //       console.log("조회되지 않습니다.", error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [update]);
+  // // 인자값으로 빈 배열을 넣는 경우 컴포넌트가 처음 렌더링 될때(mount 될 때)만 실행된다.
+
+  // 페이지네이션
   useEffect(() => {
-    axios
-      .get("http://localhost:8090/product/dbpct")
-      .then((list) => {
-        setPrducts(list);
-      })
-      .catch((error) => {
-        console.log("product불러오기 실패", error);
-      });
-  }, []);
-  // 인자값으로 빈 배열을 넣는 경우 컴포넌트가 처음 렌더링 될때(mount 될 때)만 실행된다.
+    const pagemove = async () => {
+      const PageContent = await axios.get(
+        `/product/pagination?page=${page - 1}&size=10`
+      );
+      // size는 한페이지에 몇개를 보여줄지 , page-1은 백엔드에서는 0부터 세니까 개발자 편하라고 하는거다.
+      console.log("페이지네이션한 데이터", PageContent);
+      console.log("페이지네이션한 데이터컨텐츠", PageContent.data.content);
+      setPrducts(PageContent.data.content);
+      setTotalPages(PageContent.data.totalPages);
+    };
+    pagemove();
+  }, [page, update]);
 
   return (
     <Box>
@@ -90,10 +108,10 @@ export default function ProductPage() {
                 <TableCell padding="checkbox">
                   <Checkbox></Checkbox>
                 </TableCell>
-                <TableCell>{product.id}</TableCell>
+                <TableCell>{product.no}</TableCell>
                 <TableCell>{product.category}</TableCell>
-                <TableCell>{product.name}</TableCell>
-                <TableCell>{product.price}</TableCell>
+                <TableCell>{product.productName}</TableCell>
+                <TableCell>{product.productPrice}</TableCell>
                 <TableCell>{product.amount}</TableCell>
               </TableRow>
             ))}
@@ -102,14 +120,35 @@ export default function ProductPage() {
       </TableContainer>
       {/* sx : style,  1 : 8px  */}
 
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={handlePageChange}
+          color="primary"
+          shape="rounded"
+          size="large"
+        />
+      </Box>
+
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2, gap: 2 }}>
         <Button variant="outlined" color="secondary" sx={{ mt: 2 }}>
           삭제
         </Button>
-        <Button variant="contained" color="secondary" sx={{ mt: 2 }}>
-          등록
+        <Button
+          variant="contained"
+          color="secondary"
+          sx={{ mt: 2 }}
+          onClick={handleClickOpen}
+        >
+          제품등록
         </Button>
       </Box>
+      <ProductRegisterDialog
+        open={open}
+        onClose={handleClose}
+        onSubmit={onsubmit}
+      ></ProductRegisterDialog>
     </Box>
   );
 }
