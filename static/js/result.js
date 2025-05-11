@@ -1,80 +1,25 @@
-const ctx1 = document.getElementById('myChart');
+window.addEventListener('DOMContentLoaded', () => {
+  const percentValuesFromDB = [55, 52, 78, 43, 90, 33];
 
-new Chart(ctx1, {
-  type: 'bar',
-  data: {
-    labels: ['4.18', '4.19', '4.20', '4.21'],
-    datasets: [{
-      data: [75, 68, 95, 82],
-      fill: true,
-      backgroundColor: 'rgb(34,69,123)',
-      borderColor: 'rgb(75, 192, 192)',
-    }]
-  },
-  options: {
-    responsive: false,
-    maintainAspectRatio: false,
-    layout: {
-      padding: {
-        top: 30  
-      }
-    },
-    datasets: {
-      bar: {
-        borderRadius: 8,
-        borderSkipped: false
-      }
-    },
-    scales: {
-      x: {
-        border: {
-          color: 'transparent'  // 축 선까지 완전 제거
-        },
-        ticks: {
-          color: function(context) {
-            const index = context.index;
-            const total = context.chart.data.labels.length;
-            return index === total - 1 ? 'white' : 'rgb(34,69,123)';
-          },
-          font: {
-            weight: 'bold',
-            size: 14
-          }
-        },
-        grid: {
-          display: false
-        },
-      },
-      y: {
-        display: false,
-        grid: {
-          display: false
-        }
-      }
-    },
-    plugins: {
-      legend: {
-        display: false
-      },
-      datalabels: {       
-        anchor: 'end',
-        align: 'end',
-        color: function(context) {
-          const index = context.dataIndex;
-          const total = context.chart.data.labels.length;
-    
-          // 마지막 데이터만 색상 다르게
-          return index === total - 1 ? 'white' : 'rgb(34,69,123)';
-        },
-        font: {
-          weight: 'bold',
-          size: 14
-        },
-        anchor: 'end',
-        align: 'end',
-      },
-    }
-  },
-  plugins: [ChartDataLabels] 
+  // 인디케이터 위치 설정
+  const indicators = document.querySelectorAll('.indicator');
+  indicators.forEach((indicator, idx) => {
+    const percent = percentValuesFromDB[idx] || 0;
+    indicator.style.left = `${percent}%`;
+  });
+
+  // 오른쪽 설명창 바꾸기
+  document.querySelectorAll('.card-bar').forEach(bar => {
+    bar.addEventListener('click', () => {
+      const name = bar.dataset.name;
+      const value = bar.dataset.value;
+      const desc = bar.dataset.desc;
+
+      console.log("클릭됨:", name, value, desc);
+
+      document.getElementById('nutrient-name').textContent = name;
+      document.getElementById('nutrient-value').textContent = value;
+      document.getElementById('nutrient-desc').textContent = desc;
+    });
+  });
 });
-

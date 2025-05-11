@@ -1,60 +1,263 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>맞춤형 성분</title>
-    <!-- css -->
-    <link rel="stylesheet" href="/static/css/common/common.css">
-    <link rel="stylesheet" href="/static/css/pages/Result.css">
-    <!-- js -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/static/js/by.js"></script>
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>맞춤형 성분</title>
+  <!-- css -->
+  <link rel="stylesheet" href="/static/css/common/common.css">
+  <link rel="stylesheet" href="/static/css/pages/Result.css">
 
-    <!-- chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
+  <!-- js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/static/js/by.js"></script>
+  <script src="/static/js/result.js"></script>
 
+
+  <!-- chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- 구글폰트 -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 </head>
-<body>
-    <div id="header"></div>
-    
-    <div class="result_box">
-        <div class="nutrient_info">
-            <div>
-                <li>부족한 영양소</li>
-                <li>비타민 D, 단백질, 철분</li>
-            </div>
-            <div>
-                <li>줄여야 할 영양소</li>
-                <li style="color: red;">나트륨 (112%)</li>
-            </div>
-            <div>
-                <li>추천 식품</li>
-                <li>연어, 브로콜리, 귀리</li>
-            </div>
-        </div>
 
-        <div class="nutrient_graph">
-            <div class="graph_left">
-                <canvas id="myChart"></canvas>
-            </div>
-            <div class="graph_right">
-                <div class="score">
-                    <li>82 / 100점</li>
-                    <li>전날 대비 -13점 (4.12 : 95점 > 4.13 : 82점)</li>
-                </div>
-                <div class="day_score">
-                    <canvas id="myChart2"></canvas>
-                </div>
-            </div>
-        </div>
+<body>
+  <div id="header"></div>
+
+  <!-- 결과페이지 헤더 -->
+  <div class="result-header">
+    <div class="header-main">
 
     </div>
-    
-    <div id="footer"></div>
-    <script src="/static/js/result.js"></script>
+  </div>
+  <!-- 결과 페이지 컨텐츠 -->
+  <div class="contents-main">
+    <!-- 카드 -->
+    <div class="title">
+      <h1>영양소 정보</h1>
+    </div>
+    <div class="card-container">
+      <div class="left">
+        <!-- 카드 -->
+        <div class="card-bar" data-name="탄수화물" data-value="55%" data-desc="탄수화물은 에너지 공급에 중요합니다.">
+          <div class="bar-label">탄수화물</div>
+          <div class="bar-container">
+            <div class="bar-inner blue">
+              <div class="indicator"></div>
+            </div>
+          </div>
+          <div class="card-bar-label">
+            <li>부족</li>
+            <li>과다</li>
+          </div>
+        </div>
+        <div class="card-bar" data-name="단백질" data-value="52%" data-desc="단백질은 근육 형성과 면역 유지에 중요합니다.">
+          <div class="bar-label">단백질</div>
+          <div class="bar-container">
+            <div class="bar-inner yellow">
+              <div class="indicator"></div>
+            </div>
+          </div>
+          <div class="card-bar-label">
+            <li>부족</li>
+            <li>과다</li>
+          </div>
+        </div>
+        <div class="card-bar" data-name="지방" data-value="78%"
+          data-desc="지방은 에너지원으로 활용되며 지용성 비타민의 흡수를 돕고, 체온 유지 및 장기 보호 역할을 합니다. 하지만 과잉 섭취 시 비만, 고지혈증, 심혈관 질환의 위험이 있습니다. 포화지방보다 불포화지방을 중심으로 섭취하는 것이 좋습니다.">
+          <div class="bar-label">지방</div>
+          <div class="bar-container">
+            <div class="bar-inner green">
+              <div class="indicator"></div>
+            </div>
+          </div>
+          <div class="card-bar-label">
+            <li>부족</li>
+            <li>과다</li>
+          </div>
+        </div>
+        <div class="card-bar" data-name="비타민" data-value="43%"
+          data-desc="비타민은 몸의 대사 기능과 면역 체계를 유지하는 데 필수적인 영양소입니다. 부족할 경우 피로, 면역 저하, 피부 트러블 등이 발생할 수 있으며, 특히 수용성 비타민은 체내에 저장되지 않기 때문에 꾸준한 섭취가 중요합니다.">
+          <div class="bar-label">비타민</div>
+          <div class="bar-container">
+            <div class="bar-inner purple">
+              <div class="indicator"></div>
+            </div>
+          </div>
+          <div class="card-bar-label">
+            <li>부족</li>
+            <li>과다</li>
+          </div>
+        </div>
+        <div class="card-bar" data-name="아이오딘" data-value="90%"
+          data-desc="아이오딘은 갑상선 호르몬의 구성 성분으로 성장과 신진대사 조절에 중요합니다. 결핍 시 갑상선 기능 저하, 과잉 시 갑상선 기능 항진 등이 나타날 수 있으므로 적정량 섭취가 중요합니다. 대표 식품으로는 해조류가 있습니다.">
+          <div class="bar-label">아이오딘</div>
+          <div class="bar-container">
+            <div class="bar-inner red">
+              <div class="indicator"></div>
+            </div>
+          </div>
+          <div class="card-bar-label">
+            <li>부족</li>
+            <li>과다</li>
+          </div>
+        </div>
+        <div class="card-bar" data-name="철분" data-value="47%"
+          data-desc="철분은 혈액 내 헤모글로빈을 생성하여 산소를 신체에 운반하는 데 필수적인 미네랄입니다. 부족하면 빈혈, 피로, 집중력 저하가 나타날 수 있으며, 여성과 성장기 청소년에게 특히 중요합니다. 대표적인 식품으로는 간, 시금치, 적색육, 콩류 등이 있습니다.">
+          <div class="bar-label">철분</div>
+          <div class="bar-container">
+            <div class="bar-inner teal">
+              <div class="indicator"></div>
+            </div>
+          </div>
+          <div class="card-bar-label">
+            <li>부족</li>
+            <li>과다</li>
+          </div>
+        </div>
+
+      </div>
+      <div class="right">
+        <div class="info-container">
+          <h2 id="nutrient-name">영양소</h2>
+          <p><span id="nutrient-value">%</span></p>
+          <p id="nutrient-desc">설명창입니다.</p>
+        </div>
+      </div>
+    </div>
+    <div class="title">
+      <h1>영향을 미치는 특성</h1>
+    </div>
+    <div class="card-nutrient-result">
+      <div class="icon-group">
+        <div class="nutirent-icon-container">
+          <div class="icon-box blue">
+            <img src="https://cdn.pixabay.com/photo/2025/04/23/01/35/bird-9551361_1280.jpg" alt="">
+          </div>
+          <p>예시1</p>
+        </div>
+        <div class="nutirent-icon-container">
+          <div class="icon-box yellow">
+            <img src="" alt="">
+          </div>
+          <p>예시2</p>
+        </div>
+        <div class="nutirent-icon-container">
+          <div class="icon-box green">
+            <img src="" alt="">
+          </div>
+          <p>예시3</p>
+        </div>
+        <div class="nutirent-icon-container">
+          <div class="icon-box purple">
+            <img src="" alt="">
+          </div>
+          <p>예시4</p>
+        </div>
+      </div>
+      <div class="dd">
+        <p>무슨 내용을 넣지</p>
+      </div>
+    </div>
+    <!-- 강점 -->
+    <div class="title">
+      <h1>강점</h1>
+    </div>
+    <div class="traits-container">
+      <div class="traits-row">
+        <div class="trait">
+          <div class="icon good">
+            <img src="/img/check_circle.svg" alt="check_circle">
+          </div>
+          <div class="trait-content">
+            <p>지적 자극을 제공하는 성격</p>
+            <p>깊이 있는 대화를 통해 의미 있는 관계를 구축합니다.</p>
+          </div>
+        </div>
+        <div class="trait">
+          <div class="icon good">
+            <img src="/img/check_circle.svg" alt="check_circle">
+          </div>
+          <div class="trait-content">
+            <p>지적 자극을 제공하는 성격</p>
+            <p>깊이 있는 대화를 통해 의미 있는 관계를 구축합니다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="traits-row">
+        <div class="trait">
+          <div class="icon good">
+            <img src="/img/check_circle.svg" alt="check_circle">
+          </div>
+          <div class="trait-content">
+            <p>지적 자극을 제공하는 성격</p>
+            <p>깊이 있는 대화를 통해 의미 있는 관계를 구축합니다.</p>
+          </div>
+        </div>
+        <div class="trait">
+          <div class="icon good">
+            <img src="/img/check_circle.svg" alt="check_circle">
+          </div>
+          <div class="trait-content">
+            <p>지적 자극을 제공하는 성격</p>
+            <p>깊이 있는 대화를 통해 의미 있는 관계를 구축합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="title">
+      <h1>약점</h1>
+    </div>
+    <div class="traits-container">
+      <div class="traits-row">
+        <div class="trait">
+          <div class="icon bad">
+            <img src="/img/error.svg" alt="!">
+          </div>
+          <div class="trait-content">
+            <p>지적 자극을 제공하는 성격</p>
+            <p>깊이 있는 대화를 통해 의미 있는 관계를 구축합니다.</p>
+          </div>
+        </div>
+        <div class="trait">
+          <div class="icon bad">
+            <img src="/img/error.svg" alt="!">
+          </div>
+          <div class="trait-content">
+            <p>지적 자극을 제공하는 성격</p>
+            <p>깊이 있는 대화를 통해 의미 있는 관계를 구축합니다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="traits-row">
+        <div class="trait">
+          <div class="icon bad">
+            <img src="/img/error.svg" alt="!">
+          </div>
+          <div class="trait-content">
+            <p>지적 자극을 제공하는 성격</p>
+            <p>깊이 있는 대화를 통해 의미 있는 관계를 구축합니다.</p>
+          </div>
+        </div>
+        <div class="trait">
+          <div class="icon bad">
+            <img src="/img/error.svg" alt="!">
+          </div>
+          <div class="trait-content">
+            <p>지적 자극을 제공하는 성격</p>
+            <p>깊이 있는 대화를 통해 의미 있는 관계를 구축합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="next-button">추천 페이지<span class="material-symbols-outlined">
+        arrow_forward_ios
+      </span></button>
+  </div>
+  <div id="footer"></div>
 </body>
+
 </html>
