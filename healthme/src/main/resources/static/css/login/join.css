@@ -7,7 +7,7 @@ body{
 }
 .join_box {
     margin: 0;
-    height: 800px;
+    /*min-height: 800px;*/
     display: flex;
     justify-content: center;
     align-items: center;
@@ -150,3 +150,8 @@ h6{
     padding: 20px;
     border-radius: 10px;
 }
+.error-msg {
+     color: blue;
+     font-size: 13px;
+     padding-left: 5px;
+ }
