@@ -11,9 +11,11 @@ import {
   Button,
   Box,
   Pagination,
+  useScrollTrigger,
 } from "@mui/material";
 import axios from "axios";
 import ProductRegisterDialog from "./ProductRegisterDialog";
+import ProductUpdate from "./ProductUpdate";
 
 export default function ProductPage() {
   // DB조회와 상품 등록후 재조회
@@ -26,6 +28,10 @@ export default function ProductPage() {
   // 제품등록 모달창
   const [open, setOpen] = useState(false);
   const [update, setUpdate] = useState(false); // 제품등록 후 다시 db를 가져오기 위한 트리거
+
+  // 제품 수정 모달창
+  const [updateProduct, setUpdateProduct] = useState([]);
+  const [updateOpen, setUpdateOpen] = useState(false);
 
   // 로직 함수
 
@@ -45,6 +51,17 @@ export default function ProductPage() {
     setUpdate((state) => !state);
     // setPage(1)	사용자가 1페이지로 이동하도록 함 (신규 등록된 제품이 최신순 맨 앞이기 때문)
     // setUpdate(state => !state)	현재 page가 이미 1일 때도 목록을 강제로 다시 불러오도록 유도
+  };
+
+  // 제품 수정 이벤트 정의
+  const UpdatehandleClose = () => setUpdateOpen(false);
+  const handleUpdate = (product) => {
+    setUpdateProduct(product); // 해당 상품 데이터 저장하기
+    setUpdateOpen(true); // 모달창 열기
+  };
+  const updatesucess = () => {
+    window.alert("제품이 수정되었습니다.");
+    setUpdate((state) => !state);
   };
 
   // useEffect
@@ -74,6 +91,7 @@ export default function ProductPage() {
       setPrducts(PageContent.data.content);
       setTotalPages(PageContent.data.totalPages);
     };
+
     pagemove();
   }, [page, update]);
 
@@ -98,6 +116,7 @@ export default function ProductPage() {
               <TableCell>상품명</TableCell>
               <TableCell>가격</TableCell>
               <TableCell>재고</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -113,6 +132,15 @@ export default function ProductPage() {
                 <TableCell>{product.productName}</TableCell>
                 <TableCell>{product.productPrice}</TableCell>
                 <TableCell>{product.amount}</TableCell>
+                <TableCell>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => handleUpdate(product)}
+                  >
+                    수정하기
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -144,10 +172,19 @@ export default function ProductPage() {
           제품등록
         </Button>
       </Box>
+      {/* 제품 등록하기 */}
       <ProductRegisterDialog
         open={open}
         onClose={handleClose}
         onSubmit={onsubmit}
+      ></ProductRegisterDialog>
+
+      {/* 제품 수정하기기 */}
+      <ProductRegisterDialog
+        open={updateOpen}
+        onClose={UpdatehandleClose}
+        product={updateProduct}
+        updatesucess={updatesucess}
       ></ProductRegisterDialog>
     </Box>
   );
