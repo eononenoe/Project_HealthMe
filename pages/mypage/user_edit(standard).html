@@ -83,10 +83,10 @@
         <div class="form-box">
           <h2>회원 정보 수정</h2>
 
-          <form action="" method="post" class="profile-edit-form">
+          <form action="${pageContext.request.contextPath}/join/update" method="post" class="profile-edit-form">
             <div class="input-row">
               <label>아이디</label>
-              <input type="text" name="userid" value="kakak1015" readonly />
+              <input type="text" name="userid" value="${user.userid}" readonly />
             </div>
 
             <div class="input-row">
@@ -109,13 +109,21 @@
 
             <div class="input-row">
               <label>이름</label>
-              <input type="text" name="username" value="김종호" />
+              <input type="text" name="username" value="${user.name}" />
             </div>
 
             <div class="input-row">
               <label>휴대폰</label>
               <div class="phone-box">
-                <input type="text" name="phone" value="01044873289" />
+                <select name="tel1" class="form-control custom-input" id="tel1">
+                  <option value="010" ${user.tel1 == '010' ? 'selected' : ''}>010</option>
+                  <option value="011" ${user.tel1 == '011' ? 'selected' : ''}>011</option>
+
+                </select>
+                <span class="tel-hypen">-</span>
+                <input type="text" name="tel2" value="${user.tel2}" class="form-control custom-input" id="tel2" />
+                <span class="tel-hypen">-</span>
+                <input type="text" name="tel3" value="${user.tel3}" class="form-control custom-input" id="tel3" />
                 <button type="button" class="verify-btn">인증</button>
               </div>
             </div>
@@ -130,8 +138,13 @@
             </div>
 
             <div class="button-group">
-              <button type="button" class="withrdraw-btn">탈퇴하기</button>
               <button type="submit" class="submit-btn">수정하기</button>
+            </div>
+          </form>
+          <form action="">
+            <input type="hidden" name="userid" value="${user.name}">
+            <div class="button-group">
+              <button type="submit" class="withrdraw-btn">탈퇴하기</button>
             </div>
           </form>
         </div>
