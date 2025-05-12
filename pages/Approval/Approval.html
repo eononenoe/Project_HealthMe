@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>결재 페이지</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- 폰트 -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
+      rel="stylesheet"
+    />
+    <!-- 이모지 -->
+    <script
+      src="https://kit.fontawesome.com/b83f799b86.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- google icon -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+
+    <!-- css -->
+    <link rel="stylesheet" href="/static/css/common/common.css" />
+    <link rel="stylesheet" href="/static/css/pages/approval.css" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/static/js/by.js"></script>
+  </head>
+  <body>
+    <div id="header_Q"></div>
+
+    <main class="approval-container">
+      <!-- 왼쪽: 배송 정보 & 상품 정보 -->
+      <section class="approval-left">
+        <h2>배송정보</h2>
+        <div class="input-group">
+          <label>주문자 이름</label>
+          <input type="text" placeholder="이름을 입력하세요" />
+
+          <label>배송지</label>
+          <input type="text" placeholder="도로명주소 또는 지번주소" />
+          <input type="text" placeholder="상세주소" />
+          <input type="text" placeholder="연락처" />
+          <textarea placeholder="배송 시 요청사항"></textarea>
+        </div>
+
+        <h2>주문 상품</h2>
+        <div class="product-list">
+          <div class="product-item">
+            <img
+              src="https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/2806a17d-deba-4bc4-b6ec-d6dc0c96e575.jpg"
+              alt="채소믹스"
+            />
+            <div class="product-info">
+              <p class="product-title">[YSB111] 유기농 채소믹스 600g (냉동)</p>
+              <p class="product-sub">월,수,금 16시 전 재입고</p>
+              <p class="product-price">6,490원</p>
+            </div>
+            <div class="quantity-box">
+              <button>-</button>
+              <span>1</span>
+              <button>+</button>
+            </div>
+          </div>
+
+          <div class="product-item">
+            <img
+              src="https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/4c36b050-06f9-4ce1-9597-27bf4c2563fb.jpg"
+              alt="한우"
+            />
+            <div class="product-info">
+              <p class="product-title">
+                [JJH365] 한돈 부위별 대용량 가성비 7종
+              </p>
+              <p class="product-sub">100g당 11,445원 | 16시 전 재입고</p>
+              <p class="product-price">38,990원</p>
+            </div>
+            <div class="quantity-box">
+              <button>-</button>
+              <span>1</span>
+              <button>+</button>
+            </div>
+          </div>
+        </div>
+
+        <h2>결제 수단</h2>
+        <div class="payment-options">
+          <label
+            ><input type="radio" name="payment" checked /> 무통장입금</label
+          >
+          <label><input type="radio" name="payment" /> 카카오페이</label>
+          <label><input type="radio" name="payment" /> 신용카드</label>
+        </div>
+
+        <h2>적립 혜택</h2>
+        <div class="benefit-box">
+          <p>무통장입금 시 1% 적립</p>
+          <p>카카오페이 또는 신용카드 결제 시 0.5% 적립</p>
+        </div>
+      </section>
+
+      <!-- 오른쪽: 결제 요약 -->
+      <section class="approval-right">
+        <ul class="price-summary">
+          <li><span>상품 금액</span><span>45,480원</span></li>
+          <li><span>배송비</span><span>3,000원</span></li>
+          <li class="total"><span>총 결제금액</span><span>48,480원</span></li>
+        </ul>
+
+        <p class="expected-point">예상 적립금: <strong>480원</strong></p>
+
+        <button class="btn-purchase">48,480원 결제하기</button>
+      </section>
+    </main>
+
+    <div id="footer"></div>
+  </body>
+</html>

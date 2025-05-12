@@ -1,0 +1,205 @@
+/* 공통 설정 */
+body {
+  font-family: "Nanum Gothic", sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+main.approval-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 0.4rem;
+  margin-top: 2rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.input-group label {
+  margin-top: 0.6rem;
+  font-weight: bold;
+}
+
+.input-group input,
+.input-group textarea {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  resize: none;
+}
+
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 1rem;
+}
+
+.product-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  background-color: #fafafa;
+}
+
+.product-item img {
+  width: 90px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.product-info {
+  flex-grow: 1;
+}
+
+.product-title {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.product-sub {
+  color: #777;
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+}
+
+.product-price {
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+.quantity-box {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.quantity-box button {
+  width: 28px;
+  height: 28px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.quantity-box span {
+  min-width: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* 결제 수단 */
+.payment-options {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.payment-options label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.95rem;
+}
+
+/* 적립 혜택 */
+.benefit-box {
+  background-color: #f0f9f7;
+  border: 1px solid #cce5e0;
+  border-radius: 6px;
+  padding: 0.8rem;
+  font-size: 0.9rem;
+  color: #2f776a;
+  margin-top: 0.5rem;
+}
+
+/* 가격 요약 */
+.price-summary {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0 1rem;
+  border-top: 2px solid #ddd;
+  border-bottom: 2px solid #ddd;
+}
+
+.price-summary li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8rem 0;
+  font-size: 1rem;
+}
+
+.price-summary li.total {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #000;
+}
+
+/* 예상 적립금 */
+.expected-point {
+  text-align: right;
+  font-size: 0.95rem;
+  color: #4caf50;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* 결제 버튼 */
+.btn-purchase {
+  display: block;
+  width: 100%;
+  background-color: #5c940d;
+  color: #fff;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-purchase:hover {
+  background-color: #4a7c0a;
+}
+
+/* 반응형 */
+@media (max-width: 600px) {
+  .product-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .quantity-box {
+    margin-top: 0.5rem;
+  }
+
+  .payment-options {
+    flex-direction: column;
+  }
+}
