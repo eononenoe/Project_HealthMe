@@ -3,7 +3,7 @@ package com.example.demo.domain.service;
 import com.example.demo.domain.dto.InsertProductDto;
 import com.example.demo.domain.entity.Product;
 import com.example.demo.domain.repository.ProductRepository;
-import org.hibernate.validator.internal.constraintvalidators.bv.time.past.PastValidatorForInstant;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+
 public class ProductService {
     @Autowired
     private ProductRepository productRepository;
@@ -35,6 +36,7 @@ public class ProductService {
 
         return productRepository.findAllByOrderByNoDesc(pageRequest);
     }
+
 
     // 제품 등록하기
     public void insert_product(InsertProductDto insertProductDto){
@@ -75,6 +77,23 @@ public class ProductService {
         // 왜냐하면 productRepository는 Product를 상속하기 때문이다.
 
 
+    }
+
+    // 제품 수정
+    public boolean update_product(int no, InsertProductDto insertProductDto){
+        Product product= new Product();
+
+        if (insertProductDto!=null){
+            product.setCategory(insertProductDto.getRegistCategory());
+            product.setProductName(insertProductDto.getProductName());
+            product.setProductPrice(insertProductDto.getPrice());
+            product.setAmount(insertProductDto.getAmount());
+
+            productRepository.save(product);
+            return true;
+
+        }
+        return false;
     }
 
 }

@@ -11,7 +11,6 @@ import {
   Button,
   Box,
   Pagination,
-  useScrollTrigger,
 } from "@mui/material";
 import axios from "axios";
 import ProductRegisterDialog from "./ProductRegisterDialog";
@@ -54,12 +53,15 @@ export default function ProductPage() {
   };
 
   // 제품 수정 이벤트 정의
-  const UpdatehandleClose = () => setUpdateOpen(false);
+  const UpdatehandleClose = () => {
+    setUpdateOpen(false);
+  };
   const handleUpdate = (product) => {
     setUpdateProduct(product); // 해당 상품 데이터 저장하기
     setUpdateOpen(true); // 모달창 열기
   };
   const updatesucess = () => {
+    // 수정하기 버튼을 누르면 실행
     window.alert("제품이 수정되었습니다.");
     setUpdate((state) => !state);
   };
@@ -136,7 +138,9 @@ export default function ProductPage() {
                   <Button
                     variant="outlined"
                     size="small"
-                    onClick={() => handleUpdate(product)}
+                    onClick={() => {
+                      handleUpdate(product);
+                    }}
                   >
                     수정하기
                   </Button>
@@ -179,13 +183,13 @@ export default function ProductPage() {
         onSubmit={onsubmit}
       ></ProductRegisterDialog>
 
-      {/* 제품 수정하기기 */}
-      <ProductRegisterDialog
+      {/* 제품 수정하기 */}
+      <ProductUpdate // ProductUpdate 컴포넌트를 찾는다(사용한 컴포넌트 이름).
         open={updateOpen}
         onClose={UpdatehandleClose}
         product={updateProduct}
         updatesucess={updatesucess}
-      ></ProductRegisterDialog>
+      ></ProductUpdate>
     </Box>
   );
 }
