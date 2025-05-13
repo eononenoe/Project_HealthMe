@@ -1,0 +1,133 @@
+body{
+  width: 100%;
+}
+.product-page-wrapper {
+  /* width: 100%; */
+  justify-content: center;
+  align-items: center;  
+  color: #333;
+  margin-top: 80px;
+}
+
+.product-detail-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 50px;
+}
+.product-image img{
+  border-radius: 10px;
+}
+.product-info-area {
+  font-family: 'Noto Sans KR', sans-serif;
+  padding: 10px;
+}
+
+.product-badge {
+  color: green;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.product-title {
+  font-size: 1.5rem;
+  margin: 10px 0;
+}
+
+.product-price-box {
+  margin: 10px 0;
+  font-size: 1.2rem;
+}
+
+.final-price {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #111;
+}
+
+.discount-rate {
+  color: green;
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+.original-price {
+  color: #aaa;
+  margin-left: 10px;
+  text-decoration: line-through;
+}
+
+.review-box {
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.sub-desc {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.coupon-banner {
+  background: #f7f7f7;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.benefit-box {
+  background: #fafafa;
+  padding: 10px;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.point-box,
+.delivery-box {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.option-box,
+.quantity-box {
+  margin-bottom: 15px;
+}
+
+.summary-box {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  margin: 20px 0;
+}
+
+.purchase-btn-box {
+  display: flex;
+  gap: 10px;
+}
+
+.purchase-btn-box button {
+  flex: 1;
+  padding: 12px;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-cart {
+  background: #000;
+  color: #fff;
+  border: none;
+}
+
+.btn-buy {
+  background: green;
+  color: white;
+  border: none;
+}
+.product-description-box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

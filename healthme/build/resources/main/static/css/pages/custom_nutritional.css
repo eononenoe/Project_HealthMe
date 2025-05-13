@@ -1,0 +1,358 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Nanum Gothic", sans-serif;
+}
+
+body {
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Layout */
+.container {
+  width: 1280px;
+  min-width: 1280px; /* << 추가해 */
+  margin: 0 auto;
+  display: flex;
+  padding-top: 50px;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 300px;
+  min-width: 300px;
+  padding: 20px;
+  box-sizing: border-box;
+  height: 100vh;
+}
+
+/* Gauge Section */
+.gauge-container {
+  margin-bottom: 30px;
+}
+
+.gauge-top {
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.gauge-top strong {
+  font-weight: bold;
+}
+
+.gauge-info {
+  margin-top: 10px;
+  font-size: 13px;
+  color: gray;
+}
+
+/* Gauge Bar */
+.gauge-bars {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gauge-bar {
+  width: 100%;
+  height: 8px;
+  background: #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.gauge-fill {
+  height: 100%;
+  background: #4caf50;
+  width: 0;
+}
+
+/* Cart Section */
+.cart-section {
+  margin-top: 30px;
+}
+.cart-section span {
+  display: inline-block;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+.cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.cart-header-left {
+  display: flex;
+  align-items: center; /* 왼쪽 그룹 세로 가운데 정렬 */
+  gap: 5px;
+}
+
+.cart-header label {
+  font-size: 14px;
+  color: #333;
+  margin-top: 13px;
+}
+
+.cart-header button {
+  font-size: 13px;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 3px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #007bff;
+  border-radius: 50%;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.custom-checkbox:checked {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.custom-checkbox:checked::after {
+  content: '✔';
+  color: white;
+  font-size: 9px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+}
+
+/* Cart Items */
+.cart-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cart-items li {
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.cart-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cart-item-left {
+  display: flex;
+  gap: 10px;
+}
+
+.cart-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cart-item-name {
+  font-size: 15px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cart-item-delete {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cart-item-price-line {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cart-item-price {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.cart-item-original-price {
+  font-size: 13px;
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+.cart-item-quantity {
+  display: flex;
+  align-items: center;
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 2px 5px;
+  gap: 5px;
+}
+
+.cart-item-quantity button {
+  width: 25px;
+  height: 25px;
+  border: none;
+  background: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cart-item-quantity span {
+  width: 20px;
+  text-align: center;
+}
+
+.cart-item-total-price {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+/* Cart Footer */
+.cart-footer {
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: right;
+}
+.cart-footer-button button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  position: relative;
+  right: -115px;
+}
+
+.cart-footer-button button:hover {
+  background-color: #0056b3;
+}
+
+/* Main */
+main {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Filter Section */
+.nutritional_low_content {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  font-size: 14px;
+  color: gray;
+  margin-bottom: 20px;
+}
+
+/* ================ */
+/*     상품 리스트    */
+/* ================ */
+.nutritional_content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  
+  min-height: 1000px;
+  margin-bottom: 100px; /* 푸터랑 거리 벌리기 */
+}
+
+/* ================ */
+/*     아이템 카드    */
+/* ================ */
+.item_store {
+  width: 100%;
+  height: auto;
+}
+
+.item_img > img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.item_add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  color: gray;
+  width: 100%;
+  height: 45px;
+  font-size: 1.15rem;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.item_name {
+  width: 100%;
+  height: 50px;
+  margin-top: 15px;
+  font-size: 1.3rem;
+  color: black;
+  margin-bottom: 10px;
+}
+
+.item_Nutritional_ingredients ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+  color: rgb(171, 171, 171);
+  line-height: 1.5;
+}
+
+.item_price {
+  width: 100%;
+  margin-bottom: 8px;
+  font-size: 1.3rem;
+}
+
+.item_price ul {
+  display: flex;
+  gap: 5px;
+}
+
+.item_price .discount {
+  color: #e80000;
+  font-weight: 600;
+}
+
+.item_price .price {
+  color: black;
+  font-weight: 600;
+}
+
+.item_review {
+  color: rgb(171, 171, 171);
+  width: 290px;
+  font-size: 1rem;
+}

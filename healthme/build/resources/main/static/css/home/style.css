@@ -1,0 +1,337 @@
+.nanum-gothic-regular {
+  font-family: "Nanum Gothic", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.noto-sans-kr-title {
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500; 
+  font-style: normal;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+  list-style-type: none;
+  list-style: none;
+  font-family: "Nanum Gothic", serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+a{
+  text-decoration: none;
+}
+
+
+/* ================ */
+/*     슬라이더     */
+/* ================ */
+.wrapper{
+  /* width: 1900px; */
+  height: 300px;
+  margin: 0 auto;
+  margin-bottom: 50px; 
+  min-width: none;
+  /* display: flex; */
+  /* justify-content: center; */
+  align-items: center;
+  max-width: 1900px;
+}
+
+.wrapper>.banner-section>.swiper {
+  height: 100%;
+}
+
+.wrapper>.banner-section>.swiper>.swiper-wrapper {
+  height: 100%;
+}
+
+.wrapper>.banner-section>.swiper>.swiper-wrapper>.swiper-slide {
+  max-width: 100vw;
+  height: 100%;
+}
+.banner-section>.swiper .swiper-pagination>.swiper-pagination-bullet {
+  width: 25px;
+  height: 10px;
+  border-radius: 2px;
+  background-color: rgb(177, 177, 177);
+}
+.banner-section>.swiper .swiper-pagination>.swiper-pagination-bullet-active {
+  background-color: orange;
+}
+
+.swiper-button-prev,
+.swiper-button-next{
+  color: white;
+  background-color: gray;
+  width: 50px;
+  height: 100px;
+  padding: 5px;
+  font-size: 1rem;
+  opacity: 50%;
+  border-radius: 10px;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after{
+  font-size: 1.3rem;
+}
+
+/* ================ */
+/*       메인       */
+/* ================ */
+main {
+  height: 1000px;
+  margin-bottom: 1250px;
+}
+
+.main_low_title {
+  font-size: 30px;
+  font-weight: 600;
+  color: black;
+}
+
+main > section > content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* ================ */
+/*    컨텐츠 네비    */
+/* ================ */
+.content_nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 0 0 0;
+  margin-top: 40px;
+  width: 1280px;
+}
+
+/* ================ */
+/*  메인 상위 컨텐츠 */
+/* ================ */
+.main_top_content {
+  padding: 0 0 0 0;
+  margin-top: 70px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 40px;
+}
+
+.are_you_Health {
+  height: 400px;
+  width: 400px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 0 5px lightgrey;
+}
+
+.what_health_food {
+  background-color: lightgray;
+  border-radius: 10px;
+  height: 400px;
+  width: 400px;
+  object-fit: cover;
+  box-shadow: 0 0 5px lightgrey;
+}
+
+.content_news {
+  border-radius: 10px;
+  height: 400px;
+  width: 400px;
+  display: grid;
+  gap: 15px;
+}
+.news_card_top{
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.news_card {
+  padding: 20px;
+  /* border: 1px solid gray; */
+  box-shadow: 0 0 2px gray;
+  border-radius: 10px;
+}
+.news_card_subtitle{
+  color: #E80000;
+  font-size: 20px;
+  font-weight: 600;
+}
+.news_card_title{
+  color: black;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.news_card_content{
+  color: black;
+}
+/* ================ */
+/* 메인 하위 컨텐츠  */
+/* ================ */
+.main_low_content {
+  width: 1280px;
+  padding: 0 0 0 0;
+  margin-top: 40px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: grey;
+
+  gap: 20px;
+}
+
+.main_low_top_content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.main_low_low_content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
+.main_low_top_content > li {
+  margin-top: 5px;
+}
+
+/* ================ */
+/*      아이템       */
+/* ================ */
+.main_low_content > .main_low_low_content > .item_store {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  border-radius: 10px;
+  height: 550px;
+  width: 290px;
+}
+
+.item_img > img {
+  width: 290px;
+  height: 350px;
+  border-radius: 5px;
+
+  margin-bottom: 2px;
+}
+
+.item_store > .item_add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  border: 1px solid rgb(171, 171, 171);
+  border-radius: 5px;
+  color: rgb(171, 171, 171);
+  width: 290px;
+  height: 45px;
+
+  font-size: 1.15rem;
+}
+.item_store>.item_add:hover{
+  cursor: pointer;
+}
+
+.item_store > .item_name {
+  width: 290px;
+  height: 50px;
+  margin-top: 5px;
+
+  font-size: 1.15rem;
+  color: black;
+}
+
+.item_store > .item_discount_price {
+  width: 290px;
+
+  font-size: 1rem;
+  color: rgb(171, 171, 171);
+}
+
+.item_store > .item_price > ul {
+  display: flex;
+  gap: 5px;
+}
+
+.item_store > .item_price {
+  width: 290px;
+
+  font-size: 1.15rem;
+}
+
+.item_price > ul > .discount {
+  color: #e80000;
+  font-weight: 600;
+}
+
+.item_price > ul > .price {
+  color: black;
+  font-weight: 600;
+}
+
+.item_store > .item_review {
+  color: rgb(171, 171, 171);
+  width: 290px;
+
+  font-size: 0.813rem;
+}
+
+/* ================ */
+/*       푸터       */
+/* ================ */
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  bottom: 0px;
+
+  width: 100%;
+  height: 100px;
+  background-color: rgb(240, 240, 240);
+}
+
+footer > .top_info {
+  color: gray;
+  font-size: 0.75rem;
+  margin-bottom: 5px;
+}
+
+footer > .top_info > ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+footer > .low_info {
+  font-size: 0.75rem;
+}
