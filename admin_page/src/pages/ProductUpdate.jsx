@@ -88,6 +88,12 @@ export default function ProductUpdate({
           onChange={handleChange}
           type="number"
         />
+        <TextField
+          label="제품 상세 설명"
+          name="description"
+          value={form.description}
+          onChange={handleChange}
+        />
         <Button variant="outlined" onClick={onClose}>
           취소
         </Button>

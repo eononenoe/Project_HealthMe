@@ -1,7 +1,7 @@
 import { AppBar, Toolbar, Typography, IconButton, Box } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-const logoSrc = "/당근.png"; // public 폴더 기준
+const logoSrc = "/carrot.png"; // public 폴더 기준
 
 export default function Topbar() {
   return (

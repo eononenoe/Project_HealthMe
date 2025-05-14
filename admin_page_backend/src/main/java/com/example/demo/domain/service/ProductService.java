@@ -81,17 +81,17 @@ public class ProductService {
 
     // 제품 수정
     public boolean update_product(int no, InsertProductDto insertProductDto){
-        Product product= new Product();
 
-        if (insertProductDto!=null){
+        Optional<Product> opProduct= productRepository.findById(no);
+        Product product= opProduct.get(); // DB에 저장되어있는 데이터를 product에 저장
+        if (insertProductDto!=null){ // product를 입력받은 insertProductDto로 다시 저장한 다음 수정.
             product.setCategory(insertProductDto.getRegistCategory());
             product.setProductName(insertProductDto.getProductName());
             product.setProductPrice(insertProductDto.getPrice());
             product.setAmount(insertProductDto.getAmount());
 
-            productRepository.save(product);
+            productRepository.save(product); // 수정된다.
             return true;
-
         }
         return false;
     }
