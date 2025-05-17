@@ -1,7 +1,7 @@
 package com.example.demo.domain.service;
 
 import com.example.demo.domain.dto.InsertProductDto;
-import com.example.demo.domain.entity.Product;
+import com.example.demo.domain.entity.ProductEntity;
 import com.example.demo.domain.repository.ProductRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +20,9 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
     // 모든 제품 다 가져오기
-    public List<Product> selectAllProduct(){
+    public List<ProductEntity> selectAllProduct(){
 
-        List<Product> list=productRepository.findAll();
+        List<ProductEntity> list=productRepository.findAll();
         if (!list.isEmpty()){
             return list;
         }
@@ -31,7 +31,7 @@ public class ProductService {
     }
 
     // 페이지네이션에 맞춰서 제품 가져오기
-    public Page<Product> select_Page_Product(int page, int size){
+    public Page<ProductEntity> select_Page_Product(int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size);
 
         return productRepository.findAllByOrderByNoDesc(pageRequest);
@@ -43,33 +43,30 @@ public class ProductService {
 
         if (insertProductDto == null) return;
 
-        // 1. 저장 경로 설정
         String saveDir = "C:/uploads/product/";
-        new File(saveDir).mkdirs(); // 경로 없으면 생성
+        new File(saveDir).mkdirs();
 
-        // 2. 고유 파일명 생성
-        String thumbFileName = System.currentTimeMillis() + "_" + insertProductDto.getThumbnail().getOriginalFilename();
-        String detailFileName = System.currentTimeMillis() + "_" + insertProductDto.getDetailImage().getOriginalFilename();
+        String thumbFileName = System.currentTimeMillis() + "_" + insertProductDto.getThumbnailUrl().getOriginalFilename();
+        String detailFileName = System.currentTimeMillis() + "_" + insertProductDto.getDetailUrl().getOriginalFilename();
 
         File thumbDest = new File(saveDir + thumbFileName);
         File detailDest = new File(saveDir + detailFileName);
 
         try {
-            insertProductDto.getThumbnail().transferTo(thumbDest);
-            insertProductDto.getDetailImage().transferTo(detailDest);
+            insertProductDto.getThumbnailUrl().transferTo(thumbDest);
+            insertProductDto.getDetailUrl().transferTo(detailDest);
         } catch (IOException e) {
             e.printStackTrace();
-            return; // 실패 시 중단
+            return;
         }
 
-        // 엔터티 생성 후 저장
-        Product product = new Product();
+        ProductEntity product = new ProductEntity();
         product.setProductName(insertProductDto.getProductName());
-        product.setCategory(insertProductDto.getRegistCategory());
+        product.setCategory(insertProductDto.getCategory());
         product.setAmount(insertProductDto.getAmount());
-        product.setDetailUrl("/images/product"+thumbFileName);
-        product.setThumbnailUrl("/images/product"+detailFileName);
-        product.setProductPrice(insertProductDto.getPrice());
+        product.setDetailUrl("/images/product" + thumbFileName);
+        product.setThumbnailUrl("/images/product" + detailFileName);
+        product.setProductPrice(insertProductDto.getProductPrice());
         product.setDescription(insertProductDto.getDescription());
 
         productRepository.save(product);
@@ -80,20 +77,50 @@ public class ProductService {
     }
 
     // 제품 수정
-    public boolean update_product(int no, InsertProductDto insertProductDto){
+    public boolean update_product(int no, InsertProductDto dto) {
+        Optional<ProductEntity> optional = productRepository.findById(no); // 원래 DB에 있던 값
+        if (optional.isEmpty()) {
+            return false;
+        }
 
-        Optional<Product> opProduct= productRepository.findById(no);
-        Product product= opProduct.get(); // DB에 저장되어있는 데이터를 product에 저장
-        if (insertProductDto!=null){ // product를 입력받은 insertProductDto로 다시 저장한 다음 수정.
-            product.setCategory(insertProductDto.getRegistCategory());
-            product.setProductName(insertProductDto.getProductName());
-            product.setProductPrice(insertProductDto.getPrice());
-            product.setAmount(insertProductDto.getAmount());
+        ProductEntity product = optional.get();
+        product.setCategory(dto.getCategory()); // 수정할 데이터가 product에 들어간다.
+        product.setProductName(dto.getProductName());
+        product.setProductPrice(dto.getProductPrice());
+        product.setAmount(dto.getAmount());
+        product.setDescription(dto.getDescription());
 
-            productRepository.save(product); // 수정된다.
+        String saveDir = "C:/uploads/product/";
+        new File(saveDir).mkdirs();
+
+        try {
+            if (dto.getThumbnailUrl() != null && !dto.getThumbnailUrl().isEmpty()) {
+                String thumbFileName = System.currentTimeMillis() + "_" + dto.getThumbnailUrl().getOriginalFilename();
+                dto.getThumbnailUrl().transferTo(new File(saveDir + thumbFileName));
+                product.setThumbnailUrl("/images/product" + thumbFileName);
+            }
+
+            if (dto.getDetailUrl() != null && !dto.getDetailUrl().isEmpty()) {
+                String detailFileName = System.currentTimeMillis() + "_" + dto.getDetailUrl().getOriginalFilename();
+                dto.getDetailUrl().transferTo(new File(saveDir + detailFileName));
+                product.setDetailUrl("/images/product" + detailFileName);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        productRepository.save(product);
+        return true;
+    }
+
+    public boolean product_delete(int noArray[]) {
+        if (noArray.length != 0){
+            for (int no : noArray){
+                productRepository.deleteById(no);
+            }
             return true;
         }
         return false;
     }
-
 }

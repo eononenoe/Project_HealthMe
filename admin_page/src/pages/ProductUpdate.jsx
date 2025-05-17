@@ -24,8 +24,9 @@ export default function ProductUpdate({
     amount: 0,
     description: "",
   });
-  //const [dataform, setDataform] = useState([]);
-  const [saveform, setSaveform] = useState(false); //수정된 데이터 저장하게 하는 트리거
+
+  const [thumbnail, setThumbnail] = useState();
+  const [detailImage, setDetailImage] = useState();
 
   useEffect(() => {
     // 수정할 product값을 form에 넣어두기 위해서.
@@ -43,7 +44,6 @@ export default function ProductUpdate({
       [name]: value, //form을 수정한 내용으로 변경.
       // 객체에서 key자리에 변수를 사용할려면 []
     }));
-    // setSaveform(true);
   };
 
   //useEffect(() => {
@@ -51,9 +51,33 @@ export default function ProductUpdate({
   //}, [saveform]);
 
   const handleSubmit = async () => {
-    await axios.put(`/product/${product.no}`, form);
-    onClose();
-    updatesucess(); // 부모에게 알리는 역할
+    const formData = new FormData();
+    formData.append("category", form.category);
+    formData.append("productName", form.productName);
+    formData.append("productPrice", form.productPrice);
+    formData.append("amount", form.amount);
+    formData.append("description", form.description);
+
+    if (thumbnail) {
+      formData.append("thumbnailUrl", thumbnail);
+    }
+
+    if (detailImage) {
+      formData.append("detailUrl", detailImage);
+    }
+
+    try {
+      await axios.put(`/product/${form.no}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      onClose();
+      updatesucess(); // 부모 컴포넌트에게 성공 알림
+    } catch (err) {
+      console.error("수정 실패", err);
+      window.alert("수정 실패!");
+    }
   };
 
   return (
@@ -94,6 +118,23 @@ export default function ProductUpdate({
           value={form.description}
           onChange={handleChange}
         />
+        <Button variant="contained" component="label">
+          썸네일 이미지 업로드
+          <input
+            type="file"
+            hidden
+            onChange={(e) => setThumbnail(e.target.files[0])}
+          />
+        </Button>
+
+        <Button variant="contained" component="label">
+          상세 이미지 업로드
+          <input
+            type="file"
+            hidden
+            onChange={(e) => setDetailImage(e.target.files[0])}
+          />
+        </Button>
         <Button variant="outlined" onClick={onClose}>
           취소
         </Button>

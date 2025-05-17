@@ -5,33 +5,30 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "product_tbl")
+@Table(name = "transHistory_tbl")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
-
+public class TransactionHistoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int no;
-
-    private String category;
 
     @Column(length=300)
     private String productName;
 
     private int productPrice;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    private String transcationPeople;
 
-    @Column(nullable = true)
-    private Integer amount;
+    private String transcationBank;
 
-    @Column(name = "thumbnail_url")
-    private String thumbnailUrl;
+    private LocalDateTime transcationTime;
 
-    @Column(name = "detail_url")
-    private String detailUrl;
+    private String cancel;
+
+    private String success;
 }

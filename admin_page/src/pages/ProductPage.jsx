@@ -32,6 +32,8 @@ export default function ProductPage() {
   const [updateProduct, setUpdateProduct] = useState([]);
   const [updateOpen, setUpdateOpen] = useState(false);
 
+  const [checkItems, setCheckItems] = useState([]);
+
   // 로직 함수
 
   // 페이지 버튼 클릭 이벤트 정의
@@ -64,6 +66,38 @@ export default function ProductPage() {
     // 수정하기 버튼을 누르면 실행
     window.alert("제품이 수정되었습니다.");
     setUpdate((state) => !state);
+  };
+
+  // 삭제하기 체크박스 선택
+  const AllCheck = (checked) => {
+    if (checked) {
+      const noArray = [];
+      products.forEach((el) => noArray.push(el.no));
+      setCheckItems(noArray);
+    } else {
+      setCheckItems([]);
+    }
+  };
+
+  const subCheckBox = (checked, no) => {
+    if (checked) {
+      setCheckItems((prev) => [...prev, no]);
+    } else {
+      setCheckItems(checkItems.filter((el) => el !== no));
+    }
+  };
+
+  // 삭제하기 api
+  const handledelete = async () => {
+    const delteBoolean = window.confirm("정말로 삭제하시겠습니까?");
+    if (delteBoolean) {
+      await axios.post("product/delete", checkItems);
+      window.alert("삭제 완료되었습니다.");
+      setUpdate((prev) => !prev); // 목록 새로고침
+    } else {
+      setCheckItems([]); // 체크된 항목 초기화
+      return;
+    }
   };
 
   // useEffect
@@ -111,7 +145,10 @@ export default function ProductPage() {
               {/* tr 역할을 하는 컴포넌트 */}
               <TableCell padding="checkbox">
                 {/* th, td 역할( TableHead안에서는 th 역할 TableBody안에서는 td 역할) */}
-                <Checkbox></Checkbox>
+                <Checkbox
+                  onChange={(e) => AllCheck(e.target.checked)}
+                  checked={checkItems.length === products.length ? true : false}
+                ></Checkbox>
               </TableCell>
               <TableCell>No</TableCell>
               <TableCell>카테고리</TableCell>
@@ -127,7 +164,10 @@ export default function ProductPage() {
               <TableRow key={product.id}>
                 {/*key는 React가 어떤 항목이 바뀌었는지 정확히 알게 도와주는 고유 식별자입니다. */}
                 <TableCell padding="checkbox">
-                  <Checkbox></Checkbox>
+                  <Checkbox
+                    onChange={(e) => subCheckBox(e.target.checked, product.no)}
+                    checked={checkItems.includes(product.no) ? true : false}
+                  ></Checkbox>
                 </TableCell>
                 <TableCell>{product.no}</TableCell>
                 <TableCell>{product.category}</TableCell>
@@ -164,7 +204,12 @@ export default function ProductPage() {
       </Box>
 
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2, gap: 2 }}>
-        <Button variant="outlined" color="secondary" sx={{ mt: 2 }}>
+        <Button
+          variant="outlined"
+          color="secondary"
+          sx={{ mt: 2 }}
+          onClick={handledelete}
+        >
           삭제
         </Button>
         <Button
