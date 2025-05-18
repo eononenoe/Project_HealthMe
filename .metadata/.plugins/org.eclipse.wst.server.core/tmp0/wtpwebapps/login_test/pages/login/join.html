@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- BS5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <style>
+        a.fs-custom-small {
+            font-size: .8rem !important;
+        }
+
+        form {
+            width: 380px !important;
+            margin: 50px auto;
+        }
+
+        .header {
+            height: 12px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- 
+    form : 사용자로부터 특정정보를 받아 서버로 전달하는데 사용되는 태그
+    action Attribute : 전달받는 서버 URI
+    method Attribute : 서버로 요청하는 방식
+        - GET        : 사용자 요청 정보를 Query String으로 전달(Default)
+        - GET        : 사용자 요청 정보를 Request body(payload)으로 전달(Default)
+        - PUT        :
+        - PATCH      :
+        - DELETE     :
+    -->
+    <form action="/test.jsp" method="get" class="mt-5">
+        <div class="row header mb-2 bg-dark">
+            <!-- 헤더(검정색) -->
+        </div>
+
+        <div class="row title mb-2">
+            <!-- title -->
+            <h4 class="text-center fw-bold"> 회원가입</h4>
+        </div>
+        <hr>
+        <div class="row mb-2">
+            <label for="" class="col-3">아이디</label>
+            <input type="text" name="userid" class="col form-control">
+            <!-- javascript:void(0)를 해야 새로고침 꺼지게하는 기능 -->
+            <a href="javascript:void(0)" class="col-3 btn btn-primary ms-2">중복확인</a>
+        </div>
+        <div class="row mb-2">
+            <label for="" class="col-3">비밀번호</label>
+            <!-- type ="password" = "*" 표시됨  -->
+            <input type="password" name="password" class="col form-control">
+        </div>
+        <div class="row mb-2">
+            <label for="" class="col-3"></label>
+            <!-- placeholder="비밀번호 재확인" = 박스안에 적힘 -->
+            <input type="password" name="re-password" placeholder="비밀번호 재확인" class="col form-control">
+        </div>
+        <div class="row mb-2">
+            <label for="" class="col-3">이름</label>
+            <input type="text" name="username" class="col form-control">
+        </div>
+        <div class="row mb-2">
+            <label for="" class="col-3">주소</label>
+            <input type="text" name="zipcode" class="col form-control">
+            <!-- javascript:void(0)를 해야 새로고침 꺼지게하는 기능 -->
+            <a href="javascript:void(0)" class="col-3 btn btn-primary ms-2">우편번호</a>
+        </div>
+        <div class="row mb-2">
+            <label for="" class="col-3"></label>
+            <input type="text" name="addr1" class="col form-control">
+        </div>
+        <div class="row mb-2">
+            <label for="" class="col-3"></label>
+            <input type="text" name="addr2" class="col form-control">
+        </div>
+        <div class="row mb-2">
+            <label for="" class="col-3">휴대전화</label>
+            <select name="phone1" class="col form-select me-2">
+                <option value="">010</option>
+                <option value="">011</option>
+            </select>
+            <input type="text" class="col form-control me-2">
+            <input type="text" class="col form-control">
+        </div>
+        <div class="row mb-2">
+            <label for="" class="col-3">전화번호</label>
+            <select name="phone2" class="col form-select me-2">
+                <option value="082">+82</option>
+                <option value="053">+53</option>
+            </select>
+            <input type="text" class="col form-control me-2">
+            <input type="text" class="col form-control">
+        </div>
+        <div class="row mb-2">
+            <label for="" class="col-3">이메일</label>
+            <input type="text" name="email" class="col form-select me-2">
+            <select class="col form-control">
+                <option value="naver">@naver.com</option>
+                <option value="daum">@daum.net</option>
+            </select>
+        </div>
+        <div class="row mb-2">
+            <label for="" class="col-3 form-cheak-label">생년월일</label>
+            <input type="radio" name="cal" value="1" class="col-1 p-0 me-2 form-check-input">
+            <label for="" class="col-1 p-0">양</label>
+            <input type="radio" name="cal" value="0" class="col-1 p-0 me-2 form-check-input">
+            <label for="" class="col-1 p-0">음</label>
+        </div>
+        <div class="row mb-2">
+            <label for="" class="col-3"></label>
+            <select class="col form-select me-2">
+                <option value="">2001</option>
+                <option value="">2002</option>
+            </select>
+            <select class="col form-select me-2">
+                <option value="">01</option>
+                <option value="">12</option>
+            </select>
+            <select class="col form-select">
+                <option value="">01</option>
+                <option value="">30</option>
+            </select>
+        </div>
+        <hr>
+        <div class="row agreement  mb-2">
+            <input type="checkbox" name="email-recv" class="col-1 form-cheak-input p-0">
+            <label for="" class="col">헬시미의 이메일을 수신합니다</label>
+        </div>
+        <div class="row agreement mb-2">
+            <input type="checkbox" name="sns-recv" class="col-1 form-cheak-input p-0">
+            <label for="" class="col">헬시미의 SMS을 수신합니다</label>
+        </div>
+        <div class="row mb-2">
+            <div class="col p-0">
+                <a class="col btn btn-secondary w-100 mb-2 fs-6" href="javascript:void(0)">가입 취소</a>
+            </div>
+            <div class="col ms-2 p-0">
+                <button class="btn btn-primary w-100 fs-6">회원 가입</button>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>

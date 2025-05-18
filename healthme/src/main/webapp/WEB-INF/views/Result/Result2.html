@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>맞춤형 성분</title>
+    <!-- css -->
+    <link rel="stylesheet" href="/static/css/common/common.css">
+    <link rel="stylesheet" href="/static/css/pages/Result2.css">
+    <!-- js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/static/js/by.js"></script>
+
+
+    <!-- chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+
+
+</head>
+
+<body>
+    <div id="header"></div>
+
+    <div class="result_box">
+
+        <div class="nutrient_graph">
+            <div class="content-left">
+                <div class="nutrient-vertical-box">
+                    <div class="nutrient-label">비타민 D</div>
+                  
+                    <div class="nutrient-bar-row">
+                      <span class="nutrient-percent">38%</span>
+                      <div class="nutrient-bar-wrapper">
+                        <div class="nutrient-bar-container has-thresholds">
+                          <div class="nutrient-bar-fill vitaminD" style="width: 38%;"></div>
+                        </div>
+                        <div class="threshold-text left">결핍</div>
+                        <div class="threshold-text middle">부족</div>
+                        <div class="threshold-text right">안전</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                   <div class="nutrient-vertical-box">
+                    <div class="nutrient-label">철분</div>
+                    <div class="nutrient-bar-row">
+                        <span class="nutrient-percent">45%</span>
+                        <div class="nutrient-bar-container">
+                            <div class="nutrient-bar-fill iron" style="width: 45%;"></div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="nutrient-vertical-box">
+                    <div class="nutrient-label">단백질</div>
+                    <div class="nutrient-bar-row">
+                        <span class="nutrient-percent">77%</span>
+                        <div class="nutrient-bar-container">
+                            <div class="nutrient-bar-fill protein" style="width: 77%;"></div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="nutrient-vertical-box">
+                    <div class="nutrient-label">칼슘</div>
+                    <div class="nutrient-bar-row">
+                        <span class="nutrient-percent">66%</span>
+                        <div class="nutrient-bar-container">
+                            <div class="nutrient-bar-fill calcium" style="width: 66%;"></div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="nutrient-vertical-box">
+                    <div class="nutrient-label">식이섬유</div>
+                    <div class="nutrient-bar-row">
+                        <span class="nutrient-percent">55%</span>
+                        <div class="nutrient-bar-container">
+                            <div class="nutrient-bar-fill fiber" style="width: 55%;"></div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="nutrient-vertical-box">
+                    <div class="nutrient-label">마그네슘</div>
+                    <div class="nutrient-bar-row">
+                        <span class="nutrient-percent">42%</span>
+                        <div class="nutrient-bar-container">
+                            <div class="nutrient-bar-fill magnesium" style="width: 42%;"></div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="nutrient-vertical-box">
+                    <div class="nutrient-label">칼륨</div>
+                    <div class="nutrient-bar-row">
+                        <span class="nutrient-percent">30%</span>
+                        <div class="nutrient-bar-container">
+                            <div class="nutrient-bar-fill potassium" style="width: 30%;"></div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="nutrient-vertical-box">
+                    <div class="nutrient-label">비오틴</div>
+                    <div class="nutrient-bar-row">
+                        <span class="nutrient-percent">40%</span>
+                        <div class="nutrient-bar-container">
+                            <div class="nutrient-bar-fill biotin" style="width: 40%;"></div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="nutrient-vertical-box">
+                    <div class="nutrient-label">아연</div>
+                    <div class="nutrient-bar-row">
+                        <span class="nutrient-percent">48%</span>
+                        <div class="nutrient-bar-container">
+                            <div class="nutrient-bar-fill zinc" style="width: 48%;"></div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="nutrient-vertical-box">
+                    <div class="nutrient-label">아르기닌</div>
+                    <div class="nutrient-bar-row">
+                        <span class="nutrient-percent">35%</span>
+                        <div class="nutrient-bar-container">
+                            <div class="nutrient-bar-fill arginine" style="width: 35%;"></div>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+             
+            <div class="content-middle">
+                <div class="score-top">
+                    <button class="score-btn">🍖 먹었어요</button>
+                    <button class="score-btn">🔥 태웠어요</button>
+                    <button class="score-btn">🕕 단식했어요</button>
+                </div>
+                <div class="score">
+                    <li>82 / 100점</li>
+                    <li>전날 대비 -13점 (4.12 : 95점 > 4.13 : 82점)</li>
+                </div>
+                <div class="day_score">
+                    <canvas id="myChart" width="250" height="350" ></canvas>
+                </div>
+            </div>
+            <div class="content-right">
+                <h2>줄여야 할 것</h2>
+                <div class="nnn">🥇단백질</div>
+                <div class="nnn">🥈지방</div>
+                <div class="nnn">🥉탄수화물</div>
+                <h2>먹어야 할 것</h2>
+                <div class="nnn">🥇단백질</div>
+                <div class="nnn">🥈지방</div>
+                <div class="nnn">🥉탄수화물</div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="footer"></div>
+    <script src="/static/js/result.js"></script>
+</body>
+
+</html>
