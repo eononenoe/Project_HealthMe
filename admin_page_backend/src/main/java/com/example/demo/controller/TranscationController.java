@@ -1,8 +1,13 @@
 package com.example.demo.controller;
 
+
 import com.example.demo.domain.dto.TranscationStatusDto;
+import com.example.demo.domain.entity.TransactionHistoryEntity;
 import com.example.demo.domain.service.TranscationService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,4 +28,11 @@ public class TranscationController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("수정 실패하였습니다.");
     }
+
+    @GetMapping("/search/data")
+    public Page<TransactionHistoryEntity> select_Data (@RequestParam String searchText, @RequestParam int page, @RequestParam int size){
+        Page<TransactionHistoryEntity> searchData = transcationService.select_trans_name(searchText,page,size);
+        return searchData;
+    }
+
 }

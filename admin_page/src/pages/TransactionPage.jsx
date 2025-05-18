@@ -11,8 +11,11 @@ import {
   Button,
   Box,
   Pagination,
+  TextField,
+  InputAdornment,
 } from "@mui/material";
 import axios from "axios";
+import SearchIcon from "@mui/icons-material/Search";
 
 export default function TransactionPage() {
   // DB조회와 상품 등록후 재조회
@@ -23,6 +26,10 @@ export default function TransactionPage() {
   const [totalPages, setTotalPages] = useState(1);
 
   const [update, setUpdate] = useState(false); // 제품등록 후 다시 db를 가져오기 위한 트리거
+
+  // 검색
+  const [searchText, setSearchText] = useState();
+  const [searchMode, setSearchMode] = useState(false); // 검색 모드로 분기시키는 트리거
 
   // 로직 함수
 
@@ -76,26 +83,81 @@ export default function TransactionPage() {
     }
   };
 
+  // 검색 핸들러
+  const searchChange = (e) => {
+    setSearchText(e.target.value);
+  };
+
+  const searchClick = () => {
+    setPage(1);
+    if (searchText !== "") {
+      setSearchMode(true); // 검색 모드로 들어간다.
+    } else {
+      setSearchMode(false); // 전체 목록 보기
+    }
+    setUpdate((prev) => !prev);
+  };
+
   // 페이지네이션
   useEffect(() => {
-    const pagemove = async () => {
-      const PageContent = await axios.get(
-        `/trans/selectAll?page=${page - 1}&size=10`
-      );
-      console.log(PageContent);
-      // size는 한페이지에 몇개를 보여줄지 , page-1은 백엔드에서는 0부터 세니까 개발자 편하라고 하는거다.
-      setPrducts(PageContent.data.content);
-      setTotalPages(PageContent.data.totalPages);
+    const selectMode = async () => {
+      if (searchMode) {
+        const searchData = await axios.get(
+          `/transactions/search/data?searchText=${searchText}&page=${
+            page - 1
+          }&size=10`
+        );
+        console.log("searchData : ", searchData);
+        if (searchData !== null) {
+          setPrducts(searchData.data.content); // 리렌더링이 일어난다. -> 화면에 검색결과에 따른 목록이 보인다.
+          setTotalPages(searchData.data.totalPages);
+        }
+      } else {
+        const PageContent = await axios.get(
+          `/trans/selectAll?page=${page - 1}&size=10`
+        );
+        console.log(PageContent);
+        if (PageContent !== null) {
+          // size는 한페이지에 몇개를 보여줄지 , page-1은 백엔드에서는 0부터 세니까 개발자 편하라고 하는거다.
+          setPrducts(PageContent.data.content);
+          setTotalPages(PageContent.data.totalPages);
+        }
+      }
     };
-
-    pagemove();
-  }, [page, update]);
+    selectMode();
+  }, [page, update, searchMode]);
 
   return (
     <Box>
-      <Typography variant="h7" fontWeight="bold">
-        상품 관리 페이지입니다
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
+        <Typography variant="h7" fontWeight="bold">
+          상품 관리 페이지입니다
+        </Typography>
+
+        <TextField
+          variant="outlined"
+          placeholder="거래자를 입력하세요"
+          value={searchText}
+          onChange={searchChange}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment style={{ cursor: "pointer", position: "end" }}>
+                <SearchIcon onClick={searchClick} />
+              </InputAdornment>
+            ),
+          }}
+          size="small"
+          sx={{ width: 200 }}
+        />
+      </Box>
+
       <TableContainer>
         <Table>
           {/*실제 테이블을 감싸는 컴포넌트 */}
@@ -164,6 +226,7 @@ export default function TransactionPage() {
       </TableContainer>
       {/* sx : style,  1 : 8px  */}
 
+      {}
       <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
         <Pagination
           count={totalPages}

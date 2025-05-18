@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TranscationRepository extends JpaRepository<TransactionHistoryEntity,Integer> {
 
-    Page<TransactionHistoryEntity> findAllByOrderByNoDesc(Pageable pageable);
+    Page<TransactionHistoryEntity> findByTranscationPeopleContaining(String searchText, Pageable pageable);
 
 }

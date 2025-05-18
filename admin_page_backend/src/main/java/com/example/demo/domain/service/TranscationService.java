@@ -7,6 +7,7 @@ import com.example.demo.domain.repository.TranscationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -20,9 +21,9 @@ public class TranscationService {
 
     // 페이지네이션된 거래 내역 가져오기
     public Page<TransactionHistoryEntity> selectAll(int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page,size);
-        
-        return transcationRepository.findAllByOrderByNoDesc(pageRequest);
+        PageRequest pageRequest = PageRequest.of(page,size, Sort.by(Sort.Direction.DESC, "transcationTime"));
+
+        return transcationRepository.findAll(pageRequest);
     }
 
     // 거래 취소 or 거래 완료
@@ -37,5 +38,10 @@ public class TranscationService {
         }
         return false;
 
+    }
+
+    public Page<TransactionHistoryEntity> select_trans_name(String searchText, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page,size,Sort.by(Sort.Direction.DESC, "transcationTime"));
+        return transcationRepository.findByTranscationPeopleContaining(searchText, pageRequest);
     }
 }
