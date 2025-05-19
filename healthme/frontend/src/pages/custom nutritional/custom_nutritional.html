@@ -29,6 +29,7 @@
     <!-- js -->
     <script src="/static/js/by.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/static/js/custom_nutritional.js"></script>
   </head>
 
   <body>
@@ -37,30 +38,53 @@
       <!-- 왼쪽 사이드바 -->
       <aside class="sidebar">
         <div class="gauge-container">
-          <div class="gauge-info">
-            <span>비타민</span>
-            <span>철분</span>
-            <span>단백질</span>
-            <span>칼슘</span>
-            <span>식이섬유</span>
-            <span>마그네슘</span>
-            <span>칼슘</span>
-            <span>비오틴</span>
-            <span>아연</span>
-            <span>아르기닌</span>
+          <div class="gauge-status-legend">
+            <div><span class="circle danger"></span> 위험</div>
+            <div><span class="circle warning"></span> 부족</div>
+            <div><span class="circle safe"></span> 안전</div>
+          </div>          
+          <div class="gauge-item">
+            <div class="gauge-label">비타민</div>
+            <div class="gauge-bar"><div class="gauge-fill" style="width: 33%"></div></div>
           </div>
-          <div class="gauge-bars">
-            <div class="gauge-bar">
-              <div class="gauge-fill" style="width: 0%"></div>
-            </div>
-            <div class="gauge-bar">
-              <div class="gauge-fill" style="width: 0%"></div>
-            </div>
-            <div class="gauge-bar">
-              <div class="gauge-fill" style="width: 0%"></div>
-            </div>
+          <div class="gauge-item">
+            <div class="gauge-label">철분</div>
+            <div class="gauge-bar"><div class="gauge-fill" style="width: 45%"></div></div>
+          </div>
+          <div class="gauge-item">
+            <div class="gauge-label">단백질</div>
+            <div class="gauge-bar"><div class="gauge-fill" style="width: 80%"></div></div>
+          </div>
+          <div class="gauge-item">
+            <div class="gauge-label">칼슘</div>
+            <div class="gauge-bar"><div class="gauge-fill" style="width: 77%"></div></div>
+          </div>
+          <div class="gauge-item">
+            <div class="gauge-label">식이섬유</div>
+            <div class="gauge-bar"><div class="gauge-fill" style="width: 65%"></div></div>
+          </div>
+          <div class="gauge-item">
+            <div class="gauge-label">마그네슘</div>
+            <div class="gauge-bar"><div class="gauge-fill" style="width: 33%"></div></div>
+          </div>
+          <div class="gauge-item">
+            <div class="gauge-label">칼슘</div>
+            <div class="gauge-bar"><div class="gauge-fill" style="width: 50%"></div></div>
+          </div>
+          <div class="gauge-item">
+            <div class="gauge-label">비오틴</div>
+            <div class="gauge-bar"><div class="gauge-fill" style="width: 60%"></div></div>
+          </div>
+          <div class="gauge-item">
+            <div class="gauge-label">아연</div>
+            <div class="gauge-bar"><div class="gauge-fill" style="width: 40%"></div></div>
+          </div>
+          <div class="gauge-item">
+            <div class="gauge-label">아르기닌</div>
+            <div class="gauge-bar"><div class="gauge-fill" style="width: 75%"></div></div>
           </div>
         </div>
+        
 
         <!-- 장바구니 영역 -->
         <div class="cart-section">
@@ -100,6 +124,11 @@
 
       <!-- 메인 콘텐츠 -->
       <main>
+        <h1 class="purchase-title">추천 재료</h1>
+
+        <div class="purchase-banner">
+          <img src="/img/main/반찬 배너.jpg" alt="배너" />
+        </div>
         <ul class="nutritional_low_content">
           <li><a href="#">추천순</a></li>
           <li>|</li>
