@@ -91,7 +91,7 @@ export default function ProductPage() {
   const handledelete = async () => {
     const delteBoolean = window.confirm("정말로 삭제하시겠습니까?");
     if (delteBoolean) {
-      await axios.post("product/delete", checkItems);
+      await axios.post("/product/delete", checkItems);
       window.alert("삭제 완료되었습니다.");
       setUpdate((prev) => !prev); // 목록 새로고침
     } else {

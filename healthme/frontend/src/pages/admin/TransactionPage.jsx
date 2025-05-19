@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
+import { Padding } from "@mui/icons-material";
 
 export default function TransactionPage() {
   // DB조회와 상품 등록후 재조회
@@ -74,6 +75,11 @@ export default function TransactionPage() {
       window.alert("작업을 취소하였습니다.");
     }
   };
+
+  const refundOrReturn = async () => {
+    const option = window.prompt("환불 또는 반품을 입력해주세요 (환불 / 반품)");
+  };
+
   const transAPI = async (transArray) => {
     try {
       await axios.post("/transactions/status", transArray);
@@ -89,13 +95,13 @@ export default function TransactionPage() {
   };
 
   const searchClick = () => {
-    setPage(1);
+    setPage(1); // 7페이지에서 다른 검색어로 검색했을때 다시 1페이지로 이동하기 위해서
     if (searchText !== "") {
       setSearchMode(true); // 검색 모드로 들어간다.
     } else {
       setSearchMode(false); // 전체 목록 보기
     }
-    setUpdate((prev) => !prev);
+    setUpdate((prev) => !prev); // 1페이지에서 '...'으로 검색했을때 바뀌게하기 위해서
   };
 
   // 페이지네이션
@@ -193,31 +199,46 @@ export default function TransactionPage() {
                 <TableCell>
                   {product.cancel === "N" && product.success === "N" ? (
                     // 거래가 진행중인 경우
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      onClick={() => transSuccess(product.no)}
-                    >
-                      거래 완료
-                    </Button>
+                    <>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={() => transSuccess(product.no)}
+                        sx={{ mr: 1 }}
+                      >
+                        거래 완료
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={() => transCancel(product.no)}
+                      >
+                        거래 취소
+                      </Button>
+                    </>
                   ) : product.cancel === "N" && product.success === "Y" ? (
                     <Button
                       variant="outlined"
+                      color="secondary"
                       size="small"
-                      onClick={() => transCancel(product.no)}
+                      onClick={refundOrReturn}
                     >
-                      거래 취소
+                      환불 / 반품 요청
                     </Button>
                   ) : (
+                    // product.cancel === "Y" , product.success === "N" 인 경우
                     <Typography
                       sx={{
                         pl: 1.7,
                         color: "#999",
+                        fontSize: "0.875rem",
+                        fontStyle: "italic",
                       }}
                     >
                       취소됨
                     </Typography>
                   )}
+                  {product.cancel === ""}
                 </TableCell>
               </TableRow>
             ))}
@@ -226,7 +247,6 @@ export default function TransactionPage() {
       </TableContainer>
       {/* sx : style,  1 : 8px  */}
 
-      {}
       <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
         <Pagination
           count={totalPages}
