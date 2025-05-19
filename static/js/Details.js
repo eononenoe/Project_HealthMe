@@ -1,44 +1,36 @@
 $(document).ready(function () {
-    let count = 1;
-    const unitPrice = 18900;
-  
-    // 수량 증가 버튼 클릭
-    $('.plus').on('click', function () {
-      count++;
-      updateDisplay();
-    });
-  
-    // 수량 감소 버튼 클릭
-    $('.minus').on('click', function () {
-      if (count > 1) {
-        count--;
-        updateDisplay();
-      }
-    });
-  
-    // 화면에 수량과 총합 표시
-    function updateDisplay() {
-      $('.qty-number').text(count);
-      $('.summary-box strong:first').text(`${count}개`);
-      $('.total-price strong').text(`${(unitPrice * count).toLocaleString()}원`);
-    }
-  
-    // 페이지 로드시 초기 상태 표시
+  const unitPrice = 18900;
+
+  // updateDisplay 함수 정의
+  function updateDisplay() {
+    let count = parseInt($('.qty-input').val());
+    if (isNaN(count) || count < 1) count = 1;
+    $('.qty-input').val(count);
+
+    $('.summary-box strong:first').text(`${count}개`);
+    $('.total-price strong').text(`${(unitPrice * count).toLocaleString()}원`);
+  }
+
+  // input 변경 시 수량 반영
+  $('.qty-input').on('input', function () {
     updateDisplay();
   });
-  
-  $(document).ready(function () {
-    $('.tab-btn').click(function () {
-      // 버튼 활성화 시각 처리
-      $('.tab-btn').removeClass('active');
-      $(this).addClass('active');
-  
-      // 모든 탭 콘텐츠 숨기기
-      $('.tab-content').hide();
-  
-      // 선택된 탭만 보여주기
-      const target = $(this).data('target');
-      $('#' + target).show();
-    });
+
+  //  페이지 처음 로드 시 수량 반영
+  updateDisplay();
+
+  // 더보기 버튼 기능
+  $('#showMoreBtn').on('click', function () {
+    $('#descBox').addClass('expanded');
+    $(this).hide();
   });
-  
+
+  // 탭 버튼 클릭
+  $('.tab-btn').click(function () {
+    $('.tab-btn').removeClass('active');
+    $(this).addClass('active');
+    $('.tab-content').hide();
+    const target = $(this).data('target');
+    $('#' + target).show();
+  });
+});
