@@ -1,0 +1,149 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    margin: 0;
+    padding: 0;
+}
+.login_box {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+
+}
+
+
+h2{
+    margin-bottom: 40px;
+    margin-top: 60px;
+}
+.custom-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    width: 481px;
+    padding : 11px 16px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    font-size: 14px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    outline: none;
+}
+
+.custom-input:hover {
+    border-color: orange;
+}
+.custom-input:hover::placeholder {
+    color: orange;
+  }
+.line{
+    color: gray;
+    display:flex;
+    flex-direction: row;
+    text-align: center;
+    align-items: center;
+    font-size: 12px;
+    margin-top: 16px;
+}
+.line > span {
+    padding: 20px;
+}
+.line > hr{
+    flex: 1;
+}
+.cb {
+    display: flex;
+    justify-content: flex-start;
+    font-size: 14px;
+    gap: 10px;
+}
+
+.btn-custom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: none;
+    margin-top: 16px;
+    width: 481px;
+    height: 51px;
+    padding: 0 16px;
+}
+
+.box1 {
+    padding: 48px 36px;
+}
+
+.btn1 {
+    background-color: orange;
+    color: white;
+    border-radius: 10px;
+}
+
+.btn1:hover {
+    background-color: rgb(218, 141, 0);
+}
+
+.btn2 {
+    background-color: white;
+    border: 1px solid rgb(238, 234, 234);
+    border-radius: 10px;
+}
+
+.btn2:hover {
+    border-color: orange;
+}
+
+.btn3 {
+    background-color: white;
+    border : 1px solid rgb(238, 234, 234);
+    border-radius: 10px;
+}
+
+.btn3:hover {
+    border-color: orange;
+}
+.logo_google{
+    width: 40px;
+    height: 25px;
+    position: absolute;
+    left: 10px;
+}
+.logo_kakao{
+    width: 13px;
+    height: 15px;
+    position: absolute;
+    left: 23px;
+}
+
+.hypertext {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+.hypertext > a {
+    font-size: 15px;
+    margin-right: 10px;
+}
+.hypertext a:not(:last-child) {
+    border-right: 1px solid lightgray;
+    padding-right: 15px;
+}
+.suggest-join{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 35px;
+    width: 480px;
+    height: 45px;
+    border: 1px solid gainsboro;
+    padding: 20px;
+    border-radius: 10px;
+}
