@@ -25,13 +25,13 @@ export default function ProductRegisterDialog({ open, onClose, onSubmit }) {
   const AddProduct = async () => {
     // 등록버튼 눌렀을때 실행되는 이벤트
     const foamData = new FormData();
-    foamData.append("registCategory", registCategory);
+    foamData.append("category", registCategory);
     foamData.append("productName", productName);
-    foamData.append("price", Number(price));
+    foamData.append("productPrice", Number(price));
     foamData.append("amount", Number(amount));
     foamData.append("description", description);
-    foamData.append("thumbnail", thumbnail);
-    foamData.append("detailImage", detailImage);
+    foamData.append("thumbnailUrl", thumbnail);
+    foamData.append("detailUrl", detailImage);
 
     // HTML 폼 데이터를 key-value 쌍으로 저장하고 서버로 전송할 수 있게 해주는 특수한 객체이다(브라우저가 제공하는 객체이다).
     try {

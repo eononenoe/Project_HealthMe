@@ -49,6 +49,15 @@ dependencies {
 	// DB 드라이버
 	implementation 'com.mysql:mysql-connector-j'
 
+	//MYBATIS
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
+	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
+
+	//REST LIB
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.19.0'
+	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.19.0'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.0'
+
 }
 
 tasks.named('test') {
