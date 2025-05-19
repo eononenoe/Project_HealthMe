@@ -1,11 +1,11 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
-import Header from 'components/header';
-import Footer from 'components/footer';
-import ResultPage from 'pages/Result/ResultPage';
-import JoinPage from 'pages/login/JoinPage';
-import LoginPage from 'pages/login/LoginPage';
+import Header from "components/header";
+import Footer from "components/footer";
+import ResultPage from "pages/Result/ResultPage";
+import JoinPage from "pages/login/JoinPage";
+import LoginPage from "pages/login/LoginPage";
 
 // 관리자 페이지
 import Layout from "pages/admin/Layout";
@@ -16,7 +16,7 @@ import Transaction from "pages/admin/TransactionPage";
 function AppRoutes() {
   const location = useLocation();
 
-  const isAdminPage = location.pathname.startsWith('/admin');
+  const isAdminPage = location.pathname.startsWith("/admin");
 
   return (
     <>
