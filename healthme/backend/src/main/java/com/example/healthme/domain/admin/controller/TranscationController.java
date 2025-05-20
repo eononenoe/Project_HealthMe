@@ -2,7 +2,7 @@ package com.example.healthme.domain.admin.controller;
 
 
 import com.example.healthme.domain.admin.dto.TranscationStatusDto;
-import com.example.healthme.domain.admin.entity.TransactionHistoryEntity;
+import com.example.healthme.domain.admin.entity.OrderEntity;
 import com.example.healthme.domain.admin.service.TranscationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,9 +28,20 @@ public class TranscationController {
     }
 
     @GetMapping("/search/data")
-    public Page<TransactionHistoryEntity> select_Data (@RequestParam String searchText, @RequestParam int page, @RequestParam int size){
-        Page<TransactionHistoryEntity> searchData = transcationService.select_trans_name(searchText,page,size);
+    public Page<OrderEntity> select_Data (@RequestParam String searchText, @RequestParam int page, @RequestParam int size){
+        Page<OrderEntity> searchData = transcationService.select_trans_name(searchText,page,size);
         return searchData;
+    }
+
+    @PostMapping("/refundReturn")
+    public ResponseEntity<?> refundReturn(@RequestBody TranscationStatusDto transcationStatusDto, @RequestParam("type") String type){
+        System.out.println("transcationStatusDto "+transcationStatusDto+"type "+type);
+        boolean bool =transcationService.refundReturn(transcationStatusDto,type);
+        if(bool){
+            return ResponseEntity.ok(type+" 되었습니다.");
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(type+" 실패하였습니다.");
+        }
     }
 
 }

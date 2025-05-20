@@ -7,12 +7,16 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Checkbox,
   Button,
   Box,
   Pagination,
   TextField,
   InputAdornment,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
 } from "@mui/material";
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
@@ -32,6 +36,10 @@ export default function TransactionPage() {
   const [searchText, setSearchText] = useState();
   const [searchMode, setSearchMode] = useState(false); // 검색 모드로 분기시키는 트리거
 
+  // 환불/반품
+  const [refundReturnOrderid, setRefundReturnOrderid] = useState();
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   // 로직 함수
 
   // 페이지 버튼 클릭 이벤트 정의
@@ -43,14 +51,14 @@ export default function TransactionPage() {
   };
 
   // 거래 완료, 취소 이벤트 정의
-  const transSuccess = (no) => {
+  const transSuccess = (orderId) => {
     // cancel : N success: Y -> cancel : N success : Y
     const boolean = window.confirm("거래를 완료하시겠습니까?");
     if (boolean) {
       const transArray = {
-        cancel: "N",
-        success: "Y",
-        no: no,
+        isCanceled: "N",
+        isCompleted: "Y",
+        orderId: orderId,
       };
       transAPI(transArray);
       setUpdate((prev) => !prev);
@@ -60,24 +68,20 @@ export default function TransactionPage() {
     }
   };
 
-  const transCancel = (no) => {
+  const transCancel = (orderId) => {
     // cancel : N success : Y -> cancel : Y success : N
     const boolean = window.confirm("거래를 취소하시겠습니까?");
     if (boolean) {
       const transArray = {
-        cancel: "Y",
-        success: "N",
-        no: no,
+        isCanceled: "Y",
+        isCompleted: "N",
+        orderId: orderId,
       };
       transAPI(transArray);
       setUpdate((prev) => !prev);
     } else {
       window.alert("작업을 취소하였습니다.");
     }
-  };
-
-  const refundOrReturn = async () => {
-    const option = window.prompt("환불 또는 반품을 입력해주세요 (환불 / 반품)");
   };
 
   const transAPI = async (transArray) => {
@@ -102,6 +106,41 @@ export default function TransactionPage() {
       setSearchMode(false); // 전체 목록 보기
     }
     setUpdate((prev) => !prev); // 1페이지에서 '...'으로 검색했을때 바뀌게하기 위해서
+  };
+
+  // 환불/반품 요청 버튼 클릭
+  const openDialog = (orderId) => {
+    setRefundReturnOrderid(orderId);
+    setDialogOpen(true);
+  };
+
+  const handleRefundOrReturn = (element) => {
+    if (element === "환불") {
+      const transArray = {
+        refundRequested: "Y",
+        orderId: refundReturnOrderid,
+      };
+      refundReturnAPI(transArray, element);
+      setDialogOpen(false);
+      setUpdate((prev) => !prev);
+    } else if (element === "반품") {
+      const transArray = {
+        returnRequested: "Y",
+        orderId: refundReturnOrderid,
+      };
+      refundReturnAPI(transArray, element);
+      setDialogOpen(false);
+      setUpdate((prev) => !prev);
+    }
+  };
+
+  const refundReturnAPI = async (transArray, element) => {
+    try {
+      await axios.post(
+        `/transactions/refundReturn?type=${element}`,
+        transArray
+      );
+    } catch (error) {}
   };
 
   // 페이지네이션
@@ -188,22 +227,22 @@ export default function TransactionPage() {
             {transproducts.map((product) => (
               <TableRow key={product.id}>
                 {/*key는 React가 어떤 항목이 바뀌었는지 정확히 알게 도와주는 고유 식별자입니다. */}
-                <TableCell>{product.no}</TableCell>
+                <TableCell>{product.orderId}</TableCell>
                 <TableCell>{product.productName}</TableCell>
                 <TableCell>{product.productPrice}</TableCell>
                 <TableCell>{product.transcationPeople}</TableCell>
                 <TableCell>{product.transcationBank}</TableCell>
-                <TableCell>{product.transcationTime}</TableCell>
-                <TableCell>{product.cancel}</TableCell>
-                <TableCell>{product.success}</TableCell>
+                <TableCell>{product.orderDate}</TableCell>
+                <TableCell>{product.isCanceled}</TableCell>
+                <TableCell>{product.isCompleted}</TableCell>
                 <TableCell>
-                  {product.cancel === "N" && product.success === "N" ? (
+                  {product.isCanceled === "N" && product.isCompleted === "N" ? (
                     // 거래가 진행중인 경우
                     <>
                       <Button
                         variant="outlined"
                         size="small"
-                        onClick={() => transSuccess(product.no)}
+                        onClick={() => transSuccess(product.orderId)}
                         sx={{ mr: 1 }}
                       >
                         거래 완료
@@ -211,20 +250,45 @@ export default function TransactionPage() {
                       <Button
                         variant="outlined"
                         size="small"
-                        onClick={() => transCancel(product.no)}
+                        onClick={() => transCancel(product.orderId)}
                       >
                         거래 취소
                       </Button>
                     </>
-                  ) : product.cancel === "N" && product.success === "Y" ? (
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      size="small"
-                      onClick={refundOrReturn}
-                    >
-                      환불 / 반품 요청
-                    </Button>
+                  ) : product.isCanceled === "N" &&
+                    product.isCompleted === "Y" ? (
+                    product.refundRequested === "Y" ? (
+                      <Typography
+                        sx={{
+                          pl: 1.7,
+                          color: "#999",
+                          fontSize: "0.875rem",
+                          fontStyle: "italic",
+                        }}
+                      >
+                        환불 완료
+                      </Typography>
+                    ) : product.returnRequested === "Y" ? (
+                      <Typography
+                        sx={{
+                          pl: 1.7,
+                          color: "#999",
+                          fontSize: "0.875rem",
+                          fontStyle: "italic",
+                        }}
+                      >
+                        반품 완료
+                      </Typography>
+                    ) : (
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        size="small"
+                        onClick={() => openDialog(product.orderId)}
+                      >
+                        환불 / 반품 요청
+                      </Button>
+                    )
                   ) : (
                     // product.cancel === "Y" , product.success === "N" 인 경우
                     <Typography
@@ -235,10 +299,9 @@ export default function TransactionPage() {
                         fontStyle: "italic",
                       }}
                     >
-                      취소됨
+                      취소 완료
                     </Typography>
                   )}
-                  {product.cancel === ""}
                 </TableCell>
               </TableRow>
             ))}
@@ -257,6 +320,32 @@ export default function TransactionPage() {
           size="large"
         />
       </Box>
+
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+        <DialogTitle>요청 선택</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            해당 거래에 대해 환불 또는 반품 중 어떤 요청을 하시겠습니까?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => handleRefundOrReturn("환불")}
+            color="error"
+            variant="outlined"
+          >
+            환불 요청
+          </Button>
+          <Button
+            onClick={() => handleRefundOrReturn("반품")}
+            color="warning"
+            variant="outlined"
+          >
+            반품 요청
+          </Button>
+          <Button onClick={() => setDialogOpen(false)}>닫기</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
