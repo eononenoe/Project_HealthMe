@@ -13,9 +13,15 @@ import Dashboard from "pages/admin/Dashboard";
 import ProductPage from "pages/admin/ProductPage";
 import Transaction from "pages/admin/TransactionPage";
 
+// 마이페이지
+import MypageLayout from "pages/mypage/MypageLayout";
+import User_edit from "pages/mypage/User_edit";
+import ProductInquiryPage from "pages/mypage/ProductInquiryPage";
+import OrderHistoryPage from "pages/mypage/OrderHistoryPage";
+import AddressEditPage from "pages/mypage/AddressEditPage";
+
 function AppRoutes() {
   const location = useLocation();
-
   const isAdminPage = location.pathname.startsWith("/admin");
 
   return (
@@ -33,6 +39,14 @@ function AppRoutes() {
           <Route index element={<Dashboard />} />
           <Route path="products" element={<ProductPage />} />
           <Route path="transactions" element={<Transaction />} />
+        </Route>
+
+        {/* 마이페이지 */}
+        <Route path="/mypage" element={<MypageLayout />}>
+          <Route path="user_edit" element={<User_edit />} />
+          <Route path="inquiry_history" element={<ProductInquiryPage />} />
+          <Route path="purchase_history" element={<OrderHistoryPage />} />
+          <Route path="address_edit" element={<AddressEditPage />} />
         </Route>
       </Routes>
 
