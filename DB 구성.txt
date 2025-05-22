@@ -10,8 +10,7 @@ public class JoinRequestDto {
     private String postcode;          // 우편번호
     private String roadAddress;       // 도로명 주소
     private String detailAddress;     // 상세 주소
-    private String recipient;         // 수령인
-    private String recipientPhone;    // 수령인 전화번호
+
 }
 
 2. UserDto – 회원 정보
