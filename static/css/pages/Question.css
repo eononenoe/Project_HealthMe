@@ -176,7 +176,7 @@
 }
 .faded {
     opacity: 0.4;
-    pointer-events: none;
+    pointer-events: auto;
 }
 
 .material-symbols-outlined {

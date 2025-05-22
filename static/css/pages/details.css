@@ -17,75 +17,68 @@ body {
 }
 
 .product-page-wrapper {
-  /* width: 100%; */
+  width: 1000px;
+  display: flex;
+  margin: 0 auto;
   justify-content: center;
   align-items: center;
   color: #333;
   margin-top: 80px;
 }
-
+/* 왼쪽 */
 .product-detail-box {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 50px;
+  gap: 120px;
 }
-
 .product-image img {
   border-radius: 10px;
 }
 
+/* 오른쪽 */
 .product-info-area {
   font-family: 'Noto Sans KR', sans-serif;
   padding: 10px;
   padding-top: 0px;
 }
-
 .product-badge {
   color: green;
   font-weight: bold;
   font-size: 0.8rem;
 }
-
 .product-title {
   font-size: 1.5rem;
   margin: 10px 0;
 }
-
 .product-price-box {
   margin: 10px 0;
   font-size: 1.2rem;
 }
-
 .final-price {
   font-weight: bold;
   font-size: 1.5rem;
   color: #111;
 }
-
 .discount-rate {
   color: green;
   font-weight: bold;
   margin-left: 8px;
 }
-
 .original-price {
   color: #aaa;
   margin-left: 10px;
   text-decoration: line-through;
 }
-
 .review-box {
   margin-bottom: 10px;
   color: #444;
 }
-
 .sub-desc {
   font-size: 0.9rem;
   color: #555;
   margin-bottom: 10px;
 }
-
 .detail_info {
   background: #fff8dd;
   padding: 10px;
@@ -93,14 +86,11 @@ body {
   font-size: 0.9rem;
   margin-bottom: 10px;
 }
-
 .point-box,
 .delivery-box {
   font-size: 0.9rem;
   margin-bottom: 10px;
 }
-
-
 .quantity-selector {
   display: inline-flex;
   align-items: center;
@@ -109,7 +99,6 @@ body {
   overflow: hidden;
   width: fit-content;
 }
-
 .qty-btn {
   width: 60px;
   height: 40px;
@@ -135,105 +124,113 @@ body {
 .qty-input[type=number] {
   -moz-appearance: textfield;
 }
-
 .qty-number {
   width: 30px;
   text-align: center;
   font-size: 16px;
   display: inline-block;
 }
-
-
 .summary-box {
   display: flex;
   justify-content: space-between;
   font-size: 1.1rem;
   margin: 20px 0;
 }
+/* 하단 구매관련 */
+.purchase-btn-box {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
 
+.qty-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 70px;
+  height: 40px;
+}
 
+.qty-input {
+  width: 40px;
+  text-align: center;
+  border: none;
+  font-size: 1rem;
+  background-color: white;
+  pointer-events: none;
+}
 
-.purchase-btn-box button {
+.qty-buttons {
+  display: flex;
+  flex-direction: column;
+  width: 20px;
+}
+
+.qty-buttons button {
+  height: 50%;
+  width: 100%;
+  border: none;
+  background-color: #f0f0f0;
+  font-size: 0.8rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+.qty-buttons button:hover {
+  background-color: #ddd;
+}
+
+.purchase-btn-box .btn-cart,
+.purchase-btn-box .btn-buy {
   flex: 1;
   padding: 12px;
   font-weight: bold;
   font-size: 1rem;
   border-radius: 5px;
   cursor: pointer;
+  border: none;
+  box-sizing: border-box;
 }
 
 .btn-cart {
   background: #000;
   color: #fff;
-  border: none;
 }
 
 .btn-buy {
   background: green;
   color: white;
-  border: none;
 }
 
+/* 탭 */
 .tab-menu {
-  display: flex;
-  gap: 20px;
-  border-bottom: 2px solid #eee;
-  margin-top: 30px;
-  align-items: center;
+  display: flex;             
+  justify-content: center;   
+  gap: 200px;                 
+  width: 1000px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  margin-top: 20px;
+  padding: 10px 0;
+  border-radius: 5px;
 }
 
-.tab-btn {
-  padding: 10px;
+.tab-menu button {
   background: none;
   border: none;
-  font-weight: bold;
-  cursor: pointer;
-  color: #888;
-  border-bottom: 2px solid transparent;
-}
-
-.tab-btn.active {
-  color: green;
-  border-bottom: 2px solid green;
-}
-
-.tab-content {
-  margin-top: 20px;
-}
-
-.tab-main {
-  width: 1000px;
-  margin: 0px auto;
-  /* margin-bottom: 20px; */
-}
-
-.tab_box_content {
-  font-family: sans-serif;
-  padding: 15px;
-  border: 1px solid lightgray;
-  border-radius: 10px;
-  width: 100%;
-  height: 200px;
-}
-
-.btn-question {
-  border: none;
-  display: flex;
-  position: relative;
-  right: -860px;
-  margin-top: 15px;
-  padding: 12px 40px;
-  font-weight: bold;
-  font-size: 1rem;
-  border-radius: 5px;
+  font-size: 16px;
   cursor: pointer;
 }
 
+
+/* 이미지 */
 .product-description-box {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
   /* 필요에 따라 조절 */
   overflow: hidden;
   height: 2000px;
@@ -241,11 +238,11 @@ body {
   position: relative;
   transition: height 0.5s ease;
 }
-
 .product-description-box.expanded {
   height: auto;
 }
 
+/* 더보기 */
 .show-more-btn {
   display: block;
   width: 280px;
@@ -260,13 +257,11 @@ body {
   cursor: pointer;
   font-size: 16px;
 }
-
 .show-more-btn span {
   position: relative;
   top: -5px;
   color: green;
 }
-
 .show-more-btn>.material-symbols-outlined {
   position: relative;
   top: 5px;
