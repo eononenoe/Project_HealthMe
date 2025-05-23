@@ -1,0 +1,408 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.result-header {
+    width: 100vw;
+    height: 800px;
+    background-color: #2aaf74;
+    padding-bottom: 80px;
+    /* wave와 자연스럽게 붙이기 위한 공간 */
+    position: relative;
+    z-index: 0;
+}
+
+.header-main {
+    width: 1540px;
+    height: 800px;
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    height: 800px;
+}
+
+.header-text {
+    height: 400px;
+}
+
+.header-text h1 {
+    font-size: 60px;
+    color: white;
+    margin-top: 50px;
+}
+
+.header-text p {
+    font-size: 22px;
+    margin-top: 60px;
+    color: white;
+}
+
+.wave-divider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.wave-divider svg {
+    display: block;
+    width: 100%;
+    height: 80px;
+}
+
+.header-image img {
+    position: relative;
+    width: 800px;
+    height: 1600px;
+    top: -100px;
+    left: -30px;
+    object-fit: cover;
+}
+
+.contents-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 1200px;
+    margin: 0 auto;
+    margin-top: 80px;
+}
+
+.title {
+    width: 100%;
+    text-align: left;
+    max-width: 860px;
+    margin-bottom: 30px;
+}
+
+.title1 {
+    width: 100%;
+    text-align: left;
+    max-width: 860px;
+    margin-bottom: 30px;
+    margin-top: -550px;
+    z-index: 200;
+}
+
+.title1 h1{
+    color: white;
+}
+
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 860px;
+    height: 640px;
+    padding: 20px;
+    border: 1px solid gainsboro;
+    border-radius: 15px;
+    margin-bottom: 70px;
+    background-color: white;
+    z-index: 100;
+}
+
+.card-container:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.left {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px 30px 15px 15px;
+    height: 100px;
+    border-radius: 15px;
+    gap: 2px;
+    margin-right: -15px;
+    cursor: pointer;
+}
+
+.card-bar:hover {
+    background-color: #f6f6f7;
+
+}
+
+.card-bar>div {
+    text-align: center;
+    height: 30%;
+}
+
+.bar-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #343c4b;
+}
+
+.bar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.bar-inner {
+    position: relative;
+    width: 100%;
+    height: 12px;
+    background-color: #ccc;
+    border-radius: 5px;
+}
+
+.bar-inner.blue {
+    background-color: #3d9dbf;
+}
+
+.bar-inner.yellow {
+    background-color: #e4b322;
+}
+
+.bar-inner.green {
+    background-color: #2aaf74;
+}
+
+.bar-inner.purple {
+    background-color: #a672c2;
+}
+
+.bar-inner.red {
+    background-color: #e04d4d;
+}
+
+.bar-inner.teal {
+    background-color: #20b2aa;
+}
+
+.indicator {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 18px;
+    height: 18px;
+    border: 3px solid white;
+    border-radius: 50%;
+    /* left: 77%; */
+}
+
+.indicator.blue {
+    background-color: #3d9dbf;
+}
+
+.indicator.yellow {
+    background-color: #e4b322;
+}
+
+.indicator.green {
+    background-color: #2aaf74;
+}
+
+.indicator.purple {
+    background-color: #a672c2;
+}
+
+.indicator.red {
+    background-color: #e04d4d;
+}
+
+.indicator.teal {
+    background-color: #20b2aa;
+}
+
+.card-bar-label {
+    height: 40%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #787f8d;
+}
+
+.right {
+    width: 30%;
+    height: 100%;
+    background-color: #f6f6f7;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.info-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+}
+
+.info-container>h2 {
+    margin-top: 20px;
+}
+
+/* 두번째 카드 */
+.card-nutrient-result {
+    display: flex;
+    flex-direction: column;
+    width: 860px;
+    height: 420px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 80px;
+
+}
+
+.icon-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nutirent-icon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    justify-content: space-around;
+
+}
+
+.icon-box {
+    width: 140px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.icon-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.icon-box.blue {
+    border: 4px solid #3d9dbf;
+}
+
+.icon-box.yellow {
+    border: 4px solid #e4b322;
+}
+
+.icon-box.green {
+    border: 4px solid #2aaf74;
+}
+
+.icon-box.purple {
+    border: 4px solid #a672c2;
+}
+
+.dd {
+    margin-top: 15px;
+    width: 100%;
+    height: 200px;
+    padding: 20px;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+    border-top: 4px solid #3d9dbf;
+}
+
+/* 강점 약점 */
+.traits-container {
+    margin-top: 30px;
+    width: 860px;
+    height: auto;
+    margin-bottom: 30px;
+}
+
+.traits-section h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+.traits-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.trait {
+    display: flex;
+    width: 400px;
+    height: auto;
+    gap: 15px;
+}
+
+.trait .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.icon img {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+}
+
+.trait-content {
+    gap: 5px;
+}
+
+.trait-content p:nth-child(1) {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 7px;
+}
+
+.trait-content p:nth-child(2) {
+    font-size: 14px;
+}
+
+/* 버튼 */
+.next-button {
+    margin-top: 50px;
+    background-color: #875a9c;
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding-bottom: 20px;
+}
+
+.next-button span {
+    position: relative;
+    top: 6px;
+}
+
+.next-button:hover {
+    background-color: #744a86;
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+}

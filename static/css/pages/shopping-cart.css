@@ -1,0 +1,241 @@
+body {
+  font-family: "Nanum Gothic", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  padding: 50px 20px;
+}
+
+.cart-container {
+  display: flex;
+  gap: 40px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.cart-section {
+  flex: 2;
+}
+
+.cart-section h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.custom-checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; /* 살짝 키움 */
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.custom-checkbox span {
+  position: relative;
+  top: 2px;
+}
+.custom-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.custom-checkbox .checkmark {
+  font-size: 18px;
+  border: 1px solid black;
+  color: black;
+  background-color: transparent;
+  border-radius: 50%;
+  padding: 2px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* 체크되었을 때 */
+.custom-checkbox input[type="checkbox"]:checked + .checkmark {
+  background-color: #007bff;
+  border: none;
+  color: white;
+}
+
+.cart-all {
+  align-items: center;
+  padding: 10px 0px;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+}
+
+.all-select {
+  margin-right: 590px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.choice-delete {
+  background-color: white;
+  color: #333; /* 글자색 */
+  border: 1px solid #ccc; /* 연한 회색 테두리 */
+  padding: 6px 6px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.choice-delete:hover {
+  background-color: #f8f8f8; /* 마우스 올렸을 때 살짝 회색 */
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding: 15px 0;
+}
+
+.cart-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 20px;
+  margin-left: 15px;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-info .name {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.item-info .sub {
+  color: #888;
+  font-size: 0.9rem;
+  margin: 5px 0;
+}
+
+.item-info .price {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.quantity {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  height: 25px;
+  margin-top: 8px;
+}
+
+.qty-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  padding: 2px 5px;
+  cursor: pointer;
+  color: #333;
+}
+
+.qty-number {
+  font-weight: bold;
+  font-size: 14px;
+  margin: 0 6px;
+  min-width: 8px;
+  text-align: center;
+}
+
+.delete {
+  background-color: white;
+  border: none;
+}
+.quantity button {
+  padding: 2px 5px;
+  margin: 0 5px;
+}
+
+.checkout-info {
+  flex: 1;
+  border-left: 1px solid #ddd;
+  padding-left: 20px;
+  font-size: 0.95rem;
+}
+
+.login-box,
+.payment-summary {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.login-box button,
+.shop-btn {
+  width: 100%;
+  background: #000;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+.payment-summary {
+  background: #fafafa;
+}
+
+.payment-summary ul {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0;
+}
+
+.payment-summary li {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.payment-summary strong {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  margin-top: 15px;
+}
+
+.npay-banner {
+  background: #00c73c;
+  color: white;
+  text-align: center;
+  padding: 30px 0;
+  font-size: 1.3rem;
+  font-weight: bold;
+  position: relative;
+  margin-top: 40px;
+}
+
+.npay-icon {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: black;
+  color: white;
+  border-radius: 50%;
+  padding: 12px 18px;
+  font-size: 1.1rem;
+}
