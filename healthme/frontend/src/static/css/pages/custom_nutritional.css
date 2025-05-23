@@ -5,8 +5,7 @@
   font-family: "Nanum Gothic", sans-serif;
 }
 
-body {
-}
+body {}
 
 a {
   text-decoration: none;
@@ -16,7 +15,8 @@ a {
 /* Layout */
 .container {
   width: 1280px;
-  min-width: 1280px; /* << 추가해 */
+  min-width: 1280px;
+  /* << 추가해 */
   margin: 0 auto;
   display: flex;
   padding-top: 50px;
@@ -28,8 +28,10 @@ a {
   min-width: 280px;
   position: sticky;
   top: 20px;
-  align-self: flex-start; /* 추가!! flex 환경에서 sticky 동작 필수 */
-  height: fit-content;     /* 필요한 경우 명시 */
+  align-self: flex-start;
+  /* 추가!! flex 환경에서 sticky 동작 필수 */
+  height: fit-content;
+  /* 필요한 경우 명시 */
 
   padding: 20px;
   box-sizing: border-box;
@@ -38,83 +40,156 @@ a {
   top: 20px;
 }
 
-/* Gauge Section */
-.gauge-container {
+/* bar Section */
+.title1 {
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.card-bar {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-bottom: 30px;
-  background-color: 	#5A7FC4;
-  padding: 15px;
+  justify-content: space-between;
+  padding: 15px 30px 15px 15px;
+  height: 100px;
+  border-radius: 15px;
+  gap: 2px;
+  margin-right: -15px;
+  cursor: pointer;
+}
+
+.card-bar:hover {
+  background-color: #f6f6f7;
+}
+
+.card-bar>div {
+  text-align: center;
+  height: 30%;
+}
+
+.bar-label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #343c4b;
+}
+
+.bar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 10px;
 }
 
-.gauge-item {
+.bar-inner {
+  position: relative;
+  width: 100%;
+  height: 12px;
+  background-color: #ccc;
+  border-radius: 5px;
+}
+
+.bar-inner.blue {
+  background-color: #3d9dbf;
+}
+
+.bar-inner.yellow {
+  background-color: #e4b322;
+}
+
+.bar-inner.green {
+  background-color: #2aaf74;
+}
+
+.bar-inner.purple {
+  background-color: #a672c2;
+}
+
+.bar-inner.red {
+  background-color: #e04d4d;
+}
+
+.bar-inner.teal {
+  background-color: #20b2aa;
+}
+
+.indicator {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  border: 3px solid white;
+  border-radius: 50%;
+}
+
+.indicator.blue {
+  background-color: #3d9dbf;
+}
+
+.indicator.yellow {
+  background-color: #e4b322;
+}
+
+.indicator.green {
+  background-color: #2aaf74;
+}
+
+.indicator.purple {
+  background-color: #a672c2;
+}
+
+.indicator.red {
+  background-color: #e04d4d;
+}
+
+.indicator.teal {
+  background-color: #20b2aa;
+}
+
+.card-bar-label {
+  height: 40%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #787f8d;
+}
+
+.right {
+  width: 30%;
+  height: 100%;
+  background-color: #f6f6f7;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.info-container {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
 }
 
-.gauge-label {
-  font-size: 15px;
-  font-weight: 600;
-  color: white;
-  margin-bottom: 6px;
+.info-container>h2 {
+  margin-top: 20px;
 }
 
-.gauge-bar {
-  width: 100%;
-  height: 8px;
-  background-color: #c1c1c135;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.gauge-fill {
-  height: 100%;
-  width: 0;
-  transition: width 0.5s ease-in-out;
-}
-
-.gauge-status-legend {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  color: white;
-}
-
-.gauge-status-legend .circle {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin-right: 5px;
-}
-
-.gauge-status-legend .danger {
-  background-color: #e74c3c; /* 빨강 */
-}
-
-.gauge-status-legend .warning {
-  background-color: #f39c12; /* 주황 */
-}
-
-.gauge-status-legend .safe {
-  background-color: #4caf50; /* 초록 */
-}
 
 
 /* Cart Section */
 .cart-section {
   margin-top: 30px;
 }
+
 .cart-section span {
   display: inline-block;
   margin-bottom: 15px;
   font-weight: 600;
 }
+
 .cart-header {
   display: flex;
   align-items: center;
@@ -123,9 +198,11 @@ a {
   margin-bottom: 10px;
   margin-top: 10px;
 }
+
 .cart-header-left {
   display: flex;
-  align-items: center; /* 왼쪽 그룹 세로 가운데 정렬 */
+  align-items: center;
+  /* 왼쪽 그룹 세로 가운데 정렬 */
   gap: 5px;
 }
 
@@ -143,6 +220,7 @@ a {
   border-radius: 5px;
   cursor: pointer;
 }
+
 .custom-checkbox {
   width: 20px;
   height: 20px;
@@ -261,6 +339,7 @@ a {
   font-weight: bold;
   margin-top: 5px;
 }
+
 /* Cart Footer */
 .cart-footer {
   margin-top: 20px;
@@ -268,6 +347,7 @@ a {
   font-weight: bold;
   text-align: right;
 }
+
 .cart-footer-button button {
   background-color: #007bff;
   color: white;
@@ -309,9 +389,10 @@ main {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 40px;
-  
+
   min-height: 1000px;
-  margin-bottom: 100px; /* 푸터랑 거리 벌리기 */
+  margin-bottom: 100px;
+  /* 푸터랑 거리 벌리기 */
 }
 
 /* ================ */
@@ -322,7 +403,7 @@ main {
   height: auto;
 }
 
-.item_img > img {
+.item_img>img {
   width: 100%;
   height: 350px;
   object-fit: cover;
@@ -394,6 +475,7 @@ main {
   font-weight: bold;
   color: #333;
 }
+
 .purchase-banner {
   width: 100%;
   height: 250px;
