@@ -7,11 +7,10 @@ body {
     /* height: 700px; */
 }
 
-.box {}
 
 .join_box {
     margin: 0;
-    height: 800px;
+    height: 950px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,7 +26,7 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 40px;
+    height: 50px;
     width: 100%;
     padding: 11px 16px;
     border: 1px solid #ddd;
@@ -35,6 +34,7 @@ h2 {
     font-size: 14px;
     border-radius: 8px;
     outline: none;
+    margin-bottom: 15px;
 }
 
 .input-wrapper {
@@ -43,11 +43,11 @@ h2 {
     /* input+에러메시지 세트 간격 */
 }
 
-.custom-input:hover {
+.join-custom-input:hover {
     border-color: orange;
 }
 
-.custom-input:hover::placeholder {
+.join-custom-input:hover::placeholder {
     color: orange;
 }
 
@@ -58,7 +58,7 @@ h2 {
     position: relative;
     border: none;
     width: 481px;
-    height: 40px;
+    height: 50px;
     padding: 0 16px;
 
 }
@@ -68,6 +68,7 @@ h2 {
     color: white;
     border-radius: 10px;
     cursor: pointer;
+    margin-top: 30px;
 }
 
 .btn-big:hover {
@@ -82,7 +83,7 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 30px;
 
 }
 
@@ -100,7 +101,7 @@ h2 {
     color: white;
     border-radius: 5px;
     max-width: 120px;
-    height: 40px;
+    height: 50px;
     font-size: 14px;
     margin-top: 0;
     padding: 0;
@@ -132,6 +133,32 @@ h2 {
     margin-bottom: 15px;
 }
 
+
+.gender-btn-group {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.btn-option {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s;
+    margin-bottom: 20px;
+}
+
+.btn-option.selected {
+    border-color: #007bff;
+    background-color: #e6f0ff;
+    color: #007bff;
+}
+
+
 /* 휴대전화 */
 h6 {
     color: gray;
@@ -144,6 +171,7 @@ h6 {
     display: flex;
     gap: 15px;
     height: 40px;
+    margin-bottom: 15px;
 }
 
 .tel-hypen {
@@ -155,14 +183,14 @@ h6 {
 
 .tel1 {
     width: 80px;
-    height: 40px;
+    height: 50px;
     margin-bottom: 0;
 }
 
 .tel2,
 .tel3 {
     width: 120px;
-    height: 40px;
+    height: 50px;
     text-align: center;
     margin-bottom: 0;
 }
@@ -188,7 +216,8 @@ h6 {
     color: red;
     margin: 5px 0;
 }
-.verified-message{
+
+.verified-message {
     font-size: 13px;
     color: blue;
     margin: 5px 0;

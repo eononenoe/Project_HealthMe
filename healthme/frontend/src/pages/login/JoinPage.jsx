@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import 'static/css/login/join.css';
 
-
 const JoinPage = () => {
+    // 백엔드에서 값 가져오게
     const [formData, setFormData] = useState({
         userid: '',
         password: '',
@@ -12,11 +12,14 @@ const JoinPage = () => {
         username: '',
         zip: '',
         address: '',
+        addressDetail: '',
+        gender: '',
         tel1: '010',
         tel2: '',
         tel3: '',
     });
 
+    const navigate = useNavigate();
     const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
@@ -29,32 +32,33 @@ const JoinPage = () => {
         axios.post('/healthme/users/join', formData)
             .then((res) => {
                 alert(res.data.message);
+                // 회원가입 성공하면 로그인 화면으로
+                navigate('/login');
             })
             .catch((err) => {
+                console.log(err.response);
                 const error = err.response?.data?.error;
-
                 if (!error) {
                     alert('회원가입 실패 (서버 오류)');
                     return;
                 }
 
-                if (error.includes('아이디')) {
-                    setErrors({ userid: error });
-                } else if (error.includes('비밀번호') && error.includes('일치')) {
-                    setErrors({ password2: error });
-                } else if (error.includes('비밀번호')) {
-                    setErrors({ password: error });
-                } else if (error.includes('이름')) {
-                    setErrors({ username: error });
-                } else if (error.includes('우편번호')) {
-                    setErrors({ zip: error });
-                } else if (error.includes('주소')) {
-                    setErrors({ address: error });
-                } else if (error.includes('전화')) {
-                    setErrors({ tel1: error, tel2: error, tel3: error });
-                } else {
-                    alert(error);
+                const newErrors = {};
+
+                if (error.includes('아이디')) newErrors.userid = error;
+                if (error.includes('비밀번호') && error.includes('일치')) newErrors.password2 = error;
+                if (error.includes('비밀번호') && !error.includes('일치')) newErrors.password = error;
+                if (error.includes('이름')) newErrors.username = error;
+                if (error.includes('우편번호')) newErrors.zip = error;
+                if (error.includes('주소') && !error.includes('상세')) newErrors.address = error;
+                if (error.includes('상세주소')) newErrors.addressDetail = error;
+                if (error.includes('전화번호')) {
+                    newErrors.tel1 = error;
+                    newErrors.tel2 = error;
+                    newErrors.tel3 = error;
                 }
+
+                setErrors(newErrors);
             });
     };
 
@@ -91,7 +95,10 @@ const JoinPage = () => {
             }
         }).open();
     };
-
+    // 성별 선택
+    const handleGenderSelect = (value) => {
+        setFormData({ ...formData, gender: value });
+    };
     // 휴대전화 인증번호 받기
     const [verificationCode, setVerificationCode] = useState('');
     const [isVerified, setIsVerified] = useState(false);
@@ -121,41 +128,63 @@ const JoinPage = () => {
                         <input type="text" name="userid" className="join-custom-input" placeholder="아이디" value={formData.userid} onChange={handleChange} />
                         <button type="button" className="btn-small btn-main" onClick={handleUseridCheck}>중복확인</button>
                     </div>
-                    <div className={`error-message ${errors.userid ? 'visible' : 'invisible'}`}>{errors.userid || '\u00A0'}</div>
+                    {errors.userid && (<div className="error-message">{errors.userid}</div>)}
                 </div>
 
                 {/* 비밀번호 */}
                 <div className="input-wrapper">
                     <input type="password" name="password" className="join-custom-input" placeholder="비밀번호" value={formData.password} onChange={handleChange} />
-                    <div className={`error-message ${errors.password ? 'visible' : 'invisible'}`}>{errors.password || '\u00A0'}</div>
+                    {errors.password && (<div className="error-message">{errors.password}</div>)}
                 </div>
 
                 {/* 비밀번호 확인 */}
                 <div className="input-wrapper">
                     <input type="password" name="password2" className="join-custom-input" placeholder="비밀번호 재확인" value={formData.password2} onChange={handleChange} />
-                    <div className={`error-message ${errors.password2 ? 'visible' : 'invisible'}`}>{errors.password2 || '\u00A0'}</div>
+                    {errors.password2 && (<div className="error-message">{errors.password2}</div>)}
                 </div>
 
                 {/* 이름 */}
                 <div className="input-wrapper">
                     <input type="text" name="username" className="join-custom-input" placeholder="이름" value={formData.username} onChange={handleChange} />
-                    <div className={`error-message ${errors.username ? 'visible' : 'invisible'}`}>{errors.username || '\u00A0'}</div>
+                    {errors.username && (<div className="error-message">{errors.username}</div>)}
                 </div>
 
-                {/* 주소 */}
+                {/* 우편번호 */}
                 <div className="input-wrapper">
                     <div className="address-box">
                         <input type="text" name="zip" className="join-custom-input" placeholder="우편번호" value={formData.zip} onChange={handleChange} />
                         <button type="button" className="btn-small btn-main" onClick={handleAddressSearch}>우편번호 검색</button>
                     </div>
-                    <div className={`error-message ${errors.zip ? 'visible' : 'invisible'}`}>{errors.zip || '\u00A0'}</div>
+                    {errors.zip && (<div className="error-message">{errors.zip}</div>)}
                 </div>
 
+                {/* 주소 */}
                 <div className="input-wrapper">
                     <input type="text" name="address" className="join-custom-input" placeholder="주소" value={formData.address} onChange={handleChange} />
-                    <div className={`error-message ${errors.address ? 'visible' : 'invisible'}`}>{errors.address || '\u00A0'}</div>
-                    {/* 상세주소 */}
-                    {/* <input type="text" name="address" className="join-custom-input" placeholder="상세 주소" value={formData.address-detail} onChange={handleChange} /> */}
+                    {errors.address && (<div className="error-message">{errors.address}</div>)}
+                </div>
+
+                {/* 상세주소 */}
+                <div className="input-wrapper">
+                    <input type="text" name="addressDetail" className="join-custom-input" placeholder="상세주소" value={formData.addressDetail} onChange={handleChange} />
+                    {errors.addressDetail && (<div className="error-message">{errors.addressDetail}</div>)}
+                </div>
+
+                {/* 성별 */}
+                <div className="input-wrapper">
+                    <h6>성별</h6>
+                    <div className="gender-btn-group">
+                        {['남자', '여자', '선택안함'].map((option) => (
+                            <button
+                                key={option}
+                                type="button"
+                                className={`btn-option ${formData.gender === option ? 'selected' : ''}`}
+                                onClick={() => handleGenderSelect(option)}
+                            >
+                                {option}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 {/* 전화번호 */}
@@ -171,11 +200,14 @@ const JoinPage = () => {
                         <input type="text" name="tel2" className="join-custom-input tel2" value={formData.tel2} onChange={handleChange} />
                         <span className="tel-hypen">-</span>
                         <input type="text" name="tel3" className="join-custom-input tel3" value={formData.tel3} onChange={handleChange} />
-                        <button type="button" className="btn-small btn-main" onClick={handleSendTel}>인증번호 받기</button>
+                        <button type="button" className="btn-main btn-small " onClick={handleSendTel}>인증하기</button>
                     </div>
-                    <div className={`error-message ${errors.tel1 || errors.tel2 || errors.tel3 ? 'visible' : 'invisible'}`}>
-                        {errors.tel1 || errors.tel2 || errors.tel3 || '\u00A0'}
-                    </div>
+
+                    {(errors.tel1 || errors.tel2 || errors.tel3) && (
+                        <div className="error-message">
+                            {errors.tel1 || errors.tel2 || errors.tel3}
+                        </div>
+                    )}
                 </div>
                 {/* 인증번호 입력 + 확인 */}
                 {sentCode && (
@@ -215,7 +247,7 @@ const JoinPage = () => {
                     <Link to="/login">로그인</Link>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

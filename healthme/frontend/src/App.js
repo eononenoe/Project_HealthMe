@@ -6,6 +6,7 @@ import Footer from "components/footer";
 import ResultPage from "pages/Result/ResultPage";
 import JoinPage from "pages/login/JoinPage";
 import LoginPage from "pages/login/LoginPage";
+import OAuth2RedirectHandler from "pages/login/OAuth2RedirectHandler";
 
 // 관리자 페이지
 import Layout from "pages/admin/Layout";
@@ -33,7 +34,7 @@ function AppRoutes() {
         <Route path="/result" element={<ResultPage />} />
         <Route path="/join" element={<JoinPage />} />
         <Route path="/login" element={<LoginPage />} />
-
+        <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
         {/* 관리자용 */}
         <Route path="/admin" element={<Layout />}>
           <Route index element={<Dashboard />} />
@@ -43,6 +44,7 @@ function AppRoutes() {
 
         {/* 마이페이지 */}
         <Route path="/mypage" element={<MypageLayout />}>
+          <Route index element={<User_edit></User_edit>}></Route>
           <Route path="user_edit" element={<User_edit />} />
           <Route path="inquiry_history" element={<ProductInquiryPage />} />
           <Route path="purchase_history" element={<OrderHistoryPage />} />
