@@ -89,24 +89,51 @@
       </div>
     </div>
   </div>
+  <!-- 탭 메뉴 -->
   <div class="tab-menu">
-    <button onclick="scrollToSection('detail')">상품상세</button>
-    <button onclick="scrollToSection('review')">상품평</button>
-    <button onclick="scrollToSection('qna')">상품문의</button>
+    <button class="tab-button active" data-tab="detail">상품상세</button>
+    <button class="tab-button" data-tab="review">상품평</button>
+    <button class="tab-button" data-tab="qna">상품문의</button>
   </div>
 
-  <!-- 상세 설명 -->
-  <div class="product-description-box" id="detail">
+  <!-- 상품상세 콘텐츠 -->
+  <div id="detail" class="tab-content active">
     <img src="/img/detail_pig.jpg" alt="상세 설명 이미지">
-  </div>
 
+  </div>
   <button class="show-more-btn" id="showMoreBtn">
     <span>상품정보 더보기</span>
-    <span class="material-symbols-outlined">
-      stat_minus_1
-    </span>
+    <span class="material-symbols-outlined">stat_minus_1</span>
   </button>
+  <!-- 상품평 -->
+  <div id="review" class="tab-content">
+    <h2>상품평</h2>
+    <p>리뷰들이 들어가는 영역입니다.</p>
+  </div>
 
+  <!-- 상품문의 -->
+  <div id="qna" class="tab-content">
+    <div class="qna-header">
+      <h2>상품문의</h2>
+    </div>
+    <div class="product-inquiry-notice">
+      <ul>
+        <li><strong>상품문의 및 후기게시판을 통한 취소나 환불, 반품 등은 처리되지 않습니다.</strong></li>
+        <li>가격, 판매자, 교환/환불 및 배송 등 해당 상품 자체와 관련 없는 문의는
+          <a href="#">고객센터 1:1 문의하기</a>를 이용해주세요.
+        </li>
+        <li>
+          <span class="warning">해당 상품 자체와 관계없는 글</span> (양도, 광고성, 욕설, 비방, 도배 등)의 글은 예고 없이
+          <span class="highlight">이동, 논출제한, 삭제</span> 등의 조치가 취해질 수 있습니다.
+        </li>
+        <li class="caution">공개 게시판이므로 전화번호, 메일 주소 등 개인정보는 절대 남기지 말아주세요.</li>
+      </ul>
+    </div>
+    <textarea></textarea>
+    <div class="qna-button-wrapper">
+      <button>문의하기</button>
+    </div>
+  </div>
   <div id="footer"></div>
 </body>
 
