@@ -198,6 +198,10 @@ main {
   background: #fafafa;
 }
 
+.payment-summary p {
+  font-size: 15px;
+}
+
 .payment-summary ul {
   list-style: none;
   padding: 0;
@@ -215,6 +219,7 @@ main {
   justify-content: space-between;
   font-size: 1.2rem;
   margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .npay-banner {
