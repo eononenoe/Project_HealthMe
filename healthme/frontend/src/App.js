@@ -15,7 +15,7 @@ import Transaction from "pages/admin/TransactionPage";
 
 // 마이페이지
 import MypageLayout from "pages/mypage/MypageLayout";
-import User_edit from "pages/mypage/User_edit";
+import User_edit from "pages/mypage/UserEdit";
 import ProductInquiryPage from "pages/mypage/ProductInquiryPage";
 import OrderHistoryPage from "pages/mypage/OrderHistoryPage";
 import AddressEditPage from "pages/mypage/AddressEditPage";

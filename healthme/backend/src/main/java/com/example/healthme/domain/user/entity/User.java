@@ -19,4 +19,8 @@ public class User {
     private String zip;
     private String address;
     private String tel;
+
+    // 회원가입에는 기입x, 기본값 부여
+    private String role;
+    private String grade;
 }
