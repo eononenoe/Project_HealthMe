@@ -20,5 +20,6 @@ public class UserController {
     @GetMapping("/getuserinfo")
     public List<User> getUser(){
         userService.getUserInfo();
+        return null;
     }
 }

@@ -12,7 +12,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     public List<User> getUserInfo() {
-        Optional<User> optionalUser = userRepository.findAll();
-        User list_user = optionalUser.get();
+
+        return null;
     }
 }
