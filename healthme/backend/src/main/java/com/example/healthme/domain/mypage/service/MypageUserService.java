@@ -14,10 +14,16 @@ public class MypageUserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> getUserInfo(String id) {
-        Optional<User>  optionUser =userRepository.findByUserid(id);
-        List<User> list_user = null;
-        list_user.add(optionUser.get());
-        return list_user;
+    public User getUserInfo(Long id) {
+
+        Optional<User>  optionUser =userRepository.findById(id);
+        if(optionUser !=null){
+            System.out.println("optionUser "+optionUser.get());
+            User user = optionUser.get();
+            return user;
+        }else{
+            return null;
+        }
+
     }
 }

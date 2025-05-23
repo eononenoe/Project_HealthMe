@@ -5,12 +5,14 @@ import com.example.healthme.global.config.auth.principal.PrincipalDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,9 +26,9 @@ public class JwtTokenProvider {
     //Key 저장
     private final Key key;
 
-    public JwtTokenProvider() {
-        byte[] keyBytes = KeyGenerator.getKeygen();
-        this.key = Keys.hmacShaKeyFor(keyBytes);
+    public JwtTokenProvider(@Value("${jwt.secret}") String secret) {
+//        byte[] keyBytes = KeyGenerator.getKeygen();
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
     // 유저 정보를 가지고 AccessToken, RefreshToken 을 생성하는 메서드

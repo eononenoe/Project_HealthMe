@@ -19,8 +19,9 @@ public class MypageUserController {
     private MypageUserService mypageUserService;
 
     @GetMapping("/getuserinfo")
-    public List<User> getUser(@RequestParam("id") String id){
-        List<User> user_list= mypageUserService.getUserInfo(id);
-        return user_list;
+    public User getUser(@RequestParam("id") Long id){
+        System.out.println(id);
+        User user= mypageUserService.getUserInfo(id);
+        return user;
     }
 }

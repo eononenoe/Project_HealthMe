@@ -8,9 +8,11 @@ import com.example.healthme.global.config.auth.handler.logoutHandler.CustomLogou
 import com.example.healthme.global.config.auth.jwt.JwtAuthorizationFilter;
 import com.example.healthme.global.config.auth.jwt.JwtTokenProvider;
 import com.example.healthme.global.config.auth.principal.PrincipalDetailsOAuth2Service;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -36,6 +38,7 @@ public class SecurityConfig {
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         // 페이지 권한부여
         http
+                .cors(Customizer.withDefaults()) // CORS 활성화
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((auth) -> {
                     auth.requestMatchers("/", "/healthme/users/join", "/healthme/users/check", "/healthme/users/login").permitAll();
@@ -43,7 +46,10 @@ public class SecurityConfig {
                     auth.requestMatchers("/user").hasRole("USER");
                     auth.requestMatchers("/admin").hasRole("ADMIN");
                     auth.anyRequest().authenticated();
-                });
+                })
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(
+                        (request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
+                )); //401 Unauthorized 응답
         // 로그인
         http.formLogin((login) -> {
             login.permitAll();
