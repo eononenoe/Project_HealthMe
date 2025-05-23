@@ -56,22 +56,14 @@
           이 제품을 구매하신 고객 분들은 효능, 경제성, 만족도에 대해 좋은 평가를 주셨습니다!
         </p>
 
-        <div class="coupon-banner">
-          <strong><a href="#">로그인</a></strong> 후 쿠폰 최대 할인을 확인하세요!
+        <div class="detail_info">
+          <p><strong>오전 10시까지</strong> 주문하고, <strong>오늘 오후 8시 전</strong>에 바로 받아보세요!</p>
+          <p>이후 주문 시, 내일 도착으로 변경됩니다.</p>
         </div>
-
-        <div class="point-box"> 뷰티포인트 결제금액의 1% 적립</div>
         <div class="delivery-box"> 배송비 : 무료배송</div>
 
         <div class="quantity-box">
-          <div class="quantity-selector">
-            <button class="qty-btn minus">−</button>
-            <span class="qty-number">1</span>
-            <button class="qty-btn plus">+</button>
-          </div>
         </div>
-
-
         <div class="summary-box">
           <div>총 수량 <strong>1개</strong></div>
           <div class="total-price">
@@ -79,41 +71,43 @@
             <strong>18,900원</strong>
           </div>
         </div>
-
         <div class="purchase-btn-box">
+          <div class="qty-wrapper">
+            <input type="text" class="qty-input" value="1" readonly>
+            <div class="qty-buttons">
+              <button class="btn-up"><span class="material-symbols-outlined">
+                  keyboard_arrow_up
+                </span></button>
+              <button class="btn-down"><span class="material-symbols-outlined">
+                  keyboard_arrow_down
+                </span></button>
+            </div>
+          </div>
           <button class="btn-cart">장바구니</button>
           <button class="btn-buy">바로구매</button>
-          <button class="btn-question">문의하기</button>
         </div>
-
       </div>
     </div>
   </div>
+  <div class="tab-menu">
+    <button onclick="scrollToSection('detail')">상품상세</button>
+    <button onclick="scrollToSection('review')">상품평</button>
+    <button onclick="scrollToSection('qna')">상품문의</button>
+  </div>
+
   <!-- 상세 설명 -->
-  <div class="product-description-box">
-    <img
-      src="https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241227/gv10001628427_1.jpg"
-      alt="상세 설명 이미지" />
+  <div class="product-description-box" id="detail">
+    <img src="/img/detail_pig.jpg" alt="상세 설명 이미지">
   </div>
-  <div class="tab-main">
-    <div class="tab-menu">
-      <button class="tab-btn active" data-target="detail">설명</button>
-      <button class="tab-btn" data-target="inquiry">문의하기</button>
-      <button class="tab-btn" data-target="review">후기(6)</button>
-    </div>
 
-    <div class="tab-content" id="detail">
-      <p>상세 설명은 여기에 표시됩니다.  1</p>
-    </div>
-    <div class="tab-content" id="inquiry" style="display: none;">
-      <p>문의 내역이 여기에 표시됩니다.  2</p>
-    </div>
-    <div class="tab-content" id="review" style="display: none;">
-      <p>후기 내용이 여기에 표시됩니다.  3</p>
-    </div>
-  </div>
+  <button class="show-more-btn" id="showMoreBtn">
+    <span>상품정보 더보기</span>
+    <span class="material-symbols-outlined">
+      stat_minus_1
+    </span>
+  </button>
+
   <div id="footer"></div>
-
 </body>
 
 </html>
