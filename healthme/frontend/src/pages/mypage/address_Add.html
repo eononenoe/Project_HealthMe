@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>주소 검색</title>
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  </head>
+  <body>
+    <div id="search-area"></div>
+
+    <script>
+      new daum.Postcode({
+        oncomplete: function (data) {
+          const roadAddress = data.roadAddress;
+          window.location.href =
+            "/pages/mypage/address_add_form.html?roadAddress=" +
+            encodeURIComponent(roadAddress);
+        },
+      }).embed(document.getElementById("search-area"));
+    </script>
+  </body>
+</html>
