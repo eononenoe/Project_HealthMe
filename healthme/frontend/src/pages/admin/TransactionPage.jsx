@@ -40,6 +40,13 @@ export default function TransactionPage() {
   const [refundReturnOrderid, setRefundReturnOrderid] = useState();
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  const token = localStorage.getItem("accessToken");
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   // 로직 함수
 
   // 페이지 버튼 클릭 이벤트 정의
@@ -86,7 +93,7 @@ export default function TransactionPage() {
 
   const transAPI = async (transArray) => {
     try {
-      await axios.post("/transactions/status", transArray);
+      await axios.post("/transactions/status", transArray, config);
       window.alert("거래가 성공적으로 완료 처리되었습니다.");
     } catch (error) {
       window.alert("거래 완료에 실패하였습니다.");
@@ -138,7 +145,8 @@ export default function TransactionPage() {
     try {
       await axios.post(
         `/transactions/refundReturn?type=${element}`,
-        transArray
+        transArray,
+        config
       );
     } catch (error) {}
   };
@@ -150,7 +158,8 @@ export default function TransactionPage() {
         const searchData = await axios.get(
           `/transactions/search/data?searchText=${searchText}&page=${
             page - 1
-          }&size=10`
+          }&size=10,`,
+          config
         );
         console.log("searchData : ", searchData);
         if (searchData !== null) {
@@ -159,7 +168,8 @@ export default function TransactionPage() {
         }
       } else {
         const PageContent = await axios.get(
-          `/trans/selectAll?page=${page - 1}&size=10`
+          `/trans/selectAll?page=${page - 1}&size=10`,
+          config
         );
         console.log(PageContent);
         if (PageContent !== null) {
@@ -183,7 +193,7 @@ export default function TransactionPage() {
         }}
       >
         <Typography variant="h7" fontWeight="bold">
-          상품 관리 페이지입니다
+          거래 내역 관리 페이지입니다.
         </Typography>
 
         <TextField

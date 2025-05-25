@@ -38,9 +38,16 @@ const Header = () => {
               <span>{loginUser.username}님</span>
             </li>
             <li className="logo_middle">|</li>
-            <li>
-              <Link to="/mypage">마이페이지</Link>
-            </li>
+            {loginUser.role === "ROLE_ADMIN" ? (
+              <li>
+                <Link to="/admin">관리자페이지</Link>
+              </li>
+            ) : (
+              <li>
+                <Link to="/mypage">마이페이지</Link>
+              </li>
+            )}
+
             <li className="logo_middle">|</li>
             <li>
               <button className="logout-btn" onClick={handleLogout}>

@@ -21,6 +21,13 @@ export default function ProductRegisterDialog({ open, onClose, onSubmit }) {
   const [thumbnail, setThumbnail] = useState("");
   const [detailImage, setDetailImage] = useState("");
 
+  const token = localStorage.getItem("accessToken");
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   // 등록 버튼 이벤트
   const AddProduct = async () => {
     // 등록버튼 눌렀을때 실행되는 이벤트
@@ -35,7 +42,7 @@ export default function ProductRegisterDialog({ open, onClose, onSubmit }) {
 
     // HTML 폼 데이터를 key-value 쌍으로 저장하고 서버로 전송할 수 있게 해주는 특수한 객체이다(브라우저가 제공하는 객체이다).
     try {
-      await axios.post("/product/insert/data", foamData);
+      await axios.post("/product/insert/data", foamData, config);
       // post의 3번째 매개변수에 headers: {
       // "Content-Type": "multipart/form-data" 넣어주면 좋긴한데 axios 사용하면 안 넣어도 된다.
 
