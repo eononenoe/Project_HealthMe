@@ -11,6 +11,7 @@ import com.example.healthme.global.config.auth.principal.PrincipalDetailsOAuth2S
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,7 +20,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    // 비밀번호 암호화
 
     private final CustomLoginFailureHandler customLoginFailureHandler;
     private final CustomLoginSuccessHandler customLoginSuccessHandler;
@@ -30,50 +30,50 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final PrincipalDetailsOAuth2Service principalDetailsOAuth2Service;
 
-
-
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        // 페이지 권한부여
         http
+                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests((auth) -> {
-                    auth.requestMatchers("/", "/healthme/users/join", "/healthme/users/check", "/healthme/users/login").permitAll();
-                    // 역할이 있을때 추가/수정 (임시)
-                    auth.requestMatchers("/user").hasRole("USER");
-                    auth.requestMatchers("/admin").hasRole("ADMIN");
-                    auth.anyRequest().authenticated();
-                });
-        // 로그인
-        http.formLogin((login) -> {
-            login.permitAll();
-            login.successHandler(customLoginSuccessHandler);
-            login.failureHandler(customLoginFailureHandler);
-        });
-
-        // 로그아웃
-        http.logout((logout) -> {
-            logout
-                    .logoutUrl("/healthme/users/logout")
-                    .permitAll()
-                    .addLogoutHandler(customLogoutHandler)
-                    .logoutSuccessHandler(customLogoutSuccessHandler);
-        });
-
-        // OAuth2
-        http.oauth2Login(oauth -> oauth
-                .loginPage("/login") // 사용자 정의 로그인 페이지
-                .userInfoEndpoint(user -> user
-                        .userService(principalDetailsOAuth2Service)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/",
+                                "/healthme/users/join",
+                                "/healthme/users/check",
+                                "/healthme/users/login",
+                                "/healthme/sms/**",
+                                "/healthme/sms/send"
+                        ).permitAll()
+                        .requestMatchers("/user").hasRole("USER")
+                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )
-                .successHandler(customLoginSuccessHandler)
-        );
-        // JWT 인증 필터 등록
+                .formLogin(login -> login
+                        .loginProcessingUrl("/healthme/users/login") // login URL 명시
+                        .usernameParameter("userid") // 프론트 formData에 맞춤
+                        .successHandler(customLoginSuccessHandler)
+                        .failureHandler(customLoginFailureHandler)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/healthme/users/logout")
+                        .permitAll()
+                        .addLogoutHandler(customLogoutHandler)
+                        .logoutSuccessHandler(customLogoutSuccessHandler)
+                )
+                .oauth2Login(oauth -> oauth
+                        .loginPage("/login")
+                        .userInfoEndpoint(user -> user
+                                .userService(principalDetailsOAuth2Service)
+                        )
+                        .successHandler(customLoginSuccessHandler)
+                );
+
         http.addFilterBefore(
                 new JwtAuthorizationFilter(userRepository, jwtTokenProvider),
                 org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class
         );
+
         return http.build();
     }
-
 }

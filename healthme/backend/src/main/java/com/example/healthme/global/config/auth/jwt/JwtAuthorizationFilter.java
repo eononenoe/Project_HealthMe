@@ -40,7 +40,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain chain
     ) throws ServletException, IOException {
-
+        String uri = request.getRequestURI();
+        if (uri.startsWith("/healthme/sms")) {
+            chain.doFilter(request, response);
+            return;
+        }
         String token = null;
 
         // cookie 에서 JWT token 추출
