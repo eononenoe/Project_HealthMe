@@ -7,6 +7,8 @@ import ResultPage from 'pages/Result/ResultPage';
 import JoinPage from 'pages/login/JoinPage';
 import LoginPage from 'pages/login/LoginPage';
 import OAuth2RedirectHandler from 'pages/login/OAuth2RedirectHandler';
+// 메인 페이지
+import Index from "pages/index";
 // 관리자 페이지
 import Layout from "pages/admin/Layout";
 import Dashboard from "pages/admin/Dashboard";
@@ -22,7 +24,9 @@ function AppRoutes() {
     <>
       {!isAdminPage && <Header />}
 
-      <Routes>
+      <Routes>        
+        {/* 메인 페이지 */}
+        <Route path="/" element={<Index/>}></Route>
         {/* 사용자용 */}
         <Route path="/result" element={<ResultPage />} />
         <Route path="/join" element={<JoinPage />} />

@@ -1,15 +1,14 @@
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll('.gauge-fill').forEach((fill) => {
-      const widthStr = fill.style.width;
-      const percent = parseInt(widthStr);
-  
-      if (percent <= 33) {
-        fill.style.backgroundColor = '#e74c3c'; // 빨강
-      } else if (percent <= 66) {
-        fill.style.backgroundColor = '#f39c12'; // 주황
-      } else {
-        fill.style.backgroundColor = '#4caf50'; // 초록
-      }
-    });
+// script.js
+
+document.addEventListener('DOMContentLoaded', function () {
+  const bars = document.querySelectorAll('.card-bar');
+
+  bars.forEach((bar) => {
+    const indicator = bar.querySelector('.indicator');
+    const value = bar.getAttribute('data-value') || '0%';
+
+    // 숫자만 추출해서 퍼센트 값으로 사용
+    const percent = parseFloat(value);
+    indicator.style.left = `${percent}%`;
   });
-  
+});

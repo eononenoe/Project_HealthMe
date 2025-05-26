@@ -40,13 +40,9 @@ a {
 /*     슬라이더     */
 /* ================ */
 .wrapper {
-  /* width: 1900px; */
-  height: 300px;
   margin: 0 auto;
   margin-bottom: 50px;
   min-width: none;
-  /* display: flex; */
-  /* justify-content: center; */
   align-items: center;
   max-width: 1900px;
 }
@@ -74,7 +70,7 @@ a {
   left: 50%;
   transform: translateX(970%); 
 
-  background-color: rgba(74, 74, 74, 0.461);
+  background-color: rgba(74, 74, 74, 0.259);
   color: white;
   padding: 4px 10px;
   border-radius: 20px;
@@ -190,7 +186,7 @@ main>section>content {
   width: 1280px;
   padding: 0 0 0 0;
   margin-top: 40px;
-
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
