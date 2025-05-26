@@ -6,6 +6,7 @@ export default function UserEdit() {
     userid: "",
     password: "",
     username: "",
+    tel1: "",
     tel2: "",
     tel3: "",
   });
@@ -32,6 +33,7 @@ export default function UserEdit() {
       if (getuser !== null) {
         setForm({
           ...getuser.data,
+          tel1: getuser.data.tel.substring(0, 3),
           tel2: getuser.data.tel.substring(4, 8),
           tel3: getuser.data.tel.substring(9, 13),
         });
@@ -59,18 +61,19 @@ export default function UserEdit() {
     setPassword(e.target.value);
   };
 
+  // 수정 버튼 클릭하면 실행
   const userAlter = async () => {
     const formData = new FormData();
     formData.append("userid", form.userid);
     formData.append("password", form.password);
     formData.append("username", form.username);
-    formData.append("phone", form.tel2.concat(form.tel3));
+    formData.append("phone", form.tel1 + "-" + form.tel2 + "-" + form.tel3);
     if (form.password !== password) {
       window.alert("비밀번호가 틀렸습니다.");
       return;
     } else {
       try {
-        await axios.post(`/mypage/user/update/${form.id}`, form, {
+        await axios.post(`/mypage/user/update?id=${form.id}`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
@@ -157,13 +160,12 @@ export default function UserEdit() {
                 name="tel1"
                 className="form-control custom-input"
                 id="tel1"
+                value={form.tel1}
+                onChange={updateHandler}
               >
-                <option value="010" selected={"${user.tel1}" === "010"}>
-                  010
-                </option>
-                <option value="011" selected={"${user.tel1}" === "011"}>
-                  011
-                </option>
+                <option value="">선택</option>
+                <option value="010">010</option>
+                <option value="011">011</option>
               </select>
               <span className="tel-hypen">-</span>
               <input

@@ -31,6 +31,7 @@ public class MypageUserService {
     public void updateUser(Long id, UserUpdate userUpdate) {
         Optional<User>  optionUser = userRepository.findById(id);
         User user = optionUser.get();
+        user.setUserid(userUpdate.getUserid());
         user.setPassword(userUpdate.getPassword());
         user.setUsername(userUpdate.getUsername());
         user.setTel(userUpdate.getPhone());
