@@ -2,11 +2,21 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 export default function UserEdit() {
-  const [user, setUser] = useState();
+  const [form, setForm] = useState({
+    userid: "",
+    password: "",
+    username: "",
+    tel2: "",
+    tel3: "",
+  });
+  const [password, setPassword] = useState();
+  const [update, setUpdate] = useState(false);
 
+  const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+  const token = localStorage.getItem("accessToken");
+
+  // 회원 정보 수정 페이지 들어가면 바로 실행
   const userinfo = async () => {
-    const loginUser = JSON.parse(localStorage.getItem("loginUser"));
-    const token = localStorage.getItem("accessToken");
     console.log("loginUser", loginUser);
     if (loginUser !== null) {
       const getuser = await axios.get("/mypage/getuserinfo", {
@@ -18,18 +28,67 @@ export default function UserEdit() {
 
       console.log("getuser", getuser);
 
+      // 백엔드에서 잘 가져오면
       if (getuser !== null) {
-        setUser(getuser.data);
+        setForm({
+          ...getuser.data,
+          tel2: getuser.data.tel.substring(4, 8),
+          tel3: getuser.data.tel.substring(9, 13),
+        });
       } else {
         console.log("불러오지 못했습니다.");
       }
     }
   };
+
+  // input창 정보 수정 이벤트
+  const updateHandler = (e) => {
+    console.log(e.target.value);
+
+    const name = e.target.name;
+    const value = e.target.value;
+    setForm((prevform) => ({
+      // prevform은 가장 최신의 상태값이다.
+      ...prevform,
+      [name]: value, //form을 수정한 내용으로 변경.
+      // 객체에서 key자리에 변수를 사용할려면 []
+    }));
+  };
+
+  const checkpasswordHandler = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const userAlter = async () => {
+    const formData = new FormData();
+    formData.append("userid", form.userid);
+    formData.append("password", form.password);
+    formData.append("username", form.username);
+    formData.append("phone", form.tel2.concat(form.tel3));
+    if (form.password !== password) {
+      window.alert("비밀번호가 틀렸습니다.");
+      return;
+    } else {
+      try {
+        await axios.post(`/mypage/user/update/${form.id}`, form, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        window.alert("수정에 성공했습니다.");
+        setUpdate((prev) => !prev);
+      } catch (error) {
+        window.alert("수정에 실패했습니다.");
+      }
+    }
+  };
+
   useEffect(() => {
     userinfo(); // 회원 전체 목록 가져오기
-  }, []);
+  }, [update]);
 
-  if (!user) {
+  if (!form) {
     //
     return <h2>잠시만 기다려주세요.</h2>;
   }
@@ -54,34 +113,41 @@ export default function UserEdit() {
 
       <div className="form-box">
         <h2>회원 정보 수정</h2>
-        <form action="/join/update" method="post" className="profile-edit-form">
+        <form className="profile-edit-form">
           <div className="input-row">
             {/* 여기서 부터 내용 시작 */}
             <label>아이디</label>
-            <input type="text" name="userid" value={user.userid} readOnly />
-          </div>
-
-          <div className="input-row">
-            <label>현재 비밀번호</label>
-            <input
-              type="password"
-              name="currentPassword"
-              placeholder="비밀번호를 입력해 주세요"
-            />
+            <input type="text" name="userid" value={form.userid} readOnly />
           </div>
 
           <div className="input-row">
             <label>새 비밀번호</label>
             <input
               type="password"
-              name="newPassword"
+              name="password"
               placeholder="새 비밀번호를 입력해 주세요"
+              onChange={updateHandler}
+            />
+          </div>
+
+          <div className="input-row">
+            <label>비밀번호 재확인</label>
+            <input
+              type="password"
+              name="checkPassword"
+              placeholder="한번 더 입력해주세요."
+              onChange={checkpasswordHandler}
             />
           </div>
 
           <div className="input-row">
             <label>이름</label>
-            <input type="text" name="username" value={user.username} />
+            <input
+              type="text"
+              name="username"
+              value={form.username}
+              onChange={updateHandler}
+            />
           </div>
 
           <div className="input-row">
@@ -103,17 +169,19 @@ export default function UserEdit() {
               <input
                 type="text"
                 name="tel2"
-                value={user.tel.substring(4, 8)}
+                value={form.tel2}
                 className="form-control custom-input"
                 id="tel2"
+                onChange={updateHandler}
               />
               <span className="tel-hypen">-</span>
               <input
                 type="text"
                 name="tel3"
-                value={user.tel.substring(9, 13)}
+                value={form.tel3}
                 className="form-control custom-input"
                 id="tel3"
+                onChange={updateHandler}
               />
               <button type="button" className="verify-btn">
                 인증
@@ -132,7 +200,7 @@ export default function UserEdit() {
             </div>
           </div>
           <div className="button-group">
-            <button type="submit" className="submit-btn">
+            <button type="submit" className="submit-btn" onClick={userAlter}>
               수정하기
             </button>
           </div>

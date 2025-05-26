@@ -1,13 +1,11 @@
 package com.example.healthme.domain.mypage.controller;
 
+import com.example.healthme.domain.mypage.dto.UserUpdate;
 import com.example.healthme.domain.mypage.service.MypageUserService;
 
 import com.example.healthme.domain.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,4 +22,11 @@ public class MypageUserController {
         User user= mypageUserService.getUserInfo(id);
         return user;
     }
+
+    @PostMapping("/user/update")
+    public void userUpdate(@RequestParam("id") Long id, @ModelAttribute UserUpdate userUpdate){
+        System.out.println(userUpdate);
+        mypageUserService.updateUser(id,userUpdate);
+    }
+
 }
