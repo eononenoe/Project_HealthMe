@@ -28,20 +28,22 @@
 .hero p {
     font-size: 16px;
     margin: 10px 0 40px;
-    color: #e0f5ec;
+    color: white;
 }
 
+
 .card-container {
+    width: 100%;
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
     gap: 40px;
     padding: 0 20px 80px;
+    border: none;
 }
 
 .card {
-    background: white;
     border-radius: 12px;
+    background-color: white;
     width: 350px;
     height: 230px;
     text-align: center;

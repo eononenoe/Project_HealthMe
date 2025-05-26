@@ -65,10 +65,10 @@ a {
   height: 30px;
 
   position: absolute;
-  bottom: 20px; 
+  bottom: 20px;
 
   left: 50%;
-  transform: translateX(970%); 
+  transform: translateX(970%);
 
   background-color: rgba(74, 74, 74, 0.259);
   color: white;
@@ -87,6 +87,7 @@ main {
 }
 
 .main_low_title {
+  padding-top: 20px;
   font-size: 30px;
   font-weight: 600;
   color: black;
