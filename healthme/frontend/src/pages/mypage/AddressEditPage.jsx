@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
+import AddressEditModal from "./AddressEditModal";
 
 export default function AddressEditPage() {
+  const [open, setOpen] = useState(false);
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    setOpen(true);
+  };
+
   return (
     <>
       <div className="user-box">
@@ -42,18 +49,7 @@ export default function AddressEditPage() {
             </div>
 
             {/* 실제로는 Link or 버튼 + onClick(openWindow)로 처리 */}
-            <a
-              href="/pages/mypage/address_inside_edit.html"
-              onClick={(e) => {
-                e.preventDefault();
-                window.open(
-                  "/pages/mypage/address_inside_edit.html",
-                  "_blank",
-                  "width=530,height=575"
-                );
-              }}
-              className="address-adjustment"
-            >
+            <a onClick={handleUpdate} className="address-adjustment">
               수정
             </a>
           </div>
@@ -73,6 +69,11 @@ export default function AddressEditPage() {
           </button>
         </div>
       </div>
+
+      <AddressEditModal
+        open={open}
+        onClose={() => setOpen(false)}
+      ></AddressEditModal>
     </>
   );
 }

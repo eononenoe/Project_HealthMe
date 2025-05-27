@@ -1,14 +1,17 @@
 import React from "react";
-//import "../../static/css/pages/Mypage_Inside_Edit.css";
 
-export default function AddressEditModal() {
+export default function AddressEditModal({ open, onClose }) {
+  if (!open) return null;
+
   return (
-    <div className="modal">
-      <div className="container">
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close-btn" onClick={onClose}>
+          ×
+        </button>
         <h2>배송지 수정</h2>
         <div className="badge">기본 배송지</div>
-
-        <form action="/shipping/update" method="post">
+        <form>
           <div className="input-group">
             <label htmlFor="address">주소</label>
             <input
@@ -36,7 +39,6 @@ export default function AddressEditModal() {
               type="text"
               id="recipient"
               name="recipient"
-              placeholder="받으시는 분"
               value="강강강"
               readOnly
             />
@@ -48,14 +50,15 @@ export default function AddressEditModal() {
               type="text"
               id="phone"
               name="phone"
-              placeholder="휴대폰 번호"
               value="010-7842-4532"
               readOnly
             />
           </div>
 
           <div className="button-group">
-            <button type="submit">저장</button>
+            <button type="submit" className="submit-btn">
+              저장
+            </button>
           </div>
         </form>
       </div>

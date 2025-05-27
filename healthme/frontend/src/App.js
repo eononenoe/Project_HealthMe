@@ -20,6 +20,7 @@ import User_edit from "pages/mypage/UserEdit";
 import ProductInquiryPage from "pages/mypage/ProductInquiryPage";
 import OrderHistoryPage from "pages/mypage/OrderHistoryPage";
 import AddressEditPage from "pages/mypage/AddressEditPage";
+import AddressEditModal from "pages/mypage/AddressEditModal";
 
 function AppRoutes() {
   const location = useLocation();

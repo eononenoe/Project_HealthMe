@@ -4,6 +4,7 @@ import com.example.healthme.domain.mypage.dto.UserUpdate;
 import com.example.healthme.domain.user.entity.User;
 import com.example.healthme.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public class MypageUserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public User getUserInfo(Long id) {
 
@@ -32,7 +35,7 @@ public class MypageUserService {
         Optional<User>  optionUser = userRepository.findById(id);
         User user = optionUser.get();
         user.setUserid(userUpdate.getUserid());
-        user.setPassword(userUpdate.getPassword());
+        user.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
         user.setUsername(userUpdate.getUsername());
         user.setTel(userUpdate.getPhone());
 
