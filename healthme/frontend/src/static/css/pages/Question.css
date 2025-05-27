@@ -32,12 +32,12 @@
 }
 
 
-.card-container {
+.question-card-container {
     width: 100%;
     display: flex;
     justify-content: center;
     gap: 40px;
-    padding: 0 20px 80px;
+    padding: 20px;
     border: none;
 }
 

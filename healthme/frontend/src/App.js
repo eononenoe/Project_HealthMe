@@ -7,10 +7,17 @@ import ResultPage from 'pages/Result/ResultPage';
 import JoinPage from 'pages/login/JoinPage';
 import LoginPage from 'pages/login/LoginPage';
 import OAuth2RedirectHandler from 'pages/login/OAuth2RedirectHandler';
+
 // 메인 페이지
 import Index from "pages/index";
 // 설문 페이지
-import Question from "pages/Question/Question";
+import QuestionPage from "pages/Question/QuestionPage";
+// 구매 페이지
+import PurchasePage from "pages/Purchase/PurchasePage";
+// 추천재료 페이지
+import NutritionalPage from "pages/Nutritional/NutritionalPage";
+
+
 // 관리자 페이지
 import Layout from "pages/admin/Layout";
 import Dashboard from "pages/admin/Dashboard";
@@ -30,7 +37,11 @@ function AppRoutes() {
         {/* 메인 페이지 */}
         <Route path="/" element={<Index />}></Route>
         {/* 설문 페이지 */}
-        <Route path="/question" element={<Question />}></Route>
+        <Route path="/question" element={<QuestionPage />}></Route>
+        {/* 구매 페이지 */}
+        <Route path="/purchase" element={<PurchasePage />}></Route>
+        {/* 추천재료 페이지 */}
+        <Route path="/nutritional" element={<NutritionalPage />}></Route>
         {/* 사용자용 */}
         <Route path="/result" element={<ResultPage />} />
         <Route path="/join" element={<JoinPage />} />

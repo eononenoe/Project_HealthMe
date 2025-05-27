@@ -34,7 +34,7 @@ const NutritionSurvey = () => {
                 <h1>나의 건강은?</h1>
                 <p>HealthMe Project<sup>®</sup></p>
 
-                <section className="card-container">
+                <section className="question-card-container">
                     <div className="card">
                         <div className="card-top">
                             <img src="https://www.16personalities.com/static/images/test-header-2.svg" alt="아이콘1" />

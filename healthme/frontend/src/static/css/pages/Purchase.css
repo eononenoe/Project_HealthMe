@@ -17,7 +17,8 @@
   font-family: "Nanum Gothic", serif;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -34,7 +35,8 @@ a {
 /* ================ */
 .purchase-wrapper {
   width: 1280px;
-  min-width: 1280px; /* << 추가해 */
+  min-width: 1280px;
+  /* << 추가해 */
   margin: 0 auto;
   display: flex;
   padding-top: 50px;
@@ -51,6 +53,7 @@ a {
   margin-bottom: 5px;
   color: black;
 }
+
 .purchase-left-title>a {
   display: flex;
   justify-content: center;
@@ -58,17 +61,18 @@ a {
   right: -40px;
   align-items: center;
 }
+
 .purchase-left-title {
   font-size: 1.2rem;
   color: gray;
   display: flex;
-  align-items: center; 
-  gap: 10px; 
+  align-items: center;
+  gap: 10px;
 }
 
-.purchase-left-title h2, 
+.purchase-left-title h2,
 .purchase-left-title a {
-  margin: 0; 
+  margin: 0;
   padding: 0;
 }
 
@@ -80,21 +84,28 @@ a {
   margin: 10px 0;
   color: gray;
   font-size: 1.2rem;
-  
+
 }
+
 .purchase-left-menu>li>label:hover {
   color: #333;
   font-weight: 600;
 }
+
 .custom-radio input[type="radio"] {
-  display: none; /* 라디오 버튼 숨기기 */
+  display: none;
+  /* 라디오 버튼 숨기기 */
 }
 
 .custom-radio {
-  cursor: pointer; /* 마우스 올리면 포인터 손가락 모양 */
-  text-decoration: none; /* a 태그 느낌 */
-  color: inherit; /* 글자색 상속 */
-  font-weight: normal; /* 필요에 따라 굵게/얇게 */
+  cursor: pointer;
+  /* 마우스 올리면 포인터 손가락 모양 */
+  text-decoration: none;
+  /* a 태그 느낌 */
+  color: inherit;
+  /* 글자색 상속 */
+  font-weight: normal;
+  /* 필요에 따라 굵게/얇게 */
 }
 
 /* ================ */
@@ -102,11 +113,12 @@ a {
 /* ================ */
 .purchase-right-content {
   flex-grow: 1;
-  min-width: 0; /* << flex 안에서는 overflow 터지는 걸 막으려고 이거 추가하면 안정감 있음 */
+  min-width: 0;
+  /* << flex 안에서는 overflow 터지는 걸 막으려고 이거 추가하면 안정감 있음 */
   display: flex;
   flex-direction: column;
   gap: 30px;
-  padding:  0 30px;
+  padding: 0 30px;
 }
 
 .purchase-title {
@@ -120,16 +132,14 @@ a {
 /* ================ */
 .purchase-banner {
   width: 100%;
-  height: 250px;
-  background: #f0f0f0;
-  border-radius: 10px;
-  overflow: hidden;
+  height: 350px;
 }
 
-.purchase-banner img {
+.banner-img{
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  border-radius: 10px;
+  object-fit: fill;
 }
 
 /* ================ */
@@ -150,9 +160,11 @@ a {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 40px;
-  
-  min-height: 1000px; /* 최소 높이 확보 */
-  margin-bottom: 100px; /* 푸터랑 거리 벌리기 */
+
+  min-height: 1000px;
+  /* 최소 높이 확보 */
+  margin-bottom: 100px;
+  /* 푸터랑 거리 벌리기 */
 }
 
 
@@ -160,12 +172,12 @@ a {
 /*     아이템 카드    */
 /* ================ */
 .item_store {
-  width: 100%;
+  width: 290px;
   height: auto;
 }
 
-.item_img > img {
-  width: 100%;
+.item_img>img {
+  width: 290px;
   height: 350px;
   object-fit: cover;
   border-radius: 5px;
