@@ -4,15 +4,10 @@ body {
   padding: 0;
   background-color: #fff;
 }
-.approval-container {
-  display: flex;
-  justify-content: center;
-  padding: 30px;
-  max-width: 1200px;
-  margin: auto;
-  gap: 20px;
+
+.approval-left {
 }
-.approval-left,
+
 .approval-right {
   background: #fff;
   padding: 20px;

@@ -28,31 +28,40 @@
     <link rel="stylesheet" href="/static/css/pages/approval.css" />
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/static/js/by.js"></script>
 
 </head>
 <body>
       <div id="header"></div>
-  <main class="approval-container">
-    <section class="approval-left">
-      <h2>배송정보</h2>
-      <div class="delivery-preview">
-        <p><strong>받는 사람</strong>: 홍길동 <button class="change-btn">변경</button></p>
-        <p><strong>배송지</strong>: 대구광역시 북구 침산공원로 25 대현프라자 101동1601호</p>
-        <p><strong>연락처</strong>: 010-1234-5678</p>
+      <div class="approval-left">
+        <h2>배송지</h2>
+        <div>
+        <button class="left-button">최근배송지</button>
+        <button class="right-button">직접입력</button>
+        </div>
+        <div class="payment-options">
+          <label><input type="radio" name="checked" /> 회원정보와 동일</label>
+          <label><input type="radio" name="" /> 새로운 배송지</label>
+        </div>
+        <div class="approval-main">
+          <h4>받는 사람 *
+          <input type="text">
+          </h4>
+          <h4>주소 *
+          <input type="text">주소검색
+          </h4>
+          <input type="text">
+          <input type="text">
+          <h4>휴대전화 *
+            <input type="text">
+            <input type="text">
+            <input type="text">
+            <h4>이메일 *
+              <input type="text"><p>@</p><input type="text">
+            </h4>
+          </h4>
+          
+        </div>
       </div>
-
-      <div class="delivery-request">
-        <label for="delivery-request-select"><strong>요청사항</strong></label>
-        <select id="delivery-request-select" onchange="handleRequestChange()">
-          <option value="">선택하세요</option>
-          <option value="문앞">문 앞에 두기</option>
-          <option value="경비실">경비실에 맡기기</option>
-          <option value="직접입력">직접입력</option>
-        </select>
-        <textarea id="custom-request" placeholder="요청사항을 입력하세요"></textarea>
-      </div>
-
       <div class="product-list">
         <div class="product-item">
           <img src="https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/2806a17d-deba-4bc4-b6ec-d6dc0c96e575.jpg" alt="채소믹스" />
@@ -102,11 +111,4 @@
     </section>
   </main>
       <div id="footer"></div>
-  <script>
-    function handleRequestChange() {
-      const select = document.getElementById("delivery-request-select");
-      const textarea = document.getElementById("custom-request");
-      textarea.style.display = (select.value === "직접입력") ? "block" : "none";
-    }
-  </script>
 </html>
