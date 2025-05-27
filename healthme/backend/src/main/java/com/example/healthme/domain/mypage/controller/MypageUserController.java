@@ -18,7 +18,7 @@ public class MypageUserController {
 
     @GetMapping("/getuserinfo")
     public User getUser(@RequestParam("id") Long id){
-        System.out.println(id);
+        System.out.println("id"+id);
         User user= mypageUserService.getUserInfo(id);
         return user;
     }

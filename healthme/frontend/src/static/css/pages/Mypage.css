@@ -321,7 +321,7 @@ h2 {
   cursor: pointer;
   margin-left: auto;
   position: relative;
-  left: 490px;
+  left: 463px;
   top: 24px;
 }
 
@@ -469,7 +469,6 @@ h2 {
   background-color: #696969;
 }
 
-
 /* */
 .modal-backdrop {
   position: fixed;
@@ -484,7 +483,6 @@ h2 {
   align-items: center;
   z-index: 1000;
 }
-
 
 .modal-content {
   background: white;
@@ -506,7 +504,6 @@ h2 {
   cursor: pointer;
 }
 
-
 .input-group {
   margin-bottom: 20px;
 }
@@ -524,7 +521,6 @@ h2 {
   border-radius: 6px;
   border: 1px solid #ccc;
 }
-
 
 .delivery-group {
   flex: 1 1 45%;

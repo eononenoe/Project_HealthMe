@@ -1,13 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddressEditModal from "./AddressEditModal";
+import axios from "axios";
 
 export default function AddressEditPage() {
   const [open, setOpen] = useState(false);
+  const [userDB, setUserDB] = useState({});
   const handleUpdate = (e) => {
     e.preventDefault();
     setOpen(true);
   };
 
+  const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+  const getAddress = async () => {
+    // console.log("loginUser", loginUser);
+    const user = await axios.get(`/mypage/getuserinfo?id=${loginUser.id}`, {
+      withCredentials: true,
+    });
+    console.log("user", user);
+    setUserDB(user.data);
+  };
+  useEffect(() => {
+    getAddress();
+  }, []);
+
+  // if (!userDB) {
+  //   return null;
+  // }
   return (
     <>
       <div className="user-box">
@@ -42,10 +60,10 @@ export default function AddressEditPage() {
 
           <div className="address-content">
             <div className="address-info">
-              <div className="address-text">
-                서울 서초구 강남대로 411 2301호
+              <div className="address-text">{userDB.address}</div>
+              <div className="address-sub">
+                {userDB.username} {userDB.tel}
               </div>
-              <div className="address-sub">강강강 010-7842-4532</div>
             </div>
 
             {/* 실제로는 Link or 버튼 + onClick(openWindow)로 처리 */}
