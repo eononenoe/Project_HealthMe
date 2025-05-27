@@ -140,7 +140,9 @@
     text-align: center;
     height: 30%;
 }
-
+.bar-percent{
+    margin-left: 10px;
+}
 .bar-label {
     font-size: 16px;
     font-weight: bold;

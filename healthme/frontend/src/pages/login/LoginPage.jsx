@@ -25,7 +25,7 @@ const LoginPage = () => {
             });
 
             const { accessToken, userInfo } = response.data;
-            localStorage.setItem("accessToken", accessToken);
+            // localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("loginUser", JSON.stringify(userInfo));
 
             // 아이디 저장 처리

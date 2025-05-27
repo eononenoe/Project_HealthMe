@@ -41,8 +41,7 @@ public class SecurityConfig {
                                 "/healthme/users/join",
                                 "/healthme/users/check",
                                 "/healthme/users/login",
-                                "/healthme/sms/**",
-                                "/healthme/sms/send"
+                                "/healthme/result/**"
                         ).permitAll()
                         .requestMatchers("/user").hasRole("USER")
                         .requestMatchers("/admin").hasRole("ADMIN")

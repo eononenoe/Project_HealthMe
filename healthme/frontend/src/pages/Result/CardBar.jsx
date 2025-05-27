@@ -1,12 +1,11 @@
 import React from 'react';
 
-const CardBar = ({ name, value, desc, color, percent, onClick }) => {
+const CardBar = ({ name, color, percent, onClick }) => {
     return (
-        <div
-            className="card-bar"
-            onClick={() => onClick({ name, value, desc })}
-        >
-            <div className="bar-label">{name}</div>
+        <div className="card-bar" onClick={onClick}>
+            <div className="bar-label">
+                {name}<span className="bar-percent">{percent}%</span>
+            </div>
             <div className="bar-container">
                 <div className={`bar-inner ${color}`}>
                     <div className="indicator" style={{ left: `${percent}%` }} />

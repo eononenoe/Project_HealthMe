@@ -21,13 +21,13 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // ✅ 정확한 origin 설정
-        config.setAllowedOrigins(List.of("http://localhost:3000")); // 🔁 수정됨
-        config.setAllowCredentials(true); // ✅ 쿠키 포함 허용
+        //  정확한 origin 설정
+        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowCredentials(true); // 쿠키 포함 허용
         config.setAllowedHeaders(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
-        // ✅ 브라우저가 Set-Cookie 읽을 수 있도록 허용
+        //  브라우저가 Set-Cookie 읽을 수 있도록 허용
         config.addExposedHeader("Set-Cookie");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
