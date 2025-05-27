@@ -40,13 +40,6 @@ export default function TransactionPage() {
   const [refundReturnOrderid, setRefundReturnOrderid] = useState();
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const token = localStorage.getItem("accessToken");
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
   // 로직 함수
 
   // 페이지 버튼 클릭 이벤트 정의
@@ -93,7 +86,9 @@ export default function TransactionPage() {
 
   const transAPI = async (transArray) => {
     try {
-      await axios.post("/transactions/status", transArray, config);
+      await axios.post("/transactions/status", transArray, {
+        withCredentials: true,
+      });
       window.alert("거래가 성공적으로 완료 처리되었습니다.");
     } catch (error) {
       window.alert("거래 완료에 실패하였습니다.");
@@ -146,7 +141,7 @@ export default function TransactionPage() {
       await axios.post(
         `/transactions/refundReturn?type=${element}`,
         transArray,
-        config
+        { withCredentials: true }
       );
     } catch (error) {}
   };
@@ -158,8 +153,8 @@ export default function TransactionPage() {
         const searchData = await axios.get(
           `/transactions/search/data?searchText=${searchText}&page=${
             page - 1
-          }&size=10,`,
-          config
+          }&size=10`,
+          { withCredentials: true }
         );
         console.log("searchData : ", searchData);
         if (searchData !== null) {
@@ -169,7 +164,7 @@ export default function TransactionPage() {
       } else {
         const PageContent = await axios.get(
           `/trans/selectAll?page=${page - 1}&size=10`,
-          config
+          { withCredentials: true }
         );
         console.log(PageContent);
         if (PageContent !== null) {

@@ -15,14 +15,18 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
 
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-                                        AuthenticationException exception) throws IOException{
+										AuthenticationException exception) throws IOException {
 
-		log.error("로그인 실패: {}", exception.getMessage()) ;
+		log.error("로그인 실패: {}", exception.getMessage());
 
-		// 보안상 메시지를 직접 노출하지 않고 고정된 파라미터 값 전달
-		response.sendRedirect(request.getContextPath() + "/login?error=invalid");
+		// 1. HTTP 상태 401 Unauthorized
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+		// 2. 응답 타입을 JSON으로 지정
+		response.setContentType("application/json;charset=UTF-8");
+
+		// 3. 에러 메시지를 JSON 형식으로 출력
+		String errorJson = "{\"error\": \"invalid_credentials\"}";
+		response.getWriter().write(errorJson);
 	}
-
-
-
 }

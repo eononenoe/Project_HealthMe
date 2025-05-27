@@ -14,7 +14,6 @@ export default function UserEdit() {
   const [update, setUpdate] = useState(false);
 
   const loginUser = JSON.parse(localStorage.getItem("loginUser"));
-  const token = localStorage.getItem("accessToken");
 
   // 회원 정보 수정 페이지 들어가면 바로 실행
   const userinfo = async () => {
@@ -22,9 +21,7 @@ export default function UserEdit() {
     if (loginUser !== null) {
       const getuser = await axios.get("/mypage/getuserinfo", {
         params: { id: loginUser.id },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        withCredentials: true,
       });
 
       console.log("getuser", getuser);
@@ -74,8 +71,8 @@ export default function UserEdit() {
     } else {
       try {
         await axios.post(`/mypage/user/update?id=${form.id}`, formData, {
+          withCredentials: true,
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
         });

@@ -34,13 +34,6 @@ export default function ProductPage() {
 
   const [checkItems, setCheckItems] = useState([]);
 
-  const token = localStorage.getItem("accessToken");
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
   // 로직 함수
 
   // 페이지 버튼 클릭 이벤트 정의
@@ -98,7 +91,9 @@ export default function ProductPage() {
   const handledelete = async () => {
     const delteBoolean = window.confirm("정말로 삭제하시겠습니까?");
     if (delteBoolean) {
-      await axios.post("/product/delete", checkItems, config);
+      await axios.post("/product/delete", checkItems, {
+        withCredentials: true,
+      });
       window.alert("삭제 완료되었습니다.");
       setUpdate((prev) => !prev); // 목록 새로고침
     } else {
@@ -127,7 +122,7 @@ export default function ProductPage() {
     const pagemove = async () => {
       const PageContent = await axios.get(
         `/product/pagination?page=${page - 1}&size=10`,
-        config
+        { withCredentials: true }
       );
       // size는 한페이지에 몇개를 보여줄지 , page-1은 백엔드에서는 0부터 세니까 개발자 편하라고 하는거다.
       console.log("페이지네이션한 데이터", PageContent);

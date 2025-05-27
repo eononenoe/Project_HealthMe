@@ -16,7 +16,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 
 @Slf4j
 @Component
@@ -27,7 +26,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException{
+										Authentication authentication) throws IOException {
 
 		log.info("로그인 성공, JWT 발급 시작");
 
@@ -38,27 +37,37 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
 		UserDto userDto = principalDetails.getUserDto();
 
-		// userDto >> JSON
+		// 쿠키에 refreshToken 저장
+		Cookie refreshTokenCookie = new Cookie(JwtProperties.REFRESH_TOKEN_COOKIE_NAME, tokenInfo.getRefreshToken());
+		refreshTokenCookie.setHttpOnly(true);
+		refreshTokenCookie.setSecure(false); // 배포 시 true
+		refreshTokenCookie.setPath("/");
+		refreshTokenCookie.setMaxAge(JwtProperties.REFRESH_TOKEN_EXPIRATION_TIME / 1000);
+		response.addCookie(refreshTokenCookie);
+
+		log.info("▶▶ [refreshToken 쿠키 추가됨] 값: {}", tokenInfo.getRefreshToken());
+
+		// 쿠키에 accessToken 저장 (선택적, accessToken은 JS에서 직접 써도 됨)
+		Cookie accessTokenCookie = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME, tokenInfo.getAccessToken());
+		accessTokenCookie.setHttpOnly(true);
+		accessTokenCookie.setSecure(false);
+		accessTokenCookie.setPath("/");
+		accessTokenCookie.setMaxAge(JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME / 1000);
+		response.addCookie(accessTokenCookie);
+
+		// JSON 응답 설정
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+
+		// 응답 바디 구성 (accessToken은 필요 시 프론트에서 저장)
 		ObjectMapper objectMapper = new ObjectMapper();
-		String loginUserJson = objectMapper.writeValueAsString(userDto);
-		String encodedLoginUser = URLEncoder.encode(loginUserJson, "UTF-8");
-
-		//TOKEN 쿠키에 담아 전송
-		Cookie cookie = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME,tokenInfo.getAccessToken());
-		cookie.setHttpOnly(true); // JS에서 접근 못 하도록
-		cookie.setSecure(false);  // HTTPS일 경우 true, 개발 중엔 false
-		cookie.setPath("/");
-		cookie.setMaxAge(JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME / 1000);
-		response.addCookie(cookie);
-
-		// 프론트에 전달할 URL
-		String redirectUrl = "http://localhost:3000/oauth2/redirect"
-				+ "?accessToken=" + tokenInfo.getAccessToken()
-				+ "&refreshToken=" + tokenInfo.getRefreshToken()
-				+ "&loginUser=" + encodedLoginUser;
-
-		response.sendRedirect(redirectUrl);
-
+		String responseJson = objectMapper.writeValueAsString(
+				new LoginResponse(tokenInfo.getAccessToken(), userDto)
+		);
+		response.getWriter().write(responseJson);
 	}
+
+	// 로그인 응답용 DTO
+	record LoginResponse(String accessToken, UserDto userInfo) {}
 
 }

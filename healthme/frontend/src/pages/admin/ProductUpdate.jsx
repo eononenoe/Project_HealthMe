@@ -28,8 +28,6 @@ export default function ProductUpdate({
   const [thumbnail, setThumbnail] = useState();
   const [detailImage, setDetailImage] = useState();
 
-  const token = localStorage.getItem("accessToken");
-
   useEffect(() => {
     // 수정할 product값을 form에 넣어두기 위해서.
     if (product) {
@@ -70,8 +68,8 @@ export default function ProductUpdate({
 
     try {
       await axios.put(`/product/${form.no}`, formData, {
+        withCredentials: true,
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
