@@ -28,5 +28,8 @@ public class MypageUserController {
         System.out.println(userUpdate);
         mypageUserService.updateUser(id,userUpdate);
     }
+    
+    // 배송지 수정
+    
 
 }

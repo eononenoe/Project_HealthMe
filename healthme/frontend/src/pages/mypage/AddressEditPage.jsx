@@ -91,6 +91,7 @@ export default function AddressEditPage() {
       <AddressEditModal
         open={open}
         onClose={() => setOpen(false)}
+        userDB={userDB}
       ></AddressEditModal>
     </>
   );

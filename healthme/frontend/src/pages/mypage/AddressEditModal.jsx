@@ -1,11 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import DaumPostcodeModal from "./DaumPostcodeModal";
+import axios from "axios";
+export default function AddressEditModal({ open, onClose, userDB }) {
+  const [user, setUser] = useState({
+    address: "",
+    addressDetail: "",
+  });
+  const [showPostcode, setShowPostcode] = useState(false);
 
-export default function AddressEditModal({ open, onClose }) {
-  // if (!open) return null;
+  // 주소를 AddressEditPage에서 프롭스로 가져온 후 수정을 위해 user라는 useState 정의.
+  useEffect(() => {
+    if (userDB !== null) {
+      setUser({
+        address: userDB.address,
+        addressDetail: userDB.addressDetail,
+      });
+    }
+  }, [userDB]);
+
+  const addressUpdateHandle = () => {
+    setShowPostcode(true);
+  };
+
+  // 주소 검색 api에서 검색 후 user에 저장하는 함수.
+  const handleAddressSelect = (updateUser) => {
+    // updateUser는 DaumPostcodeModal에서 넘어온 객체이다.
+    setUser((prev) => ({
+      ...prev,
+      address: updateUser.address,
+    }));
+  };
+
+  // 수정된 주소값 저장하기.
+  const updateUserSubmit = async () => {
+    await axios.post("/", user, {
+      withCredentials: true,
+    });
+  };
 
   return (
     <>
-      {open ? (
+      {open && userDB ? (
         <div className="modal-backdrop" onClick={onClose}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close-btn" onClick={onClose}>
@@ -20,9 +55,17 @@ export default function AddressEditModal({ open, onClose }) {
                   type="text"
                   id="address"
                   name="address"
-                  value="서울 서초구 강남대로 411"
+                  value={user.address}
+                  placeholder="주소를 입력하세요."
                   readOnly
                 />
+                <button
+                  className="address-search-btn"
+                  onClick={addressUpdateHandle}
+                  type="button"
+                >
+                  주소 검색
+                </button>
               </div>
 
               <div className="input-group">
@@ -31,7 +74,14 @@ export default function AddressEditModal({ open, onClose }) {
                   type="text"
                   id="detail-address"
                   name="detailAddress"
-                  placeholder="상세주소 입력 (예: 2303호)"
+                  placeholder="상세주소를 입력하세요."
+                  value={user.addressDetail}
+                  onChange={(e) => {
+                    setUser((prev) => ({
+                      ...prev,
+                      addressDetail: e.target.value,
+                    }));
+                  }}
                 />
               </div>
 
@@ -41,7 +91,7 @@ export default function AddressEditModal({ open, onClose }) {
                   type="text"
                   id="recipient"
                   name="recipient"
-                  value="강강강"
+                  value={userDB.username}
                   readOnly
                 />
               </div>
@@ -52,17 +102,28 @@ export default function AddressEditModal({ open, onClose }) {
                   type="text"
                   id="phone"
                   name="phone"
-                  value="010-7842-4532"
+                  value={userDB.tel}
                   readOnly
                 />
               </div>
 
               <div className="button-group">
-                <button type="submit" className="submit-btn">
+                <button
+                  type="submit"
+                  className="submit-btn"
+                  onClick={updateUserSubmit}
+                >
                   저장
                 </button>
               </div>
             </form>
+
+            {showPostcode ? (
+              <DaumPostcodeModal
+                onClose={() => setShowPostcode(false)}
+                onSelect={handleAddressSelect}
+              />
+            ) : null}
           </div>
         </div>
       ) : null}
