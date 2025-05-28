@@ -21,6 +21,7 @@ import ProductInquiryPage from "pages/mypage/ProductInquiryPage";
 import OrderHistoryPage from "pages/mypage/OrderHistoryPage";
 import AddressEditPage from "pages/mypage/AddressEditPage";
 import AddressEditModal from "pages/mypage/AddressEditModal";
+import RouteLogger from "pages/mypage/RouteLogger";
 
 function AppRoutes() {
   const location = useLocation();
@@ -61,6 +62,7 @@ function AppRoutes() {
 function App() {
   return (
     <BrowserRouter>
+      <RouteLogger />
       <AppRoutes />
     </BrowserRouter>
   );

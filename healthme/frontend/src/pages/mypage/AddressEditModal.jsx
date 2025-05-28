@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import DaumPostcodeModal from "./DaumPostcodeModal";
 import axios from "axios";
-export default function AddressEditModal({ open, onClose, userDB }) {
+export default function AddressEditModal({
+  open,
+  onClose,
+  userDB,
+  getAddress,
+}) {
   const [user, setUser] = useState({
     address: "",
     addressDetail: "",
@@ -33,9 +38,21 @@ export default function AddressEditModal({ open, onClose, userDB }) {
 
   // 수정된 주소값 저장하기.
   const updateUserSubmit = async () => {
-    await axios.post("/", user, {
-      withCredentials: true,
-    });
+    try {
+      await axios.post(`/mypage/updateUser?id=${userDB.id}`, user, {
+        withCredentials: true,
+      });
+      window.alert("수정되었습니다.");
+    } catch {
+      window.alert("수정 실패했습니다.");
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // 폼이 브라우저 기본-제출 하지 않도록
+    await updateUserSubmit(); // axios POST
+    await getAddress();
+    onClose(); // 모달 닫기
   };
 
   return (
@@ -48,7 +65,7 @@ export default function AddressEditModal({ open, onClose, userDB }) {
             </button>
             <h2>배송지 수정</h2>
             <div className="badge">기본 배송지</div>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="input-group">
                 <label htmlFor="address">주소</label>
                 <input
@@ -111,7 +128,7 @@ export default function AddressEditModal({ open, onClose, userDB }) {
                 <button
                   type="submit"
                   className="submit-btn"
-                  onClick={updateUserSubmit}
+                  // onClick={updateUserSubmit}
                 >
                   저장
                 </button>

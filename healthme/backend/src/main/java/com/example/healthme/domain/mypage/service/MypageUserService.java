@@ -1,5 +1,6 @@
 package com.example.healthme.domain.mypage.service;
 
+import com.example.healthme.domain.mypage.dto.AddressUpdate;
 import com.example.healthme.domain.mypage.dto.UserUpdate;
 import com.example.healthme.domain.user.entity.User;
 import com.example.healthme.domain.user.repository.UserRepository;
@@ -40,5 +41,14 @@ public class MypageUserService {
         user.setTel(userUpdate.getPhone());
 
         userRepository.save(user);
+    }
+
+    public void updateAddress(Long id, AddressUpdate addressUpdate) {
+        Optional<User> user= userRepository.findById(id);
+        User addrUpdateUser = user.get();
+        addrUpdateUser.setAddress(addressUpdate.getAddress());
+        addrUpdateUser.setAddressDetail(addressUpdate.getAddressDetail());
+
+        userRepository.save(addrUpdateUser);
     }
 }

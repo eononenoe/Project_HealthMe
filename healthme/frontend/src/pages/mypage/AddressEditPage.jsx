@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
 import AddressEditModal from "./AddressEditModal";
 import axios from "axios";
+import NewAddress from "./NewAddress";
 
 export default function AddressEditPage() {
   const [open, setOpen] = useState(false);
   const [userDB, setUserDB] = useState({});
+
+  // 배송지 수정
   const handleUpdate = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // a태그의 원래 속성을 막기 위해서
     setOpen(true);
   };
 
   const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+
+  // 최신 DB를 가져온다.
   const getAddress = async () => {
     // console.log("loginUser", loginUser);
     const user = await axios.get(`/mypage/getuserinfo?id=${loginUser.id}`, {
@@ -23,9 +28,9 @@ export default function AddressEditPage() {
     getAddress();
   }, []);
 
-  // if (!userDB) {
-  //   return null;
-  // }
+  const addnewAddr = () => {
+    setOpen(true);
+  };
   return (
     <>
       <div className="user-box">
@@ -62,7 +67,11 @@ export default function AddressEditPage() {
             <div className="address-info">
               <div className="address-text">{userDB.address}</div>
               <div className="address-sub">
-                {userDB.username} {userDB.tel}
+                <span className="address-addressDetail">
+                  {userDB.addressDetail} &nbsp;&nbsp;
+                </span>
+
+                <span className="address-username">{userDB.username}</span>
               </div>
             </div>
 
@@ -74,25 +83,24 @@ export default function AddressEditPage() {
         </div>
 
         <div className="new_Address_add">
-          <button
-            onClick={() => {
-              window.open(
-                "/pages/mypage/address_Add.html",
-                "_blank",
-                "width=530,height=600"
-              );
-            }}
-          >
-            새 배송지 추가
-          </button>
+          <button onClick={addnewAddr}>새 배송지 추가</button>
         </div>
       </div>
 
+      {/* 수정 */}
       <AddressEditModal
         open={open}
         onClose={() => setOpen(false)}
         userDB={userDB}
+        getAddress={getAddress}
       ></AddressEditModal>
+
+      {/* 새 배송지 추가 */}
+      {/* <NewAddress
+        open={open}
+        onClose={() => setOpen(false)}
+        userDB={userDB}
+      ></NewAddress> */}
     </>
   );
 }

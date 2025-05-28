@@ -1,6 +1,5 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
-//import "../../static/css/pages/address_add_form.css";
 
 export default function AddressAddForm() {
   const [searchParams] = useSearchParams();

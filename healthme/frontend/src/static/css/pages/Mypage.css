@@ -310,8 +310,16 @@ h2 {
   font-weight: bold;
 }
 
+.address-addressDetail {
+  font-weight: bold;
+}
+
 .address-sub {
   font-size: 14px;
+  color: rgb(0, 0, 0);
+}
+
+.address-username {
   color: gray;
 }
 
