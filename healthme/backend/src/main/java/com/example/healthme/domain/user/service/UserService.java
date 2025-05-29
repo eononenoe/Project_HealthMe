@@ -36,9 +36,9 @@ public class UserService {
         user.setUserid(dto.getUserid());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setUsername(dto.getUsername());
-        user.setZip(dto.getZip());
-        user.setAddress(dto.getAddress());
-        user.setAddressDetail(dto.getAddressDetail());
+//        user.setZip(dto.getZip());
+//        user.setAddress(dto.getAddress());
+//        user.setAddressDetail(dto.getAddressDetail());
         user.setGender(dto.getGender());
         user.setTel(fullTel);
         user.setRole("ROLE_USER");
@@ -104,8 +104,8 @@ public class UserService {
         user.setProviderId(providerId);
         user.setRole("ROLE_USER");
         user.setGrade("새싹");
-        user.setZip("");
-        user.setAddress("");
+//        user.setZip("");
+//        user.setAddress("");
         user.setTel("");
 
         userRepository.save(user);

@@ -4,7 +4,7 @@ import com.example.healthme.domain.user.entity.User;
 import lombok.Data;
 
 @Data
-public class UserResponseDto {
+public class MypageUserResponseDto {
     private Long id;
     private String userid;
     private String username;
@@ -13,14 +13,14 @@ public class UserResponseDto {
     private String address;
     private String addressDetail;
 
-    public UserResponseDto(User user) {
+    public MypageUserResponseDto(User user) {
         this.id = user.getId();
         this.userid = user.getUserid();
         this.username = user.getUsername();
         this.tel = user.getTel();
-        this.zip = user.getZip();
-        this.address = user.getAddress();
-        this.addressDetail = user.getAddressDetail();
+        this.zip = user.getDefaultAddress().getZip();
+        this.address = user.getDefaultAddress().getAddress();
+        this.addressDetail = user.getDefaultAddress().getAddressDetail();
     }
 
 }

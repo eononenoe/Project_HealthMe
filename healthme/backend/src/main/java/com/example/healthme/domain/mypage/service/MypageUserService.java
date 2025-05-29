@@ -1,14 +1,14 @@
 package com.example.healthme.domain.mypage.service;
 
 import com.example.healthme.domain.mypage.dto.AddressUpdate;
-import com.example.healthme.domain.mypage.dto.UserUpdate;
+import com.example.healthme.domain.mypage.dto.MyPageUserUpdate;
+import com.example.healthme.domain.mypage.entity.Address;
 import com.example.healthme.domain.user.entity.User;
 import com.example.healthme.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,7 +32,7 @@ public class MypageUserService {
 
     }
 
-    public void updateUser(Long id, UserUpdate userUpdate) {
+    public void updateUser(Long id, MyPageUserUpdate userUpdate) {
         Optional<User>  optionUser = userRepository.findById(id);
         User user = optionUser.get();
         user.setUserid(userUpdate.getUserid());
@@ -46,9 +46,10 @@ public class MypageUserService {
     public void updateAddress(Long id, AddressUpdate addressUpdate) {
         Optional<User> user= userRepository.findById(id);
         User addrUpdateUser = user.get();
-        addrUpdateUser.setAddress(addressUpdate.getAddress());
-        addrUpdateUser.setAddressDetail(addressUpdate.getAddressDetail());
-
+        Address defaultAddress = addrUpdateUser.getDefaultAddress();
+        defaultAddress.setAddress(addressUpdate.getAddress());
+        defaultAddress.setAddressDetail(addressUpdate.getAddressDetail());
+        defaultAddress.setZip(addressUpdate.getZip());
         userRepository.save(addrUpdateUser);
     }
 }

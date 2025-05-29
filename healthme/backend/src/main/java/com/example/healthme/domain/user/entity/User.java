@@ -22,9 +22,9 @@ public class User {
     private String userid;
     private String password;
     private String username;
-    private String zip;
-    private String address;
-    private String addressDetail;
+//    private String zip;
+//    private String address;
+//    private String addressDetail;
     private String tel;
     private String gender;
     // 회원가입에는 기입x, 기본값 부여

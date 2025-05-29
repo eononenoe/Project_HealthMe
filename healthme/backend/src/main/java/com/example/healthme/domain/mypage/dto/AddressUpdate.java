@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class AddressUpdate {
     private String address;
     private String addressDetail;
+    private String zip;
 }
