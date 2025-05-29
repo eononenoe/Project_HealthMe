@@ -26,12 +26,7 @@
     <link rel="stylesheet" href="/static/css/common/common.css" />
     <link rel="stylesheet" href="/static/css/pages/Purchase.css" />
     <link rel="stylesheet" href="/static/css/pages/shopping-cart.css" />
-    <link rel="stylesheet" href="/static/css/pages/shopping-cart.css" />
 
-    <script
-      src="https://kit.fontawesome.com/b83f799b86.js"
-      crossorigin="anonymous"
-    ></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/static/js/by.js"></script>
     <script src="/static/js/shopping-cart.js"></script>
@@ -45,15 +40,16 @@
           <h2>장바구니</h2>
           <div class="cart-all">
             <label class="custom-checkbox">
-              <input type="checkbox" />
+              <input type="checkbox" id="select-all" />
               <span class="checkmark material-symbols-outlined">check</span>
             </label>
             <span class="all-select">전체 선택</span>
             <span><button class="choice-delete">선택 삭제</button></span>
           </div>
+
           <div class="cart-item">
             <label class="custom-checkbox">
-              <input type="checkbox" />
+              <input type="checkbox" class="item-checkbox" />
               <span class="checkmark material-symbols-outlined">check</span>
             </label>
             <img
@@ -62,12 +58,12 @@
             />
             <div class="item-info">
               <p class="name">[YSB111] 유기농 채소믹스 600g (냉동)</p>
-              <p class="sub">월,수,금 16시 전 재입고</p>
+              <p class="sub">4,000원</p>
               <p class="price">6,490원</p>
               <div class="quantity">
-                <button class="qty-btn" id="decrease">-</button>
-                <span class="qty-number" id="qtyValue">4</span>
-                <button class="qty-btn" id="increase">+</button>
+                <button class="qty-btn decrease">-</button>
+                <span class="qty-number">4</span>
+                <button class="qty-btn increase">+</button>
               </div>
             </div>
             <button class="delete">
@@ -77,7 +73,7 @@
 
           <div class="cart-item">
             <label class="custom-checkbox">
-              <input type="checkbox" />
+              <input type="checkbox" class="item-checkbox" />
               <span class="checkmark material-symbols-outlined">check</span>
             </label>
             <img
@@ -86,18 +82,19 @@
             />
             <div class="item-info">
               <p class="name">[JJH365] 한돈 부위별 대용량 가성비 7종</p>
-              <p class="sub">100g당 11,445원 | 16시 전 재입고</p>
+              <p class="sub">28,000원</p>
               <p class="price">38,990원</p>
               <div class="quantity">
-                <button class="qty-btn" id="decrease">-</button>
-                <span class="qty-number" id="qtyValue">4</span>
-                <button class="qty-btn" id="increase">+</button>
+                <button class="qty-btn decrease">-</button>
+                <span class="qty-number">4</span>
+                <button class="qty-btn increase">+</button>
               </div>
             </div>
             <button class="delete">
               <span class="material-symbols-outlined">close</span>
             </button>
           </div>
+
           <div class="npay-banner">
             <strong>네이버페이 결제 시</strong>
             <p>최대 7천원 혜택</p>
@@ -122,24 +119,20 @@
               * 최종결제금액에 따라 증정품이 변경될 수 있습니다.
             </p>
             <ul>
-              <div class="product-item-hline">
-                <li>
-                  주문금액
-                  <div class="product-item-gray"><span>45,480원</span></div>
-                </li>
-              </div>
+              <li class="product-item-hline">
+                주문금액
+                <div class="product-item-gray"><span>45,480원</span></div>
+              </li>
               <li class="product-item-gray">┗ 제품할인 <span>0원</span></li>
-              <div class="product-item-uline">
-                <li>
-                  배송비
-                  <div class="product-item-gray"><span>무료</span></div>
-                </li>
-              </div>
+              <li class="product-item-uline">
+                배송비
+                <div class="product-item-gray"><span>무료</span></div>
+              </li>
             </ul>
-            <strong
-              >결제예정금액
-              <div class="product-item-red"><span>45,480원</span></div></strong
-            >
+            <strong>
+              결제예정금액
+              <div class="product-item-red"><span>45,480원</span></div>
+            </strong>
           </div>
 
           <a href="/pages/Approval/Approval.html"
@@ -150,6 +143,5 @@
     </main>
 
     <div id="footer"></div>
-    <script src="/static/js/shopping-cart.js"></script>
   </body>
 </html>

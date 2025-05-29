@@ -128,14 +128,16 @@ main {
 }
 
 .item-info .sub {
-  color: #888;
-  font-size: 0.9rem;
-  margin: -13px 0;
+  font-size: 14px;
+  text-decoration: line-through;
+  color: gray;
+  margin-top: -10px;
 }
 
 .item-info .price {
   font-weight: bold;
   font-size: 1rem;
+  margin-top: -15px;
 }
 
 .quantity {
@@ -147,7 +149,7 @@ main {
   font-family: Arial, sans-serif;
   font-size: 10px;
   height: 25px;
-  margin-top: 8px;
+  margin-top: -30px;
 }
 
 .qty-btn {
@@ -167,10 +169,23 @@ main {
   text-align: center;
 }
 
+/* 삭제 버튼 스타일 */
 .delete {
   background-color: white;
   border: none;
+  cursor: pointer; /* 클릭 가능 커서 */
+  padding: 5px; /* 클릭 영역 넓힘 */
+  display: flex; /* 아이콘 중앙 정렬 */
+  align-items: center;
+  justify-content: center;
 }
+
+.delete > .material-symbols-outlined {
+  pointer-events: none; /* 아이콘에 마우스 이벤트 전달 안되도록 */
+  font-size: 24px; /* 아이콘 크기 조절 */
+  color: #333;
+}
+
 .quantity button {
   padding: 2px 5px;
   margin: 0 5px;
@@ -181,12 +196,14 @@ main {
   border-left: 1px solid #ddd;
   padding-left: 20px;
   font-size: 0.95rem;
+  margin-top: 100px;
 }
 .login-box {
   border: 1px solid #ccc;
   padding: 20px;
   border-bottom: none;
 }
+
 .payment-summary {
   border: 1px solid #ccc;
   padding: 20px;
