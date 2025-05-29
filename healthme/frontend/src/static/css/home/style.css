@@ -118,6 +118,7 @@ main>section>content {
 .main_top_content {
   padding: 0 0 0 0;
   margin-top: 70px;
+  margin-bottom: 30px;
 
   display: flex;
   justify-content: center;
@@ -298,6 +299,9 @@ main>section>content {
   width: 290px;
 
   font-size: 0.813rem;
+}
+.item_review i{
+  margin-right: 3px;
 }
 
 /* ================ */

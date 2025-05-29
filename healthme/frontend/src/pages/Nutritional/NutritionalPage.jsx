@@ -5,11 +5,11 @@ import 'static/css/pages/Nutritional.css';
 /** 영양소 진행바에 쓸 더미 데이터 */
 const NUTRIENTS = [
   { name: '탄수화물', value: 55, color: 'blue' },
-  { name: '단백질',   value: 52, color: 'yellow' },
-  { name: '지방',     value: 78, color: 'green' },
-  { name: '비타민',   value: 43, color: 'purple' },
+  { name: '단백질', value: 52, color: 'yellow' },
+  { name: '지방', value: 78, color: 'green' },
+  { name: '비타민', value: 43, color: 'purple' },
   { name: '아이오딘', value: 90, color: 'red' },
-  { name: '철분',     value: 47, color: 'teal' },
+  { name: '철분', value: 47, color: 'teal' },
 ];
 
 /** 추천 재료(상품) 더미 데이터 - 실제로는 API나 JSON으로 대체 */
@@ -45,8 +45,8 @@ export default function CustomNutritionalPage() {
       const hit = prev.find((p) => p.id === product.id);
       return hit
         ? prev.map((p) =>
-            p.id === product.id ? { ...p, qty: p.qty + 1 } : p,
-          )
+          p.id === product.id ? { ...p, qty: p.qty + 1 } : p,
+        )
         : [...prev, { ...product, qty: 1, selected: true }];
     });
   };
@@ -63,9 +63,8 @@ export default function CustomNutritionalPage() {
 
   /* -------------------------  진행바 위치  --------------------------- */
   useEffect(() => {
-    // CSS로도 가능하지만, 기존 script 유지 감안
     document
-      .querySelectorAll('.indicator')
+      .querySelectorAll('.nutrition-indicator')
       .forEach((ind) => (ind.style.left = ind.dataset.percent + '%'));
   }, []);
 
@@ -79,26 +78,26 @@ export default function CustomNutritionalPage() {
       <aside className="nutritional-sidebar">
         <div className="nutritional-contents-main">
           {/* 영양소 카드 */}
-          <h3>영양소 정보</h3>
-          <div className="nutritional-card-container">
-            <div className="left">
+          <h3 className="nutrition-section-title">영양소 정보</h3>
+          <div className="nutrition-card-container">
+            <div className="nutrition-left">
               {NUTRIENTS.map(({ name, value, color }) => (
                 <div
                   key={name}
-                  className="card-bar"
+                  className="nutrition-card-bar"
                   data-name={name}
                   data-value={`${value}%`}
                 >
-                  <div className="bar-label">{name}</div>
-                  <div className="bar-container">
-                    <div className={`bar-inner ${color}`}>
+                  <div className="nutrition-bar-label">{name}</div>
+                  <div className="nutrition-bar-container">
+                    <div className={`nutrition-bar-inner ${color}`}>
                       <div
-                        className="indicator"
+                        className={`nutrition-indicator ${color}`}
                         data-percent={value}
                       ></div>
                     </div>
                   </div>
-                  <div className="card-bar-label">
+                  <div className="nutrition-card-bar-label">
                     <li>부족</li>
                     <li>과다</li>
                   </div>
@@ -106,6 +105,7 @@ export default function CustomNutritionalPage() {
               ))}
             </div>
           </div>
+
 
           {/* 장바구니 */}
           <section className="cart-section">
@@ -129,7 +129,7 @@ export default function CustomNutritionalPage() {
 
             <ul className="cart-items">
               {cart.map((item, idx) => (
-                <li key={item.id} style={{ marginBottom: 20 }}>
+                <li key={item.id}>
                   <div className="cart-line">
                     <input
                       type="checkbox"
@@ -164,12 +164,12 @@ export default function CustomNutritionalPage() {
       </aside>
 
       {/* -------------------  메인 콘텐츠  ------------------- */}
-      <main>
-        <h1 className="purchase-title">추천 재료</h1>
+      <main className='nutritional_main'>
+        <h1 className="nutritional-title">추천 재료</h1>
 
-        <div className="purchase-banner">
+        <div className="nutritional-banner">
           <img
-            className="banner-img"
+            className="nutritional-banner-img"
             src={process.env.PUBLIC_URL + '/img/main/Banner1.jpg'}
             alt="배너"
           />
@@ -198,16 +198,16 @@ export default function CustomNutritionalPage() {
         {/* 상품 목록 */}
         <ul className="nutritional_content">
           {PRODUCTS.map((p) => (
-            <li key={p.id} className="item_store">
-              <div className="item_img">
+            <li key={p.id} className="nutritional_item_store">
+              <div className="nutritional_item_img">
                 <img src={p.img} alt={p.name} />
               </div>
 
-              <div className="item_add" onClick={() => addToCart(p)}>
+              <div className="nutritional_item_add" onClick={() => addToCart(p)}>
                 <i className="fas fa-cart-shopping" /> 담기
               </div>
 
-              <div className="item_name">{p.name}</div>
+              <div className="nutritional_item_name">{p.name}</div>
 
               <div className="item_Nutritional_ingredients">
                 <ul>
@@ -217,13 +217,13 @@ export default function CustomNutritionalPage() {
                 </ul>
               </div>
 
-              <div className="item_price">
-                <span className="discount">{p.discount}%</span>
-                <span className="price">
+              <div className="nutritional_item_price">
+                <span className="nutritional_discount">{p.discount}%</span>
+                <span className="nutritional_price">
                   {p.price.toLocaleString()}원~
                 </span>
               </div>
-              <div className="item_review">
+              <div className="nutritional_item_review">
                 <i className="far fa-comment-dots" /> 999+
               </div>
             </li>

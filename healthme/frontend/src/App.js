@@ -16,7 +16,8 @@ import QuestionPage from "pages/Question/QuestionPage";
 import PurchasePage from "pages/Purchase/PurchasePage";
 // 추천재료 페이지
 import NutritionalPage from "pages/Nutritional/NutritionalPage";
-
+// 제품상세 페이지
+import DetailsPage from "pages/Details/DetailsPage"
 
 // 관리자 페이지
 import Layout from "pages/admin/Layout";
@@ -42,6 +43,8 @@ function AppRoutes() {
         <Route path="/purchase" element={<PurchasePage />}></Route>
         {/* 추천재료 페이지 */}
         <Route path="/nutritional" element={<NutritionalPage />}></Route>
+        {/* 제품상세 페이지 */}
+        <Route path="/details" element={<DetailsPage />}></Route>
         {/* 사용자용 */}
         <Route path="/result" element={<ResultPage />} />
         <Route path="/join" element={<JoinPage />} />

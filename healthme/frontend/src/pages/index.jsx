@@ -99,14 +99,14 @@ const HomePage = () => {
             {/* 실시간 인기 상품 */}
             <ul className="main_low_content">
               <ul className="main_low_top_content">
-                <li className="main_low_title">🏆 실시간 인기 상품</li>
+                <li className="main_low_title">실시간 인기 상품</li>
                 <li>가장 인기있는 상품만 모아보세요!</li>
               </ul>
               <ProductList />
 
               {/* 오늘의 특가 */}
               <ul className="main_low_top_content">
-                <li className="main_low_title">🎉 오늘의 특가</li>
+                <li className="main_low_title">오늘의 특가</li>
                 <li>헬시미 추천 특가템 최대 50%</li>
               </ul>
               <ProductList isSpecial />

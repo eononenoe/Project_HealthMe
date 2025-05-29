@@ -61,7 +61,7 @@ const PurchasePage = () => {
         <h1 className="purchase-title">구매</h1>
 
         <div className="purchase-banner">
-          <img className='banner-img' src="/img/main/Banner1.jpg" alt="배너" />
+          <img className='purchase-banner-img' src="/img/main/Banner1.jpg" alt="배너" />
         </div>
 
         <ul className="purchase-sort-menu">
@@ -77,30 +77,30 @@ const PurchasePage = () => {
 
         <ul className="purchase-product-list">
           {/* 상품 아이템 반복 - 예시 1개만 */}
-          <li className="item_store 축산">
-            <div className="item_img">
+          <li className="purchase-item_store 축산">
+            <div className="purchase-item_img">
               <img
                 src="https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/4c36b050-06f9-4ce1-9597-27bf4c2563fb.jpg"
                 alt=""
               />
             </div>
-            <div className="item_add">
+            <div className="purchase-item_add">
               <i className="fa-solid fa-cart-shopping"></i>
               <span onClick={() => alert('장바구니에 담겼습니다')}>담기</span>
             </div>
-            <div className="item_name">
+            <div className="purchase-item_name">
               <span>한돈 부위별 대용량 가성비 7종</span>
             </div>
-            <div className="item_discount_price">
+            <div className="purchase-item_discount_price">
               <del>28,900원</del>
             </div>
-            <div className="item_price">
+            <div className="purchase-item_price">
               <ul>
-                <li className="discount">34%</li>
-                <li className="price">18,900원</li>
+                <li className="purchase-discount">34%</li>
+                <li className="purchase-price">18,900원</li>
               </ul>
             </div>
-            <div className="item_review">
+            <div className="purchase-item_review">
               <i className="fa-regular fa-comment-dots"></i>
               <span>999+</span>
             </div>

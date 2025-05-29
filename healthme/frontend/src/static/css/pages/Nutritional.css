@@ -5,7 +5,10 @@
   font-family: "Nanum Gothic", sans-serif;
 }
 
-body {}
+.nutritional_low_content button {
+  all: unset;
+  cursor: pointer;
+}
 
 a {
   text-decoration: none;
@@ -40,18 +43,18 @@ a {
   top: 20px;
 }
 
-/* bar Section */
-.title1 {
+/* 바 */
+.nutrition-title1 {
   padding-bottom: 15px;
   border-bottom: 1px solid #eee;
 }
 
-.card-bar {
+.nutrition-card-bar {
   width: 250px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 15px 15px 15px 15px;
+  padding: 15px;
   height: 100px;
   border-radius: 15px;
   gap: 2px;
@@ -59,29 +62,29 @@ a {
   cursor: pointer;
 }
 
-.card-bar:hover {
+.nutrition-card-bar:hover {
   background-color: #f6f6f7;
 }
 
-.card-bar>div {
+.nutrition-card-bar > div {
   text-align: center;
   height: 30%;
 }
 
-.bar-label {
+.nutrition-bar-label {
   font-size: 16px;
   font-weight: bold;
   color: #343c4b;
 }
 
-.bar-container {
+.nutrition-bar-container {
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
 }
 
-.bar-inner {
+.nutrition-bar-inner {
   position: relative;
   width: 100%;
   height: 12px;
@@ -89,31 +92,31 @@ a {
   border-radius: 5px;
 }
 
-.bar-inner.blue {
+.nutrition-bar-inner.blue {
   background-color: #3d9dbf;
 }
 
-.bar-inner.yellow {
+.nutrition-bar-inner.yellow {
   background-color: #e4b322;
 }
 
-.bar-inner.green {
+.nutrition-bar-inner.green {
   background-color: #2aaf74;
 }
 
-.bar-inner.purple {
+.nutrition-bar-inner.purple {
   background-color: #a672c2;
 }
 
-.bar-inner.red {
+.nutrition-bar-inner.red {
   background-color: #e04d4d;
 }
 
-.bar-inner.teal {
+.nutrition-bar-inner.teal {
   background-color: #20b2aa;
 }
 
-.indicator {
+.nutrition-indicator {
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -123,31 +126,31 @@ a {
   border-radius: 50%;
 }
 
-.indicator.blue {
+.nutrition-indicator.blue {
   background-color: #3d9dbf;
 }
 
-.indicator.yellow {
+.nutrition-indicator.yellow {
   background-color: #e4b322;
 }
 
-.indicator.green {
+.nutrition-indicator.green {
   background-color: #2aaf74;
 }
 
-.indicator.purple {
+.nutrition-indicator.purple {
   background-color: #a672c2;
 }
 
-.indicator.red {
+.nutrition-indicator.red {
   background-color: #e04d4d;
 }
 
-.indicator.teal {
+.nutrition-indicator.teal {
   background-color: #20b2aa;
 }
 
-.card-bar-label {
+.nutrition-card-bar-label {
   height: 40%;
   display: flex;
   justify-content: space-between;
@@ -156,7 +159,7 @@ a {
   color: #787f8d;
 }
 
-.right {
+.nutrition-right {
   width: 30%;
   height: 100%;
   background-color: #f6f6f7;
@@ -164,7 +167,7 @@ a {
   border-radius: 15px;
 }
 
-.info-container {
+.nutrition-info-container {
   width: 100%;
   height: 100%;
   display: flex;
@@ -174,10 +177,9 @@ a {
   gap: 20px;
 }
 
-.info-container>h2 {
+.nutrition-info-container > h2 {
   margin-top: 20px;
 }
-
 
 
 /* Cart Section */
@@ -211,7 +213,6 @@ a {
 .cart-header label {
   font-size: 14px;
   color: #333;
-  margin-top: 13px;
 }
 
 .cart-header button {
@@ -254,12 +255,10 @@ a {
 /* Cart Items */
 .cart-items {
   list-style: none;
-  padding: 0;
-  margin: 0;
 }
 
 .cart-items li {
-  padding: 15px 0;
+  padding: 20px 10px;
   border-bottom: 1px solid #eee;
 }
 
@@ -336,6 +335,56 @@ a {
   text-align: center;
 }
 
+
+.cart-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cart-desc {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.qty-box {
+  width: 75px;
+  height: 25px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.qty-box button {
+  all: unset;
+  font-size: 16px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.qty-box span {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  width: 20px;
+  margin: 0 auto;
+}
+
+
 .cart-item-total-price {
   font-size: 16px;
   font-weight: bold;
@@ -369,7 +418,7 @@ a {
 }
 
 /* Main */
-main {
+.nutritional_main {
   flex: 1;
   padding: 20px;
 }
@@ -400,19 +449,19 @@ main {
 /* ================ */
 /*     아이템 카드    */
 /* ================ */
-.item_store {
+.nutritional_item_store {
   width: 100%;
   height: auto;
 }
 
-.item_img>img {
+.nutritional_item_img>img {
   width: 100%;
   height: 350px;
   object-fit: cover;
   border-radius: 5px;
 }
 
-.item_add {
+.nutritional_item_add {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -427,7 +476,7 @@ main {
   margin-top: 5px;
 }
 
-.item_name {
+.nutritional_item_name {
   width: 100%;
   height: 50px;
   margin-top: 15px;
@@ -443,51 +492,50 @@ main {
   font-size: 0.9rem;
   color: rgb(171, 171, 171);
   line-height: 1.5;
+  margin-bottom: 5px;
 }
 
-.item_price {
+.nutritional_item_price {
   width: 100%;
   margin-bottom: 8px;
   font-size: 1.3rem;
 }
 
-.item_price ul {
-  display: flex;
-  gap: 5px;
+.nutritional_item_price span {
+  margin-right: 8px;
 }
 
-.item_price .discount {
+.nutritional_discount {
   color: #e80000;
   font-weight: 600;
 }
 
-.item_price .price {
+.nutritional_price {
   color: black;
   font-weight: 600;
 }
 
-.item_review {
+.nutritional_item_review {
   color: rgb(171, 171, 171);
   width: 290px;
   font-size: 1rem;
 }
 
-.purchase-title {
+.nutritional-title {
   font-size: 2.5rem;
   font-weight: bold;
   color: #333;
 }
 
-.purchase-banner {
+.nutritional-banner {
   width: 100%;
   height: 250px;
-  background: #f0f0f0;
   border-radius: 10px;
   overflow: hidden;
   margin: 30px 0px 30px 0px;
 }
 
-.purchase-banner img {
+.nutritional-banner img {
   width: 100%;
   height: 100%;
   object-fit: cover;
