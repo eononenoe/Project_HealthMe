@@ -47,6 +47,7 @@ class UserControllerTest {
     // 회원가입
     @Test
     void join_success() throws Exception {
+        // Given: 회원가입 요청 DTO 생성
         JoinRequestDto dto = new JoinRequestDto();
         dto.setUserid("testuser");
         dto.setPassword("123456");
@@ -59,14 +60,16 @@ class UserControllerTest {
         dto.setTel1("010");
         dto.setTel2("1234");
         dto.setTel3("5678");
-
         String json = objectMapper.writeValueAsString(dto);
 
+        // When: 회원가입 요청 수행
         mvc.perform(post("/healthme/users/join")
-                        .with(csrf()) // csrf 통과용
-                        .with(user("testuser").roles("USER")) // Spring Security 통과용
+                        .with(csrf())
+                        .with(user("testuser").roles("USER"))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
+
+                // Then: 상태 코드 200, 응답 메시지 확인
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("회원가입 성공"))
                 .andDo(print());
@@ -75,11 +78,15 @@ class UserControllerTest {
     // 아이디 중복 확인
     @Test
     void checkUserid_exists() throws Exception {
+        // Given: userService가 "testuser" 존재한다고 응답하도록 설정
         given(userService.isUseridExists("testuser")).willReturn(true);
 
+        // When: 중복 체크 API 요청 수행
         mvc.perform(get("/healthme/users/check")
                         .with(user("testuser").roles("USER"))
                         .param("userid", "testuser"))
+
+                // Then: 상태 코드 200, exists=true 확인
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.exists").value(true))
                 .andDo(print());
@@ -88,11 +95,12 @@ class UserControllerTest {
     // 로그인
     @Test
     void login_success() throws Exception {
+        // Given: 로그인 DTO와 예상되는 TokenInfo, User 설정
         LoginRequestDto dto = new LoginRequestDto();
         dto.setUserid("testuser");
         dto.setPassword("1234");
 
-        TokenInfo tokenInfo = new TokenInfo("granttype","access123", "refresh456");
+        TokenInfo tokenInfo = new TokenInfo("granttype", "access123", "refresh456");
         User user = User.builder()
                 .userid("testuser")
                 .password("12341234")
@@ -103,11 +111,14 @@ class UserControllerTest {
 
         String json = objectMapper.writeValueAsString(dto);
 
+        // When: 로그인 요청 수행
         mvc.perform(post("/healthme/users/login")
-                        .with(csrf()) // csrf 통과용
-                        .with(user("testuser").roles("USER")) // 시큐리티 통과용
+                        .with(csrf())
+                        .with(user("testuser").roles("USER"))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
+
+                // Then: 상태 코드 200, 토큰과 사용자 ID 확인
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken").value("access123"))
                 .andExpect(jsonPath("$.refreshToken").value("refresh456"))

@@ -50,5 +50,8 @@ class UserServiceTest {
 
         // then
         assertThat(result).isFalse();
+
+        // 콘솔 출력
+        System.out.println("아이디 '" + userid + "' 중복 결과: " + result);  // false 출력
     }
 }
