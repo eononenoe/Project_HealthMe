@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>제품 상세페이지</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 폰트 -->
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+  <!-- 이모지 -->
+  <script src="https://kit.fontawesome.com/b83f799b86.js" crossorigin="anonymous"></script>
+  <!-- google icon -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <!-- css -->
+  <link rel="stylesheet" href="/static/css/common/common.css">
+  <link rel="stylesheet" href="/static/css/pages/details.css">
+
+  <!-- js -->
+  <script src="/static/js/by.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/static/js/Details.js"></script>
+</head>
+
+<body>
+  <div id="header"></div>
+  <div class="product-page-wrapper">
+    <div class="product-detail-box">
+      <!-- 왼쪽 이미지 -->
+      <div class="product-image">
+        <img
+          src="https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/4c36b050-06f9-4ce1-9597-27bf4c2563fb.jpg"
+          alt="">
+      </div>
+      <!-- 오른쪽-->
+      <div class="product-info-area">
+        <span class="product-badge">BEST</span>
+        <h1 class="product-title">한돈 부위별 대용량 가성비 7종</h1>
+
+        <div class="product-price-box">
+          <strong class="final-price">18,900원</strong>
+          <span class="discount-rate">34%</span>
+          <del class="original-price">28,900원</del>
+        </div>
+
+        <div class="review-box">
+          <span class="stars"></span>
+          <span class="score">4.9</span>
+          <span class="count">(999+개 리뷰)</span>
+        </div>
+
+        <p class="sub-desc">
+          이 제품을 구매하신 고객 분들은 효능, 경제성, 만족도에 대해 좋은 평가를 주셨습니다!
+        </p>
+
+        <div class="detail_info">
+          <p><strong>오전 10시까지</strong> 주문하고, <strong>오늘 오후 8시 전</strong>에 바로 받아보세요!</p>
+          <p>이후 주문 시, 내일 도착으로 변경됩니다.</p>
+        </div>
+        <div class="delivery-box"> 배송비 : 무료배송</div>
+
+        <div class="quantity-box">
+        </div>
+        <div class="summary-box">
+          <div>총 수량 <strong>1개</strong></div>
+          <div class="total-price">
+            <span>합계</span>
+            <strong>18,900원</strong>
+          </div>
+        </div>
+        <div class="purchase-btn-box">
+          <div class="qty-wrapper">
+            <input type="text" class="qty-input" value="1" readonly>
+            <div class="qty-buttons">
+              <button class="btn-up"><span class="material-symbols-outlined">
+                  keyboard_arrow_up
+                </span></button>
+              <button class="btn-down"><span class="material-symbols-outlined">
+                  keyboard_arrow_down
+                </span></button>
+            </div>
+          </div>
+          <button class="btn-cart">장바구니</button>
+          <button class="btn-buy">바로구매</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 탭 메뉴 -->
+  <div class="tab-menu">
+    <button class="tab-button active" data-tab="detail">상품상세</button>
+    <button class="tab-button" data-tab="review">상품평</button>
+    <button class="tab-button" data-tab="qna">상품문의</button>
+  </div>
+
+  <!-- 상품상세 콘텐츠 -->
+  <div id="detail" class="tab-content active">
+    <img src="/img/detail_pig.jpg" alt="상세 설명 이미지">
+
+  </div>
+  <button class="show-more-btn" id="showMoreBtn">
+    <span>상품정보 더보기</span>
+    <span class="material-symbols-outlined">stat_minus_1</span>
+  </button>
+  <!-- 상품평 -->
+  <div id="review" class="tab-content">
+    <h2>상품평</h2>
+    <p>리뷰들이 들어가는 영역입니다.</p>
+  </div>
+
+  <!-- 상품문의 -->
+  <div id="qna" class="tab-content">
+    <div class="qna-header">
+      <h2>상품문의</h2>
+    </div>
+    <div class="product-inquiry-notice">
+      <ul>
+        <li><strong>상품문의 및 후기게시판을 통한 취소나 환불, 반품 등은 처리되지 않습니다.</strong></li>
+        <li>가격, 판매자, 교환/환불 및 배송 등 해당 상품 자체와 관련 없는 문의는
+          <a href="#">고객센터 1:1 문의하기</a>를 이용해주세요.
+        </li>
+        <li>
+          <span class="warning">해당 상품 자체와 관계없는 글</span> (양도, 광고성, 욕설, 비방, 도배 등)의 글은 예고 없이
+          <span class="highlight">이동, 논출제한, 삭제</span> 등의 조치가 취해질 수 있습니다.
+        </li>
+        <li class="caution">공개 게시판이므로 전화번호, 메일 주소 등 개인정보는 절대 남기지 말아주세요.</li>
+      </ul>
+    </div>
+    <textarea></textarea>
+    <div class="qna-button-wrapper">
+      <button>문의하기</button>
+    </div>
+  </div>
+  <div id="footer"></div>
+</body>
+
+</html>
