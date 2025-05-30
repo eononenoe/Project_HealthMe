@@ -27,7 +27,7 @@ main {
 
 /* 공통 박스 스타일 */
 .approval-main,
-.payment-box {
+.approval-payment-box {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -44,6 +44,7 @@ h2 {
 }
 
 h4 {
+  margin-top: 10px;
   font-size: 14px;
   margin-bottom: 8px;
 }
@@ -66,16 +67,47 @@ h4 {
   border-color: #03c75a;
   box-shadow: 0 0 5px rgba(3, 199, 90, 0.5);
 }
-
+.approval-phone-first {
+  width: 20%;
+  height: 40px;
+  margin-bottom: 10px;
+  padding: 0 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.approval-phone-first:focus {
+  outline: none;
+  border-color: #03c75a;
+  box-shadow: 0 0 5px rgba(3, 199, 90, 0.5);
+}
+.approval-select {
+  width: 40%;
+  height: 40px;
+  margin-bottom: 10px;
+  padding: 0 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.approval-select:focus {
+  outline: none;
+  border-color: #03c75a;
+  box-shadow: 0 0 5px rgba(3, 199, 90, 0.5);
+}
 /* 주소검색 input + 버튼 한 줄 묶음 */
-.address-search-wrapper {
+.approval-address-search-wrapper {
   display: flex;
   gap: 0;
   margin-bottom: 10px;
   max-width: 210px;
 }
 
-.address-search-wrapper input[type="text"] {
+.approval-address-search-wrapper input[type="text"] {
   width: 110px;
   height: 40px;
   padding: 0 10px;
@@ -89,7 +121,7 @@ h4 {
   margin-bottom: 0;
 }
 
-.address-search-wrapper button {
+.approval-address-search-wrapper button {
   width: 100px;
   height: 40px;
   border: 1px solid #ccc;
@@ -105,43 +137,43 @@ h4 {
   margin-bottom: 0;
 }
 
-.address-search-wrapper button:hover {
+.approval-address-search-wrapper button:hover {
   background-color: #029c4a;
 }
 
-.address-hold {
+.approval-address-hold {
   cursor: not-allowed;
 }
 
 /* 휴대폰, 이메일 가로 배열 */
-.phone,
-.email {
+.approval-phone,
+.approval-email {
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
-.phone h4,
-.email h4 {
+.approval-phone h4,
+.approval-email h4 {
   margin-top: 0;
   font-weight: 600;
   color: #333;
   min-width: 90px;
 }
 
-.phone input:first-of-type {
+.approval-phone input:first-of-type {
   width: 80px;
 }
 
-.phone input:nth-child(n + 2) {
+.approval-phone input:nth-child(n + 2) {
   flex: 1;
 }
 
-.email input {
+.approval-email input {
   flex: 1;
 }
 
-.email span {
+.approval-email span {
   display: flex;
   align-items: center;
   padding: 0 8px;
@@ -151,24 +183,25 @@ h4 {
   margin-top: -10px;
 }
 /* 결제 방식 선택 */
-.payment-options {
+.approval-payment-options {
   display: flex;
   flex-direction: column;
 }
-.payment-options input {
+.approval-payment-options input {
   margin-bottom: 20px;
+  margin-right: 5px;
 }
 
 /* 버튼 세트 */
-.button-set {
+.approval-button-set {
   display: flex;
   gap: 6px;
   margin-bottom: 20px;
   height: 40px;
 }
 
-.left-button,
-.right-button {
+.approval-left-button,
+.approval-right-button {
   flex: 1;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -184,8 +217,8 @@ h4 {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.left-button.active,
-.right-button.active {
+.approval-left-button.active,
+.approval-right-button.active {
   background-color: #03c75a;
   border-color: #03c75a;
   color: white;
@@ -193,98 +226,114 @@ h4 {
   box-shadow: 0 4px 8px rgba(3, 199, 90, 0.4);
 }
 
-.left-button:hover:not(.active),
-.right-button:hover:not(.active) {
+.approval-left-button:hover:not(.active),
+.approval-right-button:hover:not(.active) {
   background-color: #f0f0f0;
 }
 
 /* 상품 아이템 */
-.product-list {
+.approval-product-list {
   display: flex;
   flex-direction: column;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 10px;
-  padding: 25px 25px 0px 25px;
+  padding: 0px 25px 0px 25px;
   margin-bottom: 30px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
-.product-item {
+
+.approval-product-item {
   display: flex;
   gap: 15px;
   height: 100px;
   align-items: center;
   margin-bottom: 25px;
 }
-.product-item-master {
+.approval-product-item-master {
   display: flex;
   height: 100%;
   flex-direction: column;
   gap: 4px;
 }
-.product-item img {
+.approval-product-item img {
   width: 80px;
   height: 100px;
   border-radius: 5px;
   object-fit: cover;
 }
 
-.product-title {
+.approval-product-title {
   font-weight: 600;
   font-size: 14px;
   color: #222;
 }
-.product-count {
+.approval-product-count {
   font-size: 14px;
   color: gray;
 }
-.product-sale {
+.approval-product-sale {
   font-size: 14px;
   text-decoration: line-through;
   color: gray;
 }
 
-.product-price {
+.approval-product-price {
   color: #222;
   font-size: 14px;
   font-weight: 700;
 }
 
 /* 가격 박스 */
-.price-box {
+.approval-price-box {
   background-color: #fff;
-  border: 1px solid #ddd;
-  border-bottom: none;
-  padding: 15px 25px 20px 25px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  border: 1px solid #ccc;
+  border-radius: 10px 10px 0 0;
+  padding: 20px 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
-.price-box ul {
+
+.approval-price-box ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.price-box li {
+.approval-price-box li {
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
-  font-size: 14px;
+  align-items: center;
+  padding: 10px 0;
+  font-size: 15px;
+  color: #444;
 }
 
-.price-box .gray {
+/* 할인, 적립금은 붉은색 계열로 강조 */
+.approval-price-box li:nth-child(2) span:last-child,  /* 할인 금액 */
+.approval-price-box li:nth-child(3) span:last-child {
+  /* 적립금 사용 */
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+/* 배송비는 약하게 */
+.approval-price-box li:nth-child(4) span:last-child {
   color: #999;
+  font-weight: normal;
 }
 
-.price-box .total {
+/* 총 결제 금액 강조 */
+.approval-price-box li.approval-total {
   font-weight: bold;
   border-top: 1px solid #ddd;
-  padding-top: 10px;
-  margin-top: 10px;
-  font-size: 16px;
+  padding-top: 12px;
+  margin-top: 12px;
+  font-size: 17px;
+  color: #03c75a;
 }
 
 /* 혜택 박스 */
-.benefit-box {
+.approval-benefit-box {
   font-size: 14px;
   color: #333;
   background-color: #f8f8f8;
@@ -294,24 +343,33 @@ h4 {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
-.benefit-box .benefit-1 {
+.approval-benefit-box .approval-benefit-1 {
   font-size: 20px;
   color: #03c75a;
   font-weight: bold;
-  margin-top: -15px;
+  margin-top: -5px;
 }
 
-.benefit-2 {
+.approval-benefit-2 {
   margin-left: 10px;
 }
 
-.benefit-box .benefit-3 {
+.approval-benefit-box .approval-benefit-3 {
   color: #e74c3c;
   font-weight: bold;
+  margin-top: 10px;
+}
+
+.benfit-level {
+  margin-bottom: 15px;
+}
+
+.benfit-today {
+  margin-top: 10px;
 }
 
 /* 결제 버튼 */
-.purchase-btn {
+.approval-purchase-btn {
   width: 100%;
   height: 50px;
   background-color: #03c75a;
@@ -323,25 +381,25 @@ h4 {
   transition: background-color 0.3s ease;
 }
 
-.purchase-btn:hover {
+.approval-purchase-btn:hover {
   background-color: #029c4a;
 }
 
-.phone-slash {
+.approval-phone-slash {
   color: black;
   margin-top: -10px;
 }
 
-.rec {
+.approval-rec {
   margin-top: -20px;
 }
 
-.product-1 {
-  margin-top: -20px;
+.approval-product-1 {
+  margin-top: -40px;
   margin-bottom: 15px;
 }
 
-.payment-1 {
-  margin-top: -20px;
+.approval-payment-1 {
+  margin-top: -60px;
   margin-bottom: 20px;
 }

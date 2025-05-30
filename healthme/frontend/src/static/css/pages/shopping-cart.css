@@ -10,51 +10,47 @@ main {
   padding: 0px 20px;
 }
 
-.cart-container {
+.cart-cart-container {
   display: flex;
   gap: 40px;
   max-width: 1200px;
   width: 100%;
 }
 
-.cart-section {
+.cart-cart-section {
   flex: 2;
 }
 
-.cart-section h2 {
+.cart-cart-section h2 {
   font-size: 2rem;
   margin-bottom: 20px;
 }
 
-.cart-header {
+.cart-cart-all {
   display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
+  align-items: center;
+  padding: 10px 0px;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
 }
 
-.custom-checkbox {
+.cart-custom-checkbox {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px; /* 살짝 키움 */
+  width: 24px;
   height: 24px;
   padding-left: 10px;
   margin-right: 3px;
-
   border-radius: 50%;
   cursor: pointer;
 }
-.custom-checkbox span {
-  position: relative;
-  top: 2px;
-}
-.custom-checkbox input[type="checkbox"] {
+
+.cart-custom-checkbox input[type="checkbox"] {
   display: none;
 }
 
-.custom-checkbox .checkmark {
+.cart-checkmark {
   font-size: 14px;
   border: 1px solid gray;
   color: gray;
@@ -64,83 +60,72 @@ main {
   transition: all 0.2s ease-in-out;
 }
 
-/* 체크되었을 때 */
-.custom-checkbox input[type="checkbox"]:checked + .checkmark {
+.cart-custom-checkbox input[type="checkbox"]:checked + .cart-checkmark {
   background-color: #007bff;
   border: 1px solid #007bff;
   color: white;
 }
 
-.cart-all {
-  align-items: center;
-  padding: 10px 0px;
-  border-top: 1px solid #333;
-  border-bottom: 1px solid #333;
-}
-
-.all-select {
-  margin-right: 0px;
+.cart-all-select {
+  margin-left: 10px;
+  margin-right: 500px;
   font-size: 16px;
   font-weight: bold;
 }
 
-.choice-delete {
+.cart-choice-delete {
   background-color: white;
-  color: #333; /* 글자색 */
-  border: 1px solid #ccc; /* 연한 회색 테두리 */
+  color: #333;
+  border: 1px solid #ccc;
   padding: 6px 6px;
   border-radius: 6px;
   font-size: 12px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  margin-left: auto;
 }
 
-.choice-delete:hover {
-  background-color: #f8f8f8; /* 마우스 올렸을 때 살짝 회색 */
+.cart-choice-delete:hover {
+  background-color: #f8f8f8;
 }
 
-.cart-item {
+.cart-cart-item {
   display: flex;
   align-items: center;
   border-bottom: 1px solid #eee;
   padding: 15px 0;
 }
 
-.cart-item img {
+.cart-cart-item img {
   width: 100px;
-  height: 120px;
+  height: 110px;
   object-fit: fill;
   border-radius: 8px;
-  margin-top: 20px;
-  margin-right: 20px;
-  margin-left: 15px;
-  margin-bottom: 15px;
+  margin: 20px 20px 15px 15px;
 }
 
-.item-info {
+.cart-item-info {
   flex: 1;
 }
 
-.item-info .name {
+.cart-item-info .cart-name {
   font-weight: bold;
   font-size: 1rem;
-  margin-top: 15px;
 }
 
-.item-info .sub {
+.cart-item-info .cart-sub {
   font-size: 14px;
   text-decoration: line-through;
   color: gray;
-  margin-top: -10px;
+  margin-top: 5px;
 }
 
-.item-info .price {
+.cart-item-info .cart-price {
   font-weight: bold;
   font-size: 1rem;
-  margin-top: -15px;
 }
 
-.quantity {
+.cart-quantity {
   display: inline-flex;
   align-items: center;
   border: 1px solid #ccc;
@@ -149,10 +134,10 @@ main {
   font-family: Arial, sans-serif;
   font-size: 10px;
   height: 25px;
-  margin-top: -30px;
+  margin-top: 10px;
 }
 
-.qty-btn {
+.cart-qty-btn {
   background: none;
   border: none;
   font-size: 14px;
@@ -161,7 +146,7 @@ main {
   color: #333;
 }
 
-.qty-number {
+.cart-qty-number {
   font-weight: bold;
   font-size: 14px;
   margin: 0 6px;
@@ -169,48 +154,46 @@ main {
   text-align: center;
 }
 
-/* 삭제 버튼 스타일 */
-.delete {
+.cart-delete {
   background-color: white;
   border: none;
-  cursor: pointer; /* 클릭 가능 커서 */
-  padding: 5px; /* 클릭 영역 넓힘 */
-  display: flex; /* 아이콘 중앙 정렬 */
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.delete > .material-symbols-outlined {
-  pointer-events: none; /* 아이콘에 마우스 이벤트 전달 안되도록 */
-  font-size: 24px; /* 아이콘 크기 조절 */
+.cart-delete > .material-symbols-outlined {
+  pointer-events: none;
+  font-size: 24px;
   color: #333;
 }
 
-.quantity button {
+.cart-quantity button {
   padding: 2px 5px;
   margin: 0 5px;
 }
 
-.checkout-info {
+.cart-checkout-info {
   flex: 1;
   border-left: 1px solid #ddd;
   padding-left: 20px;
   font-size: 0.95rem;
   margin-top: 100px;
 }
-.login-box {
+
+.cart-login-box {
   border: 1px solid #ccc;
   padding: 20px;
   border-bottom: none;
 }
 
-.payment-summary {
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-bottom: none;
+.cart-login-box p {
+  margin: 15px 0px 20px 0px;
 }
 
-.login-box button {
+.cart-login-box button {
   width: 100%;
   background: white;
   color: black;
@@ -220,7 +203,62 @@ main {
   cursor: pointer;
 }
 
-.shop-btn {
+.cart-payment-summary {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-bottom: none;
+  background: #f8f8f8;
+}
+
+.cart-payment-summary h3 {
+  margin-bottom: 20px;
+}
+
+.cart-payment-summary p {
+  font-size: 13px;
+  font-weight: bold;
+  margin: 0 0 8px 0;
+}
+
+.cart-payment-summary ul {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0;
+}
+
+.cart-payment-summary li {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.cart-product-item-gray {
+  color: gray;
+}
+
+.cart-product-item-hline {
+  border-top: 1px solid lightgray;
+  padding-top: 15px;
+}
+
+.cart-product-item-uline {
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 15px;
+}
+
+.cart-product-item-red {
+  color: red;
+}
+
+.cart-payment-summary strong {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.cart-shop-btn {
   width: 100%;
   background: #03c75a;
   color: white;
@@ -231,37 +269,7 @@ main {
   cursor: pointer;
 }
 
-.payment-summary {
-  background: #f8f8f8;
-}
-
-.payment-summary p {
-  font-size: 13px;
-  font-weight: bold;
-  margin: 0 0 8px 0;
-}
-
-.payment-summary ul {
-  list-style: none;
-  padding: 0;
-  margin: 15px 0;
-}
-
-.payment-summary li {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-
-.payment-summary strong {
-  display: flex;
-  justify-content: space-between;
-  font-size: 1.2rem;
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-
-.npay-banner {
+.cart-npay-banner {
   background: #00c73c;
   color: white;
   text-align: center;
@@ -272,7 +280,7 @@ main {
   margin-top: 40px;
 }
 
-.npay-icon {
+.cart-npay-icon {
   position: absolute;
   right: 70px;
   top: 50%;
@@ -283,18 +291,4 @@ main {
   padding: 12px 18px;
   font-size: 1.2rem;
   font-weight: bold;
-}
-.product-item-gray {
-  color: gray;
-}
-.product-item-hline {
-  border-top: 1px solid lightgray;
-  padding-top: 15px;
-}
-.product-item-uline {
-  border-bottom: 1px solid lightgray;
-  padding-bottom: 15px;
-}
-.product-item-red {
-  color: red;
 }
