@@ -5,6 +5,7 @@ import NewAddress from "./NewAddress";
 
 export default function AddressEditPage() {
   const [open, setOpen] = useState(false);
+  const [addrAdd, setAddrAdd] = useState(false);
   const [userDB, setUserDB] = useState({});
 
   // 배송지 수정
@@ -29,7 +30,7 @@ export default function AddressEditPage() {
   }, []);
 
   const addnewAddr = () => {
-    setOpen(true);
+    setAddrAdd(true);
   };
   return (
     <>
@@ -96,11 +97,11 @@ export default function AddressEditPage() {
       ></AddressEditModal>
 
       {/* 새 배송지 추가 */}
-      {/* <NewAddress
-        open={open}
+      <NewAddress
+        addrAdd={addrAdd}
         onClose={() => setOpen(false)}
         userDB={userDB}
-      ></NewAddress> */}
+      ></NewAddress>
     </>
   );
 }

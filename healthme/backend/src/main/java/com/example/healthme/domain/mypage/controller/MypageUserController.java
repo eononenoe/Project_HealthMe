@@ -41,4 +41,8 @@ public class MypageUserController {
         System.out.println("addressUpdate : "+addressUpdate);
         mypageUserService.updateAddress(id, addressUpdate);
     }
+
+    // 새 배송지 추가
+//    @PostMapping("/newAddr")
+//    public void newAddr (@RequestParam)
 }
