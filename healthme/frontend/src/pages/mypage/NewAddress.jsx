@@ -16,6 +16,7 @@ export default function NewAddress({ addrAdd, onClose, userDB }) {
   // 주소 검색 api에서 검색 후 user에 저장하는 함수.
   const handleAddressSelect = (updateUser) => {
     // updateUser는 DaumPostcodeModal에서 넘어온 객체이다.
+
     setUser((prev) => ({
       ...prev,
       address: updateUser.address,
@@ -26,7 +27,7 @@ export default function NewAddress({ addrAdd, onClose, userDB }) {
   // 추가된 주소값 저장하기.
   const updateUserSubmit = async () => {
     try {
-      await axios.post(`/mypage/add?id=${userDB.id}`, user, {
+      await axios.post(`/mypage/newAddr`, user, {
         withCredentials: true,
       });
       window.alert("저장되었습니다.");
@@ -83,7 +84,9 @@ export default function NewAddress({ addrAdd, onClose, userDB }) {
               </div>
 
               <div className="input-group">
-                <label htmlFor="recipient">받으실 분</label>
+                <label htmlFor="recipient">
+                  받으실 분 (회원 정보 수정에서 수정하세요.)
+                </label>
                 <input
                   type="text"
                   id="recipient"
@@ -94,7 +97,9 @@ export default function NewAddress({ addrAdd, onClose, userDB }) {
               </div>
 
               <div className="input-group">
-                <label htmlFor="phone">휴대폰 번호</label>
+                <label htmlFor="phone">
+                  휴대폰 번호 (회원 정보 수정에서 수정하세요.)
+                </label>
                 <input
                   type="text"
                   id="phone"

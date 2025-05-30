@@ -10,6 +10,7 @@ export default function AddressEditModal({
   const [user, setUser] = useState({
     address: "",
     addressDetail: "",
+    zonecode: "",
   });
   const [showPostcode, setShowPostcode] = useState(false);
 
@@ -33,6 +34,7 @@ export default function AddressEditModal({
     setUser((prev) => ({
       ...prev,
       address: updateUser.address,
+      zonecode: updateUser.zonecode,
     }));
   };
 

@@ -99,7 +99,7 @@ export default function AddressEditPage() {
       {/* 새 배송지 추가 */}
       <NewAddress
         addrAdd={addrAdd}
-        onClose={() => setOpen(false)}
+        onClose={() => setAddrAdd(false)}
         userDB={userDB}
       ></NewAddress>
     </>

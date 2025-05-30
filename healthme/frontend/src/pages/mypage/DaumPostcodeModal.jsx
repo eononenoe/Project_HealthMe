@@ -10,7 +10,7 @@ export default function DaumPostcodeModal({ onClose, onSelect }) {
         oncomplete: function (data) {
           const roadAddress = data.roadAddress;
           const zonecode = data.zonecode;
-          // console.log("updateAddr : ", data);
+          //console.log("updateAddr : ", data);
           onSelect({ address: roadAddress, zonecode: zonecode }); // AddressEditModal로 전송
           onClose();
         },
