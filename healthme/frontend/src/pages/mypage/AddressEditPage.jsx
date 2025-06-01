@@ -6,7 +6,7 @@ import NewAddress from "./NewAddress";
 export default function AddressEditPage() {
   const [open, setOpen] = useState(false);
   const [addrAdd, setAddrAdd] = useState(false);
-  const [userDB, setUserDB] = useState({});
+  const [addr_userDB, setAddr_userDB] = useState([]);
 
   // 배송지 수정
   const handleUpdate = (e) => {
@@ -19,11 +19,11 @@ export default function AddressEditPage() {
   // 최신 DB를 가져온다.
   const getAddress = async () => {
     // console.log("loginUser", loginUser);
-    const user = await axios.get(`/mypage/getuserinfo?id=${loginUser.id}`, {
+    const addr_user = await axios.get(`/mypage/getaddrinfo`, {
       withCredentials: true,
     });
-    console.log("user", user);
-    setUserDB(user.data);
+    console.log("Addr_user", addr_user);
+    setAddr_userDB(addr_user.data);
   };
   useEffect(() => {
     getAddress();
@@ -32,6 +32,9 @@ export default function AddressEditPage() {
   const addnewAddr = () => {
     setAddrAdd(true);
   };
+
+  const deafult_address = addr_userDB.filter((addr) => addr._default); //기본배송지를 배열로 반환
+  const add_addr = addr_userDB.filter((addr) => !addr._default); // 추가배송지를 배열롤 반환
   return (
     <>
       <div className="user-box">
@@ -58,30 +61,59 @@ export default function AddressEditPage() {
             배송지에 따라 상품정보 및 배송유형이 달라질 수 있습니다.
           </div>
         </div>
-
-        <div className="address-box">
-          <div className="address-header">
-            <span className="badge">기본배송지</span>
-          </div>
-
-          <div className="address-content">
-            <div className="address-info">
-              <div className="address-text">{userDB.address}</div>
-              <div className="address-sub">
-                <span className="address-addressDetail">
-                  {userDB.addressDetail} &nbsp;&nbsp;
-                </span>
-
-                <span className="address-username">{userDB.username}</span>
-              </div>
+        {deafult_address.length > 0 && (
+          <div className="address-box">
+            <div className="address-header">
+              <span className="badge">기본배송지</span>
             </div>
 
-            {/* 실제로는 Link or 버튼 + onClick(openWindow)로 처리 */}
-            <a onClick={handleUpdate} className="address-adjustment">
-              수정
-            </a>
+            <div className="address-content">
+              <div className="address-info">
+                <div className="address-text">{deafult_address[0].address}</div>
+                <div className="address-sub">
+                  <span className="address-addressDetail">
+                    {deafult_address[0].addressDetail} &nbsp;&nbsp;
+                  </span>
+
+                  <span className="address-username">
+                    {deafult_address[0].username}
+                  </span>
+                </div>
+              </div>
+
+              {/* 실제로는 Link or 버튼 + onClick(openWindow)로 처리 */}
+              <a onClick={handleUpdate} className="address-adjustment">
+                수정
+              </a>
+            </div>
           </div>
-        </div>
+        )}
+
+        {add_addr.map((addr) => (
+          <div className="address-box">
+            <div className="address-header">
+              <span className="badge">추가 배송지</span>
+            </div>
+
+            <div className="address-content">
+              <div className="address-info">
+                <div className="address-text">{addr.address}</div>
+                <div className="address-sub">
+                  <span className="address-addressDetail">
+                    {addr.addressDetail} &nbsp;&nbsp;
+                  </span>
+
+                  <span className="address-username">{addr.username}</span>
+                </div>
+              </div>
+
+              {/* 실제로는 Link or 버튼 + onClick(openWindow)로 처리 */}
+              <a onClick={handleUpdate} className="address-adjustment">
+                수정
+              </a>
+            </div>
+          </div>
+        ))}
 
         <div className="new_Address_add">
           <button onClick={addnewAddr}>새 배송지 추가</button>
@@ -92,7 +124,7 @@ export default function AddressEditPage() {
       <AddressEditModal
         open={open}
         onClose={() => setOpen(false)}
-        userDB={userDB}
+        addr_userDB={addr_userDB}
         getAddress={getAddress}
       ></AddressEditModal>
 
@@ -100,7 +132,7 @@ export default function AddressEditPage() {
       <NewAddress
         addrAdd={addrAdd}
         onClose={() => setAddrAdd(false)}
-        userDB={userDB}
+        addr_userDB={addr_userDB}
       ></NewAddress>
     </>
   );

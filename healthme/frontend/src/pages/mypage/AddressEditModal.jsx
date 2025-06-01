@@ -4,7 +4,7 @@ import axios from "axios";
 export default function AddressEditModal({
   open,
   onClose,
-  userDB,
+  addr_userDB,
   getAddress,
 }) {
   const [user, setUser] = useState({
@@ -16,13 +16,13 @@ export default function AddressEditModal({
 
   // 주소를 AddressEditPage에서 프롭스로 가져온 후 수정을 위해 user라는 useState 정의.
   useEffect(() => {
-    if (userDB !== null) {
+    if (addr_userDB !== null) {
       setUser({
-        address: userDB.address,
-        addressDetail: userDB.addressDetail,
+        address: addr_userDB.address,
+        addressDetail: addr_userDB.addressDetail,
       });
     }
-  }, [userDB]);
+  }, [addr_userDB]);
 
   const addressUpdateHandle = () => {
     setShowPostcode(true);
@@ -41,7 +41,7 @@ export default function AddressEditModal({
   // 수정된 주소값 저장하기.
   const updateUserSubmit = async () => {
     try {
-      await axios.post(`/mypage/updateUser?id=${userDB.id}`, user, {
+      await axios.post(`/mypage/updateUser?id=${addr_userDB.id}`, user, {
         withCredentials: true,
       });
       window.alert("수정되었습니다.");
@@ -59,7 +59,7 @@ export default function AddressEditModal({
 
   return (
     <>
-      {open && userDB ? (
+      {open && addr_userDB ? (
         <div className="modal-backdrop" onClick={onClose}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close-btn" onClick={onClose}>
@@ -110,7 +110,7 @@ export default function AddressEditModal({
                   type="text"
                   id="recipient"
                   name="recipient"
-                  value={userDB.username}
+                  value={addr_userDB.username}
                   readOnly
                 />
               </div>
@@ -121,7 +121,7 @@ export default function AddressEditModal({
                   type="text"
                   id="phone"
                   name="phone"
-                  value={userDB.tel}
+                  value={addr_userDB.tel}
                   readOnly
                 />
               </div>

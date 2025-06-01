@@ -4,30 +4,51 @@ package com.example.healthme.domain.mypage.controller;
 import com.example.healthme.domain.mypage.dto.AddressUpdate;
 import com.example.healthme.domain.mypage.dto.MyPageUserUpdate;
 import com.example.healthme.domain.mypage.dto.MypageUserResponseDto;
-import com.example.healthme.domain.mypage.service.MypageUserService;
+import com.example.healthme.domain.mypage.entity.Address;
+import com.example.healthme.domain.mypage.service.MypageService;
 
-import com.example.healthme.domain.user.dto.UserResponseDto;
 import com.example.healthme.domain.user.entity.User;
 import com.example.healthme.global.config.auth.principal.PrincipalDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/mypage")
 public class MypageUserController {
 
     @Autowired
-    private MypageUserService mypageUserService;
+    private MypageService mypageUserService;
 
 
-    // id에 맞는 정보 가져오기
-    @GetMapping("/getuserinfo")
-    public MypageUserResponseDto getUser(@RequestParam("id") Long id){
-        System.out.println("id"+id);
-        User user= mypageUserService.getUserInfo(id); // 엔터티에 저장
+    // 회원 정보 가져오기
+    @GetMapping("getuserinfo")
+    public ResponseEntity<MypageUserResponseDto> getuser(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        User user =mypageUserService.getuser(principalDetails);
+        if (user !=null){
+            MypageUserResponseDto userResponseDto = new MypageUserResponseDto(user);
+            return ResponseEntity.ok(userResponseDto);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
 
-        return new MypageUserResponseDto(user); // DTO 변환
+    // 주소값 가져오기
+    @GetMapping("/getaddrinfo")
+    public ResponseEntity<List<AddressUpdate>> getaddr(@AuthenticationPrincipal PrincipalDetails principalDetails){
+
+        List<Address> addr = mypageUserService.getUserInfo(principalDetails); // 엔터티에 저장
+        System.out.println("addr_List : "+addr);
+        List<AddressUpdate> addr_li = new ArrayList<>();
+        for (Address address : addr){ //엔터티 to DTO
+            AddressUpdate addrupdate = new AddressUpdate(address); // DTO 변환
+            addr_li.add(addrupdate);
+        }
+        return ResponseEntity.ok(addr_li);
     }
 
     // 회원 정보 수정

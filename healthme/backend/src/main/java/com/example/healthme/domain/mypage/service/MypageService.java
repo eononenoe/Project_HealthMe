@@ -11,10 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MypageUserService {
+public class MypageService {
 
     @Autowired
     private UserRepository userRepository;
@@ -24,13 +25,24 @@ public class MypageUserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User getUserInfo(Long id) {
+    public User getuser(PrincipalDetails principalDetails) {
+        Optional<User> op_user = userRepository.findById(principalDetails.getUserDto().getId());
+        if(op_user!=null){
+            User user = op_user.get();
 
-        Optional<User>  optionUser =userRepository.findById(id);
-        if(optionUser !=null){
-            // System.out.println("optionUser "+optionUser.get());
-            User user = optionUser.get();
             return user;
+        }
+        return null;
+    }
+
+
+    public List<Address> getUserInfo(PrincipalDetails  principalDetails) {
+        Long user_id = principalDetails.getUserDto().getId();
+        List<Address> op_addr = addressRepository.findByUserId(user_id);
+        if(op_addr !=null){
+            // System.out.println("optionUser "+optionUser.get());
+            System.out.println("List<Address> op_addr : "+op_addr);
+            return op_addr;
         }else{
             return null;
         }
@@ -77,4 +89,6 @@ public class MypageUserService {
 
         addressRepository.save(address);
     }
+
+
 }

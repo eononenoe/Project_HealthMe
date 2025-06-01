@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DaumPostcodeModal from "./DaumPostcodeModal";
 import axios from "axios";
-export default function NewAddress({ addrAdd, onClose, userDB }) {
+export default function NewAddress({ addrAdd, onClose, addr_userDB }) {
   const [user, setUser] = useState({
     address: "",
     addressDetail: "",
@@ -16,7 +16,6 @@ export default function NewAddress({ addrAdd, onClose, userDB }) {
   // 주소 검색 api에서 검색 후 user에 저장하는 함수.
   const handleAddressSelect = (updateUser) => {
     // updateUser는 DaumPostcodeModal에서 넘어온 객체이다.
-
     setUser((prev) => ({
       ...prev,
       address: updateUser.address,
@@ -91,7 +90,7 @@ export default function NewAddress({ addrAdd, onClose, userDB }) {
                   type="text"
                   id="recipient"
                   name="recipient"
-                  value={userDB.username}
+                  value={addr_userDB.username}
                   readOnly
                 />
               </div>
@@ -104,7 +103,7 @@ export default function NewAddress({ addrAdd, onClose, userDB }) {
                   type="text"
                   id="phone"
                   name="phone"
-                  value={userDB.tel}
+                  value={addr_userDB.tel}
                   readOnly
                 />
               </div>
