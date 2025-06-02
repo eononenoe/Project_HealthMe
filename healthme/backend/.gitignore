@@ -35,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# 환경설정 및 비밀 정보
+**/application-dev.properties
+/src/main/resources/application-*.properties
+!src/main/resources/application.properties
+.env
+.env.*

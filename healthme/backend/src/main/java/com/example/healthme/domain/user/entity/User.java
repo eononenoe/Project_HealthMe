@@ -1,12 +1,16 @@
 package com.example.healthme.domain.user.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "users")
 public class User {
     @Id
@@ -18,5 +22,16 @@ public class User {
     private String username;
     private String zip;
     private String address;
+    private String addressDetail;
     private String tel;
+    private String gender;
+    // 회원가입에는 기입x, 기본값 부여
+    private String role;
+    private String grade;
+
+
+    @Column(length = 20)
+    private String provider;
+    @Column(length = 100)
+    private String providerId;
 }

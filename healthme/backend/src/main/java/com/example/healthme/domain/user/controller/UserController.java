@@ -1,7 +1,12 @@
 package com.example.healthme.domain.user.controller;
 
 import com.example.healthme.domain.user.dto.JoinRequestDto;
+import com.example.healthme.domain.user.dto.LoginRequestDto;
+import com.example.healthme.domain.user.dto.UserResponseDto;
+import com.example.healthme.domain.user.entity.User;
+import com.example.healthme.domain.user.repository.UserRepository;
 import com.example.healthme.domain.user.service.UserService;
+import com.example.healthme.global.config.auth.jwt.TokenInfo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -16,7 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
+    private final UserRepository userRepository;
     // 회원가입
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody @Valid JoinRequestDto dto, BindingResult bindingResult) {
@@ -33,6 +39,7 @@ public class UserController {
                     .body(Collections.singletonMap("error", "비밀번호가 일치하지 않습니다."));
         }
 
+        // 아이디 중복확인
         try {
             userService.join(dto); // DB 저장 시도 (중복 가능성 있음)
             return ResponseEntity.ok(Collections.singletonMap("message", "회원가입 성공"));
@@ -49,4 +56,35 @@ public class UserController {
         boolean exists = userService.isUseridExists(userid);
         return Collections.singletonMap("exists", exists);
     }
+
+    // 로그인
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequestDto dto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = bindingResult.getFieldError().getDefaultMessage();
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", errorMessage));
+        }
+
+        try {
+            // 1. JWT 발급
+            TokenInfo tokenInfo = userService.login(dto);
+
+            // 2. 사용자 정보 조회 (userService.login은 userDto 반환 안 하니까 여기서 따로 불러옴)
+            User user = userRepository.findByUserid(dto.getUserid())
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+            UserResponseDto userResponseDto = UserResponseDto.fromEntity(user);
+
+            // 3. 응답 조립
+            Map<String, Object> result = new HashMap<>();
+            result.put("accessToken", tokenInfo.getAccessToken());
+            result.put("refreshToken", tokenInfo.getRefreshToken());
+            result.put("userInfo", userResponseDto);
+
+            return ResponseEntity.ok(result);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
+        }
+    }
+
 }

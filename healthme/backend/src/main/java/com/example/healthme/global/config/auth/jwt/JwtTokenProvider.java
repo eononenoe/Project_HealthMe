@@ -1,13 +1,11 @@
 package com.example.healthme.global.config.auth.jwt;
 
 import com.example.healthme.domain.user.dto.UserDto;
-import com.example.healthme.domain.user.entity.User;
-import com.example.healthme.domain.user.repository.UserRepository;
 import com.example.healthme.global.config.auth.principal.PrincipalDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,8 +24,6 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
 
-    @Autowired
-    private UserRepository userRepository;
     //Key 저장
     private final Key key;
 
@@ -87,8 +83,10 @@ public class JwtTokenProvider {
 
         String username = claims.getSubject(); //username
 
-        User user = userRepository.findByUserid(username).orElseThrow(() -> new RuntimeException("사용자 없음"));
-        PrincipalDetails principal = new PrincipalDetails(UserDto.fromEntity(user));
+        PrincipalDetails principal = new PrincipalDetails(UserDto.builder()
+                .userid(username)
+                .role(authorities.stream().findFirst().get().getAuthority()) // 간단히
+                .build());
         log.info("JwtTokenProvider.getAuthentication UsernamePasswordAuthenticationToken : " + accessToken);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(principal, "", authorities);

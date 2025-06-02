@@ -1,4 +1,4 @@
-package com.example.healthme.global.config.auth.jwt;//package com.example.healthme.global.config.auth.jwt;
+//package com.example.healthme.global.config.auth.jwt;
 //
 //import java.security.SecureRandom;
 //
