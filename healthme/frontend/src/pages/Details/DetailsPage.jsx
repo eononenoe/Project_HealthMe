@@ -146,18 +146,16 @@ function ProductDetailPage() {
                 <h2 className="nutrition-title">상품 영양성분</h2>
                 <p className="nutrition-desc">100g 기준 고등어의 주요 영양성분입니다.</p>
                 <ul className="nutrition-list">
-                    <li><span>열량</span><strong>210 kcal</strong></li>
                     <li><span>단백질</span><strong>19 g</strong></li>
-                    <li><span>지방</span><strong>15 g</strong></li>
-                    <li><span>포화지방</span><strong>4 g</strong></li>
-                    <li><span>콜레스테롤</span><strong>70 mg</strong></li>
-                    <li><span>탄수화물</span><strong>0 g</strong></li>
-                    <li><span>나트륨</span><strong>90 mg</strong></li>
-                    <li><span>칼슘</span><strong>12 mg</strong></li>
                     <li><span>철분</span><strong>1.5 mg</strong></li>
-                    <li><span>오메가-3 지방산</span><strong>2.5 g</strong></li>
                     <li><span>비타민 D</span><strong>16 µg</strong></li>
-                    <li><span>비타민 B12</span><strong>12 µg</strong></li>
+                    <li><span>칼슘</span><strong>12 mg</strong></li>
+                    <li><span>식이섬유</span><strong>정보 없음</strong></li>
+                    <li><span>마그네슘</span><strong>정보 없음</strong></li>
+                    <li><span>칼륨</span><strong>정보 없음</strong></li>
+                    <li><span>비오틴</span><strong>정보 없음</strong></li>
+                    <li><span>아연</span><strong>정보 없음</strong></li>
+                    <li><span>아르기닌</span><strong>정보 없음</strong></li>
                 </ul>
             </div>
 

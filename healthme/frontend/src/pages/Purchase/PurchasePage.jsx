@@ -1,29 +1,41 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import 'static/css/pages/Purchase.css';
 
 const PurchasePage = () => {
-  useEffect(() => {
-    const buttonsGroup = document.querySelectorAll('.options');
+  const [products, setProducts] = useState([]);
 
-    buttonsGroup.forEach((group) => {
-      const buttons = group.querySelectorAll('.circle');
-      const question = group.previousElementSibling;
+useEffect(() => {
+  axios.get('http://localhost:8080/api/products/details')
+    .then((res) => {
+      console.log("API 응답 데이터:", res.data);
+      setProducts(res.data);
+    })
+    .catch((err) => {
+      console.error("에러 발생:", err);
+    });
 
-      buttons.forEach((button) => {
-        button.addEventListener('click', () => {
-          buttons.forEach((b) => b.classList.remove('selected'));
-          button.classList.add('selected');
-          group.classList.add('faded');
-          if (question && question.classList.contains('question')) {
-            question.classList.add('faded');
-          }
-        });
+  const buttonsGroup = document.querySelectorAll('.options');
+  buttonsGroup.forEach((group) => {
+    const buttons = group.querySelectorAll('.circle');
+    const question = group.previousElementSibling;
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        buttons.forEach((b) => b.classList.remove('selected'));
+        button.classList.add('selected');
+        group.classList.add('faded');
+        if (question && question.classList.contains('question')) {
+          question.classList.add('faded');
+        }
       });
     });
-  }, []);
+  });
+}, []); // <-- 이 괄호가 없었어요!
+
 
   const filterCategory = (category) => {
-    const items = document.querySelectorAll('.item_store');
+    const items = document.querySelectorAll('.purchase-item_store');
     items.forEach((item) => {
       item.style.display = 'none';
     });
@@ -61,7 +73,11 @@ const PurchasePage = () => {
         <h1 className="purchase-title">구매</h1>
 
         <div className="purchase-banner">
-          <img className='purchase-banner-img' src="/img/main/Banner1.jpg" alt="배너" />
+          <img
+            className="purchase-banner-img"
+            src="/img/main/Banner1.jpg"
+            alt="배너"
+          />
         </div>
 
         <ul className="purchase-sort-menu">
@@ -76,35 +92,35 @@ const PurchasePage = () => {
         </ul>
 
         <ul className="purchase-product-list">
-          {/* 상품 아이템 반복 - 예시 1개만 */}
-          <li className="purchase-item_store 축산">
-            <div className="purchase-item_img">
-              <img
-                src="https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/4c36b050-06f9-4ce1-9597-27bf4c2563fb.jpg"
-                alt=""
-              />
-            </div>
-            <div className="purchase-item_add">
-              <i className="fa-solid fa-cart-shopping"></i>
-              <span onClick={() => alert('장바구니에 담겼습니다')}>담기</span>
-            </div>
-            <div className="purchase-item_name">
-              <span>한돈 부위별 대용량 가성비 7종</span>
-            </div>
-            <div className="purchase-item_discount_price">
-              <del>28,900원</del>
-            </div>
-            <div className="purchase-item_price">
-              <ul>
-                <li className="purchase-discount">34%</li>
-                <li className="purchase-price">18,900원</li>
-              </ul>
-            </div>
-            <div className="purchase-item_review">
-              <i className="fa-regular fa-comment-dots"></i>
-              <span>999+</span>
-            </div>
-          </li>
+          {products.map((product) => (
+            <li key={product.productId} className={`purchase-item_store ${product.category}`}>
+              <div className="purchase-item_img">
+                <img src={product.imageUrl} alt={product.name} />
+              </div>
+              <div className="purchase-item_add">
+                <i className="fa-solid fa-cart-shopping"></i>
+                <span onClick={() => alert('장바구니에 담겼습니다')}>담기</span>
+              </div>
+              <div className="purchase-item_name">
+                <span>{product.name}</span>
+              </div>
+              <div className="purchase-item_discount_price">
+                <del>{product.price.toLocaleString()}원</del>
+              </div>
+              <div className="purchase-item_price">
+                <ul>
+                  <li className="purchase-discount">
+                    {Math.round(100 - (product.salprice / product.price) * 100)}%
+                  </li>
+                  <li className="purchase-price">{product.salprice.toLocaleString()}원</li>
+                </ul>
+              </div>
+              <div className="purchase-item_review">
+                <i className="fa-regular fa-comment-dots"></i>
+                <span>999+</span>
+              </div>
+            </li>
+          ))}
         </ul>
       </section>
     </main>
