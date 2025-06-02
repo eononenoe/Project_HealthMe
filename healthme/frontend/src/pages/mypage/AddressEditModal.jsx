@@ -4,7 +4,7 @@ import axios from "axios";
 export default function AddressEditModal({
   open,
   onClose,
-  addr_userDB,
+  updateaddress,
   getAddress,
 }) {
   const [user, setUser] = useState({
@@ -16,13 +16,14 @@ export default function AddressEditModal({
 
   // 주소를 AddressEditPage에서 프롭스로 가져온 후 수정을 위해 user라는 useState 정의.
   useEffect(() => {
-    if (addr_userDB !== null) {
+    if (updateaddress !== null) {
+      //console.log(updateaddress);
       setUser({
-        address: addr_userDB.address,
-        addressDetail: addr_userDB.addressDetail,
+        address: updateaddress.address,
+        addressDetail: updateaddress.addressDetail,
       });
     }
-  }, [addr_userDB]);
+  }, [updateaddress]);
 
   const addressUpdateHandle = () => {
     setShowPostcode(true);
@@ -41,7 +42,8 @@ export default function AddressEditModal({
   // 수정된 주소값 저장하기.
   const updateUserSubmit = async () => {
     try {
-      await axios.post(`/mypage/updateUser?id=${addr_userDB.id}`, user, {
+      await axios.post(`/mypage/updateAddr?addr_id=${updateaddress.id}`, user, {
+        // 각각의 id에 맞는 주소를 수정
         withCredentials: true,
       });
       window.alert("수정되었습니다.");
@@ -59,7 +61,7 @@ export default function AddressEditModal({
 
   return (
     <>
-      {open && addr_userDB ? (
+      {open && updateaddress ? (
         <div className="modal-backdrop" onClick={onClose}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close-btn" onClick={onClose}>
@@ -110,7 +112,7 @@ export default function AddressEditModal({
                   type="text"
                   id="recipient"
                   name="recipient"
-                  value={addr_userDB.username}
+                  value={updateaddress.recipient}
                   readOnly
                 />
               </div>
@@ -121,7 +123,7 @@ export default function AddressEditModal({
                   type="text"
                   id="phone"
                   name="phone"
-                  value={addr_userDB.tel}
+                  value={updateaddress.tel}
                   readOnly
                 />
               </div>

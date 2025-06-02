@@ -61,15 +61,21 @@ public class MypageService {
     }
 
     // 배송지 수정
-    public void updateAddress(Long id, AddressUpdate addressUpdate) {
-        Optional<User> user= userRepository.findById(id);
-        User addrUpdateUser = user.get();
-        Address defaultAddress = addrUpdateUser.getDefaultAddress(); // 기존 주소 가져온다.
-        defaultAddress.setAddress(addressUpdate.getAddress()); // 수정할 주소로 업데이트
-        defaultAddress.setAddressDetail(addressUpdate.getAddressDetail()); // 수정할 주소로 업데이트
-        defaultAddress.setZip(addressUpdate.getZonecode()); // 수정할 주소로 업데이트
-        userRepository.save(addrUpdateUser);
-        // userRepository.save()만 해도 Address가 이미 DB에서 불러온 객체이면, JPA가 바뀐 내용을 자동으로 감지해서 수정해주기 때문이다.
+    public void updateAddress(Long addrid, PrincipalDetails principalDetails, AddressUpdate addressUpdate) {
+        Optional<Address> addr= addressRepository.findById(addrid);
+
+        Address addrUpdateUser = addr.get(); //addr_id에 맞는 한 행 가져온다.
+        if(addrUpdateUser.getUser().getId() ==  principalDetails.getUserDto().getId()){
+            // DB(addresses)에서 가져온 행의 user_id와 로그인했을때의 id와 같으면 밑에껄 실행한다.
+            addrUpdateUser.setAddress(addressUpdate.getAddress()); // 수정할 주소로 업데이트
+            addrUpdateUser.setAddressDetail(addressUpdate.getAddressDetail()); // 수정할 주소로 업데이트
+            addrUpdateUser.setZip(addressUpdate.getZonecode()); // 수정할 주소로 업데이트
+            addressRepository.save(addrUpdateUser);
+            // userRepository.save()만 해도 Address가 이미 DB에서 불러온 객체이면, JPA가 바뀐 내용을 자동으로 감지해서 수정해주기 때문이다.
+        }else{
+
+        }
+
     }
 
     // 배송지 추가

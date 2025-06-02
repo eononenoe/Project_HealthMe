@@ -8,9 +8,12 @@ export default function AddressEditPage() {
   const [addrAdd, setAddrAdd] = useState(false);
   const [addr_userDB, setAddr_userDB] = useState([]);
 
+  const [updateaddress, setUpdateaddress] = useState(null); // 수정페이지에 전달한 하나의 주소
+
   // 배송지 수정
-  const handleUpdate = (e) => {
+  const handleUpdate = (e, addr) => {
     e.preventDefault(); // a태그의 원래 속성을 막기 위해서
+    setUpdateaddress(addr);
     setOpen(true);
   };
 
@@ -82,7 +85,10 @@ export default function AddressEditPage() {
               </div>
 
               {/* 실제로는 Link or 버튼 + onClick(openWindow)로 처리 */}
-              <a onClick={handleUpdate} className="address-adjustment">
+              <a
+                onClick={(e) => handleUpdate(e, deafult_address[0])}
+                className="address-adjustment"
+              >
                 수정
               </a>
             </div>
@@ -108,7 +114,10 @@ export default function AddressEditPage() {
               </div>
 
               {/* 실제로는 Link or 버튼 + onClick(openWindow)로 처리 */}
-              <a onClick={handleUpdate} className="address-adjustment">
+              <a
+                onClick={(e) => handleUpdate(e, addr)}
+                className="address-adjustment"
+              >
                 수정
               </a>
             </div>
@@ -124,7 +133,7 @@ export default function AddressEditPage() {
       <AddressEditModal
         open={open}
         onClose={() => setOpen(false)}
-        addr_userDB={addr_userDB}
+        updateaddress={updateaddress}
         getAddress={getAddress}
       ></AddressEditModal>
 
@@ -132,7 +141,7 @@ export default function AddressEditPage() {
       <NewAddress
         addrAdd={addrAdd}
         onClose={() => setAddrAdd(false)}
-        addr_userDB={addr_userDB}
+        updateaddress={updateaddress}
       ></NewAddress>
     </>
   );

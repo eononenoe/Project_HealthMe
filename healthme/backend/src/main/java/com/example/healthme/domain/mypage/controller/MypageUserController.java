@@ -7,6 +7,7 @@ import com.example.healthme.domain.mypage.dto.MypageUserResponseDto;
 import com.example.healthme.domain.mypage.entity.Address;
 
 
+import com.example.healthme.domain.mypage.service.MypageService;
 import com.example.healthme.domain.user.entity.User;
 import com.example.healthme.global.config.auth.principal.PrincipalDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,10 +60,10 @@ public class MypageUserController {
     }
     
     // 배송지 수정
-    @PostMapping("/updateUser")
-    public void AdressUpdate(@RequestParam("id") Long id, @RequestBody AddressUpdate addressUpdate){
+    @PostMapping("/updateAddr")
+    public void AdressUpdate(@RequestParam("addr_id") Long addrid, @AuthenticationPrincipal PrincipalDetails principalDetails, @RequestBody AddressUpdate addressUpdate){
         System.out.println("addressUpdate : "+addressUpdate);
-        mypageUserService.updateAddress(id, addressUpdate);
+        mypageUserService.updateAddress(addrid,principalDetails,addressUpdate);
     }
 
     // 새 배송지 추가

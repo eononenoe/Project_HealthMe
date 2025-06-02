@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddressUpdate {
+    private Long address_id;
     private String address;
     private String addressDetail;
     private String zonecode;
@@ -17,6 +18,7 @@ public class AddressUpdate {
     private boolean is_default;
 
     public AddressUpdate(Address addr){
+        this.address_id = addr.getAddressId();
         this.address = addr.getAddress();
         this.addressDetail = addr.getAddressDetail();
         this.zonecode = addr.getZip();
