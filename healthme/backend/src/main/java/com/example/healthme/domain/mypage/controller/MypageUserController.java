@@ -5,7 +5,7 @@ import com.example.healthme.domain.mypage.dto.AddressUpdate;
 import com.example.healthme.domain.mypage.dto.MyPageUserUpdate;
 import com.example.healthme.domain.mypage.dto.MypageUserResponseDto;
 import com.example.healthme.domain.mypage.entity.Address;
-import com.example.healthme.domain.mypage.service.MypageService;
+
 
 import com.example.healthme.domain.user.entity.User;
 import com.example.healthme.global.config.auth.principal.PrincipalDetails;
