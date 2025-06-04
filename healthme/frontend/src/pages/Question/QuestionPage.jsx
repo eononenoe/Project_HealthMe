@@ -7,7 +7,7 @@ const NutritionSurvey = () => {
   useEffect(() => {
     const groups = document.querySelectorAll('.options');
 
-    groups.forEach((group) => {
+    groups.forEach((group, groupIndex) => {
       const buttons = group.querySelectorAll('.circle');
       const question = group.previousElementSibling;
 
@@ -18,6 +18,14 @@ const NutritionSurvey = () => {
           group.classList.add('faded');
           if (question && question.classList.contains('question')) {
             question.classList.add('faded');
+          }
+
+          // 다음 그룹으로 부드럽게 스크롤 이동
+          const nextGroup = groups[groupIndex + 1];
+          if (nextGroup) {
+            setTimeout(() => {
+              nextGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
           }
         });
       });

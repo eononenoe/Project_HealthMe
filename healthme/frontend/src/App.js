@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 
 import Header from 'components/header';
 import Footer from 'components/footer';
-import ResultPage from 'pages/Result/ResultPage';
 import JoinPage from 'pages/login/JoinPage';
 import LoginPage from 'pages/login/LoginPage';
 import OAuth2RedirectHandler from 'pages/login/OAuth2RedirectHandler';
@@ -46,7 +45,6 @@ function AppRoutes() {
         {/* 제품상세 페이지 */}
         <Route path="/details" element={<DetailsPage />}></Route>
         {/* 사용자용 */}
-        <Route path="/result" element={<ResultPage />} />
         <Route path="/join" element={<JoinPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />

@@ -22,8 +22,17 @@ public class ProductStoreService {
     }
 
     public List<ProductWithNutrientDto> getAllProductDetails() {
-        return productStoreRepository.findAll().stream().map(product -> {
+        var products = productStoreRepository.findAll();
+        System.out.println("DB에서 불러온 상품 수: " + products.size());
+        for (var p : products) {
+            System.out.println("상품: " + p.getProductId() + " / " + p.getName());
+        }
+        List<ProductWithNutrientDto> result = products.stream().map(product -> {
             ProductNutrient nutrient = nutrientRepository.findByProductId(product.getProductId());
+            if (nutrient == null) {
+                System.out.println("해당 영양정보 없음: " + product.getProductId());
+            }
+            // 영양소 제외하고 상품 정보만 DTO로 리턴
             return ProductWithNutrientDto.builder()
                     .productId(product.getProductId())
                     .name(product.getName())
@@ -31,8 +40,10 @@ public class ProductStoreService {
                     .salprice(product.getSalprice())
                     .imageUrl(product.getImageUrl())
                     .category(product.getCategory())
-                    .nutrient(nutrient)
                     .build();
         }).collect(Collectors.toList());
+
+        System.out.println("반환할 상품 리스트: " + result.size());
+        return result;
     }
 }

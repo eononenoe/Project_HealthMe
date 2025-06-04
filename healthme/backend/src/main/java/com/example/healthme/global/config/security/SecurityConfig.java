@@ -49,7 +49,9 @@ public class SecurityConfig {
                                 "/healthme/users/login",
                                 "/healthme/sms/**",
                                 "/healthme/sms/send",
-                                "/healthme/survey"
+                                "/healthme/survey",
+                                "/healthme/products",
+                                "/healthme/products/**"
                         ).permitAll()
                         .requestMatchers("/user").hasRole("USER")
 
@@ -83,5 +85,18 @@ public class SecurityConfig {
         );
 
         return http.build();
+    }
+//    정현임시
+    @Bean
+    public CorsConfigurationSource customCorsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 }

@@ -217,3 +217,11 @@
 .next-button:hover {
     background-color: #744a86;
 }
+
+.circle .material-symbols-outlined {
+    font-size: 20px; 
+}
+
+.circle.gray .material-symbols-outlined {
+    font-size: 16px;
+}

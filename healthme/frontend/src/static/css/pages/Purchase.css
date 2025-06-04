@@ -36,14 +36,19 @@ a {
 .purchase-wrapper {
   width: 1280px;
   min-width: 1280px;
-  /* << 추가해 */
+  height: auto;
   margin: 0 auto;
   display: flex;
-  padding-top: 50px;
+  padding-top: 20px;
 }
 
 .purchase-left-content {
+  margin-top: 30px;
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
   width: 220px;
+  height: 100vh;
   flex-shrink: 0;
   border-right: 1px solid #eee;
 }
@@ -112,9 +117,9 @@ a {
 /*    오른쪽 컨텐츠   */
 /* ================ */
 .purchase-right-content {
+  margin-top: 30px;
   flex-grow: 1;
   min-width: 0;
-  /* << flex 안에서는 overflow 터지는 걸 막으려고 이거 추가하면 안정감 있음 */
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -242,6 +247,7 @@ a {
   color: rgb(171, 171, 171);
   font-size: 1rem;
 }
-.purchase-item_review i{
+
+.purchase-item_review i {
   margin-right: 5px;
 }

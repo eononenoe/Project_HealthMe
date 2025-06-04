@@ -6,13 +6,15 @@ const PurchasePage = () => {
   const [products, setProducts] = useState([]);
 
 useEffect(() => {
-  axios.get('http://localhost:8080/api/products/details')
-    .then((res) => {
-      console.log("API 응답 데이터:", res.data);
-      setProducts(res.data);
+  axios.get("http://localhost:8090/healthme/products/details", {
+    withCredentials: true,
+  })
+    .then(response => {
+      console.log("데이터:", response.data);
+      setProducts(response.data); 
     })
-    .catch((err) => {
-      console.error("에러 발생:", err);
+    .catch(error => {
+      console.error("에러 발생:", error);
     });
 
   const buttonsGroup = document.querySelectorAll('.options');
@@ -31,7 +33,7 @@ useEffect(() => {
       });
     });
   });
-}, []); // <-- 이 괄호가 없었어요!
+}, []);
 
 
   const filterCategory = (category) => {

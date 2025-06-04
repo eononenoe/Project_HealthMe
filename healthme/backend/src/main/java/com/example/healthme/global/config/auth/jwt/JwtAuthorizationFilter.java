@@ -16,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 //JWT 인증 필터
@@ -41,26 +42,27 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             FilterChain chain
     ) throws ServletException, IOException {
         String uri = request.getRequestURI();
-        if (uri.startsWith("/healthme/sms")) {
+        log.debug("요청 URI: " + uri);
+
+//        전정현 임시
+        if (uri.contains("/healthme/products")) {
             chain.doFilter(request, response);
             return;
         }
+
         String token = null;
-
-        // cookie 에서 JWT token 추출
         try {
-
             if (request.getCookies() != null) {
                 token = Arrays.stream(request.getCookies())
                         .filter(cookie -> cookie.getName().equals(JwtProperties.ACCESS_TOKEN_COOKIE_NAME))
                         .findFirst()
-                        .map(cookie -> cookie.getValue())
+                        .map(Cookie::getValue)
                         .orElse(null);
             }
-        } catch (Exception ignored) {
-
-
+        } catch (Exception e) {
+            log.warn("쿠키에서 토큰 추출 중 예외 발생", e);
         }
+
         if (token != null) {
             try {
                 if (jwtTokenProvider.validateToken(token)) {
@@ -97,5 +99,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         log.warn("인증 실패: 유저 정보 없음 (userid = {})", authentication.getName());
         return null; // 유저가 없으면 NULL
     }
+
 
 }
