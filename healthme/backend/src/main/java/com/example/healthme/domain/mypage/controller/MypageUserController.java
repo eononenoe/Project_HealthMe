@@ -62,7 +62,7 @@ public class MypageUserController {
     // 배송지 수정
     @PostMapping("/updateAddr")
     public void AdressUpdate(@RequestParam("addr_id") Long addrid, @AuthenticationPrincipal PrincipalDetails principalDetails, @RequestBody AddressUpdate addressUpdate){
-        System.out.println("addressUpdate : "+addressUpdate);
+//        System.out.println("addressUpdate : "+addressUpdate);
         mypageUserService.updateAddress(addrid,principalDetails,addressUpdate);
     }
 

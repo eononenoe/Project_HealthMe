@@ -10,6 +10,7 @@ import com.example.healthme.global.config.auth.principal.PrincipalDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,7 @@ public class MypageService {
         List<Address> op_addr = addressRepository.findByUserId(user_id);
         if(op_addr !=null){
             // System.out.println("optionUser "+optionUser.get());
-            System.out.println("List<Address> op_addr : "+op_addr);
+//            System.out.println("List<Address> op_addr : "+op_addr);
             return op_addr;
         }else{
             return null;
@@ -61,11 +62,13 @@ public class MypageService {
     }
 
     // 배송지 수정
+
     public void updateAddress(Long addrid, PrincipalDetails principalDetails, AddressUpdate addressUpdate) {
         Optional<Address> addr= addressRepository.findById(addrid);
 
         Address addrUpdateUser = addr.get(); //addr_id에 맞는 한 행 가져온다.
-        if(addrUpdateUser.getUser().getId() ==  principalDetails.getUserDto().getId()){
+        System.out.println("addrUpdateuser : " +addrUpdateUser);
+        if(addrUpdateUser.getUser().getId().equals(principalDetails.getUserDto().getId())){
             // DB(addresses)에서 가져온 행의 user_id와 로그인했을때의 id와 같으면 밑에껄 실행한다.
             addrUpdateUser.setAddress(addressUpdate.getAddress()); // 수정할 주소로 업데이트
             addrUpdateUser.setAddressDetail(addressUpdate.getAddressDetail()); // 수정할 주소로 업데이트

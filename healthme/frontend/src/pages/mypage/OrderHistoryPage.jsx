@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function OrderHistoryPage() {
+  // const
+  // useEffect(
+  //   getbuycart()
+
+  // )
   return (
     <>
       <div className="user-box">

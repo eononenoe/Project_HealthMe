@@ -26,6 +26,7 @@ export default function NewAddress({ addrAdd, onClose, updateaddress }) {
   // 추가된 주소값 저장하기.
   const updateUserSubmit = async () => {
     try {
+      // console.log("user", user);
       await axios.post(`/mypage/newAddr`, user, {
         withCredentials: true,
       });
@@ -90,7 +91,7 @@ export default function NewAddress({ addrAdd, onClose, updateaddress }) {
                   type="text"
                   id="recipient"
                   name="recipient"
-                  value={updateaddress.username}
+                  value={updateaddress.recipient}
                   readOnly
                 />
               </div>

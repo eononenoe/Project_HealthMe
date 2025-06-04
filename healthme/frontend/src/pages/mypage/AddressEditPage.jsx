@@ -79,7 +79,7 @@ export default function AddressEditPage() {
                   </span>
 
                   <span className="address-username">
-                    {deafult_address[0].username}
+                    {deafult_address[0].recipient}
                   </span>
                 </div>
               </div>
@@ -109,7 +109,7 @@ export default function AddressEditPage() {
                     {addr.addressDetail} &nbsp;&nbsp;
                   </span>
 
-                  <span className="address-username">{addr.username}</span>
+                  <span className="address-username">{addr.recipient}</span>
                 </div>
               </div>
 

@@ -42,10 +42,15 @@ export default function AddressEditModal({
   // 수정된 주소값 저장하기.
   const updateUserSubmit = async () => {
     try {
-      await axios.post(`/mypage/updateAddr?addr_id=${updateaddress.id}`, user, {
-        // 각각의 id에 맞는 주소를 수정
-        withCredentials: true,
-      });
+      console.log("updateaddress", updateaddress);
+      await axios.post(
+        `/mypage/updateAddr?addr_id=${updateaddress.address_id}`,
+        user,
+        {
+          // 각각의 id에 맞는 주소를 수정
+          withCredentials: true,
+        }
+      );
       window.alert("수정되었습니다.");
     } catch {
       window.alert("수정 실패했습니다.");
