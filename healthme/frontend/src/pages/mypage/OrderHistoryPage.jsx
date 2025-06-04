@@ -1,11 +1,17 @@
 import React, { useEffect } from "react";
+import axios from "axios";
 
 export default function OrderHistoryPage() {
-  // const
-  // useEffect(
-  //   getbuycart()
+  const getbuy = async () => {
+    await axios.get("/mypage/getbuy", {
+      withCredentials: true,
+    });
+  };
 
-  // )
+  useEffect(() => {
+    getbuy();
+  });
+
   return (
     <>
       <div className="user-box">

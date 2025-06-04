@@ -3,7 +3,9 @@ package com.example.healthme.domain.mypage.service;
 import com.example.healthme.domain.mypage.dto.AddressUpdate;
 import com.example.healthme.domain.mypage.dto.MyPageUserUpdate;
 import com.example.healthme.domain.mypage.entity.Address;
+import com.example.healthme.domain.mypage.entity.Order;
 import com.example.healthme.domain.mypage.repository.AddressRepository;
+import com.example.healthme.domain.mypage.repository.orderRepository;
 import com.example.healthme.domain.user.entity.User;
 import com.example.healthme.domain.user.repository.UserRepository;
 import com.example.healthme.global.config.auth.principal.PrincipalDetails;
@@ -25,6 +27,8 @@ public class MypageService {
     private AddressRepository addressRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private orderRepository orderRepository;
 
     public User getuser(PrincipalDetails principalDetails) {
         Optional<User> op_user = userRepository.findById(principalDetails.getUserDto().getId());
@@ -100,4 +104,10 @@ public class MypageService {
     }
 
 
+    public List<Order> getbuyproduct(PrincipalDetails principalDetails) {
+        String username= principalDetails.getUserDto().getUsername();
+        List<Order> order_li = orderRepository.findByUserId(username);
+        return order_li;
+    }
 }
+

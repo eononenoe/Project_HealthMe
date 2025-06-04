@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/mypage")
-public class MypageUserController {
+public class MypageController {
 
     @Autowired
     private MypageService mypageUserService;
@@ -38,6 +38,13 @@ public class MypageUserController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
+    // 회원 정보 수정
+    @PostMapping("/user/update")
+    public void userUpdate(@RequestParam("id") Long id, @ModelAttribute MyPageUserUpdate userUpdate){
+        // System.out.println(userUpdate);
+        mypageUserService.updateUser(id,userUpdate);
+    }
+
     // 주소값 가져오기
     @GetMapping("/getaddrinfo")
     public ResponseEntity<List<AddressUpdate>> getaddr(@AuthenticationPrincipal PrincipalDetails principalDetails){
@@ -50,13 +57,6 @@ public class MypageUserController {
             addr_li.add(addrupdate);
         }
         return ResponseEntity.ok(addr_li);
-    }
-
-    // 회원 정보 수정
-    @PostMapping("/user/update")
-    public void userUpdate(@RequestParam("id") Long id, @ModelAttribute MyPageUserUpdate userUpdate){
-        // System.out.println(userUpdate);
-        mypageUserService.updateUser(id,userUpdate);
     }
     
     // 배송지 수정
@@ -71,5 +71,13 @@ public class MypageUserController {
     public void newAddr (@RequestBody AddressUpdate addressUpdate, @AuthenticationPrincipal PrincipalDetails principalDetails){
         System.out.println("addressUpdate : "+addressUpdate);
         mypageUserService.addnewAddr(addressUpdate,principalDetails);
+    }
+
+    //-----------------------------------------------------------------------
+
+    // 구매내역 전체 불러오기
+    @GetMapping("/getbuy")
+    public ResponseEntity<?> getbuy(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        mypageUserService.getbuyproduct(principalDetails);
     }
 }
