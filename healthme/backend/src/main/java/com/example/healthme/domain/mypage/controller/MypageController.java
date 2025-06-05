@@ -1,6 +1,9 @@
 package com.example.healthme.domain.mypage.controller;
 
 
+import com.example.healthme.domain.approval.dto.ApprovalOrderResponseDto;
+import com.example.healthme.domain.approval.entity.ApprovalOrder;
+import com.example.healthme.domain.approval.repository.ApprovalOrderRepository;
 import com.example.healthme.domain.mypage.dto.AddressUpdate;
 import com.example.healthme.domain.mypage.dto.MyPageUserUpdate;
 import com.example.healthme.domain.mypage.dto.MypageUserResponseDto;
@@ -79,9 +82,9 @@ public class MypageController {
     // 구매내역 전체 불러오기
     @GetMapping("/getbuy")
     public ResponseEntity<?> getBuy(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        List<Order> orders = mypageUserService.getbuyproduct(principalDetails);
-        List<OrderDto> result = orders.stream()
-                .map(OrderDto::from)
+        List<ApprovalOrder> orders = mypageUserService.getbuyproduct(principalDetails);
+        List<ApprovalOrderResponseDto> result = orders.stream()
+                .map(ApprovalOrderResponseDto::from)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(result);  // 빈 리스트라도 200 OK로 보내는 게 맞음

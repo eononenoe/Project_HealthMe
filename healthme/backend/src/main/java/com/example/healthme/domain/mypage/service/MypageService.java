@@ -1,10 +1,11 @@
 package com.example.healthme.domain.mypage.service;
 
+import com.example.healthme.domain.approval.entity.ApprovalOrder;
+import com.example.healthme.domain.approval.repository.ApprovalOrderRepository;
 import com.example.healthme.domain.mypage.dto.AddressUpdate;
 import com.example.healthme.domain.mypage.dto.MyPageUserUpdate;
 import com.example.healthme.domain.mypage.entity.Address;
 import com.example.healthme.domain.mypage.repository.AddressRepository;
-import com.example.healthme.domain.mypage.repository.orderRepository;
 import com.example.healthme.domain.user.entity.User;
 import com.example.healthme.domain.user.repository.UserRepository;
 import com.example.healthme.global.config.auth.principal.PrincipalDetails;
@@ -26,7 +27,7 @@ public class MypageService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private orderRepository orderRepository;
+    private ApprovalOrderRepository approvalOrderRepository;
 
     public User getuser(PrincipalDetails principalDetails) {
         Optional<User> op_user = userRepository.findById(principalDetails.getUserDto().getId());
@@ -102,9 +103,9 @@ public class MypageService {
     }
 
 
-    public List<Order> getbuyproduct(PrincipalDetails principalDetails) {
+    public List<ApprovalOrder> getbuyproduct(PrincipalDetails principalDetails) {
         String username= principalDetails.getUserDto().getUsername();
-        List<Order> order_li = orderRepository.findByUser_Username(username);
+        List<ApprovalOrder> order_li = approvalOrderRepository.findByUser_Username(username);
         if(order_li !=null){
             System.out.println("order_li"+order_li);
             return order_li;
