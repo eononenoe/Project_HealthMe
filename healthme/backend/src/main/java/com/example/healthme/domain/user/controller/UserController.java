@@ -7,11 +7,14 @@ import com.example.healthme.domain.user.entity.User;
 import com.example.healthme.domain.user.repository.UserRepository;
 import com.example.healthme.domain.user.service.UserService;
 import com.example.healthme.global.config.auth.jwt.TokenInfo;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,9 +46,15 @@ public class UserController {
         try {
             userService.join(dto); // DB 저장 시도 (중복 가능성 있음)
             return ResponseEntity.ok(Collections.singletonMap("message", "회원가입 성공"));
-        } catch (Exception e) {
-            return ResponseEntity.status(409) // 중복 등 DB 제약 에러
+        } catch (DataIntegrityViolationException e) {
+            // DB Unique 제약 조건 위반 (예: 아이디 중복)
+            return ResponseEntity.status(409)
                     .body(Collections.singletonMap("error", "이미 존재하는 아이디입니다."));
+        } catch (Exception e) {
+            // 기타 예상 못한 에러
+            e.printStackTrace(); // 개발 중에는 로그 찍기 추천
+            return ResponseEntity.status(500)
+                    .body(Collections.singletonMap("error", "회원가입 중 서버 오류가 발생했습니다."));
         }
     }
     
@@ -87,4 +96,50 @@ public class UserController {
         }
     }
 
+    // 아이디 찾기
+    @PostMapping("/find-username")
+    public ResponseEntity<?> findUsername(@RequestBody Map<String, String> request) {
+        String username = request.get("username");
+        String userid = userService.findUseridByName(username);
+
+        if (userid != null) {
+            return ResponseEntity.ok(userid);
+        } else {
+            return ResponseEntity.status(404).body("일치하는 정보가 없습니다.");
+        }
+    }
+
+    // 비밀번호 재설정
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
+        String username = request.get("username"); // 사용자 이름
+        String userid = request.get("userid");     // 이메일 (아이디)
+
+        try {
+            userService.sendTemporaryPassword(username, userid);
+            return ResponseEntity.ok("임시 비밀번호 전송 완료");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(404).body("정보가 일치하지 않습니다.");
+        }
+    }
+
+    // 로그아웃 - 쿠키 삭제용
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        // 2. HttpOnly 쿠키 삭제 (accessToken + refreshToken)
+        Cookie accessTokenCookie = new Cookie("accessToken", null);
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setPath("/");
+        accessTokenCookie.setMaxAge(0);  // 즉시 삭제
+
+        Cookie refreshTokenCookie = new Cookie("refreshToken", null);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(0);  // 즉시 삭제
+
+        response.addCookie(accessTokenCookie);
+        response.addCookie(refreshTokenCookie);
+
+        return ResponseEntity.ok(Collections.singletonMap("message", "로그아웃 완료"));
+    }
 }

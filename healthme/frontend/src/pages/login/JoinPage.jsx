@@ -162,12 +162,9 @@ const JoinPage = () => {
                         <input type="text" name="tel2" className="join-custom-input tel2" value={formData.tel2} onChange={handleChange} />
                         <span className="tel-hypen">-</span>
                         <input type="text" name="tel3" className="join-custom-input tel3" value={formData.tel3} onChange={handleChange} />
-                        {/* <button type="button" className="btn-main btn-small" onClick={handleDanalCert}>
-                            본인인증
-                        </button> */}
+                
                     </div>
                 </div>
-                {/* {isVerified && <p style={{ color: 'green' }}>✔ 본인인증 완료</p>} */}
 
                 {/* 가입 버튼 */}
                 <button type="button" className="btn-big btn-main" onClick={handleSubmit} >

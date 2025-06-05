@@ -7,13 +7,9 @@ const OAuth2RedirectHandler = () => {
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
-        const accessToken = params.get("accessToken");
-        const refreshToken = params.get("refreshToken");
         const loginUserEncoded = params.get("loginUser");
-        if (accessToken && loginUserEncoded) {
-            localStorage.setItem("accessToken", accessToken);
-            localStorage.setItem("refreshToken", refreshToken);
-            // 소셜 로그인 시 loginUser값이 인코딩 값이라 디코딩 필요
+
+        if (loginUserEncoded) {
             const loginUser = JSON.parse(decodeURIComponent(loginUserEncoded));
             localStorage.setItem("loginUser", JSON.stringify(loginUser));
             navigate("/");

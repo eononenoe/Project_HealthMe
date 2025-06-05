@@ -10,6 +10,9 @@
         'GRAD' 0,
         'opsz' 24
 }
+.question_material-symbols-outlined{
+    color: white;
+}
 
 .hero {
     height: 470px;
@@ -28,20 +31,22 @@
 .hero p {
     font-size: 16px;
     margin: 10px 0 40px;
-    color: #e0f5ec;
+    color: white;
 }
 
-.card-container {
+
+.question-card-container {
+    width: 100%;
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
     gap: 40px;
-    padding: 0 20px 80px;
+    padding: 20px;
+    border: none;
 }
 
 .card {
-    background: white;
     border-radius: 12px;
+    background-color: white;
     width: 350px;
     height: 230px;
     text-align: center;
@@ -107,6 +112,9 @@
     flex-wrap: wrap;
     border-bottom: 1px solid rgb(239, 239, 239);
     padding-bottom: 50px;
+}
+.options .material-symbols-outlined{
+    color: white;
 }
 
 .label {
@@ -176,15 +184,7 @@
 }
 .faded {
     opacity: 0.4;
-    pointer-events: none;
-}
-
-.material-symbols-outlined {
-    font-family: 'Material Symbols Outlined';
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    font-size: 18px;
-    display: none;
-    color: white;
+    pointer-events: auto;
 }
 
 .circle.selected {
@@ -216,4 +216,12 @@
 }
 .next-button:hover {
     background-color: #744a86;
+}
+
+.circle .material-symbols-outlined {
+    font-size: 20px; 
+}
+
+.circle.gray .material-symbols-outlined {
+    font-size: 16px;
 }

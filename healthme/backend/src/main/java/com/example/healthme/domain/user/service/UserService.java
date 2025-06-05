@@ -14,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -21,6 +23,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final  PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final MailService mailService;
 
     // 일반(폼) 회원가입
     public void join(JoinRequestDto dto) {
@@ -86,5 +89,24 @@ public class UserService {
 
         userRepository.save(user);
         return UserDto.fromEntity(user);
+    }
+
+    // 아이디 찾기 로직
+    public String findUseridByName(String username) {
+        return userRepository.findByUsername(username)
+                .map(User::getUserid)
+                .orElse(null);
+    }
+
+    // 임시 비밀번호 발급 로직
+    public void sendTemporaryPassword(String username, String userid) {
+        User user = userRepository.findByUsernameAndUserid(username, userid)
+                .orElseThrow(() -> new IllegalArgumentException("정보가 일치하지 않습니다."));
+
+        String tempPassword = UUID.randomUUID().toString().substring(0, 8);
+        user.setPassword(passwordEncoder.encode(tempPassword));
+        userRepository.save(user);
+
+        mailService.sendEmail(user.getUserid(), "임시 비밀번호", "임시 비밀번호는: [" + tempPassword + "] 입니다.");
     }
 }

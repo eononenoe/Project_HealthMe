@@ -4,8 +4,8 @@ const NutrientInfo = ({ nutrient }) => {
     if (!nutrient) return (
         <div className="info-container">
             <h2>영양소</h2>
-            <p><span>- %</span></p>
-            <p>설명창입니다.</p>
+            <p><span></span></p>
+            <p>클릭해서 설명을 볼 수 있습니다.</p>
         </div>
     );
 

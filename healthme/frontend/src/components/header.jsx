@@ -7,20 +7,18 @@ import axios from 'axios';
 const handleLogout = async () => {
     try {
         await axios.post("/healthme/users/logout", {}, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-            }
+            withCredentials: true  
         });
     } catch (err) {
         console.warn("서버 로그아웃 실패 (무시하고 클라이언트만 정리)", err);
     } finally {
+        // 혹시모를 로컬 스토리지에 남아있던 값도 정리
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("loginUser");
         window.location.href = "/";
     }
 };
-
 const Header = () => {
     const loginUser = JSON.parse(localStorage.getItem("loginUser"));
     return (
@@ -69,10 +67,10 @@ const Header = () => {
 
             {/* 하단 네비 메뉴 */}
             <ul className="low_header_nav">
-                <li><a href="/pages/Question/Question.html">영양 설문</a></li>
+                <li><a href="/question">영양 설문</a></li>
                 <li><a href="result">맞춤형 성분</a></li>
-                <li><a href="/pages/custom nutritional/custom_nutritional.html">추천 재료</a></li>
-                <li><a href="/pages/Purchase/Purchase.html">구매</a></li>
+                <li><a href="/nutritional">추천 재료</a></li>
+                <li><a href="/purchase">구매</a></li>
             </ul>
         </div >
     );

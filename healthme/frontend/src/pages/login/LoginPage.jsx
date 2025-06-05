@@ -144,8 +144,8 @@ const LoginPage = () => {
 
                     {/* 링크들 */}
                     <div className="hypertext">
-                        <Link to="#">아이디 찾기</Link>
-                        <Link to="#">비밀번호 찾기</Link>
+                        <Link to="/find">아이디 찾기</Link>
+                        <Link to="/find">비밀번호 찾기</Link>
                     </div>
                 </form>
 

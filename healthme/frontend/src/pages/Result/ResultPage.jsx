@@ -21,40 +21,44 @@ const ResultPage = () => {
     };
     window.addEventListener('scroll', handleScroll);
 
-    // [예시 점수] - 추후 설문결과 기반으로 바뀔 예정
-    const scores = {
-      "탄수화물": 20,
-      "단백질": 22,
-      "지방": 27,
-      "비타민": 9,
-      "아이오딘": 8,
-      "철분": 2
-    };
+    const userid = 'admin'; // 로그인 연동 시 변경
 
-    axios.post("http://localhost:8090/healthme/result/summary", scores)
+    axios.get(`http://localhost:8090/healthme/survey/scores`, {
+      params: { userid }
+    })
+      .then(res => {
+        const scores = res.data;
+        return axios.post("http://localhost:8090/healthme/result/summary", scores);
+      })
       .then(res => {
         console.log("백엔드 응답:", res.data);
         setResultMap(res.data);
       })
-      .catch(err => console.error("요약 결과 호출 실패", err));
+      .catch(err => {
+        console.error("요약 결과 호출 실패", err);
+      });
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const nutrientCards = [
-    { name: "탄수화물", color: "blue" },
-    { name: "단백질", color: "yellow" },
-    { name: "지방", color: "green" },
-    { name: "비타민", color: "purple" },
-    { name: "아이오딘", color: "red" },
-    { name: "철분", color: "teal" },
+    { name: "단백질", color: "red" },
+    { name: "철분", color: "brown" },
+    { name: "비타민 D", color: "yellow" },
+    { name: "칼슘", color: "indigo" },
+    { name: "식이섬유", color: "green" },
+    { name: "마그네슘", color: "purple" },
+    { name: "칼륨", color: "orange" },
+    { name: "비오틴", color: "pink" },
+    { name: "아연", color: "teal" },
+    { name: "아르기닌", color: "blue" }
   ];
 
   const influenceIcons = [
-    { label: "예시1", desc: "이것은 예시1에 대한 설명입니다.", color: "#3d9dbf", img: "https://cdn.pixabay.com/photo/2025/04/23/01/35/bird-9551361_1280.jpg", colorClass: "blue" },
-    { label: "예시2", desc: "이것은 예시2에 대한 설명입니다.", color: "#e4b322", img: "null", colorClass: "yellow" },
-    { label: "예시3", desc: "이것은 예시3에 대한 설명입니다.", color: "#2aaf74", img: "null", colorClass: "green" },
-    { label: "예시4", desc: "이것은 예시4에 대한 설명입니다.", color: "#a672c2", img: "null", colorClass: "purple" },
+    { label: "축산물", desc: "이것은 예시1에 대한 설명입니다.", color: "#3d9dbf", img: "/img/categoryMeat.jpg", colorClass: "blue" },
+    { label: "농산물", desc: "이것은 예시2에 대한 설명입니다.", color: "#e4b322", img: "/img/categoryVegetable.jpg", colorClass: "yellow" },
+    { label: "수산물", desc: "이것은 예시3에 대한 설명입니다.", color: "#2aaf74", img: "/img/categorySeafood.jpg", colorClass: "green" },
+    { label: "유제품", desc: "이것은 예시4에 대한 설명입니다.", color: "#a672c2", img: "/img/categoryEtc.jpg", colorClass: "purple" },
   ];
 
   return (
@@ -110,23 +114,31 @@ const ResultPage = () => {
           </div>
         </div>
 
-        <div className="title"><h1>영향을 미치는 특성</h1></div>
+        <div className="title"><h1>추천 재료</h1></div>
         <div className="card-nutrient-result">
           <div className="icon-group">
             {influenceIcons.map((icon, idx) => (
               <InfluenceIcon key={idx} icon={icon} onClick={setSelectedIcon} />
             ))}
           </div>
-          <div className="dd" style={{ borderTop: selectedIcon ? `4px solid ${selectedIcon.color}` : 'none' }}>
-            <p>{selectedIcon?.desc || "무슨 내용을 넣지"}</p>
+          <div className="recommend-box" style={{ borderTop: selectedIcon ? `4px solid ${selectedIcon.color}` : 'none' }}>
+            <div className='recommend-food'>
+              <div className='recommend-img'>
+              </div>
+              <div className='recommend-name'></div>
+            </div>
+            <div className='recommend-food'>
+              <div className='recommend-img'></div>
+              <div className='recommend-name'></div>
+            </div>
           </div>
         </div>
 
-        <div className="title"><h1>강점</h1></div>
-        <TraitsSection type="good" />
+        <div className="title"><h1>영양소 상식</h1></div>
+        <TraitsSection type="nutrient-info" />
 
-        <div className="title"><h1>약점</h1></div>
-        <TraitsSection type="bad" />
+        <div className="title"><h1>오늘의 건강 팁</h1></div>
+        <TraitsSection type="today-tip" />
 
         <button className="next-button">
           추천 페이지

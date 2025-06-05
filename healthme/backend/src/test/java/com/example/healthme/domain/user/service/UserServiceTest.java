@@ -39,7 +39,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("아이디 존재하지 않을 경우 false 반환 테스트")
+    @DisplayName("아이디 존재하지 않을 경우 fal+se 반환 테스트")
     void isUseridExists_False() {
         // given
         String userid = "nonexist";
