@@ -73,6 +73,7 @@ export default function CustomNutritionalPage() {
 
     return `${label} ${value}`;
   };
+  // 정렬
   const sortProducts = (order) => {
     let sorted = [];
 
@@ -86,10 +87,17 @@ export default function CustomNutritionalPage() {
       sorted = [...products].sort((a, b) => {
         return (b.sales_count || 0) - (a.sales_count || 0); // 내림차순
       });
+    } else if (order === 'discount') {
+      sorted = [...products].sort((a, b) => {
+        const discountA = a.originalPrice ? ((a.originalPrice - a.price) / a.originalPrice) * 100 : 0;
+        const discountB = b.originalPrice ? ((b.originalPrice - b.price) / b.originalPrice) * 100 : 0;
+        return discountB - discountA; // 높은 할인율이 먼저
+      });
     }
 
     setProducts(sorted);
   };
+
 
   const toggleExpand = (productId) => {
     setExpandedItems((prev) => ({
@@ -196,22 +204,22 @@ export default function CustomNutritionalPage() {
               <button onClick={deleteSelected}>선택삭제</button>
             </div>
             <hr />
-            <ul className="cart-items">
+            <ul className="nutritional-cart-items">
               {cart.map((item, idx) => (
                 <li key={item.id}>
-                  <div className="cart-line">
+                  <div className="nutritional-cart-line">
                     <input
                       type="checkbox"
                       className="custom-checkbox"
                       checked={item.selected}
                       onChange={() => toggleOne(idx)}
                     />
-                    <div className="cart-desc">
-                      <div className="name">{item.name}</div>
-                      <div className="price">
+                    <div className="nutritional-cart-desc">
+                      <div className="nutritional-cart-item-name">{item.name}</div>
+                      <div className="nutritional-cart-item-price">
                         {item.price.toLocaleString()}원
                       </div>
-                      <div className="qty-box">
+                      <div className="nutritional-cart-item-quantity">
                         <button onClick={() => qty(idx, -1)}>-</button>
                         <span>{item.qty}</span>
                         <button onClick={() => qty(idx, +1)}>+</button>
@@ -245,9 +253,10 @@ export default function CustomNutritionalPage() {
         <ul className="nutritional_low_content">
           {[
             { label: '판매량순', type: 'sales' },
+            { label: '할인율순', type: 'discount' },
             { label: '낮은 가격순', type: 'asc' },
             { label: '높은 가격순', type: 'desc' }
-          ].map(({ label, type }, i) => (
+          ].map(({ label, type }, i, arr) => (
             <React.Fragment key={label}>
               <li>
                 <button
@@ -258,7 +267,7 @@ export default function CustomNutritionalPage() {
                   {label}
                 </button>
               </li>
-              {i < 2 && <li>|</li>}
+              {i < arr.length - 1 && <li>|</li>}
             </React.Fragment>
           ))}
         </ul>

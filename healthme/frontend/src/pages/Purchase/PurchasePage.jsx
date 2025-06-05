@@ -47,11 +47,18 @@ const PurchasePage = () => {
       });
     } else if (order === 'sales') {
       sorted = [...products].sort((a, b) => {
-        return (b.sales_count || 0) - (a.sales_count || 0); // 내림차순
+        return (b.sales_count || 0) - (a.sales_count || 0);
+      });
+    } else if (order === 'discount') {
+      sorted = [...products].sort((a, b) => {
+        const discountA = a.salprice ? ((a.price - a.salprice) / a.price) * 100 : 0;
+        const discountB = b.salprice ? ((b.price - b.salprice) / b.price) * 100 : 0;
+        return discountB - discountA; // 높은 할인율이 먼저 오도록
       });
     }
     setProducts(sorted);
   };
+
 
 
   const filterCategory = (category) => {
@@ -101,11 +108,13 @@ const PurchasePage = () => {
         <ul className="purchase-sort-menu">
           <li><a href="#" onClick={() => sortProducts('sales')}>판매량순</a></li>
           <li>|</li>
+          <li><a href="#" onClick={() => sortProducts('discount')}>할인율순</a></li>
+          <li>|</li>
           <li><a href="#" onClick={() => sortProducts('asc')}>낮은 가격순</a></li>
           <li>|</li>
           <li><a href="#" onClick={() => sortProducts('desc')}>높은 가격순</a></li>
-        </ul>
 
+        </ul>
 
         <ul className="purchase-product-list">
           {products.map((product) => (
