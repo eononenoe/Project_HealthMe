@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import "static/css/pages/approval.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function ApprovalPage() {
+  const navigate = useNavigate();
+
   // 배송지 버튼 상태
   const [isDefaultAddress, setIsDefaultAddress] = useState(true);
 
@@ -26,13 +29,13 @@ export default function ApprovalPage() {
       productName: "[YSB111] 유기농 채소믹스 600g (냉동)",
       quantity: 3,
       price: 8000,
-      discountPrice: 6490,
+      discountPrice: 50,
     },
     {
       productName: "[JJH365] 한돈 부위별 대용량 가성비 7종",
       quantity: 3,
       price: 13000,
-      discountPrice: 12990, // 실제 UI에서는 38,990원 표시되는데 할인가는 12990원으로 임의 설정했습니다.
+      discountPrice: 50, // 실제 UI에서는 38,990원 표시되는데 할인가는 12990원으로 임의 설정했습니다.
     },
   ];
 
@@ -43,7 +46,7 @@ export default function ApprovalPage() {
   );
 
   const handleOrderSubmit = async () => {
-    // 입력값 검증 (필수 입력값 간단히 체크)
+    // 입력값 검증
     if (!recipient.trim()) return alert("받는 사람 이름을 입력하세요.");
     if (!zipcode.trim() || !address.trim())
       return alert("우편번호와 주소를 입력하세요.");
@@ -51,10 +54,10 @@ export default function ApprovalPage() {
       return alert("전화번호를 모두 입력하세요.");
     if (!emailId.trim()) return alert("이메일 아이디를 입력하세요.");
 
-    // 주문 데이터 객체 생성
+    // 주문 데이터 구성
     const orderData = {
-      delivery: isDefaultAddress
-        ? "기본 배송지"
+      address: isDefaultAddress
+        ? null
         : {
             recipient,
             zipcode,
@@ -65,20 +68,69 @@ export default function ApprovalPage() {
           },
       items,
       paymentMethod,
-      totalAmount,
+      totalPrice: totalAmount, // 필드명 맞춤
     };
 
-    try {
-      const response = await axios.post("/api/orders", orderData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      alert("주문 성공: " + response.data);
-    } catch (error) {
-      console.error("주문 실패", error);
-      alert("주문 중 오류가 발생했습니다.");
+    // 결제 방식 안내
+    if (
+      paymentMethod === "card" ||
+      paymentMethod === "kakaopay" ||
+      paymentMethod === "naverpay"
+    ) {
+      requestPayment(orderData);
+      return;
     }
+
+    if (paymentMethod === "bank") {
+      try {
+        const response = await axios.post("/orders", orderData, {
+          headers: { "Content-Type": "application/json" },
+        });
+        alert("무통장 입금 주문 완료");
+        navigate("/complete");
+      } catch (error) {
+        console.error("주문 실패", error);
+        alert("주문 중 오류가 발생했습니다.");
+      }
+    }
+  };
+
+  const requestPayment = (orderData) => {
+    const IMP = window.IMP;
+    IMP.init("imp70552258"); // 아임포트 가맹점 코드로 변경
+
+    IMP.request_pay(
+      {
+        pg: "html5_inicis", // 테스트 환경에서 허용되는 유일한 PG사
+        pay_method: "card",
+        merchant_uid: `order_${new Date().getTime()}`,
+        name: items.map((i) => i.productName).join(", "),
+        amount: orderData.totalPrice,
+        buyer_email: orderData.address?.email,
+        buyer_name: orderData.address?.recipient,
+        buyer_tel: orderData.address?.phone,
+        buyer_addr: orderData.address?.address,
+        buyer_postcode: orderData.address?.zipcode,
+      },
+      async function (rsp) {
+        if (rsp.success) {
+          try {
+            await axios.post("/orders", {
+              ...orderData,
+              imp_uid: rsp.imp_uid,
+              merchant_uid: rsp.merchant_uid,
+            });
+            alert("결제 및 주문 성공");
+            navigate("/complete");
+          } catch (error) {
+            alert("결제는 성공했지만 주문 등록 실패");
+            console.error(error);
+          }
+        } else {
+          alert("결제 실패: " + rsp.error_msg);
+        }
+      }
+    );
   };
 
   return (
@@ -141,8 +193,14 @@ export default function ApprovalPage() {
                   id="find-address-btn"
                   disabled={isDefaultAddress}
                   onClick={() => {
-                    // 예: 주소 검색 API 연결 가능
-                    alert("주소 검색 기능은 구현 필요");
+                    if (isDefaultAddress) return;
+
+                    new window.daum.Postcode({
+                      oncomplete: function (data) {
+                        setZipcode(data.zonecode); // 우편번호
+                        setAddress(data.roadAddress); // 도로명 주소
+                      },
+                    }).open();
                   }}
                 >
                   주소 검색
@@ -263,54 +321,6 @@ export default function ApprovalPage() {
               </div>
             ))}
           </div>
-
-          <div className="approval-payment-box">
-            <div className="approval-payment-1">
-              <h2>결제 수단</h2>
-            </div>
-            <div className="approval-payment-options">
-              <label>
-                <input
-                  type="radio"
-                  name="payment"
-                  value="card"
-                  checked={paymentMethod === "card"}
-                  onChange={() => setPaymentMethod("card")}
-                />
-                카드결제
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="payment"
-                  value="bank"
-                  checked={paymentMethod === "bank"}
-                  onChange={() => setPaymentMethod("bank")}
-                />
-                무통장입금
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="payment"
-                  value="naverpay"
-                  checked={paymentMethod === "naverpay"}
-                  onChange={() => setPaymentMethod("naverpay")}
-                />
-                네이버페이
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="payment"
-                  value="kakaopay"
-                  checked={paymentMethod === "kakaopay"}
-                  onChange={() => setPaymentMethod("kakaopay")}
-                />
-                카카오페이
-              </label>
-            </div>
-          </div>
         </section>
 
         <section className="approval-right">
@@ -352,6 +362,31 @@ export default function ApprovalPage() {
                 <span>{totalAmount.toLocaleString()}원</span>
               </li>
             </ul>
+          </div>
+
+          <div className="approval-benefit-box">
+            <div className="approval-benefit-title">적립 혜택</div>
+            <div className="approval-benefit-row">
+              <div className="approval-benefit-highlight">
+                LV.4 브론즈 · 2% 적립
+              </div>
+              <div>270원</div>
+            </div>
+            <div className="approval-benefit-row">
+              <div>구매 추가 적립</div>
+              <div className="approval-benefit-sub">10원</div>
+            </div>
+            <div className="approval-benefit-row">
+              <div>후기 적립금</div>
+              <div className="approval-benefit-warning">최대 3,500원</div>
+            </div>
+
+            <div className="approval-benefit-divider"></div>
+
+            <div className="approval-benefit-row">
+              <div className="benefit-today-title">이번 주문으로 받을 혜택</div>
+              <div className="benefit-today-amount">3,780원</div>
+            </div>
           </div>
 
           <button

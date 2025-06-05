@@ -26,8 +26,7 @@ main {
 }
 
 /* 공통 박스 스타일 */
-.approval-main,
-.approval-payment-box {
+.approval-main {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -128,10 +127,8 @@ h4 {
   font-size: 16px;
   font-weight: bold;
   border: none;
-  border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 20px;
 }
 
 .approval-button:hover {
@@ -139,7 +136,30 @@ h4 {
 }
 
 .approval-address-hold {
+}
+
+#find-address-btn {
+  height: 40px;
+  padding: 0 14px;
+  background-color: #03c75a;
+  border: none;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+#find-address-btn:hover:not(:disabled) {
+  background-color: #029c4a;
+}
+
+#find-address-btn:disabled {
+  background-color: #ddd;
+  color: #999;
   cursor: not-allowed;
+  opacity: 0.7;
 }
 
 /* 휴대폰, 이메일 가로 배열 */
@@ -285,7 +305,6 @@ h4 {
 .approval-price-box {
   background-color: #fff;
   border: 1px solid #ccc;
-  border-radius: 10px 10px 0 0;
   padding: 20px 25px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
@@ -325,44 +344,62 @@ h4 {
   border-top: 1px solid #ddd;
   padding-top: 12px;
   margin-top: 12px;
-  font-size: 17px;
+  font-size: 1.2rem;
   color: #03c75a;
 }
 
 /* 혜택 박스 */
 .approval-benefit-box {
-  font-size: 14px;
-  color: #333;
   background-color: #f8f8f8;
   border: 1px solid #ddd;
-  border-bottom: none;
-  padding: 25px 25px 20px 25px;
+  border-top: none;
+  padding: 25px;
+  font-size: 14px;
+  color: #333;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
-.approval-benefit-box .approval-benefit-1 {
-  font-size: 20px;
+.approval-benefit-title {
+  font-weight: bold;
+  margin-bottom: 14px;
+  font-size: 1.2rem;
+}
+
+.approval-benefit-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.approval-benefit-highlight {
   color: #03c75a;
   font-weight: bold;
-  margin-top: -5px;
 }
 
-.approval-benefit-2 {
-  margin-left: 10px;
+.approval-benefit-sub {
+  color: #03c75a;
 }
 
-.approval-benefit-box .approval-benefit-3 {
+.approval-benefit-warning {
   color: #e74c3c;
   font-weight: bold;
-  margin-top: 10px;
 }
 
-.benfit-level {
-  margin-bottom: 15px;
+.approval-benefit-divider {
+  border-top: 1px solid #ddd;
+  margin: 15px 0;
 }
 
-.benfit-today {
-  margin-top: 10px;
+.benefit-today-title {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.benefit-today-amount {
+  color: #03c75a;
+  font-weight: bold;
+  font-size: 18px;
 }
 
 /* 결제 버튼 */

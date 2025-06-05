@@ -17,7 +17,8 @@
   font-family: "Nanum Gothic", serif;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -34,14 +35,22 @@ a {
 /* ================ */
 .purchase-wrapper {
   width: 1280px;
-  min-width: 1280px; /* << 추가해 */
+  min-width: 1280px;
+  height: auto;
   margin: 0 auto;
   display: flex;
-  padding-top: 50px;
+  padding-top: 20px;
 }
 
 .purchase-left-content {
-  width: 220px;
+  margin-top: 30px;
+  padding-left: 15px;
+  padding-right: 10px;
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
+  min-width: 280px;
+  height: 100vh;
   flex-shrink: 0;
   border-right: 1px solid #eee;
 }
@@ -51,6 +60,7 @@ a {
   margin-bottom: 5px;
   color: black;
 }
+
 .purchase-left-title>a {
   display: flex;
   justify-content: center;
@@ -58,17 +68,18 @@ a {
   right: -40px;
   align-items: center;
 }
+
 .purchase-left-title {
   font-size: 1.2rem;
   color: gray;
   display: flex;
-  align-items: center; 
-  gap: 10px; 
+  align-items: center;
+  gap: 10px;
 }
 
-.purchase-left-title h2, 
+.purchase-left-title h2,
 .purchase-left-title a {
-  margin: 0; 
+  margin: 0;
   padding: 0;
 }
 
@@ -80,33 +91,42 @@ a {
   margin: 10px 0;
   color: gray;
   font-size: 1.2rem;
-  
+
 }
+
 .purchase-left-menu>li>label:hover {
   color: #333;
   font-weight: 600;
 }
+
 .custom-radio input[type="radio"] {
-  display: none; /* 라디오 버튼 숨기기 */
+  display: none;
+  /* 라디오 버튼 숨기기 */
 }
 
 .custom-radio {
-  cursor: pointer; /* 마우스 올리면 포인터 손가락 모양 */
-  text-decoration: none; /* a 태그 느낌 */
-  color: inherit; /* 글자색 상속 */
-  font-weight: normal; /* 필요에 따라 굵게/얇게 */
+  cursor: pointer;
+  /* 마우스 올리면 포인터 손가락 모양 */
+  text-decoration: none;
+  /* a 태그 느낌 */
+  color: inherit;
+  /* 글자색 상속 */
+  font-weight: normal;
+  /* 필요에 따라 굵게/얇게 */
 }
 
 /* ================ */
 /*    오른쪽 컨텐츠   */
 /* ================ */
 .purchase-right-content {
+  margin-top: 30px;
   flex-grow: 1;
-  min-width: 0; /* << flex 안에서는 overflow 터지는 걸 막으려고 이거 추가하면 안정감 있음 */
+  min-width: 1000px;
   display: flex;
   flex-direction: column;
+  height: auto;
   gap: 30px;
-  padding:  0 30px;
+  padding: 0 20px;  
 }
 
 .purchase-title {
@@ -121,16 +141,16 @@ a {
 .purchase-banner {
   width: 100%;
   height: 250px;
-  background: #f0f0f0;
-  border-radius: 10px;
-  overflow: hidden;
+  min-height: 250px;
 }
 
-.purchase-banner img {
+.purchase-banner-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 10px;
 }
+
 
 /* ================ */
 /*   추천순 메뉴바    */
@@ -150,28 +170,28 @@ a {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 40px;
-  
-  min-height: 1000px; /* 최소 높이 확보 */
-  margin-bottom: 100px; /* 푸터랑 거리 벌리기 */
+
+  /* max-height: 960px; */
+  margin-bottom: 100px;
 }
 
 
 /* ================ */
 /*     아이템 카드    */
 /* ================ */
-.item_store {
-  width: 100%;
+.purchase-item_store {
+  width: 290px;
   height: auto;
 }
 
-.item_img > img {
-  width: 100%;
+.purchase-item_img>img {
+  width: 290px;
   height: 350px;
   object-fit: cover;
   border-radius: 5px;
 }
 
-.item_add {
+.purchase-item_add {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -186,45 +206,57 @@ a {
   margin-top: 5px;
 }
 
-.item_name {
+.purchase-item_name {
   width: 100%;
-  height: 50px;
+  height: auto;
   margin-top: 15px;
-  font-size: 1.3rem;
+  font-size: 18px;
   color: black;
+  margin-bottom: 5px;
+}
+
+.purchase-item_subtitle {
+  width: 100%;
+  height: auto;
+  font-size: 16px;
+  color: gray;
   margin-bottom: 10px;
 }
 
-.item_discount_price {
+.purchase-item_discount_price {
   width: 100%;
-  font-size: 1.2rem;
+  font-size: 16px;
   color: rgb(171, 171, 171);
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
-.item_price {
+.purchase-item_price {
   width: 100%;
-  margin-bottom: 8px;
-  font-size: 1.3rem;
+  margin-bottom: 5px;
+  font-size: 18px;
 }
 
-.item_price ul {
+.purchase-item_price ul {
   display: flex;
   gap: 5px;
 }
 
-.item_price .discount {
+.purchase-discount {
   color: #e80000;
   font-weight: 600;
 }
 
-.item_price .price {
+.purchase-price {
   color: black;
   font-weight: 600;
 }
 
-.item_review {
+.purchase-item_review {
   width: 100%;
   color: rgb(171, 171, 171);
-  font-size: 1rem;
+  font-size: 14px;
+}
+
+.purchase-item_review i {
+  margin-right: 5px;
 }

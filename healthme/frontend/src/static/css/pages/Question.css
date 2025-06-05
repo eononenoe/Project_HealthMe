@@ -10,6 +10,9 @@
         'GRAD' 0,
         'opsz' 24
 }
+.question_material-symbols-outlined{
+    color: white;
+}
 
 .hero {
     height: 470px;
@@ -28,20 +31,22 @@
 .hero p {
     font-size: 16px;
     margin: 10px 0 40px;
-    color: #e0f5ec;
+    color: white;
 }
 
-.card-container {
+
+.question-card-container {
+    width: 100%;
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
     gap: 40px;
-    padding: 0 20px 80px;
+    padding: 20px;
+    border: none;
 }
 
 .card {
-    background: white;
     border-radius: 12px;
+    background-color: white;
     width: 350px;
     height: 230px;
     text-align: center;
@@ -108,6 +113,9 @@
     border-bottom: 1px solid rgb(239, 239, 239);
     padding-bottom: 50px;
 }
+.options .material-symbols-outlined{
+    color: white;
+}
 
 .label {
     margin: 0 20px;
@@ -137,35 +145,15 @@
     color: transparent;
 
 }
-
+/* 체크 색 */
 .green {
     border-color: #6ecb9c;
     color: #6ecb9c;
 }
 
-.green:nth-child(3) {
-    width: 35px;
-    height: 35px;
-}
-
-.green:nth-child(4) {
-    width: 30px;
-    height: 30px;
-}
-
 .purple {
     border-color: #b88ed9;
     color: #b88ed9;
-}
-
-.purple:nth-child(7) {
-    width: 35px;
-    height: 35px;
-}
-
-.purple:nth-child(6) {
-    width: 30px;
-    height: 30px;
 }
 
 .gray {
@@ -174,24 +162,40 @@
     border-color: #ccc;
     color: #aaa;
 }
+
+.circle.purple:nth-of-type(2),
+.circle.green:nth-of-type(6) {
+    width: 35px;
+    height: 35px;
+}
+
+.circle.purple:nth-of-type(1),
+.circle.green:nth-of-type(7) {
+    width: 40px;
+    height: 40px;
+}
+.circle.purple:nth-of-type(3),
+.circle.green:nth-of-type(5) {
+    width: 30px;
+    height: 30px;
+}
+.circle.gray {
+    width: 25px;
+    height: 25px;
+}
+
 .faded {
     opacity: 0.4;
     pointer-events: auto;
-}
-
-.material-symbols-outlined {
-    font-family: 'Material Symbols Outlined';
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    font-size: 18px;
-    display: none;
-    color: white;
 }
 
 .circle.selected {
     background-color: currentColor;
     border: none;
 }
-
+.circle .material-symbols-outlined {
+  display: none;
+}
 .circle.selected .material-symbols-outlined {
     display: block;
 }
@@ -216,4 +220,12 @@
 }
 .next-button:hover {
     background-color: #744a86;
+}
+
+.circle .material-symbols-outlined {
+    font-size: 20px; 
+}
+
+.circle.gray .material-symbols-outlined {
+    font-size: 16px;
 }

@@ -1,0 +1,568 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Nanum Gothic", sans-serif;
+}
+
+.nutritional_low_content button {
+  all: unset;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Layout */
+.nutritional-container {
+  width: 1280px;
+  min-width: 1280px;
+  height: calc(100vh - 165px - 150px);
+  margin: 0 auto;
+  display: flex;
+  height: auto;
+  padding-top: 20px;
+}
+
+/* Sidebar */
+.nutritional-sidebar {
+  width: 280px;
+  max-width: 280px;
+  position: sticky;
+  top: 20px;
+  align-self: flex-start;
+  height: fit-content;
+  padding: 30px 20px 20px 20px;
+  box-sizing: border-box;
+  border-right: 1px solid #eee;
+  position: sticky;
+  top: 20px;
+}
+
+/* 바 */
+.nutrition-title1 {
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.nutrition-card-bar {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px;
+  height: 100px;
+  border-radius: 15px;
+  gap: 2px;
+  margin-right: -15px;
+  cursor: pointer;
+}
+
+.nutrition-card-bar:hover {
+  background-color: #f6f6f7;
+}
+
+.nutrition-card-bar>div {
+  text-align: center;
+  height: 30%;
+}
+
+.nutrition-bar-label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #343c4b;
+}
+
+.nutrition-bar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.nutrition-bar-inner {
+  position: relative;
+  width: 100%;
+  height: 12px;
+  background-color: #ccc;
+  border-radius: 5px;
+}
+
+.nutrition-bar-inner.blue {
+  background-color: #3d9dbf;
+}
+
+.nutrition-bar-inner.yellow {
+  background-color: #e4b322;
+}
+
+.nutrition-bar-inner.green {
+  background-color: #2aaf74;
+}
+
+.nutrition-bar-inner.purple {
+  background-color: #a672c2;
+}
+
+.nutrition-bar-inner.red {
+  background-color: #e04d4d;
+}
+
+.nutrition-bar-inner.teal {
+  background-color: #20b2aa;
+}
+
+.nutrition-indicator {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  border: 3px solid white;
+  border-radius: 50%;
+}
+
+.nutrition-indicator.blue {
+  background-color: #3d9dbf;
+}
+
+.nutrition-indicator.yellow {
+  background-color: #e4b322;
+}
+
+.nutrition-indicator.green {
+  background-color: #2aaf74;
+}
+
+.nutrition-indicator.purple {
+  background-color: #a672c2;
+}
+
+.nutrition-indicator.red {
+  background-color: #e04d4d;
+}
+
+.nutrition-indicator.teal {
+  background-color: #20b2aa;
+}
+
+.nutrition-card-bar-label {
+  height: 40%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #787f8d;
+}
+
+.nutrition-right {
+  width: 30%;
+  height: 100%;
+  background-color: #f6f6f7;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.nutrition-info-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.nutrition-info-container>h2 {
+  margin-top: 20px;
+}
+
+
+/* Cart Section */
+.cart-section {
+  margin-top: 30px;
+  margin-left: 15px;
+}
+
+.cart-section span {
+  display: inline-block;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.cart-header-left {
+  display: flex;
+  align-items: center;
+  /* 왼쪽 그룹 세로 가운데 정렬 */
+  gap: 5px;
+}
+
+.cart-header label {
+  font-size: 14px;
+  color: #333;
+}
+
+.cart-header button {
+  font-size: 13px;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 3px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #007bff;
+  border-radius: 50%;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.custom-checkbox:checked {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.custom-checkbox:checked::after {
+  content: '✔';
+  color: white;
+  font-size: 9px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+}
+
+/* Cart Items */
+.cart-items {
+  list-style: none;
+}
+
+.cart-items li {
+  padding: 20px 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.cart-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cart-item-left {
+  display: flex;
+  gap: 10px;
+}
+
+.cart-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cart-item-name {
+  font-size: 15px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cart-item-delete {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cart-item-price-line {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cart-item-price {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.cart-item-original-price {
+  font-size: 13px;
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+.cart-item-quantity {
+  display: flex;
+  align-items: center;
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 2px 5px;
+  gap: 5px;
+}
+
+.cart-item-quantity button {
+  width: 25px;
+  height: 25px;
+  border: none;
+  background: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cart-item-quantity span {
+  width: 20px;
+  text-align: center;
+}
+
+
+.cart-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cart-desc {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.qty-box {
+  width: 75px;
+  height: 25px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.qty-box button {
+  all: unset;
+  font-size: 16px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.qty-box span {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  width: 20px;
+  margin: 0 auto;
+}
+
+
+.cart-item-total-price {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* Cart Footer */
+.cart-footer {
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: right;
+}
+
+.cart-footer-button button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  position: relative;
+  right: -78px;
+}
+
+.cart-footer-button button:hover {
+  background-color: #0056b3;
+}
+
+/* Main */
+.nutritional_main {
+  flex: 1;
+  padding: 0 20px;
+  height: fit-content;
+  margin-top: 30px;
+}
+
+/* Filter Section */
+.nutritional_low_content {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  font-size: 14px;
+  color: gray;
+  margin-bottom: 30px;
+}
+
+/* ================ */
+/*     상품 리스트    */
+/* ================ */
+.nutritional_content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+
+  min-height: 1000px;
+  margin-bottom: 100px;
+  /* 푸터랑 거리 벌리기 */
+}
+
+/* ================ */
+/*     아이템 카드    */
+/* ================ */
+.nutritional_item_store {
+  width: 100%;
+  height: auto;
+}
+
+.nutritional_item_img>img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.nutritional_item_add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  color: gray;
+  width: 100%;
+  height: 45px;
+  font-size: 1.15rem;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.nutritional_item_name {
+  width: 100%;
+  height: auto;
+  margin-top: 15px;
+  font-size: 18px;
+  color: black;
+  margin-bottom: 10px;
+}
+
+.item_Nutritional_ingredients ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+  color: rgb(171, 171, 171);
+  line-height: 1.5;
+  margin-bottom: 5px;
+}
+
+.nutritional_item_price {
+  width: 100%;
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+.nutritional_item_price span {
+  margin-right: 8px;
+}
+
+.nutritional_discount {
+  color: #e80000;
+  font-weight: 600;
+}
+
+.nutritional_price {
+  color: black;
+  font-weight: 600;
+}
+
+.nutritional_item_review {
+  color: rgb(171, 171, 171);
+  width: 290px;
+  font-size: 14px;
+}
+.nutritional_item_review i {
+  margin-right: 5px;
+}
+.nutritional-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.nutritional-banner {
+  width: 100%;
+  height: 250px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 0px 0px 30px 0px;
+}
+
+.nutritional-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.item_Nutritional_ingredients .nutrient-columns {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.nutrient-column {
+  width: 48%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+/* 영양성분 더보기 */
+.nutrition-more-button {
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+}

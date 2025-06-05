@@ -7,7 +7,7 @@ import java.util.Optional;
 
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    // 아이디 중복확인
+    //
     boolean existsByUserid(String userid);
     // 로그인에 사용
     Optional<User> findByUserid(String userid);
