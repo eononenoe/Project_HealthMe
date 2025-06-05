@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/mypage")
@@ -77,7 +78,12 @@ public class MypageController {
 
     // 구매내역 전체 불러오기
     @GetMapping("/getbuy")
-    public ResponseEntity<?> getbuy(@AuthenticationPrincipal PrincipalDetails principalDetails){
-        mypageUserService.getbuyproduct(principalDetails);
+    public ResponseEntity<?> getBuy(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        List<Order> orders = mypageUserService.getbuyproduct(principalDetails);
+        List<OrderDto> result = orders.stream()
+                .map(OrderDto::from)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(result);  // 빈 리스트라도 200 OK로 보내는 게 맞음
     }
 }
