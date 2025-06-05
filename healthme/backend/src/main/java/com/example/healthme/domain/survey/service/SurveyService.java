@@ -43,12 +43,12 @@ public class SurveyService {
         }
 
         for (Map.Entry<String, Integer> entry : nutrientScores.entrySet()) {
-            Survey servey = new Survey();
-            servey.setSurveyId(UUID.randomUUID().toString());
-            servey.setUserid(userId);
-            servey.setNutrientName(entry.getKey());
-            servey.setNutrientValue(String.valueOf(entry.getValue()));
-            serveyRepository.save(servey);
+            Survey survey = new Survey();
+            survey.setSurveyId(UUID.randomUUID().toString());
+            survey.setUserid(userId);
+            survey.setNutrientName(entry.getKey());
+            survey.setNutrientValue(String.valueOf(entry.getValue()));
+            serveyRepository.save(survey);
         }
     }
     public Map<String, Integer> getScoresByUserId(String userId) {

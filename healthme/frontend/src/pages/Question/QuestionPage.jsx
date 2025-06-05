@@ -123,7 +123,7 @@ const NutritionSurvey = () => {
                 <button
                   key={i}
                   className={`circle ${getColor(i)}`}
-                  data-value={i + 1}
+                  data-value={i}
                   data-question-index={index}
                 >
                   <span className="material-symbols-outlined">check</span>

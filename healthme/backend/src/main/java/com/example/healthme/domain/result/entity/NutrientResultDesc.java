@@ -18,9 +18,15 @@ public class NutrientResultDesc {
 
     private String nutrientName;
 
-    // 설명을 보여줄 기준 퍼센트 값 (ex. 0, 20, 40...)
+    // 설명을 보여줄 기준 퍼센트 값 (ex. 0, 20, 40, ...)
     private int rangeStart;
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @Column(columnDefinition = "TEXT")
+    private String tip;  // 개선 팁
+
+    @Column(columnDefinition = "TEXT")
+    private String foods;  // 추천 식품 목록 (예: "닭가슴살,두부,렌틸콩")
 }

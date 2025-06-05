@@ -21,8 +21,8 @@ const ResultPage = () => {
     };
     window.addEventListener('scroll', handleScroll);
 
-    const userid = 'admin'; // 로그인 연동 시 변경
-
+    const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+    const userid = loginUser?.userid;
     axios.get(`http://localhost:8090/healthme/survey/scores`, {
       params: { userid }
     })
@@ -101,8 +101,9 @@ const ResultPage = () => {
                     setSelectedNutrient({
                       name: card.name,
                       value: result.percent,
-                      desc: result.description,
-                      color: card.color
+                      desc: result.description, 
+                      tip: result.tip,
+                      foods: result.foods
                     })
                   }
                 />
