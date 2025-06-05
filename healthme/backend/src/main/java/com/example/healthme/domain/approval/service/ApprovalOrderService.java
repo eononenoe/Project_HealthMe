@@ -6,6 +6,8 @@ import com.example.healthme.domain.approval.entity.ApprovalOrderItem;
 import com.example.healthme.domain.approval.repository.ApprovalOrderRepository;
 import com.example.healthme.domain.mypage.dto.AddressUpdate;
 import com.example.healthme.domain.mypage.entity.Address;
+import com.example.healthme.domain.user.entity.User;
+import com.example.healthme.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,10 @@ import java.util.stream.Collectors;
 public class ApprovalOrderService {
 
     private final ApprovalOrderRepository approvalOrderRepository;
+    private final UserRepository userRepository;
 
     public List<ApprovalOrder> getOrdersByUserid(String userid) {
-        return approvalOrderRepository.findByUserid(userid);
+        return approvalOrderRepository.findByUser_Userid(userid);
     }
 
     public ApprovalOrder saveOrder(ApprovalOrder approvalOrder) {
@@ -59,8 +62,11 @@ public class ApprovalOrderService {
                 .collect(Collectors.toList());
 
         // 3. 주문 객체 생성
+        User user = userRepository.findByUserid(dto.getUserid())
+                .orElseThrow(() -> new RuntimeException("해당 사용자를 찾을 수 없습니다."));
+
         ApprovalOrder approvalOrder = ApprovalOrder.builder()
-                .userid(dto.getUserid())
+                .user(user)
                 .orderDate(LocalDateTime.now())
                 .status("결제완료")
                 .isCanceled(false)

@@ -15,6 +15,12 @@ export default function OrderHistoryPage() {
     }
   };
 
+  const generateTrackingNumber = () => {
+    // 운송장 번호 랜덤 생성
+    const randomNum = Math.floor(Math.random() * 1_000_000_000_0000);
+    return String(randomNum).padStart(13, "0"); // 13자리 숫자, 앞에 0 채움
+  };
+
   useEffect(() => {
     getbuy();
   }, []);
@@ -33,7 +39,7 @@ export default function OrderHistoryPage() {
         <div className="delivery-status-summary">
           📦 현재 배송 상태:{" "}
           <span className="badge">
-            {orders.filter((o) => o.status === "DELIVERED").length} /{" "}
+            {orders.filter((i) => i.status === "배송완료").length} /{" "}
             {orders.length}건 배송 완료
           </span>
         </div>
@@ -51,24 +57,24 @@ export default function OrderHistoryPage() {
               {order.orderDate?.slice(0, 10)} 주문
             </div>
             <div className="order-status">
-              {order.status === "DELIVERED" ? "배송완료" : "배송중"} ·{" "}
+              {order.status === "배송완료" ? "배송완료" : "배송중"} ·{" "}
               <span className="green">
                 {new Date(order.orderDate).toLocaleDateString()}
               </span>{" "}
               도착
             </div>
 
-            {order.orderItems.map((item, idx) => (
-              <div className="product-title" key={idx}>
+            {order.items.map((item) => (
+              <div className="product-title">
                 <img
-                  src={item.productImageUrl ?? "/img/sample.jpg"}
+                  src={item.productImageurl ?? "사진 없음."}
                   alt="상품 이미지"
                   className="product-img"
                 />
                 <div className="product-detail">
                   <p className="title">{item.productName ?? "상품명 없음"}</p>
                   <p className="price">
-                    {item.unitPrice.toLocaleString()}원 · {item.quantity}개
+                    {item.unitPrice}원 · {item.quantity}개
                   </p>
                 </div>
               </div>
@@ -99,10 +105,10 @@ export default function OrderHistoryPage() {
                   {new Date(order.orderDate).toLocaleDateString()}
                   <br />
                   <strong>배송 상태:</strong>{" "}
-                  {order.status === "DELIVERED" ? "배송 완료" : "배송 중"}
+                  {order.status === "배송완료" ? "배송 완료" : "배송 중"}
                 </div>
 
-                {order.orderItems.map((item, iidx) => (
+                {order.items.map((item, iidx) => (
                   <ul
                     className="delivery-status-list"
                     key={iidx}
@@ -131,7 +137,7 @@ export default function OrderHistoryPage() {
                     </li>
                     <li>
                       <strong>운송장번호:</strong>{" "}
-                      {item.trackingNumber ?? "없음"}
+                      {item.trackingNumber ?? generateTrackingNumber()}
                     </li>
                     <li>
                       <strong>주문일시:</strong>{" "}
@@ -139,7 +145,7 @@ export default function OrderHistoryPage() {
                     </li>
                     <li>
                       <strong>배송 상태:</strong>{" "}
-                      {order.status === "DELIVERED" ? "완료됨" : "배송 중..."}
+                      {order.status === "배송완료" ? "완료됨" : "배송 중..."}
                     </li>
                   </ul>
                 ))}

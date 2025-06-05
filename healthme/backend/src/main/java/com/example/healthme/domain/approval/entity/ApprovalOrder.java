@@ -1,6 +1,7 @@
 package com.example.healthme.domain.approval.entity;
 
 import com.example.healthme.domain.mypage.entity.Address;
+import com.example.healthme.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,7 +22,10 @@ public class ApprovalOrder {
     private Long orderId;
 
     private String paymentMethod;    // 결제 방식
-    private String userid;           // 사용자 ID
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userid", referencedColumnName = "userid")
+    private User user;
+
     private LocalDateTime orderDate; // 주문 일시
     private String status;           // 주문 상태 (ex: 결제완료, 배송중 등)
 

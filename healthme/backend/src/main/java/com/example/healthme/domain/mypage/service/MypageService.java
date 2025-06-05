@@ -104,8 +104,8 @@ public class MypageService {
 
 
     public List<ApprovalOrder> getbuyproduct(PrincipalDetails principalDetails) {
-        String username= principalDetails.getUserDto().getUsername();
-        List<ApprovalOrder> order_li = approvalOrderRepository.findByUser_Username(username);
+        String userid= principalDetails.getUserDto().getUserid();
+        List<ApprovalOrder> order_li = approvalOrderRepository.findByUser_Userid(userid);
         if(order_li !=null){
             System.out.println("order_li"+order_li);
             return order_li;
