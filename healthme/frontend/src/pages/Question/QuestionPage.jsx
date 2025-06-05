@@ -127,12 +127,12 @@ const NutritionSurvey = () => {
             <div className="options">
               <span className="label disagree">그렇지 않다</span>
               {[...Array(7)].map((_, i) => {
-                const value = i + 1;
+                const value = i; 
                 let colorClass = '';
 
-                if (i < 3) colorClass = 'purple';     
+                if (i < 3) colorClass = 'purple';
                 else if (i === 3) colorClass = 'gray';
-                else colorClass = 'green';           
+                else colorClass = 'green';
 
                 return (
                   <button
