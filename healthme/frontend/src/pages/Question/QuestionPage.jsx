@@ -125,19 +125,29 @@ const NutritionSurvey = () => {
           <div key={index}>
             <p className="question">{q.text}</p>
             <div className="options">
-              <span className="label agree">그렇다</span>
-              {[...Array(7)].map((_, i) => (
-                <button
-                  key={i}
-                  className={`circle ${getColor(i)}`}
-                  data-value={i + 1}
-                  data-question-index={index}
-                >
-                  <span className="material-symbols-outlined">check</span>
-                </button>
-              ))}
               <span className="label disagree">그렇지 않다</span>
+              {[...Array(7)].map((_, i) => {
+                const value = i + 1;
+                let colorClass = '';
+
+                if (i < 3) colorClass = 'purple';     
+                else if (i === 3) colorClass = 'gray';
+                else colorClass = 'green';           
+
+                return (
+                  <button
+                    key={i}
+                    className={`circle ${colorClass}`}
+                    data-value={value}
+                    data-question-index={index}
+                  >
+                    <span className="material-symbols-outlined">check</span>
+                  </button>
+                );
+              })}
+              <span className="label agree">그렇다</span>
             </div>
+
           </div>
         ))}
 

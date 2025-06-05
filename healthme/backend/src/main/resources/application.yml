@@ -2,6 +2,8 @@ jwt:
   secret: "OF+T6Gn/SXsldpq158IRO+BZER35FWoEPRLAmBq7QWk="
 
   spring:
+    jackson:
+      property-naming-strategy: SNAKE_CASE
     main:
       allow-bean-definition-overriding: true
     datasource:
@@ -9,8 +11,6 @@ jwt:
       username: root
       password: your_password
       driver-class-name: com.mysql.cj.jdbc.Driver
-
-
     jpa:
       hibernate:
         ddl-auto: update  # 초기엔 create 사용해도 됨 (개발용)

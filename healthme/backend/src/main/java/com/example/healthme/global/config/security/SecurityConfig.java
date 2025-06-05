@@ -20,7 +20,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -48,37 +47,37 @@ public class SecurityConfig {
                                 "/healthme/users/check",
                                 "/healthme/users/login",
                                 "/healthme/sms/**",
-                                "/healthme/sms/send",
                                 "/healthme/survey",
-                                "/healthme/products",
-                                "/healthme/products/**"
+                                "healthme/products", // 정현 임시 ㅣ 상품 목록
+                                "/healthme/products/**", // 정현 임시 ㅣ 상품 상세
+                                "/healthme/products/details", // 정현 임시 ㅣ 상세 nutrient 포함
+                                "/healthme/nutrients/**" // 정현 임시 ㅣ 영양성분 API
                         ).permitAll()
                         .requestMatchers("/user").hasRole("USER")
-
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .formLogin(login -> login
-                        .loginProcessingUrl("/healthme/users/login") // login URL 명시
-                        .usernameParameter("userid") // 프론트 formData에 맞춤
-                        .successHandler(customLoginSuccessHandler)
-                        .failureHandler(customLoginFailureHandler)
-                        .permitAll()
-                )
+
+
+                // 정현 임시 🔒 formLogin 제거하여 리다이렉션 방지
+                .formLogin(form -> form.disable())
+
                 .logout(logout -> logout
                         .logoutUrl("/healthme/users/logout")
                         .permitAll()
                         .addLogoutHandler(customLogoutHandler)
                         .logoutSuccessHandler(customLogoutSuccessHandler)
                 )
+
                 .oauth2Login(oauth -> oauth
-                        .loginPage("/login")
+                        .loginPage("/login") // 정현 임시 ㅣ OAuth2 login URL
                         .userInfoEndpoint(user -> user
                                 .userService(principalDetailsOAuth2Service)
                         )
                         .successHandler(customLoginSuccessHandler)
                 );
 
+        // 정현 임시 🔑 JWT 필터 등록
         http.addFilterBefore(
                 new JwtAuthorizationFilter(userRepository, jwtTokenProvider),
                 org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class
@@ -86,11 +85,12 @@ public class SecurityConfig {
 
         return http.build();
     }
-//    정현임시
+
+    // 정현 임시 🌐 CORS 허용 설정
     @Bean
     public CorsConfigurationSource customCorsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedOrigins(List.of("http://localhost:3000")); // 정현 임시 ㅣ React 개발 서버
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

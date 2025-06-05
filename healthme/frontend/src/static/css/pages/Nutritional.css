@@ -16,13 +16,14 @@ a {
 }
 
 /* Layout */
-.container {
+.nutritional-container {
   width: 1280px;
   min-width: 1280px;
-  /* << 추가해 */
+  height: calc(100vh - 165px - 150px);
   margin: 0 auto;
   display: flex;
-  padding-top: 50px;
+  height: auto;
+  padding-top: 20px;
 }
 
 /* Sidebar */
@@ -32,11 +33,8 @@ a {
   position: sticky;
   top: 20px;
   align-self: flex-start;
-  /* 추가!! flex 환경에서 sticky 동작 필수 */
   height: fit-content;
-  /* 필요한 경우 명시 */
-
-  padding: 20px;
+  padding: 30px 20px 20px 20px;
   box-sizing: border-box;
   border-right: 1px solid #eee;
   position: sticky;
@@ -66,7 +64,7 @@ a {
   background-color: #f6f6f7;
 }
 
-.nutrition-card-bar > div {
+.nutrition-card-bar>div {
   text-align: center;
   height: 30%;
 }
@@ -177,7 +175,7 @@ a {
   gap: 20px;
 }
 
-.nutrition-info-container > h2 {
+.nutrition-info-container>h2 {
   margin-top: 20px;
 }
 
@@ -420,7 +418,9 @@ a {
 /* Main */
 .nutritional_main {
   flex: 1;
-  padding: 20px;
+  padding: 0 20px;
+  height: fit-content;
+  margin-top: 30px;
 }
 
 /* Filter Section */
@@ -430,7 +430,7 @@ a {
   gap: 20px;
   font-size: 14px;
   color: gray;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 /* ================ */
@@ -478,9 +478,9 @@ a {
 
 .nutritional_item_name {
   width: 100%;
-  height: 50px;
+  height: auto;
   margin-top: 15px;
-  font-size: 1.3rem;
+  font-size: 18px;
   color: black;
   margin-bottom: 10px;
 }
@@ -498,7 +498,7 @@ a {
 .nutritional_item_price {
   width: 100%;
   margin-bottom: 8px;
-  font-size: 1.3rem;
+  font-size: 18px;
 }
 
 .nutritional_item_price span {
@@ -518,9 +518,11 @@ a {
 .nutritional_item_review {
   color: rgb(171, 171, 171);
   width: 290px;
-  font-size: 1rem;
+  font-size: 14px;
 }
-
+.nutritional_item_review i {
+  margin-right: 5px;
+}
 .nutritional-title {
   font-size: 2.5rem;
   font-weight: bold;
@@ -532,11 +534,35 @@ a {
   height: 250px;
   border-radius: 10px;
   overflow: hidden;
-  margin: 30px 0px 30px 0px;
+  margin: 0px 0px 30px 0px;
 }
 
 .nutritional-banner img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.item_Nutritional_ingredients .nutrient-columns {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.nutrient-column {
+  width: 48%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+/* 영양성분 더보기 */
+.nutrition-more-button {
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
 }

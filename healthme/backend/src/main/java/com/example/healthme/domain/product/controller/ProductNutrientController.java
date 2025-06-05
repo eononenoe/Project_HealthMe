@@ -4,6 +4,8 @@ import com.example.healthme.domain.product.entity.ProductNutrient;
 import com.example.healthme.domain.product.repository.ProductNutrientRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/healthme/nutrients")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -16,7 +18,9 @@ public class ProductNutrientController {
     }
 
     @GetMapping("/{productId}")
-    public ProductNutrient getNutrientByProductId(@PathVariable Long productId) {
+    public List<ProductNutrient> getNutrientsByProductId(@PathVariable Long productId) {
+        System.out.println(nutrientRepository.findByProductId(productId));
         return nutrientRepository.findByProductId(productId);
+
     }
 }

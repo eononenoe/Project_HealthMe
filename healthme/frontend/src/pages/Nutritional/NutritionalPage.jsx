@@ -1,83 +1,154 @@
-// src/pages/CustomNutritional/CustomNutritionalPage.jsx
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import 'static/css/pages/Nutritional.css';
 
-/** 영양소 진행바에 쓸 더미 데이터 */
-const NUTRIENTS = [
-  { name: '탄수화물', value: 55, color: 'blue' },
-  { name: '단백질', value: 52, color: 'yellow' },
-  { name: '지방', value: 78, color: 'green' },
-  { name: '비타민', value: 43, color: 'purple' },
-  { name: '아이오딘', value: 90, color: 'red' },
-  { name: '철분', value: 47, color: 'teal' },
-];
-
-/** 추천 재료(상품) 더미 데이터 - 실제로는 API나 JSON으로 대체 */
-const PRODUCTS = Array.from({ length: 4 }).map((_, i) => ({
-  id: i,
-  name: '생고등어 100g × 4개',
-  price: 6980,
-  discount: 3,
-  img: 'https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/e9079270-38bb-4d73-ad3a-51c632ac9610.jpg',
-  nutrients: [
-    '아미노산 16,942mg',
-    '아르기닌 1,014mg',
-    '비타민 D 7.19mg',
-    '칼슘 13.04mg',
-  ],
-}));
-
 export default function CustomNutritionalPage() {
-  /* -------------------------  장바구니 상태  ------------------------- */
+  const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
-  const toggleAll = (checked) =>
-    setCart((prev) => prev.map((it) => ({ ...it, selected: checked })));
+  const [expandedItems, setExpandedItems] = useState({});
 
-  const toggleOne = (idx) =>
-    setCart((prev) =>
-      prev.map((it, i) =>
-        i === idx ? { ...it, selected: !it.selected } : it,
-      ),
-    );
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    console.log("토큰 확인:", token);
+    axios
+      .get("http://localhost:8090/healthme/products/details", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        console.log("원본 응답 데이터:", res.data);
 
+        if (!Array.isArray(res.data)) {
+          console.error("응답 형식 오류: 배열이 아님");
+          return;
+        }
+
+        const mappedProducts = res.data.map((item) => {
+          const nutrientsRaw = [
+            formatNutrient('단백질', item.protein),
+            formatNutrient('철분', item.iron),
+            formatNutrient('칼슘', item.calcium),
+            formatNutrient('비타민D', item.vitamin_d),
+            formatNutrient('식이섬유', item.dietary_fiber),
+            formatNutrient('마그네슘', item.magnesium),
+            formatNutrient('칼륨', item.potassium),
+            formatNutrient('비오틴', item.biotin),
+            formatNutrient('아연', item.zinc),
+            formatNutrient('아르기닌', item.arginine),
+          ].filter(Boolean);
+
+          const left = nutrientsRaw.slice(0, 5);
+          const right = nutrientsRaw.slice(5, 10);
+
+          return {
+            id: item.productId,
+            name: item.name,
+            price: item.salprice,
+            originalPrice: item.price,
+            discount: Math.round((1 - item.salprice / item.price) * 100),
+            img: item.imageUrl,
+            nutrientsLeft: left,
+            nutrientsRight: right,
+            sales_count: item.sales_count
+          };
+        });
+
+        setProducts(mappedProducts);
+      })
+      .catch((error) => {
+        console.error("API 요청 실패:", error);
+      });
+  }, []);
+
+  const formatNutrient = (label, value) => {
+    if (!value) return null;
+
+    const numericValue = parseFloat(value);
+    if (isNaN(numericValue)) return `${label} ${value}`;
+
+    if (value.toLowerCase().includes('mg') && numericValue >= 1000) {
+      return `${label} ${(numericValue / 1000).toFixed(1)}g`;
+    }
+
+    return `${label} ${value}`;
+  };
+  const sortProducts = (order) => {
+    let sorted = [];
+
+    if (order === 'asc' || order === 'desc') {
+      sorted = [...products].sort((a, b) => {
+        const priceA = a.price ?? a.originalPrice;
+        const priceB = b.price ?? b.originalPrice;
+        return order === 'asc' ? priceA - priceB : priceB - priceA;
+      });
+    } else if (order === 'sales') {
+      sorted = [...products].sort((a, b) => {
+        return (b.sales_count || 0) - (a.sales_count || 0); // 내림차순
+      });
+    }
+
+    setProducts(sorted);
+  };
+
+  const toggleExpand = (productId) => {
+    setExpandedItems((prev) => ({
+      ...prev,
+      [productId]: !prev[productId],
+    }));
+  };
   const addToCart = (product) => {
     setCart((prev) => {
-      const hit = prev.find((p) => p.id === product.id);
-      return hit
+      const existing = prev.find((p) => p.id === product.id);
+      return existing
         ? prev.map((p) =>
-          p.id === product.id ? { ...p, qty: p.qty + 1 } : p,
+          p.id === product.id ? { ...p, qty: p.qty + 1 } : p
         )
         : [...prev, { ...product, qty: 1, selected: true }];
     });
   };
 
+  const toggleAll = (checked) =>
+    setCart((prev) => prev.map((it) => ({ ...it, selected: checked })));
+
+  const toggleOne = (idx) =>
+    setCart((prev) =>
+      prev.map((it, i) => (i === idx ? { ...it, selected: !it.selected } : it))
+    );
+
   const qty = (idx, diff) =>
     setCart((prev) =>
       prev.map((it, i) =>
-        i === idx ? { ...it, qty: Math.max(1, it.qty + diff) } : it,
-      ),
+        i === idx ? { ...it, qty: Math.max(1, it.qty + diff) } : it
+      )
     );
 
   const deleteSelected = () =>
     setCart((prev) => prev.filter((it) => !it.selected));
 
-  /* -------------------------  진행바 위치  --------------------------- */
+  const selected = cart.filter((c) => c.selected);
+  const totalPrice = selected.reduce((sum, v) => sum + v.price * v.qty, 0);
+
   useEffect(() => {
     document
       .querySelectorAll('.nutrition-indicator')
       .forEach((ind) => (ind.style.left = ind.dataset.percent + '%'));
   }, []);
 
-  /* -------------------------  계산용 파생값  ------------------------- */
-  const selected = cart.filter((c) => c.selected);
-  const totalPrice = selected.reduce((sum, v) => sum + v.price * v.qty, 0);
+  const NUTRIENTS = [
+    { name: '탄수화물', value: 55, color: 'blue' },
+    { name: '단백질', value: 52, color: 'yellow' },
+    { name: '지방', value: 78, color: 'green' },
+    { name: '비타민', value: 43, color: 'purple' },
+    { name: '아이오딘', value: 90, color: 'red' },
+    { name: '철분', value: 47, color: 'teal' },
+  ];
 
   return (
-    <div className="container">
-      {/* -------------------  사이드바  ------------------- */}
+    <div className="nutritional-container">
+      {/* -------------------  왼쪽 사이드바 ------------------- */}
       <aside className="nutritional-sidebar">
         <div className="nutritional-contents-main">
-          {/* 영양소 카드 */}
           <h3 className="nutrition-section-title">영양소 정보</h3>
           <div className="nutrition-card-container">
             <div className="nutrition-left">
@@ -106,7 +177,6 @@ export default function CustomNutritionalPage() {
             </div>
           </div>
 
-
           {/* 장바구니 */}
           <section className="cart-section">
             <span>장바구니</span>
@@ -126,7 +196,6 @@ export default function CustomNutritionalPage() {
               <button onClick={deleteSelected}>선택삭제</button>
             </div>
             <hr />
-
             <ul className="cart-items">
               {cart.map((item, idx) => (
                 <li key={item.id}>
@@ -152,21 +221,20 @@ export default function CustomNutritionalPage() {
                 </li>
               ))}
             </ul>
-
             <div className="cart-footer">
               총 합계: <span>{totalPrice.toLocaleString()}원</span>
             </div>
             <div className="cart-footer-button">
-              <button onClick={() => alert('장바구니 이동')}>장바구니 담기</button>
+              <button onClick={() => alert('장바구니 이동')}>
+                장바구니 담기
+              </button>
             </div>
           </section>
         </div>
       </aside>
 
-      {/* -------------------  메인 콘텐츠  ------------------- */}
-      <main className='nutritional_main'>
-        <h1 className="nutritional-title">추천 재료</h1>
-
+      {/* -------------------  메인 콘텐츠 ------------------- */}
+      <main className="nutritional_main">
         <div className="nutritional-banner">
           <img
             className="nutritional-banner-img"
@@ -174,30 +242,28 @@ export default function CustomNutritionalPage() {
             alt="배너"
           />
         </div>
-
-        {/* 정렬 메뉴 (href→button으로 변경) */}
         <ul className="nutritional_low_content">
-          {['추천순', '신상품순', '판매량순', '낮은 가격순', '높은 가격순'].map(
-            (txt, i) => (
-              <React.Fragment key={txt}>
-                <li>
-                  <button
-                    type="button"
-                    className="sort-btn"
-                    onClick={() => alert(`${txt} 정렬`)}
-                  >
-                    {txt}
-                  </button>
-                </li>
-                {i < 4 && <li>|</li>}
-              </React.Fragment>
-            ),
-          )}
+          {[
+            { label: '판매량순', type: 'sales' },
+            { label: '낮은 가격순', type: 'asc' },
+            { label: '높은 가격순', type: 'desc' }
+          ].map(({ label, type }, i) => (
+            <React.Fragment key={label}>
+              <li>
+                <button
+                  type="button"
+                  className="sort-btn"
+                  onClick={() => sortProducts(type)}
+                >
+                  {label}
+                </button>
+              </li>
+              {i < 2 && <li>|</li>}
+            </React.Fragment>
+          ))}
         </ul>
-
-        {/* 상품 목록 */}
         <ul className="nutritional_content">
-          {PRODUCTS.map((p) => (
+          {products.map((p) => (
             <li key={p.id} className="nutritional_item_store">
               <div className="nutritional_item_img">
                 <img src={p.img} alt={p.name} />
@@ -210,11 +276,29 @@ export default function CustomNutritionalPage() {
               <div className="nutritional_item_name">{p.name}</div>
 
               <div className="item_Nutritional_ingredients">
-                <ul>
-                  {p.nutrients.map((n) => (
-                    <li key={n}>{n}</li>
-                  ))}
-                </ul>
+                <button
+                  className="nutrition-more-button"
+                  onClick={() => toggleExpand(p.id)}
+                >
+                  <span>{expandedItems[p.id] ? '접기' : '영양정보 더보기'}</span>
+                  <span className="material-symbols-outlined">
+                    {expandedItems[p.id] ? 'expand_less' : 'expand_more'}
+                  </span>
+                </button>
+                {expandedItems[p.id] && (
+                  <div className="nutrient-columns">
+                    <ul className="nutrient-column">
+                      {p.nutrientsLeft.map((n, index) => (
+                        <li key={index}>{n}</li>
+                      ))}
+                    </ul>
+                    <ul className="nutrient-column">
+                      {p.nutrientsRight.map((n, index) => (
+                        <li key={index}>{n}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
 
               <div className="nutritional_item_price">
@@ -224,7 +308,8 @@ export default function CustomNutritionalPage() {
                 </span>
               </div>
               <div className="nutritional_item_review">
-                <i className="far fa-comment-dots" /> 999+
+                <i className="fa-regular fa-comment-dots"></i>
+                <span>{p.sales_count.toLocaleString()}+</span>
               </div>
             </li>
           ))}

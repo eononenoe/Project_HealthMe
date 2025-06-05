@@ -70,7 +70,7 @@ const Header = () => {
             {/* 하단 네비 메뉴 */}
             <ul className="low_header_nav">
                 <li><a href="/question">영양 설문</a></li>
-                <li><a href="result">맞춤형 성분</a></li>
+                <li><a href="/result">맞춤형 성분</a></li>
                 <li><a href="/nutritional">추천 재료</a></li>
                 <li><a href="/purchase">구매</a></li>
             </ul>

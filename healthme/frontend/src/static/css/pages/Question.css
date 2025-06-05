@@ -145,35 +145,15 @@
     color: transparent;
 
 }
-
+/* 체크 색 */
 .green {
     border-color: #6ecb9c;
     color: #6ecb9c;
 }
 
-.green:nth-child(3) {
-    width: 35px;
-    height: 35px;
-}
-
-.green:nth-child(4) {
-    width: 30px;
-    height: 30px;
-}
-
 .purple {
     border-color: #b88ed9;
     color: #b88ed9;
-}
-
-.purple:nth-child(7) {
-    width: 35px;
-    height: 35px;
-}
-
-.purple:nth-child(6) {
-    width: 30px;
-    height: 30px;
 }
 
 .gray {
@@ -182,6 +162,28 @@
     border-color: #ccc;
     color: #aaa;
 }
+
+.circle.purple:nth-of-type(2),
+.circle.green:nth-of-type(6) {
+    width: 35px;
+    height: 35px;
+}
+
+.circle.purple:nth-of-type(1),
+.circle.green:nth-of-type(7) {
+    width: 40px;
+    height: 40px;
+}
+.circle.purple:nth-of-type(3),
+.circle.green:nth-of-type(5) {
+    width: 30px;
+    height: 30px;
+}
+.circle.gray {
+    width: 25px;
+    height: 25px;
+}
+
 .faded {
     opacity: 0.4;
     pointer-events: auto;
@@ -191,7 +193,9 @@
     background-color: currentColor;
     border: none;
 }
-
+.circle .material-symbols-outlined {
+  display: none;
+}
 .circle.selected .material-symbols-outlined {
     display: block;
 }

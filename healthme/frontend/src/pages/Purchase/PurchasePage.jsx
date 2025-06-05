@@ -4,36 +4,54 @@ import 'static/css/pages/Purchase.css';
 
 const PurchasePage = () => {
   const [products, setProducts] = useState([]);
+  const [originalProducts, setOriginalProducts] = useState([]);
 
-useEffect(() => {
-  axios.get("http://localhost:8090/healthme/products/details", {
-    withCredentials: true,
-  })
-    .then(response => {
-      console.log("데이터:", response.data);
-      setProducts(response.data); 
+  useEffect(() => {
+    axios.get("http://localhost:8090/healthme/products", {
+      withCredentials: true,
     })
-    .catch(error => {
-      console.error("에러 발생:", error);
-    });
+      .then(response => {
+        setProducts(response.data);
+        setOriginalProducts(response.data); // 정렬 전 원본 저장
+      })
+      .catch(error => {
+        console.error("에러 발생:", error);
+      });
 
-  const buttonsGroup = document.querySelectorAll('.options');
-  buttonsGroup.forEach((group) => {
-    const buttons = group.querySelectorAll('.circle');
-    const question = group.previousElementSibling;
+    // 버튼 관련 fade 효과 처리
+    const buttonsGroup = document.querySelectorAll('.options');
+    buttonsGroup.forEach((group) => {
+      const buttons = group.querySelectorAll('.circle');
+      const question = group.previousElementSibling;
 
-    buttons.forEach((button) => {
-      button.addEventListener('click', () => {
-        buttons.forEach((b) => b.classList.remove('selected'));
-        button.classList.add('selected');
-        group.classList.add('faded');
-        if (question && question.classList.contains('question')) {
-          question.classList.add('faded');
-        }
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          buttons.forEach((b) => b.classList.remove('selected'));
+          button.classList.add('selected');
+          group.classList.add('faded');
+          if (question && question.classList.contains('question')) {
+            question.classList.add('faded');
+          }
+        });
       });
     });
-  });
-}, []);
+  }, []);
+
+  const sortProducts = (order) => {
+    let sorted = [];
+    if (order === 'asc' || order === 'desc') {
+      sorted = [...products].sort((a, b) => {
+        const priceA = a.salprice ?? a.price;
+        const priceB = b.salprice ?? b.price;
+        return order === 'asc' ? priceA - priceB : priceB - priceA;
+      });
+    } else if (order === 'sales') {
+      sorted = [...products].sort((a, b) => {
+        return (b.sales_count || 0) - (a.sales_count || 0); // 내림차순
+      });
+    }
+    setProducts(sorted);
+  };
 
 
   const filterCategory = (category) => {
@@ -53,10 +71,10 @@ useEffect(() => {
       <aside className="purchase-left-content">
         <div className="purchase-left-title">
           <h2>구매</h2>
-          <a href="../Purchase/Purchase.html">전체보기 +</a>
+          <a href="/purchase">전체보기 +</a>
         </div>
         <ul className="purchase-left-menu">
-          {['신제품', '제철음식', '축산', '농산', '수산'].map((category) => (
+          {['건강식품', '유제품', '축산물', '농산물', '수산물'].map((category) => (
             <li key={category}>
               <label className="custom-radio">
                 <input
@@ -72,8 +90,6 @@ useEffect(() => {
       </aside>
 
       <section className="purchase-right-content">
-        <h1 className="purchase-title">구매</h1>
-
         <div className="purchase-banner">
           <img
             className="purchase-banner-img"
@@ -83,15 +99,13 @@ useEffect(() => {
         </div>
 
         <ul className="purchase-sort-menu">
-          {['추천순', '신상품순', '판매량순', '낮은 가격순', '높은 가격순'].map(
-            (text, index) => (
-              <React.Fragment key={text}>
-                <li><a href="#">{text}</a></li>
-                {index < 4 && <li>|</li>}
-              </React.Fragment>
-            )
-          )}
+          <li><a href="#" onClick={() => sortProducts('sales')}>판매량순</a></li>
+          <li>|</li>
+          <li><a href="#" onClick={() => sortProducts('asc')}>낮은 가격순</a></li>
+          <li>|</li>
+          <li><a href="#" onClick={() => sortProducts('desc')}>높은 가격순</a></li>
         </ul>
+
 
         <ul className="purchase-product-list">
           {products.map((product) => (
@@ -106,6 +120,9 @@ useEffect(() => {
               <div className="purchase-item_name">
                 <span>{product.name}</span>
               </div>
+              <div className="purchase-item_subtitle">
+                <span>{product.description}</span>
+              </div>
               <div className="purchase-item_discount_price">
                 <del>{product.price.toLocaleString()}원</del>
               </div>
@@ -114,12 +131,14 @@ useEffect(() => {
                   <li className="purchase-discount">
                     {Math.round(100 - (product.salprice / product.price) * 100)}%
                   </li>
-                  <li className="purchase-price">{product.salprice.toLocaleString()}원</li>
+                  <li className="purchase-price">
+                    {product.salprice.toLocaleString()}원
+                  </li>
                 </ul>
               </div>
               <div className="purchase-item_review">
                 <i className="fa-regular fa-comment-dots"></i>
-                <span>999+</span>
+                <span>{product.sales_count.toLocaleString()}+</span>
               </div>
             </li>
           ))}

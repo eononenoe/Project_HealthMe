@@ -13,7 +13,6 @@ public class ProductStore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
-
     private String name;
     private String description;
     private int price;
@@ -21,4 +20,5 @@ public class ProductStore {
     private int amount;
     private String imageUrl;
     private String category;
+    private int sales_count;
 }

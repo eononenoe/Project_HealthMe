@@ -23,27 +23,62 @@ public class ProductStoreService {
 
     public List<ProductWithNutrientDto> getAllProductDetails() {
         var products = productStoreRepository.findAll();
-        System.out.println("DB에서 불러온 상품 수: " + products.size());
-        for (var p : products) {
-            System.out.println("상품: " + p.getProductId() + " / " + p.getName());
-        }
-        List<ProductWithNutrientDto> result = products.stream().map(product -> {
-            ProductNutrient nutrient = nutrientRepository.findByProductId(product.getProductId());
-            if (nutrient == null) {
-                System.out.println("해당 영양정보 없음: " + product.getProductId());
+
+        return products.stream().map(product -> {
+            List<ProductNutrient> nutrients = nutrientRepository.findByProductId(product.getProductId());
+
+            System.out.println("찾은 productId: " + product.getProductId());
+            if (nutrients == null || nutrients.isEmpty()) {
+                System.out.println("영양성분 없음");
+            } else {
+                System.out.println("영양성분 있음: " + nutrients.get(0).getProtein());
             }
-            // 영양소 제외하고 상품 정보만 DTO로 리턴
+
+            ProductNutrient nutrient = (nutrients != null && !nutrients.isEmpty()) ? nutrients.get(0) : null;
+
             return ProductWithNutrientDto.builder()
                     .productId(product.getProductId())
                     .name(product.getName())
+                    .description(product.getDescription())
                     .price(product.getPrice())
                     .salprice(product.getSalprice())
+                    .amount(product.getAmount())
                     .imageUrl(product.getImageUrl())
                     .category(product.getCategory())
+                    .sales_count(product.getSales_count())
+                    .productNutrientId(nutrient != null ? nutrient.getProductNutrientId() : null)
+                    .protein(nutrient != null ? nutrient.getProtein() : null)
+                    .iron(nutrient != null ? nutrient.getIron() : null)
+                    .vitaminD(nutrient != null ? nutrient.getVitaminD() : null)
+                    .calcium(nutrient != null ? nutrient.getCalcium() : null)
+                    .dietaryFiber(nutrient != null ? nutrient.getDietaryFiber() : null)
+                    .magnesium(nutrient != null ? nutrient.getMagnesium() : null)
+                    .potassium(nutrient != null ? nutrient.getPotassium() : null)
+                    .biotin(nutrient != null ? nutrient.getBiotin() : null)
+                    .zinc(nutrient != null ? nutrient.getZinc() : null)
+                    .arginine(nutrient != null ? nutrient.getArginine() : null)
+                    .nutrients(nutrient != null
+                            ? List.of(
+                                    nutrient.getProtein(),
+                                    nutrient.getIron(),
+                                    nutrient.getCalcium(),
+                                    nutrient.getVitaminD(),
+                                    nutrient.getDietaryFiber(),
+                                    nutrient.getMagnesium(),
+                                    nutrient.getPotassium(),
+                                    nutrient.getBiotin(),
+                                    nutrient.getZinc(),
+                                    nutrient.getArginine()
+                            ).stream()
+                            .map(String::trim)
+                            .filter(v -> v != null && !v.isEmpty()
+                                    && !v.equalsIgnoreCase("0g")
+                                    && !v.equalsIgnoreCase("0mg")
+                                    && !v.equalsIgnoreCase("0μg"))
+                            .toList()
+                            : List.of())
                     .build();
-        }).collect(Collectors.toList());
 
-        System.out.println("반환할 상품 리스트: " + result.size());
-        return result;
+        }).collect(Collectors.toList());
     }
 }
