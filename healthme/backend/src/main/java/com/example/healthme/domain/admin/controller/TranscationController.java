@@ -2,8 +2,9 @@ package com.example.healthme.domain.admin.controller;
 
 
 import com.example.healthme.domain.admin.dto.TranscationStatusDto;
-import com.example.healthme.domain.admin.entity.OrderEntity;
 import com.example.healthme.domain.admin.service.TranscationService;
+import com.example.healthme.domain.approval.entity.ApprovalOrder;
+import org.hibernate.query.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -28,8 +29,8 @@ public class TranscationController {
     }
 
     @GetMapping("/search/data")
-    public Page<OrderEntity> select_Data (@RequestParam String searchText, @RequestParam int page, @RequestParam int size){
-        Page<OrderEntity> searchData = transcationService.select_trans_name(searchText,page,size);
+    public Page<ApprovalOrder> select_Data (@RequestParam String searchText, @RequestParam int page, @RequestParam int size){
+        Page<ApprovalOrder> searchData = transcationService.select_trans_name(searchText,page,size);
         return searchData;
     }
 

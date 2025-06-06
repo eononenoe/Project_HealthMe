@@ -24,7 +24,7 @@ export default function ServiceCenter() {
       <h3>서비스</h3>
       <ul>
         <li>
-          <Link to="/mypage/announcement">고객센터</Link>
+          <Link to="/announce">고객센터</Link>
         </li>
         <li>
           <Link to="/mypage/inquiry_history">상품문의</Link>

@@ -20,8 +20,7 @@ import User_edit from "pages/mypage/UserEdit";
 import ProductInquiryPage from "pages/mypage/ProductInquiryPage";
 import OrderHistoryPage from "pages/mypage/OrderHistoryPage";
 import AddressEditPage from "pages/mypage/AddressEditPage";
-import AddressEditModal from "pages/mypage/AddressEditModal";
-import RouteLogger from "pages/mypage/RouteLogger";
+import AnnouncementPage from "pages/Announcement/Announcement";
 
 function AppRoutes() {
   const location = useLocation();
@@ -52,6 +51,8 @@ function AppRoutes() {
           <Route path="purchase_history" element={<OrderHistoryPage />} />
           <Route path="address_edit" element={<AddressEditPage />} />
         </Route>
+        {/* 공지사항 */}
+        <Route path="/announce" element={<AnnouncementPage />} />
       </Routes>
 
       {!isAdminPage && <Footer />}
@@ -62,7 +63,6 @@ function AppRoutes() {
 function App() {
   return (
     <BrowserRouter>
-      <RouteLogger />
       <AppRoutes />
     </BrowserRouter>
   );

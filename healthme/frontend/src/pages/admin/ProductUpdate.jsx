@@ -19,14 +19,13 @@ export default function ProductUpdate({
   const [form, setForm] = useState({
     // 수정될 폼
     category: "",
-    productName: "",
-    productPrice: 0,
+    name: "",
+    price: 0,
     amount: 0,
     description: "",
   });
 
-  const [thumbnail, setThumbnail] = useState();
-  const [detailImage, setDetailImage] = useState();
+  const [image_url, setimage_url] = useState();
 
   useEffect(() => {
     // 수정할 product값을 form에 넣어두기 위해서.
@@ -53,21 +52,17 @@ export default function ProductUpdate({
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append("category", form.category);
-    formData.append("productName", form.productName);
-    formData.append("productPrice", form.productPrice);
+    formData.append("productName", form.name);
+    formData.append("productPrice", form.price);
     formData.append("amount", form.amount);
     formData.append("description", form.description);
 
-    if (thumbnail) {
-      formData.append("thumbnailUrl", thumbnail);
-    }
-
-    if (detailImage) {
-      formData.append("detailUrl", detailImage);
+    if (image_url) {
+      formData.append("image_url", image_url);
     }
 
     try {
-      await axios.put(`/product/${form.no}`, formData, {
+      await axios.put(`/product/${form.productId}`, formData, {
         withCredentials: true,
         headers: {
           "Content-Type": "multipart/form-data",
@@ -96,13 +91,13 @@ export default function ProductUpdate({
         <TextField
           label="상품명"
           name="productName"
-          value={form.productName}
+          value={form.name}
           onChange={handleChange}
         />
         <TextField
           label="가격"
           name="productPrice"
-          value={form.productPrice}
+          value={form.price - form.salprice}
           onChange={handleChange}
           type="number"
         />
@@ -124,16 +119,7 @@ export default function ProductUpdate({
           <input
             type="file"
             hidden
-            onChange={(e) => setThumbnail(e.target.files[0])}
-          />
-        </Button>
-
-        <Button variant="contained" component="label">
-          상세 이미지 업로드
-          <input
-            type="file"
-            hidden
-            onChange={(e) => setDetailImage(e.target.files[0])}
+            onChange={(e) => setimage_url(e.target.files[0])}
           />
         </Button>
         <Button variant="outlined" onClick={onClose}>

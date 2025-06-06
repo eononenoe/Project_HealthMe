@@ -23,7 +23,7 @@ public class ProductController {
     }
 
     @PutMapping("/{no}")
-    public ResponseEntity<?> update_product(@PathVariable int no, @ModelAttribute InsertProductDto insertProductDto){
+    public ResponseEntity<?> update_product(@PathVariable Long no, @ModelAttribute InsertProductDto insertProductDto){
         System.out.println(insertProductDto);
         System.out.println(no);
         if(productService.update_product(no,insertProductDto)){
@@ -34,7 +34,7 @@ public class ProductController {
 
 
     @PostMapping("/delete")
-    public ResponseEntity<?> product_Delete(@RequestBody int noArray[]){
+    public ResponseEntity<?> product_Delete(@RequestBody Long noArray[]){
         boolean result = productService.product_delete(noArray);
         if (result){
             return ResponseEntity.ok("삭제완료");
