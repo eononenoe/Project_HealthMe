@@ -1,6 +1,7 @@
 package com.example.healthme.domain.admin.controller;
 
 import com.example.healthme.domain.admin.service.TranscationService;
+import com.example.healthme.domain.approval.dto.ApprovalOrderResponseDto;
 import com.example.healthme.domain.approval.entity.ApprovalOrder;
 import org.hibernate.query.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,12 @@ public class PaginationTranscationController {
 
     // 페이지내이션된 거래내역 가져오기
     @GetMapping("/selectAll")
-    public Page<ApprovalOrder> select_transcation(@RequestParam int page, @RequestParam int size){
-        Page<ApprovalOrder> trans_select = transcationService.selectAll(page,size);
-        return trans_select;
+    public Page<ApprovalOrderResponseDto> selectTranscation(
+            @RequestParam int page,
+            @RequestParam int size) {
+        return transcationService.selectAll(page, size);
     }
+
+
 
 }

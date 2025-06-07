@@ -1,20 +1,24 @@
-/* Announcement.css – 공지사항 전용 스타일 */
-/* 전역 리셋 */
+/* Announcement.css – 공지·FAQ 전용 */
+/* --------------------------------------------------
+   1. 전역 초기화
+-------------------------------------------------- */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* 기본 폰트 및 배경 */
+/* --------------------------------------------------
+   2. 기본 폰트·배경
+-------------------------------------------------- */
 body {
   font-family: "Nanum Gothic", sans-serif;
   background-color: #f7f7f7;
 }
 
-/* ────────────────────────── */
-/* 레이아웃 래퍼               */
-/* ────────────────────────── */
+/* --------------------------------------------------
+   3. 레이아웃 래퍼
+-------------------------------------------------- */
 .announce-wrap {
   width: 1000px;
   margin: 0 auto;
@@ -22,27 +26,29 @@ body {
   flex-direction: column;
 }
 
-/* 페이지 타이틀 */
+/* --------------------------------------------------
+   4. 헤더 타이틀
+-------------------------------------------------- */
 .announce-wrap h1 {
   margin-top: 80px;
   font-size: 30px;
   font-weight: 500;
-  color: rgb(55, 55, 55);
+  color: #373737;
 }
 
-/* ────────────────────────── */
-/* 네비게이션 탭               */
-/* ────────────────────────── */
+/* --------------------------------------------------
+   5. 탭 네비게이션
+-------------------------------------------------- */
 .announce-nav {
   height: 60px;
   display: flex;
   gap: 50px;
   margin: 50px 0 20px;
-  border-bottom: 1px solid rgb(235, 235, 235);
+  border-bottom: 1px solid #ebebeb;
 }
 
 .announce-nav a {
-  color: rgb(55, 55, 55);
+  color: #373737;
   display: block;
 }
 
@@ -57,9 +63,9 @@ body {
   border-bottom: 1px solid orange;
 }
 
-/* ────────────────────────── */
-/* 총 개수 표시                */
-/* ────────────────────────── */
+/* --------------------------------------------------
+   6. 총 개수 표시줄
+-------------------------------------------------- */
 .announce-sum {
   height: 60px;
   display: flex;
@@ -69,56 +75,60 @@ body {
   border-bottom: 1px solid #000;
 }
 
-/* ────────────────────────── */
-/* 공지사항 리스트             */
-/* ────────────────────────── */
-.announce-list {
-  height: 60px;
+/* --------------------------------------------------
+   7. 공지 목록 (한 레코드)
+-------------------------------------------------- */
+/* 한 행(=item)을 무조건 가로 한 줄 */
+.announce-item {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 13px;
-  border-bottom: 1px solid gainsboro;
+  /* align-items: center; */
+  column-gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  margin: 5px 0;
 }
 
 /* 번호 */
-.announce-list .num {
+.announce-item .num {
   width: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-align: right;
+  flex-shrink: 0;
 }
 
-/* 제목 영역 */
-.announce-list .title {
-  flex: 1; /* 남은 영역 전부 사용 */
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-}
-
-/* 말머리 뱃지 */
-.event_mark,
-.winner_mark {
-  background-color: rgb(253, 244, 233);
-  color: rgb(255, 153, 0);
-  border-radius: 3px;
-  font-size: 10px;
-  padding: 3px;
-}
-
-/* 제목 링크 */
-.announce-list .title a {
+/* 제목 */
+.announce-item .title {
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
-  color: #000;
-  font-size: 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 0 !important;
 }
 
 /* 날짜 */
-.announce-list .date {
-  width: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.announce-item .date {
+  width: 110px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------
+   8. 말머리 뱃지
+-------------------------------------------------- */
+.event_mark,
+.winner_mark {
+  background-color: #fdf4e9;
+  color: #ff9900;
+  border-radius: 3px;
+  font-size: 10px;
+  padding: 3px;
+  margin-right: 4px;
+}
+
+/* --------------------------------------------------
+   9. FAQ 아코디언 여백 보정 (선택)
+-------------------------------------------------- */
+.MuiAccordion-root {
+  background: #fff;
 }

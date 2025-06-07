@@ -1,6 +1,7 @@
 package com.example.healthme.domain.admin.controller;
 
 import com.example.healthme.domain.admin.service.ProductService;
+import com.example.healthme.domain.product.dto.ProductWithNutrientDto;
 import com.example.healthme.domain.product.entity.ProductStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,11 +18,9 @@ public class PaginationProductController {
     private ProductService productService;
 
     @GetMapping("/pagination")
-    public Page<ProductStore> Select_PageContent(@RequestParam int page, @RequestParam int size){
-         Page<ProductStore> page_list= productService.select_Page_Product(page, size);
+    public Page<ProductWithNutrientDto> Select_PageContent(@RequestParam int page, @RequestParam int size){
+         Page<ProductWithNutrientDto> page_list= productService.select_Page_Product(page, size);
 
         return page_list;
     }
-
-
 }

@@ -156,8 +156,9 @@ export default function ProductPage() {
               <TableCell>No</TableCell>
               <TableCell>카테고리</TableCell>
               <TableCell>상품명</TableCell>
-              <TableCell>가격(할인적용)</TableCell>
-              <TableCell>정상가격</TableCell>
+              <TableCell>정가</TableCell>
+              <TableCell>최종 판매가</TableCell>
+              <TableCell>할인율</TableCell>
               <TableCell>재고</TableCell>
               <TableCell></TableCell>
             </TableRow>
@@ -180,8 +181,12 @@ export default function ProductPage() {
                 <TableCell>{product.productId}</TableCell>
                 <TableCell>{product.category}</TableCell>
                 <TableCell>{product.name}</TableCell>
-                <TableCell>{product.price - product.salprice}</TableCell>
                 <TableCell>{product.price}</TableCell>
+                <TableCell>{product.salprice}</TableCell>
+                <TableCell>
+                  {Math.round((1 - product.salprice / product.price) * 100)}%
+                </TableCell>
+
                 <TableCell>{product.amount}</TableCell>
                 <TableCell>
                   <Button

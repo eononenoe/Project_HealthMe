@@ -1,11 +1,9 @@
 package com.example.healthme.domain.admin.controller;
 
-
 import com.example.healthme.domain.admin.dto.TranscationStatusDto;
 import com.example.healthme.domain.admin.service.TranscationService;
-import com.example.healthme.domain.approval.entity.ApprovalOrder;
-import org.hibernate.query.Order;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.healthme.domain.approval.dto.ApprovalOrderResponseDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,36 +11,40 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/transactions")
+@RequiredArgsConstructor
 public class TranscationController {
 
-    @Autowired
-    private TranscationService transcationService;
+    private final TranscationService transcationService;
 
+    // 수정
     @PostMapping("/status")
-    public ResponseEntity<?> update_transcations(@RequestBody TranscationStatusDto transStatusDto){
-        System.out.println(transStatusDto);
-        boolean bool = transcationService.update_transcations(transStatusDto);
-        if (bool){
-            return ResponseEntity.ok("수정되었습니다");
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("수정 실패하였습니다.");
+    public ResponseEntity<String> updateStatus(@RequestBody TranscationStatusDto dto) {
+
+        boolean ok = transcationService.updateTranscation(dto);
+
+        return ok
+                ? ResponseEntity.ok("수정되었습니다.")
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).body("수정에 실패하였습니다.");
     }
 
+    // 이름 검색
     @GetMapping("/search/data")
-    public Page<ApprovalOrder> select_Data (@RequestParam String searchText, @RequestParam int page, @RequestParam int size){
-        Page<ApprovalOrder> searchData = transcationService.select_trans_name(searchText,page,size);
-        return searchData;
+    public Page<ApprovalOrderResponseDto> searchData(@RequestParam String searchText,
+                                                     @RequestParam int page,
+                                                     @RequestParam int size) {
+        return transcationService.selectByUserName(searchText, page, size);
     }
 
+    // 반품 환불요청
     @PostMapping("/refundReturn")
-    public ResponseEntity<?> refundReturn(@RequestBody TranscationStatusDto transcationStatusDto, @RequestParam("type") String type){
-        System.out.println("transcationStatusDto "+transcationStatusDto+"type "+type);
-        boolean bool =transcationService.refundReturn(transcationStatusDto,type);
-        if(bool){
-            return ResponseEntity.ok(type+" 되었습니다.");
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(type+" 실패하였습니다.");
-        }
-    }
+    public ResponseEntity<String> refundOrReturn(@RequestBody TranscationStatusDto dto,
+                                                 @RequestParam("type") String type) {
 
+        boolean ok = transcationService.refundOrReturn(dto, type);
+
+        return ok
+                ? ResponseEntity.ok(type + " 되었습니다.")
+                : ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(type + "에 실패하였습니다.");
+    }
 }

@@ -18,5 +18,16 @@ public class InsertProductDto {
     private String description;
 
     private MultipartFile image_url;  // 오직 썸네일만 사용
+    private String protein;
+    private String iron;
+    private String vitaminD;
+    private String calcium;
+    private String dietaryFiber;
+    private String magnesium;
+    private String potassium;
+    private String biotin;
+    private String zinc;
+    private String arginine;
+
 }
 

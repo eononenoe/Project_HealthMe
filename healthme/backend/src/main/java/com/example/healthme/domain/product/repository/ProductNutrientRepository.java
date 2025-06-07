@@ -5,9 +5,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductNutrientRepository extends JpaRepository<ProductNutrient, Long> {
-    List<ProductNutrient> findByProductId(Long productId);
+    //List<ProductNutrient> findByProductId(Long productId);
+    Optional<ProductNutrient> findByProductId(Long productId);
+    void deleteByProductId(Long productId);
+
+
 }
 
