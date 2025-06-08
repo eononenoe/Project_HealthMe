@@ -18,6 +18,36 @@ const formatNutrient = (label, value, unit) => {
   return { label, value: displayValue, unit: displayUnit };
 };
 
+// CardBar
+const CardBar = ({ name, percent, onClick }) => {
+  const getColorClass = (percent) => {
+    if (percent <= 20) return 'red';
+    if (percent <= 40) return 'orange';
+    if (percent <= 60) return 'yellow';
+    if (percent <= 80) return 'green';
+    return 'blue';
+  };
+
+  const colorClass = getColorClass(percent);
+  return (
+    <div className="nutritional_card-bar" onClick={onClick}>
+      <div className="nutritional_bar-label">
+        {name} <span className="nutritional_bar-percent">{percent}%</span>
+      </div>
+      <div className="nutritional_bar-container">
+        <div
+          className={`nutritional_bar-inner ${colorClass}`}
+          style={{ width: `${percent}%` }}
+        />
+        <div
+          className={`nutritional_indicator ${colorClass}`}
+          style={{ left: `${percent}%` }}
+        />
+      </div>
+    </div>
+  );
+};
+
 export default function CustomNutritionalPage() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
@@ -28,9 +58,7 @@ export default function CustomNutritionalPage() {
 
     axios
       .get("http://localhost:8090/healthme/products/details", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         if (!Array.isArray(res.data)) {
@@ -38,17 +66,8 @@ export default function CustomNutritionalPage() {
           return;
         }
 
-        console.log("서버 응답 전체:", res.data);
-
-        // 각 아이템 확인
-        res.data.forEach((item, idx) => {
-          console.log(`상품 : ${idx} 데이터 :`, item);
-        });
-
         const mappedProducts = res.data.map((item, idx) => {
           const productId = item.productId ?? `temp-${idx}`;
-          console.log("제품 ID 확인:", productId, item.name);
-
           const nutrientsRaw = [
             formatNutrient('단백질', item.protein, 'g'),
             formatNutrient('철분', item.iron, 'mg'),
@@ -83,10 +102,9 @@ export default function CustomNutritionalPage() {
   }, []);
 
   const toggleExpand = (productId) => {
-    const key = String(productId);
     setExpandedItems((prev) => ({
       ...prev,
-      [key]: !prev[key],
+      [String(productId)]: !prev[String(productId)],
     }));
   };
 
@@ -134,136 +152,106 @@ export default function CustomNutritionalPage() {
     setProducts(sorted);
   };
 
-  useEffect(() => {
-    document
-      .querySelectorAll('.nutrition-indicator')
-      .forEach((ind) => (ind.style.left = ind.dataset.percent + '%'));
-  }, []);
-
   const NUTRIENTS = [
-    { name: '탄수화물', value: 55, color: 'blue' },
-    { name: '단백질', value: 52, color: 'yellow' },
-    { name: '지방', value: 78, color: 'green' },
-    { name: '비타민', value: 43, color: 'purple' },
-    { name: '아이오딘', value: 90, color: 'red' },
-    { name: '철분', value: 47, color: 'teal' },
+    { name: '탄수화물', value: 22 },
+    { name: '단백질', value: 52 },
+    { name: '지방', value: 78 },
+    { name: '비타민', value: 11 },
+    { name: '아이오딘', value: 90 },
+    { name: '비오틴', value: 47 },
+    { name: '비타민D', value: 47 },
+    { name: '지방', value: 47 },
+    { name: '식이섬유', value: 47 },
+    { name: '아연', value: 47 },
   ];
 
   return (
     <div className="nutritional-container">
-      {/* -------------------  왼쪽 사이드바 ------------------- */}
+      {/* ---------------- 왼쪽 사이드바 ---------------- */}
       <aside className="nutritional-sidebar">
         <div className="nutritional-contents-main">
           <h3 className="nutrition-section-title">영양소 정보</h3>
-          <div className="nutrition-card-container">
-            <div className="nutrition-left">
-              {NUTRIENTS.map(({ name, value, color }) => (
-                <div
-                  key={name}
-                  className="nutrition-card-bar"
-                  data-name={name}
-                  data-value={`${value}%`}
-                >
-                  <div className="nutrition-bar-label">{name}</div>
-                  <div className="nutrition-bar-container">
-                    <div className={`nutrition-bar-inner ${color}`}>
-                      <div
-                        className={`nutrition-indicator ${color}`}
-                        data-percent={value}
-                      ></div>
+          {NUTRIENTS.map((n, i) => (
+            <CardBar key={i} name={n.name} percent={n.value} />
+          ))}
+        </div>
+
+        {/* 장바구니 */}
+        <section className="cart-section">
+          <span>장바구니</span>
+          <hr />
+          <div className="cart-header">
+            <div className="cart-header-left">
+              <input
+                type="checkbox"
+                className="custom-checkbox"
+                checked={cart.length > 0 && selected.length === cart.length}
+                onChange={(e) => toggleAll(e.target.checked)}
+              />
+              <label>
+                전체선택 ({selected.length}/{cart.length})
+              </label>
+            </div>
+            <button onClick={deleteSelected}>선택삭제</button>
+          </div>
+          <hr />
+          <ul className="nutritional-cart-items">
+            {cart.map((item, idx) => (
+              <li key={`cart-${item.id}-${idx}`}>
+                <div className="nutritional-cart-line">
+                  <input
+                    type="checkbox"
+                    className="custom-checkbox"
+                    checked={item.selected}
+                    onChange={() => toggleOne(idx)}
+                  />
+                  <div className="nutritional-cart-desc">
+                    <div className="nutritional-cart-item-name">{item.name}</div>
+                    <div className="nutritional-cart-item-price">
+                      {item.price.toLocaleString()}원
                     </div>
-                  </div>
-                  <div className="nutrition-card-bar-label">
-                    <li>부족</li>
-                    <li>과다</li>
+                    <div className="nutritional-cart-item-quantity">
+                      <button onClick={() => qty(idx, -1)}>-</button>
+                      <span>{item.qty}</span>
+                      <button onClick={() => qty(idx, +1)}>+</button>
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
+              </li>
+            ))}
+          </ul>
+          <div className="cart-footer">
+            총 합계 : <span>{totalPrice.toLocaleString()}원</span>
           </div>
-
-          {/* 장바구니 */}
-          <section className="cart-section">
-            <span>장바구니</span>
-            <hr />
-            <div className="cart-header">
-              <div className="cart-header-left">
-                <input
-                  type="checkbox"
-                  className="custom-checkbox"
-                  checked={cart.length > 0 && selected.length === cart.length}
-                  onChange={(e) => toggleAll(e.target.checked)}
-                />
-                <label>
-                  전체선택 ({selected.length}/{cart.length})
-                </label>
-              </div>
-              <button onClick={deleteSelected}>선택삭제</button>
-            </div>
-            <hr />
-            <ul className="nutritional-cart-items">
-              {cart.map((item, idx) => (
-                <li key={`cart-${item.id}-${idx}`}>
-                  <div className="nutritional-cart-line">
-                    <input
-                      type="checkbox"
-                      className="custom-checkbox"
-                      checked={item.selected}
-                      onChange={() => toggleOne(idx)}
-                    />
-                    <div className="nutritional-cart-desc">
-                      <div className="nutritional-cart-item-name">{item.name}</div>
-                      <div className="nutritional-cart-item-price">
-                        {item.price.toLocaleString()}원
-                      </div>
-                      <div className="nutritional-cart-item-quantity">
-                        <button onClick={() => qty(idx, -1)}>-</button>
-                        <span>{item.qty}</span>
-                        <button onClick={() => qty(idx, +1)}>+</button>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <div className="cart-footer">
-              총 합계 : <span>{totalPrice.toLocaleString()}원</span>
-            </div>
-            <div className="cart-footer-button">
-              <button onClick={() => alert('장바구니 이동')}>
-                장바구니 담기
-              </button>
-            </div>
-          </section>
-        </div>
+          <div className="cart-footer-button">
+            <button onClick={() => alert('장바구니 이동')}>장바구니 담기</button>
+          </div>
+        </section>
       </aside>
 
-      {/* -------------------  메인 콘텐츠 ------------------- */}
+      {/* ---------------- 메인 콘텐츠 ---------------- */}
       <main className="nutritional_main">
         <div className="nutritional-banner">
           <img
             className="nutritional-banner-img"
-            src={process.env.PUBLIC_URL + '/img/main/Banner1.jpg'}
+            src={process.env.PUBLIC_URL + '/img/main/Banner2.jpg'}
             alt="배너"
           />
         </div>
+
         <ul className="nutritional_low_content">
           {[
             { label: '판매량순', type: 'sales' },
             { label: '할인율순', type: 'discount' },
             { label: '낮은 가격순', type: 'asc' },
-            { label: '높은 가격순', type: 'desc' }
+            { label: '높은 가격순', type: 'desc' },
           ].flatMap(({ label, type }, i, arr) => {
             const items = [
               <li key={`sort-${label}`}>
-                <button
-                  type="button"
-                  className="sort-btn"
-                  onClick={() => sortProducts(type)}
-                >
+                <button className="sort-btn" onClick={() => sortProducts(type)}>
                   {label}
                 </button>
-              </li>
+              </li>,
             ];
             if (i < arr.length - 1) {
               items.push(<li key={`divider-${i}`}>|</li>);
@@ -271,19 +259,17 @@ export default function CustomNutritionalPage() {
             return items;
           })}
         </ul>
+
         <ul className="nutritional_content">
           {products.map((p, idx) => (
             <li key={`product-${p.id}-${idx}`} className="nutritional_item_store">
               <div className="nutritional_item_img">
                 <img src={p.img} alt={p.name} />
               </div>
-
               <div className="nutritional_item_add" onClick={() => addToCart(p)}>
                 <i className="fas fa-cart-shopping" /> 담기
               </div>
-
               <div className="nutritional_item_name">{p.name}</div>
-
               <div className="item_Nutritional_ingredients">
                 <button
                   className="nutrition-more-button"
@@ -294,13 +280,13 @@ export default function CustomNutritionalPage() {
                     {expandedItems[p.id] ? 'expand_less' : 'expand_more'}
                   </span>
                 </button>
-                {expandedItems[String(p.id)] && (
+                {expandedItems[p.id] && (
                   <div className="nutrient-columns">
                     <ul className="nutrient-column">
                       {p.nutrientsLeft.map((n, i) => (
                         <li key={`left-${p.id}-${i}`}>
                           <span>{n.label}</span>
-                          <strong>{n.value} {n.unit}</strong>
+                          <span>{n.value} {n.unit}</span>
                         </li>
                       ))}
                     </ul>
@@ -308,20 +294,16 @@ export default function CustomNutritionalPage() {
                       {p.nutrientsRight.map((n, i) => (
                         <li key={`right-${p.id}-${i}`}>
                           <span>{n.label}</span>
-                          <strong>{n.value} {n.unit}</strong>
+                          <span>{n.value} {n.unit}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
                 )}
-
               </div>
-
               <div className="nutritional_item_price">
                 <span className="nutritional_discount">{p.discount}%</span>
-                <span className="nutritional_price">
-                  {p.price.toLocaleString()}원~
-                </span>
+                <span className="nutritional_price">{p.price.toLocaleString()}원~</span>
               </div>
               <div className="nutritional_item_review">
                 <i className="fa-regular fa-comment-dots"></i>
@@ -330,7 +312,6 @@ export default function CustomNutritionalPage() {
             </li>
           ))}
         </ul>
-
       </main>
     </div>
   );

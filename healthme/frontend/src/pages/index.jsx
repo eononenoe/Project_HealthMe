@@ -15,7 +15,7 @@ const HomePage = () => {
       direction: 'horizontal',
       loop: true,
       autoplay: {
-        delay: 2000,
+        delay: 5000,
       },
       effect: 'slide',
       mousewheel: true,
@@ -68,13 +68,16 @@ const HomePage = () => {
               <div className="swiper">
                 <div className="swiper-wrapper">
                   <div className="swiper-slide">
-                    <img src={`${process.env.PUBLIC_URL}/img/main/Banner1.jpg`} alt="반찬 배너" />
+                    <img src={`${process.env.PUBLIC_URL}/img/main/Banner1.jpg`} alt="배너" />
                   </div>
                   <div className="swiper-slide">
-                    <img src={`${process.env.PUBLIC_URL}/img/main/Banner2.jpg`} alt="식단 배너" />
+                    <img src={`${process.env.PUBLIC_URL}/img/main/Banner2.jpg`} alt="배너" />
                   </div>
                   <div className="swiper-slide">
-                    <img src={`${process.env.PUBLIC_URL}/img/main/Banner3.jpg`} alt="참외 배너" />
+                    <img src={`${process.env.PUBLIC_URL}/img/main/Banner3.jpg`} alt="배너" />
+                  </div>
+                  <div className="swiper-slide">
+                    <img src={`${process.env.PUBLIC_URL}/img/main/Banner4.jpg`} alt="배너" />
                   </div>
                 </div>
                 <div className="swiper-pagination" />

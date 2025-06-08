@@ -120,10 +120,10 @@ function ProductDetailPage() {
                                 </div>
                             </div>
                             <span className="detail-membership-high">
-                                <span className="badge badge-green">새싹</span> 3% ·
-                                <span className="badge badge-orange">열정</span> 6% ·
-                                <span className="badge badge-blue">우수</span> 9% ·
-                                <span className="badge badge-purple">명예</span> 12% 할인 혜택이 적용됩니다.
+                                <span className="badge badge-green">새싹</span>: 3% ·
+                                <span className="badge badge-orange">열정</span>: 6% ·
+                                <span className="badge badge-blue">우수</span>: 9% ·
+                                <span className="badge badge-purple">명예</span>: 12% 할인 혜택이 적용됩니다.
                             </span>
 
                             <button className="detail-benefit-button" onClick={handleClick}>로그인 하러 가기</button>

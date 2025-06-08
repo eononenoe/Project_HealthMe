@@ -153,7 +153,7 @@ const PurchasePage = () => {
         <div className="purchase-banner">
           <img
             className="purchase-banner-img"
-            src="/img/main/Banner1.jpg"
+            src="/img/main/Banner3.jpg"
             alt="배너"
           />
         </div>
