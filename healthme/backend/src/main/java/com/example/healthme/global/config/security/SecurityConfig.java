@@ -48,9 +48,8 @@ public class SecurityConfig {
                                 "/healthme/users/login",
                                 "/healthme/sms/**",
                                 "/healthme/survey",
-                                "healthme/products", // 정현 임시 ㅣ 상품 목록
+                                "/healthme/products", // 정현 임시 ㅣ 상품 목록
                                 "/healthme/products/**", // 정현 임시 ㅣ 상품 상세
-                                "/healthme/products/details", // 정현 임시 ㅣ 상세 nutrient 포함
                                 "/healthme/nutrients/**" // 정현 임시 ㅣ 영양성분 API
                         ).permitAll()
                         .requestMatchers("/user").hasRole("USER")

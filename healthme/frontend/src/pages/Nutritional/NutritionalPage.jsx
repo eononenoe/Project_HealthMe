@@ -2,6 +2,22 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'static/css/pages/Nutritional.css';
 
+const formatNutrient = (label, value, unit) => {
+  if (!value) return null;
+  const numericValue = parseFloat(value);
+  if (isNaN(numericValue)) return null;
+
+  let displayValue = numericValue;
+  let displayUnit = unit;
+
+  if (unit === 'mg' && numericValue >= 1000) {
+    displayValue = (numericValue / 1000).toFixed(1);
+    displayUnit = 'g';
+  }
+
+  return { label, value: displayValue, unit: displayUnit };
+};
+
 export default function CustomNutritionalPage() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
@@ -9,7 +25,7 @@ export default function CustomNutritionalPage() {
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    console.log("토큰 확인:", token);
+
     axios
       .get("http://localhost:8090/healthme/products/details", {
         headers: {
@@ -17,40 +33,45 @@ export default function CustomNutritionalPage() {
         },
       })
       .then((res) => {
-        console.log("원본 응답 데이터:", res.data);
-
         if (!Array.isArray(res.data)) {
           console.error("응답 형식 오류: 배열이 아님");
           return;
         }
 
-        const mappedProducts = res.data.map((item) => {
+        console.log("서버 응답 전체:", res.data);
+
+        // 각 아이템 확인
+        res.data.forEach((item, idx) => {
+          console.log(`상품 : ${idx} 데이터 :`, item);
+        });
+
+        const mappedProducts = res.data.map((item, idx) => {
+          const productId = item.productId ?? `temp-${idx}`;
+          console.log("제품 ID 확인:", productId, item.name);
+
           const nutrientsRaw = [
-            formatNutrient('단백질', item.protein),
-            formatNutrient('철분', item.iron),
-            formatNutrient('칼슘', item.calcium),
-            formatNutrient('비타민D', item.vitamin_d),
-            formatNutrient('식이섬유', item.dietary_fiber),
-            formatNutrient('마그네슘', item.magnesium),
-            formatNutrient('칼륨', item.potassium),
-            formatNutrient('비오틴', item.biotin),
-            formatNutrient('아연', item.zinc),
-            formatNutrient('아르기닌', item.arginine),
+            formatNutrient('단백질', item.protein, 'g'),
+            formatNutrient('철분', item.iron, 'mg'),
+            formatNutrient('칼슘', item.calcium, 'mg'),
+            formatNutrient('비타민 D', item.vitamin_d, 'µg'),
+            formatNutrient('식이섬유', item.dietary_fiber, 'g'),
+            formatNutrient('마그네슘', item.magnesium, 'mg'),
+            formatNutrient('칼륨', item.potassium, 'mg'),
+            formatNutrient('비오틴', item.biotin, 'µg'),
+            formatNutrient('아연', item.zinc, 'mg'),
+            formatNutrient('아르기닌', item.arginine, 'mg'),
           ].filter(Boolean);
 
-          const left = nutrientsRaw.slice(0, 5);
-          const right = nutrientsRaw.slice(5, 10);
-
           return {
-            id: item.productId,
+            id: String(productId),
             name: item.name,
             price: item.salprice,
             originalPrice: item.price,
             discount: Math.round((1 - item.salprice / item.price) * 100),
             img: item.imageUrl,
-            nutrientsLeft: left,
-            nutrientsRight: right,
-            sales_count: item.sales_count
+            nutrientsLeft: nutrientsRaw.slice(0, 5),
+            nutrientsRight: nutrientsRaw.slice(5),
+            sales_count: item.sales_count,
           };
         });
 
@@ -61,57 +82,19 @@ export default function CustomNutritionalPage() {
       });
   }, []);
 
-  const formatNutrient = (label, value) => {
-    if (!value) return null;
-
-    const numericValue = parseFloat(value);
-    if (isNaN(numericValue)) return `${label} ${value}`;
-
-    if (value.toLowerCase().includes('mg') && numericValue >= 1000) {
-      return `${label} ${(numericValue / 1000).toFixed(1)}g`;
-    }
-
-    return `${label} ${value}`;
-  };
-  // 정렬
-  const sortProducts = (order) => {
-    let sorted = [];
-
-    if (order === 'asc' || order === 'desc') {
-      sorted = [...products].sort((a, b) => {
-        const priceA = a.price ?? a.originalPrice;
-        const priceB = b.price ?? b.originalPrice;
-        return order === 'asc' ? priceA - priceB : priceB - priceA;
-      });
-    } else if (order === 'sales') {
-      sorted = [...products].sort((a, b) => {
-        return (b.sales_count || 0) - (a.sales_count || 0); // 내림차순
-      });
-    } else if (order === 'discount') {
-      sorted = [...products].sort((a, b) => {
-        const discountA = a.originalPrice ? ((a.originalPrice - a.price) / a.originalPrice) * 100 : 0;
-        const discountB = b.originalPrice ? ((b.originalPrice - b.price) / b.originalPrice) * 100 : 0;
-        return discountB - discountA; // 높은 할인율이 먼저
-      });
-    }
-
-    setProducts(sorted);
-  };
-
-
   const toggleExpand = (productId) => {
+    const key = String(productId);
     setExpandedItems((prev) => ({
       ...prev,
-      [productId]: !prev[productId],
+      [key]: !prev[key],
     }));
   };
+
   const addToCart = (product) => {
     setCart((prev) => {
       const existing = prev.find((p) => p.id === product.id);
       return existing
-        ? prev.map((p) =>
-          p.id === product.id ? { ...p, qty: p.qty + 1 } : p
-        )
+        ? prev.map((p) => p.id === product.id ? { ...p, qty: p.qty + 1 } : p)
         : [...prev, { ...product, qty: 1, selected: true }];
     });
   };
@@ -136,6 +119,20 @@ export default function CustomNutritionalPage() {
 
   const selected = cart.filter((c) => c.selected);
   const totalPrice = selected.reduce((sum, v) => sum + v.price * v.qty, 0);
+
+  const sortProducts = (order) => {
+    let sorted = [];
+    if (order === 'asc' || order === 'desc') {
+      sorted = [...products].sort((a, b) =>
+        order === 'asc' ? a.price - b.price : b.price - a.price
+      );
+    } else if (order === 'sales') {
+      sorted = [...products].sort((a, b) => b.sales_count - a.sales_count);
+    } else if (order === 'discount') {
+      sorted = [...products].sort((a, b) => b.discount - a.discount);
+    }
+    setProducts(sorted);
+  };
 
   useEffect(() => {
     document
@@ -206,7 +203,7 @@ export default function CustomNutritionalPage() {
             <hr />
             <ul className="nutritional-cart-items">
               {cart.map((item, idx) => (
-                <li key={item.id}>
+                <li key={`cart-${item.id}-${idx}`}>
                   <div className="nutritional-cart-line">
                     <input
                       type="checkbox"
@@ -230,7 +227,7 @@ export default function CustomNutritionalPage() {
               ))}
             </ul>
             <div className="cart-footer">
-              총 합계: <span>{totalPrice.toLocaleString()}원</span>
+              총 합계 : <span>{totalPrice.toLocaleString()}원</span>
             </div>
             <div className="cart-footer-button">
               <button onClick={() => alert('장바구니 이동')}>
@@ -256,9 +253,9 @@ export default function CustomNutritionalPage() {
             { label: '할인율순', type: 'discount' },
             { label: '낮은 가격순', type: 'asc' },
             { label: '높은 가격순', type: 'desc' }
-          ].map(({ label, type }, i, arr) => (
-            <React.Fragment key={label}>
-              <li>
+          ].flatMap(({ label, type }, i, arr) => {
+            const items = [
+              <li key={`sort-${label}`}>
                 <button
                   type="button"
                   className="sort-btn"
@@ -267,13 +264,16 @@ export default function CustomNutritionalPage() {
                   {label}
                 </button>
               </li>
-              {i < arr.length - 1 && <li>|</li>}
-            </React.Fragment>
-          ))}
+            ];
+            if (i < arr.length - 1) {
+              items.push(<li key={`divider-${i}`}>|</li>);
+            }
+            return items;
+          })}
         </ul>
         <ul className="nutritional_content">
-          {products.map((p) => (
-            <li key={p.id} className="nutritional_item_store">
+          {products.map((p, idx) => (
+            <li key={`product-${p.id}-${idx}`} className="nutritional_item_store">
               <div className="nutritional_item_img">
                 <img src={p.img} alt={p.name} />
               </div>
@@ -294,20 +294,27 @@ export default function CustomNutritionalPage() {
                     {expandedItems[p.id] ? 'expand_less' : 'expand_more'}
                   </span>
                 </button>
-                {expandedItems[p.id] && (
+                {expandedItems[String(p.id)] && (
                   <div className="nutrient-columns">
                     <ul className="nutrient-column">
-                      {p.nutrientsLeft.map((n, index) => (
-                        <li key={index}>{n}</li>
+                      {p.nutrientsLeft.map((n, i) => (
+                        <li key={`left-${p.id}-${i}`}>
+                          <span>{n.label}</span>
+                          <strong>{n.value} {n.unit}</strong>
+                        </li>
                       ))}
                     </ul>
                     <ul className="nutrient-column">
-                      {p.nutrientsRight.map((n, index) => (
-                        <li key={index}>{n}</li>
+                      {p.nutrientsRight.map((n, i) => (
+                        <li key={`right-${p.id}-${i}`}>
+                          <span>{n.label}</span>
+                          <strong>{n.value} {n.unit}</strong>
+                        </li>
                       ))}
                     </ul>
                   </div>
                 )}
+
               </div>
 
               <div className="nutritional_item_price">
@@ -323,6 +330,7 @@ export default function CustomNutritionalPage() {
             </li>
           ))}
         </ul>
+
       </main>
     </div>
   );

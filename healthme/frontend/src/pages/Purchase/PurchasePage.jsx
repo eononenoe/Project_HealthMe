@@ -1,6 +1,63 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import 'static/css/pages/Purchase.css';
+
+//  제품 리스트 컴포넌트 분리
+const ProductList = ({ products = [], isSpecial = false }) => {
+  const navigate = useNavigate();
+
+  const goToDetail = (product) => {
+    if (!product?.product_id) {
+      alert('상품 ID가 없습니다!');
+      return;
+    }
+    navigate(`/details/${product.product_id}`);
+  };
+
+  return (
+    <ul className="purchase-product-list">
+      {products.map((product, index) => (
+        <li
+          key={`product-${product.id}-${index}`}
+          className={`purchase-item_store ${product.category}`}
+        >
+          <div className="purchase-item_img">
+            <img src={product.imageUrl} alt={product.name} />
+          </div>
+          <div className="purchase-item_add" onClick={() => goToDetail(product)}>
+            <i className="fa-solid fa-cart-shopping" />
+            <span>담기</span>
+          </div>
+          <div className="purchase-item_name">
+            <span>{product.name}</span>
+          </div>
+          <div className="purchase-item_subtitle">
+            <span>{product.description}</span>
+          </div>
+          <div className="purchase-item_discount_price">
+            <del>{product.price.toLocaleString()}원</del>
+          </div>
+          <div className="purchase-item_price">
+            <ul>
+              <li className="purchase-discount">
+                {Math.round(100 - (product.salprice / product.price) * 100)}%
+              </li>
+              <li className="purchase-price">
+                {product.salprice.toLocaleString()}원
+              </li>
+            </ul>
+          </div>
+          <div className="purchase-item_review">
+            <i className="fa-regular fa-comment-dots"></i>
+            <span>{product.sales_count.toLocaleString()}+</span>
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
 
 const PurchasePage = () => {
   const [products, setProducts] = useState([]);
@@ -12,13 +69,13 @@ const PurchasePage = () => {
     })
       .then(response => {
         setProducts(response.data);
-        setOriginalProducts(response.data); // 정렬 전 원본 저장
+        setOriginalProducts(response.data);
       })
       .catch(error => {
         console.error("에러 발생:", error);
       });
 
-    // 버튼 관련 fade 효과 처리
+    // 버튼 fade 효과 처리
     const buttonsGroup = document.querySelectorAll('.options');
     buttonsGroup.forEach((group) => {
       const buttons = group.querySelectorAll('.circle');
@@ -46,20 +103,16 @@ const PurchasePage = () => {
         return order === 'asc' ? priceA - priceB : priceB - priceA;
       });
     } else if (order === 'sales') {
-      sorted = [...products].sort((a, b) => {
-        return (b.sales_count || 0) - (a.sales_count || 0);
-      });
+      sorted = [...products].sort((a, b) => (b.sales_count || 0) - (a.sales_count || 0));
     } else if (order === 'discount') {
       sorted = [...products].sort((a, b) => {
         const discountA = a.salprice ? ((a.price - a.salprice) / a.price) * 100 : 0;
         const discountB = b.salprice ? ((b.price - b.salprice) / b.price) * 100 : 0;
-        return discountB - discountA; // 높은 할인율이 먼저 오도록
+        return discountB - discountA;
       });
     }
     setProducts(sorted);
   };
-
-
 
   const filterCategory = (category) => {
     const items = document.querySelectorAll('.purchase-item_store');
@@ -113,45 +166,10 @@ const PurchasePage = () => {
           <li><a href="#" onClick={() => sortProducts('asc')}>낮은 가격순</a></li>
           <li>|</li>
           <li><a href="#" onClick={() => sortProducts('desc')}>높은 가격순</a></li>
-
         </ul>
 
-        <ul className="purchase-product-list">
-          {products.map((product) => (
-            <li key={product.productId} className={`purchase-item_store ${product.category}`}>
-              <div className="purchase-item_img">
-                <img src={product.imageUrl} alt={product.name} />
-              </div>
-              <div className="purchase-item_add">
-                <i className="fa-solid fa-cart-shopping"></i>
-                <span onClick={() => alert('장바구니에 담겼습니다')}>담기</span>
-              </div>
-              <div className="purchase-item_name">
-                <span>{product.name}</span>
-              </div>
-              <div className="purchase-item_subtitle">
-                <span>{product.description}</span>
-              </div>
-              <div className="purchase-item_discount_price">
-                <del>{product.price.toLocaleString()}원</del>
-              </div>
-              <div className="purchase-item_price">
-                <ul>
-                  <li className="purchase-discount">
-                    {Math.round(100 - (product.salprice / product.price) * 100)}%
-                  </li>
-                  <li className="purchase-price">
-                    {product.salprice.toLocaleString()}원
-                  </li>
-                </ul>
-              </div>
-              <div className="purchase-item_review">
-                <i className="fa-regular fa-comment-dots"></i>
-                <span>{product.sales_count.toLocaleString()}+</span>
-              </div>
-            </li>
-          ))}
-        </ul>
+        {/*  상품 목록 */}
+        <ProductList products={products} />
       </section>
     </main>
   );

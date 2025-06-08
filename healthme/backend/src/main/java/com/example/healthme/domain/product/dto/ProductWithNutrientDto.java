@@ -11,14 +11,24 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class ProductWithNutrientDto {
+    @JsonProperty("product_id")
     private Long productId;
+
     private String name;
     private String description;
     private int price;
     private int salprice;
     private int amount;
+
+    @JsonProperty("image_url")
     private String imageUrl;
+
+    @JsonProperty("detail_img")
+    private String detailImg;
+
     private String category;
+
+    @JsonProperty("sales_count")
     private int sales_count;
 
     @JsonProperty("product_nutrient_id")

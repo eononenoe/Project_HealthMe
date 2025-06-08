@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -30,19 +31,19 @@ const HomePage = () => {
       },
     });
 
-    axios.get("http://localhost:8090/healthme/products", { withCredentials: true })
-      .then(response => {
+    axios
+      .get("http://localhost:8090/healthme/products", { withCredentials: true })
+      .then((response) => {
+        console.log('응답:', response.data);
         const all = response.data;
 
-        // 인기 상품 상위 4개 (sales_count 기준)
         const popular = [...all]
           .sort((a, b) => (b.sales_count || 0) - (a.sales_count || 0))
           .slice(0, 4);
 
-        // 오늘의 특가 상위 4개 (할인율 기준)
         const special = [...all]
-          .filter(p => p.price && p.salprice)
-          .map(p => ({
+          .filter((p) => p.price && p.salprice)
+          .map((p) => ({
             ...p,
             discountRate: Math.round(100 - (p.salprice / p.price) * 100),
           }))
@@ -52,7 +53,7 @@ const HomePage = () => {
         setPopularProducts(popular);
         setSpecialProducts(special);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error('상품 로딩 오류:', err);
       });
   }, []);
@@ -148,21 +149,33 @@ const HomePage = () => {
   );
 };
 
-// 공통 상품 리스트 컴포넌트
 const ProductList = ({ products = [], isSpecial = false }) => {
+  const navigate = useNavigate();
+
+  const goToDetail = (product) => {
+    if (!product?.product_id) {
+      alert('상품 ID가 없습니다!');
+      return;
+    }
+    navigate(`/details/${product.product_id}`);
+  };
+
   return (
     <ul className="main_low_low_content">
-      {products.map((product, i) => (
-        <li key={i} className="item_store">
+      {products.map((product) => (
+        <li key={product.product_id} className="item_store">
           <div className="item_img">
             <img src={product.imageUrl} alt={product.name} />
           </div>
-          <div className="item_add">
+          <div className="item_add" onClick={() => goToDetail(product)}>
             <i className="fa-solid fa-cart-shopping" />
-            <span onClick={() => alert('장바구니에 담겼습니다')}>담기</span>
+            <span>담기</span>
           </div>
           <div className="item_name">
             <span>{product.name}</span>
+          </div>
+          <div className="item_item_subtitle">
+            <span>{product.description}</span>
           </div>
           <div className="item_discount_price">
             <del>{product.price?.toLocaleString()}원</del>

@@ -229,10 +229,10 @@ a {
 }
 
 .cart-header-left {
+  padding-left: 5px;
   display: flex;
   align-items: center;
-  /* 왼쪽 그룹 세로 가운데 정렬 */
-  gap: 5px;
+  gap: 8px;
 }
 
 
@@ -269,9 +269,10 @@ a {
 }
 
 .custom-checkbox:checked::after {
-  content: '✔';
+  font-family: 'Material Symbols Outlined';
+  content: 'check';
   color: white;
-  font-size: 9px;
+  font-size: 14px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -287,7 +288,7 @@ a {
 }
 
 .nutritional-cart-items li {
-  padding: 20px 10px;
+  padding: 15px 10px;
   border-bottom: 1px solid #eee;
 }
 
@@ -306,7 +307,7 @@ a {
 
 /* 상품 이름 */
 .nutritional-cart-item-name {
-  font-size: 15px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -314,8 +315,7 @@ a {
 
 /* 가격 */
 .nutritional-cart-item-price {
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 12px;
 }
 
 /* 수량 조절 박스 */

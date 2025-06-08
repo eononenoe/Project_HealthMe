@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ProductNutrientRepository extends JpaRepository<ProductNutrient, Long> {
-    List<ProductNutrient> findByProductId(Long productId);
+    // 연관관계를 따라가는 올바른 메서드 이름
+    List<ProductNutrient> findByProductStore_ProductId(Long productId);
 }
 

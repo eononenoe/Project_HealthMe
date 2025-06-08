@@ -19,8 +19,8 @@ public class ProductNutrientController {
 
     @GetMapping("/{productId}")
     public List<ProductNutrient> getNutrientsByProductId(@PathVariable Long productId) {
-        System.out.println(nutrientRepository.findByProductId(productId));
-        return nutrientRepository.findByProductId(productId);
+        System.out.println(nutrientRepository.findByProductStore_ProductId(productId));
+        return nutrientRepository.findByProductStore_ProductId(productId);
 
     }
 }
