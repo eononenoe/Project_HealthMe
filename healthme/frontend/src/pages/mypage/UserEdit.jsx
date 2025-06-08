@@ -14,16 +14,23 @@ export default function UserEdit() {
   const [update, setUpdate] = useState(false);
   const [deliveryOrders, setDeliveryOrders] = useState([]);
   const [showDeliveryDetail, setShowDeliveryDetail] = useState(false);
+  const [levelEmoji, setLevelEmoji] = useState(null);
 
   const loginUser = JSON.parse(localStorage.getItem("loginUser"));
 
+  const calcLevel = (amount) => {
+    if (amount >= 1_000_000) return "👑"; // 명예
+    if (amount >= 500_000) return "🏆"; // 우수
+    if (amount >= 100_000) return "🔥"; // 열정
+    return "🌱"; // 새싹
+  };
   const userinfo = async () => {
     if (loginUser !== null) {
       const getuser = await axios.get("/mypage/getuserinfo", {
         params: { id: loginUser.id },
         withCredentials: true,
       });
-
+      console.log("getuser : ", getuser);
       if (getuser !== null) {
         setForm({
           ...getuser.data,
@@ -31,6 +38,10 @@ export default function UserEdit() {
           tel2: getuser.data.tel.substring(4, 8),
           tel3: getuser.data.tel.substring(9, 13),
         });
+
+        // 등급 이모지 설정
+        const amount = getuser.data.totalPurchaseAmount ?? 0;
+        setLevelEmoji(calcLevel(amount));
       }
     }
   };
@@ -76,6 +87,7 @@ export default function UserEdit() {
             "Content-Type": "multipart/form-data",
           },
         });
+
         window.alert("수정에 성공했습니다.");
         setUpdate((prev) => !prev);
       } catch (error) {
@@ -100,7 +112,9 @@ export default function UserEdit() {
     <>
       <div className="user-box">
         <div className="user-top">
-          <div>🌱 강강강</div>
+          <div>
+            {levelEmoji} {form.username}
+          </div>
         </div>
         <div className="delivery-status-summary">
           📦 현재 배송 상태:{" "}

@@ -17,13 +17,11 @@ import "static/css/common/common.css";
 import "static/css/pages/Announcement.css";
 
 export default function Announcement() {
-  /* -------------------------------------------------- state -------------------------------------------------- */
   const [category, setCategory] = useState("전체");
   const [notices, setNotices] = useState([]);
   const [detail, setDetail] = useState(null); // 단건 조회 결과
   const [open, setOpen] = useState(false); // Dialog open 여부
 
-  /* -------------------------------------------------- FAQ 하드코딩 -------------------------------------------------- */
   const faqList = [
     {
       id: 101,
@@ -75,7 +73,6 @@ export default function Announcement() {
     },
   ];
 
-  /* -------------------------------------------------- 데이터 로딩 -------------------------------------------------- */
   useEffect(() => {
     (async () => {
       try {
@@ -103,11 +100,9 @@ export default function Announcement() {
     })();
   }, [category]);
 
-  /* -------------------------------------------------- helpers -------------------------------------------------- */
   const formatDate = (iso) => (iso || "").slice(2, 10).replace(/-/g, ".");
   const tabs = ["전체", "공지사항", "자주하는 질문"];
 
-  /* -------------------------------------------------- 단건 모달 핸들러 -------------------------------------------------- */
   const handleOpenDetail = async (id) => {
     try {
       const res = await axios.get("/api/notices/" + id, {
@@ -120,7 +115,6 @@ export default function Announcement() {
     }
   };
 
-  /* -------------------------------------------------- JSX -------------------------------------------------- */
   return (
     <div className="announce-wrap">
       <h1>고객센터</h1>
@@ -155,7 +149,13 @@ export default function Announcement() {
       {/* 자주하는 질문 */}
       {category === "자주하는 질문" &&
         notices.map((faq, idx) => (
-          <Accordion key={faq.id} sx={{ mb: 1 }}>
+          <Accordion
+            key={faq.id}
+            sx={{
+              mb: 1,
+              mt: idx === 0 ? 2 : 0, // 첫 번째 항목만 위로 띄움 (예: 16px)
+            }}
+          >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography sx={{ width: 30 }}>{idx + 1}</Typography>
               <Typography sx={{ ml: 2, flex: 1 }}>{faq.question}</Typography>
@@ -172,7 +172,7 @@ export default function Announcement() {
       {/* 공지·이벤트 목록 */}
       {category !== "자주하는 질문" &&
         notices.map((n, i) => (
-          <div // ← 이것 자체가 한 행
+          <div
             className="announce-item"
             key={n.id}
             onClick={() => handleOpenDetail(n.id)}
@@ -193,7 +193,6 @@ export default function Announcement() {
           </div>
         ))}
 
-      {/* ───────────────── Dialog(단건) ───────────────── */}
       {detail && (
         <Dialog
           open={open}

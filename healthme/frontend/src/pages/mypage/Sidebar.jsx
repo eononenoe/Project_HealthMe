@@ -26,9 +26,9 @@ export default function ServiceCenter() {
         <li>
           <Link to="/announce">고객센터</Link>
         </li>
-        <li>
+        {/* <li>
           <Link to="/mypage/inquiry_history">상품문의</Link>
-        </li>
+        </li> */}
       </ul>
     </div>
   );

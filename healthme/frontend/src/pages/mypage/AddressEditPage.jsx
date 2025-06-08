@@ -7,11 +7,30 @@ export default function AddressEditPage() {
   const [open, setOpen] = useState(false);
   const [addrAdd, setAddrAdd] = useState(false);
   const [addr_userDB, setAddr_userDB] = useState([]);
-  const [updateaddress, setUpdateaddress] = useState(null); // 수정페이지에 전달한 하나의 주소
-  const [showDeliveryDetail, setShowDeliveryDetail] = useState(false); // 배송 상세보기 모달 상태
-  const [deliveryOrders, setDeliveryOrders] = useState([]); // 배송상세보기 눌렀을때 데이터 남는 곳
+  const [updateaddress, setUpdateaddress] = useState(null);
+  const [showDeliveryDetail, setShowDeliveryDetail] = useState(false);
+  const [deliveryOrders, setDeliveryOrders] = useState([]);
+  const [levelEmoji, setLevelEmoji] = useState(null);
 
   const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+
+  const calcLevel = (amount) => {
+    if (amount >= 1_000_000) return "👑";
+    if (amount >= 500_000) return "🏆";
+    if (amount >= 100_000) return "🔥";
+    return "🌱";
+  };
+
+  const fetchUserInfo = async () => {
+    if (loginUser) {
+      const res = await axios.get("/mypage/getuserinfo", {
+        params: { id: loginUser.id },
+        withCredentials: true,
+      });
+      const amount = res.data.totalPurchaseAmount ?? 0;
+      setLevelEmoji(calcLevel(amount));
+    }
+  };
 
   const handleUpdate = (e, addr) => {
     e.preventDefault();
@@ -20,21 +39,17 @@ export default function AddressEditPage() {
   };
 
   const getAddress = async () => {
-    // 배송 주소 가져오는 api
     const addr_user = await axios.get(`/mypage/getaddrinfo`, {
       withCredentials: true,
     });
-    console.log("Addr_user", addr_user);
     setAddr_userDB(addr_user.data);
   };
 
   const fetchDeliveryOrders = async () => {
-    // 배송지 가져오는 api
     try {
       const res = await axios.get("/mypage/getbuy", {
         withCredentials: true,
       });
-      console.log("addressdeliveryOrders : ", res);
       setDeliveryOrders(res.data);
     } catch (err) {
       console.error("배송 상세 내역 로딩 실패", err);
@@ -42,7 +57,6 @@ export default function AddressEditPage() {
   };
 
   const generateTrackingNumber = () => {
-    // 운송장 번호 랜덤 생성
     const randomNum = Math.floor(Math.random() * 1_000_000_000_0000);
     return String(randomNum).padStart(13, "0");
   };
@@ -50,6 +64,7 @@ export default function AddressEditPage() {
   useEffect(() => {
     fetchDeliveryOrders();
     getAddress();
+    fetchUserInfo();
   }, []);
 
   const addnewAddr = () => {
@@ -63,12 +78,9 @@ export default function AddressEditPage() {
     <>
       <div className="user-box">
         <div className="user-top">
-          <div>🌱 강강강</div>
-          <form action="javascript:void(0)" method="post">
-            {/* <button type="submit" className="logout-button">
-              로그아웃
-            </button> */}
-          </form>
+          <div>
+            {levelEmoji} {loginUser.username}
+          </div>
         </div>
         <div className="delivery-status-summary">
           📦 현재 배송 상태:{" "}
@@ -149,7 +161,6 @@ export default function AddressEditPage() {
         </div>
       </div>
 
-      {/* 배송지 수정 모달 */}
       <AddressEditModal
         open={open}
         onClose={() => setOpen(false)}
@@ -157,14 +168,12 @@ export default function AddressEditPage() {
         getAddress={getAddress}
       />
 
-      {/* 새 배송지 추가 모달 */}
       <NewAddress
         addrAdd={addrAdd}
         onClose={() => setAddrAdd(false)}
         updateaddress={updateaddress}
       />
 
-      {/* 배송 상세 모달 */}
       {showDeliveryDetail && (
         <div className="modal-backdrop">
           <div className="modal-content">
@@ -235,7 +244,6 @@ export default function AddressEditPage() {
             ))}
 
             <button onClick={() => setShowDeliveryDetail(false)}>닫기</button>
-            {/* deliveryOrders.length > 0 && () 이렇게 조건을 달았기 때문에 [] 빈 배열로 해야 length가 0이 되면서 닫긴다. */}
           </div>
         </div>
       )}

@@ -12,14 +12,14 @@ public class MypageUserResponseDto {
 //    private String zip;
 //    private String address;
 //    private String addressDetail;
-
+    private int totalPurchaseAmount;
 
     public MypageUserResponseDto(User user) {
         this.id = user.getId();
         this.userid = user.getUserid();
         this.username = user.getUsername();
         this.tel = user.getTel();
-
+        this.totalPurchaseAmount = user.getTotalPurchaseAmount();
 //        this.zip = user.getDefaultAddress().getZip();
 //        this.address = user.getDefaultAddress().getAddress();
 //        this.addressDetail = user.getDefaultAddress().getAddressDetail();

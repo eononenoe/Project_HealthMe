@@ -3,12 +3,32 @@ import axios from "axios";
 
 export default function OrderHistoryPage() {
   const [orders, setOrders] = useState([]);
-  const [selectedOrders, setSelectedOrders] = useState([]); // 전체 주문 보기용
+  const [selectedOrders, setSelectedOrders] = useState([]);
+  const [levelEmoji, setLevelEmoji] = useState(null);
+
+  const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+
+  const calcLevel = (amount) => {
+    if (amount >= 1_000_000) return "👑";
+    if (amount >= 500_000) return "🏆";
+    if (amount >= 100_000) return "🔥";
+    return "🌱";
+  };
+
+  const fetchUserInfo = async () => {
+    if (loginUser) {
+      const res = await axios.get("/mypage/getuserinfo", {
+        params: { id: loginUser.id },
+        withCredentials: true,
+      });
+      const amount = res.data.totalPurchaseAmount ?? 0;
+      setLevelEmoji(calcLevel(amount));
+    }
+  };
 
   const getbuy = async () => {
     try {
       const res = await axios.get("/mypage/getbuy", { withCredentials: true });
-      console.log("res", res);
       setOrders(res.data);
     } catch (err) {
       console.error("구매 내역 가져오기 실패", err);
@@ -16,20 +36,22 @@ export default function OrderHistoryPage() {
   };
 
   const generateTrackingNumber = () => {
-    // 운송장 번호 랜덤 생성
     const randomNum = Math.floor(Math.random() * 1_000_000_000_0000);
-    return String(randomNum).padStart(13, "0"); // 13자리 숫자, 앞에 0 채움
+    return String(randomNum).padStart(13, "0");
   };
 
   useEffect(() => {
     getbuy();
+    fetchUserInfo();
   }, []);
 
   return (
     <>
       <div className="user-box">
         <div className="user-top">
-          <div>🌱 강강강</div>
+          <div>
+            {levelEmoji} {loginUser.username}
+          </div>
           <form action="javascript:void(0)" method="post">
             {/* <button type="submit" className="logout-button">
               로그아웃
@@ -65,7 +87,7 @@ export default function OrderHistoryPage() {
             </div>
 
             {order.items.map((item) => (
-              <div className="product-title">
+              <div className="product-title" key={item.productId}>
                 <img
                   src={item.productImageurl ?? "사진 없음."}
                   alt="상품 이미지"

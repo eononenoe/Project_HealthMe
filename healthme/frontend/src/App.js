@@ -19,7 +19,6 @@ import AdminNoticePage from "pages/admin/AdminNoticePage";
 // ───── 마이페이지 영역 ─────
 import MypageLayout from "pages/mypage/MypageLayout";
 import UserEdit from "pages/mypage/UserEdit";
-import ProductInquiryPage from "pages/mypage/ProductInquiryPage";
 import OrderHistoryPage from "pages/mypage/OrderHistoryPage";
 import AddressEditPage from "pages/mypage/AddressEditPage";
 
@@ -53,7 +52,6 @@ function AppRoutes() {
         <Route path="/mypage" element={<MypageLayout />}>
           <Route index element={<UserEdit />} />
           <Route path="user_edit" element={<UserEdit />} />
-          <Route path="inquiry_history" element={<ProductInquiryPage />} />
           <Route path="purchase_history" element={<OrderHistoryPage />} />
           <Route path="address_edit" element={<AddressEditPage />} />
         </Route>
