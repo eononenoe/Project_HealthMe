@@ -175,7 +175,7 @@ function ProductDetailPage() {
             {activeTab === 'detail' && (
                 <>
                     <div id="detail" className={`detail-tab-content ${isDetailExpanded ? 'expanded' : ''}`} ref={detailRef}>
-                        <img src={product.detailImg} alt="상세 설명 이미지" />
+                        <img src={product.detail_img} alt="상세 설명 이미지" />
                     </div>
                     {!isDetailExpanded && (
                         <button className="detail-show-more-btn" onClick={() => setDetailExpanded(true)}>
