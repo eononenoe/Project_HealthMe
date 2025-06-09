@@ -7,6 +7,7 @@ import com.example.healthme.domain.approval.repository.ApprovalOrderRepository;
 import com.example.healthme.domain.mypage.dto.AddressUpdate;
 import com.example.healthme.domain.mypage.dto.MyPageUserUpdate;
 import com.example.healthme.domain.mypage.dto.MypageUserResponseDto;
+import com.example.healthme.domain.mypage.dto.RecipientDto;
 import com.example.healthme.domain.mypage.entity.Address;
 
 
@@ -47,6 +48,14 @@ public class MypageController {
     public void userUpdate(@RequestParam("id") Long id, @ModelAttribute MyPageUserUpdate userUpdate){
         // System.out.println(userUpdate);
         mypageUserService.updateUser(id,userUpdate);
+    }
+
+    // 회원 정보 수정할때 address 테이블의 recipient 업데이트
+    @PostMapping("/update-recipient")
+    public ResponseEntity<Void> updateRecipient(@RequestBody RecipientDto dto,
+                                                @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        mypageUserService.updateRecipientForUser(principalDetails.getUserDto().getId(), dto.getRecipient());
+        return ResponseEntity.ok().build();
     }
 
     // 주소값 가져오기

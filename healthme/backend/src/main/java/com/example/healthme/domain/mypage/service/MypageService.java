@@ -12,6 +12,7 @@ import com.example.healthme.global.config.auth.principal.PrincipalDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -65,6 +66,12 @@ public class MypageService {
 
         userRepository.save(user);
     }
+
+    @Transactional
+    public void updateRecipientForUser(Long userId, String recipient) {
+        addressRepository.updateRecipientByUserId(userId, recipient);
+    }
+
 
     // 배송지 수정
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DaumPostcodeModal from "./DaumPostcodeModal";
 import axios from "axios";
-export default function NewAddress({ addrAdd, onClose, updateaddress }) {
+export default function NewAddress({ addrAdd, onClose, newaddr }) {
   const [user, setUser] = useState({
     address: "",
     addressDetail: "",
@@ -91,7 +91,7 @@ export default function NewAddress({ addrAdd, onClose, updateaddress }) {
                   type="text"
                   id="recipient"
                   name="recipient"
-                  value={updateaddress.recipient}
+                  value={newaddr?.recipient || ""}
                   readOnly
                 />
               </div>
@@ -104,14 +104,14 @@ export default function NewAddress({ addrAdd, onClose, updateaddress }) {
                   type="text"
                   id="phone"
                   name="phone"
-                  value={updateaddress.tel}
+                  value={newaddr?.tel || ""}
                   readOnly
                 />
               </div>
 
               <div className="button-group">
                 <button
-                  type="submit"
+                  type="button"
                   className="submit-btn"
                   onClick={updateUserSubmit}
                 >
