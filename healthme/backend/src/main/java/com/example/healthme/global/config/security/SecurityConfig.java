@@ -42,14 +42,15 @@ public class SecurityConfig {
                                 "/",
                                 "/healthme/users/join",
                                 "/healthme/users/check",
-                                "/healthme/users/login"
+                                "/healthme/users/login",
+                                "/healthme/products",
+                                "/healthme/products/**"
 
                         ).permitAll()
                         .requestMatchers("/user",
                                 "/healthme/result/**",
                                 "/healthme/survey/**",
-                                "/healthme/products",
-                                "/healthme/products/**",
+
                                 "/healthme/nutrients/**",
                                 "/healthme/mypage/**"
                         ).hasRole("USER")
