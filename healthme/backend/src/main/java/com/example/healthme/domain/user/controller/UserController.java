@@ -1,10 +1,10 @@
 package com.example.healthme.domain.user.controller;
 
+import com.example.healthme.domain.user.repository.UserRepository;
 import com.example.healthme.domain.user.dto.JoinRequestDto;
 import com.example.healthme.domain.user.dto.LoginRequestDto;
 import com.example.healthme.domain.user.dto.UserResponseDto;
 import com.example.healthme.domain.user.entity.User;
-import com.example.healthme.domain.user.repository.UserRepository;
 import com.example.healthme.domain.user.service.UserService;
 import com.example.healthme.global.config.auth.jwt.TokenInfo;
 import jakarta.servlet.http.Cookie;
