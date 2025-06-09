@@ -122,7 +122,7 @@ const ResultPage = () => {
               <InfluenceIcon key={idx} icon={icon} onClick={setSelectedIcon} />
             ))}
           </div>
-          <div className="recommend-box" style={{ borderTop: selectedIcon ? `4px solid ${selectedIcon.color}` : 'none' }}>
+          <div className="recommend-box" style={{ borderTop: selectedIcon ? `4px solid ${selectedIcon.color}` : `4px solid gainsboro`  }}>
             <div className='recommend-food'>
               <div className='recommend-img'>
               </div>

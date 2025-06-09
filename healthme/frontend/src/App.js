@@ -3,7 +3,10 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 
 import Header from 'components/header';
 import Footer from 'components/footer';
+
+// 결과 페이지
 import ResultPage from 'pages/Result/ResultPage';
+// 로그인 페이지
 import JoinPage from 'pages/login/JoinPage';
 import LoginPage from 'pages/login/LoginPage';
 import FindAccount from 'pages/login/FindAccount';

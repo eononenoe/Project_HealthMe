@@ -44,8 +44,6 @@ public class NutrientResultService {
             NutrientResultDesc desc = descRepository
                     .findByNutrientAndRange(nutrient, rangeStart)
                     .orElse(null);
-//-------------------------------
-//           -----------------------------
             if (desc != null) {
                 // foods는 문자열 → List<String> 변환
                 List<String> foodsList = desc.getFoods() != null
