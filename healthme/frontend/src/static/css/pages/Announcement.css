@@ -1,103 +1,106 @@
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    font-family: sans-serif;
-}
-.container{
-    width: 1000px;
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-}
-h1{
-    font-weight: 400;
-    color:  rgb(55, 55, 55);
-    margin-top: 30px;
-    font-weight: 500;
-    font-size: 30px;
-    margin-top: 80px;
-}
-.nav{
-    width: 1000px;
-    height: 60px;
-    display: flex;
-    text-align: center;
-    border-bottom: 1px solid rgb(235, 235, 235);
-
-    gap: 50px;
-    margin-bottom: 20px;
-    margin-top: 50px;
-
-}
-.nav_btn{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
-.nav > a{
-    color : rgb(55, 55, 55);
-    display: block;
-}
-.nav>a:hover .nav_btn{
-    border-bottom: 1px solid orange;
+body {
+  font-family: "Nanum Gothic", sans-serif;
+  background-color: #f7f7f7;
 }
 
-.sum_list{
-    display: flex;
-    align-items: end;
-    font-size: 12px;
-    height: 60px;
-    border-bottom: 1px solid;
-    padding: 15px 15px 15px 0;
-    justify-content: flex-start;
+.announce-wrap {
+  width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
-.list{
-    width: 1000px;
-    height: 60px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid gainsboro;
-    font-size: 13px;
+.announce-wrap h1 {
+  margin-top: 80px;
+  font-size: 30px;
+  font-weight: 500;
+  color: #373737;
 }
-.num{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 100%;
+
+.announce-nav {
+  height: 60px;
+  display: flex;
+  gap: 50px;
+  margin: 50px 0 20px;
+  border-bottom: 1px solid #ebebeb;
 }
-.title{
-    display:flex;
-    padding: 10px;
-    gap: 10px;
-    width: calc( 100% - 50px - 50px);
+
+.announce-nav a {
+  color: #373737;
+  display: block;
 }
-.event_mark, .winner_mark{
-    background-color: rgb(253, 244, 233);
-    color: rgb(255, 153, 0);
-    border-radius: 3px;
-    font-size: 10px;
-    padding: 3px;
+
+.nav_btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
-.date{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100px;
+
+.announce-nav a:hover .nav_btn {
+  border-bottom: 1px solid orange;
 }
-.title>a{
-    display: flex;
-    align-items: center;
-    color: black;
-    font-size: 14px;
+
+.announce-sum {
+  height: 60px;
+  display: flex;
+  align-items: flex-end;
+  font-size: 12px;
+  padding: 15px 0;
+  border-bottom: 1px solid #000;
+}
+
+.announce-item {
+  display: flex;
+  /* align-items: center; */
+  column-gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+/* 번호 */
+.announce-item .num {
+  width: 50px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* 제목 */
+.announce-item .title {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 0 !important;
+}
+
+/* 날짜 */
+.announce-item .date {
+  width: 110px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.event_mark,
+.winner_mark {
+  background-color: #fdf4e9;
+  color: #ff9900;
+  border-radius: 3px;
+  font-size: 10px;
+  padding: 3px;
+  margin-right: 4px;
+}
+
+.MuiAccordion-root {
+  background: #fff;
 }

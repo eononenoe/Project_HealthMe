@@ -8,8 +8,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TranscationStatusDto {
-    private int no;
-    private String cancel;
-    private String success;
+    private Long orderId;
+    private boolean isCanceled;
+    private boolean isCompleted;
+
+    private boolean refundRequested;   // 환불 요청 여부
+    private boolean returnRequested;
+
 
 }

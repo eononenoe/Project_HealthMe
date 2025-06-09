@@ -7,215 +7,205 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Checkbox,
   Button,
   Box,
   Pagination,
   TextField,
   InputAdornment,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
 } from "@mui/material";
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
 
+/**
+ * 관리자 > 거래 내역 페이지 (DTO 기반 2025.06)
+ */
 export default function TransactionPage() {
-  // DB조회와 상품 등록후 재조회
-  const [transproducts, setPrducts] = useState([]); // db에 저장된 등록된 상품
-
-  // 페이지네이션
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-
-  const [update, setUpdate] = useState(false); // 제품등록 후 다시 db를 가져오기 위한 트리거
+  /* --------------------------- 상태 --------------------------- */
+  const [orders, setOrders] = useState([]); // 목록
+  const [page, setPage] = useState(1); // 현재 페이지 (1-base)
+  const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
+  const [needRefresh, setNeedRefresh] = useState(false); // 새로고침 트리거
 
   // 검색
-  const [searchText, setSearchText] = useState();
-  const [searchMode, setSearchMode] = useState(false); // 검색 모드로 분기시키는 트리거
+  const [keyword, setKeyword] = useState("");
+  const [searchMode, setSearchMode] = useState(false);
 
-  // 로직 함수
+  // 환불·반품 다이얼로그
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
 
-  // 페이지 버튼 클릭 이벤트 정의
-  const handlePageChange = (event, value) => {
-    // event : 클릭 이벤트 객체, value : 사용자가 선택한 페이지 번호(1부터 시작) MUI의 Pagination 컴포넌트가 넘겨주는 매개변수이다.
-    console.log(event);
-    console.log(value);
-    setPage(value);
-  };
+  /* --------------------------- 공통 --------------------------- */
+  const toggleRefresh = () => setNeedRefresh((prev) => !prev);
 
-  // 거래 완료, 취소 이벤트 정의
-  const transSuccess = (no) => {
-    // cancel : N success: Y -> cancel : N success : Y
-    const boolean = window.confirm("거래를 완료하시겠습니까?");
-    if (boolean) {
-      const transArray = {
-        cancel: "N",
-        success: "Y",
-        no: no,
-      };
-      transAPI(transArray);
-      setUpdate((prev) => !prev);
-    } else {
-      // 취소를 눌렀을때.
-      window.alert("작업을 취소하였습니다.");
-    }
-  };
-
-  const transCancel = (no) => {
-    // cancel : N success : Y -> cancel : Y success : N
-    const boolean = window.confirm("거래를 취소하시겠습니까?");
-    if (boolean) {
-      const transArray = {
-        cancel: "Y",
-        success: "N",
-        no: no,
-      };
-      transAPI(transArray);
-      setUpdate((prev) => !prev);
-    } else {
-      window.alert("작업을 취소하였습니다.");
-    }
-  };
-  const transAPI = async (transArray) => {
-    try {
-      await axios.post("/transactions/status", transArray);
-      window.alert("거래가 성공적으로 완료 처리되었습니다.");
-    } catch (error) {
-      window.alert("거래 완료에 실패하였습니다.");
-    }
-  };
-
-  // 검색 핸들러
-  const searchChange = (e) => {
-    setSearchText(e.target.value);
-  };
-
-  const searchClick = () => {
-    setPage(1);
-    if (searchText !== "") {
-      setSearchMode(true); // 검색 모드로 들어간다.
-    } else {
-      setSearchMode(false); // 전체 목록 보기
-    }
-    setUpdate((prev) => !prev);
-  };
-
-  // 페이지네이션
+  /* --------------------------- 목록 조회 --------------------------- */
   useEffect(() => {
-    const selectMode = async () => {
-      if (searchMode) {
-        const searchData = await axios.get(
-          `/transactions/search/data?searchText=${searchText}&page=${
+    const fetchData = async () => {
+      const base = searchMode
+        ? `/transactions/search/data?searchText=${keyword}&page=${
             page - 1
           }&size=10`
-        );
-        console.log("searchData : ", searchData);
-        if (searchData !== null) {
-          setPrducts(searchData.data.content); // 리렌더링이 일어난다. -> 화면에 검색결과에 따른 목록이 보인다.
-          setTotalPages(searchData.data.totalPages);
-        }
-      } else {
-        const PageContent = await axios.get(
-          `/trans/selectAll?page=${page - 1}&size=10`
-        );
-        console.log(PageContent);
-        if (PageContent !== null) {
-          // size는 한페이지에 몇개를 보여줄지 , page-1은 백엔드에서는 0부터 세니까 개발자 편하라고 하는거다.
-          setPrducts(PageContent.data.content);
-          setTotalPages(PageContent.data.totalPages);
-        }
+        : `/trans/selectAll?page=${page - 1}&size=10`;
+      try {
+        const { data } = await axios.get(base, { withCredentials: true });
+        setOrders(data.content);
+        setTotalPages(data.totalPages);
+      } catch (e) {
+        console.error(e);
       }
     };
-    selectMode();
-  }, [page, update, searchMode]);
+    fetchData();
+  }, [page, needRefresh, searchMode, keyword]);
+
+  /* --------------------------- 상태 변경 --------------------------- */
+  const updateStatus = async (payload) => {
+    try {
+      await axios.post("/transactions/status", payload, {
+        withCredentials: true,
+      });
+    } catch (e) {
+      alert("작업에 실패했습니다.");
+      throw e;
+    }
+  };
+
+  const handleComplete = async (orderId) => {
+    if (!window.confirm("거래를 완료하시겠습니까?")) return;
+    await updateStatus({ orderId, canceled: false, completed: true });
+    toggleRefresh();
+  };
+
+  const handleCancel = async (orderId) => {
+    if (!window.confirm("거래를 취소하시겠습니까?")) return;
+    await updateStatus({ orderId, canceled: true, completed: false });
+    toggleRefresh();
+  };
+
+  /* --------------------------- 환불 / 반품 --------------------------- */
+  const requestRefundOrReturn = async (type) => {
+    const payload =
+      type === "환불"
+        ? { orderId: selectedOrderId, refundRequested: true }
+        : { orderId: selectedOrderId, returnRequested: true };
+    try {
+      await axios.post(`/transactions/refundReturn?type=${type}`, payload, {
+        withCredentials: true,
+      });
+      setDialogOpen(false);
+      toggleRefresh();
+    } catch (e) {
+      alert(`${type} 요청에 실패했습니다.`);
+    }
+  };
+
+  /* --------------------------- 렌더 --------------------------- */
+  const renderItemNames = (items = []) =>
+    items.map((i) => i.productName).join(", ");
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 2,
-        }}
-      >
-        <Typography variant="h7" fontWeight="bold">
-          상품 관리 페이지입니다
+      {/* 헤더 & 검색 */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+        <Typography variant="h6" fontWeight="bold">
+          거래 내역 관리 페이지입니다.
         </Typography>
-
         <TextField
-          variant="outlined"
           placeholder="거래자를 입력하세요"
-          value={searchText}
-          onChange={searchChange}
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          size="small"
+          sx={{ width: 220 }}
           InputProps={{
             endAdornment: (
-              <InputAdornment style={{ cursor: "pointer", position: "end" }}>
-                <SearchIcon onClick={searchClick} />
+              <InputAdornment position="end" sx={{ cursor: "pointer" }}>
+                <SearchIcon
+                  onClick={() => {
+                    setPage(1);
+                    setSearchMode(keyword.trim() !== "");
+                  }}
+                />
               </InputAdornment>
             ),
           }}
-          size="small"
-          sx={{ width: 200 }}
         />
       </Box>
 
+      {/* 테이블 */}
       <TableContainer>
         <Table>
-          {/*실제 테이블을 감싸는 컴포넌트 */}
           <TableHead>
-            {/* thead 역할을 하는 컴포넌트 */}
             <TableRow>
-              {/* tr 역할을 하는 컴포넌트 */}
-              {/* th, td 역할( TableHead안에서는 th 역할 TableBody안에서는 td 역할) */}
               <TableCell>No</TableCell>
               <TableCell>상품명</TableCell>
               <TableCell>가격</TableCell>
               <TableCell>거래자</TableCell>
-              <TableCell>거래은행</TableCell>
+              <TableCell>결제수단</TableCell>
               <TableCell>거래일시</TableCell>
               <TableCell>취소여부</TableCell>
               <TableCell>완료여부</TableCell>
-              <TableCell></TableCell>
+              <TableCell align="center" width={220}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {/*map()으로 반복 렌더링 */}
-            {transproducts.map((product) => (
-              <TableRow key={product.id}>
-                {/*key는 React가 어떤 항목이 바뀌었는지 정확히 알게 도와주는 고유 식별자입니다. */}
-                <TableCell>{product.no}</TableCell>
-                <TableCell>{product.productName}</TableCell>
-                <TableCell>{product.productPrice}</TableCell>
-                <TableCell>{product.transcationPeople}</TableCell>
-                <TableCell>{product.transcationBank}</TableCell>
-                <TableCell>{product.transcationTime}</TableCell>
-                <TableCell>{product.cancel}</TableCell>
-                <TableCell>{product.success}</TableCell>
+            {orders.map((order) => (
+              <TableRow key={order.orderId}>
+                <TableCell>{order.orderId}</TableCell>
+                <TableCell>{renderItemNames(order.items)}</TableCell>
+                <TableCell>{order.totalPrice.toLocaleString()}원</TableCell>
+                <TableCell>{order.userid}</TableCell>
+                <TableCell>{order.paymentMethod}</TableCell>
+                <TableCell>{order.orderDate.replace("T", " ")}</TableCell>
+                <TableCell>{order.canceled ? "Y" : "N"}</TableCell>
+                <TableCell>{order.completed ? "Y" : "N"}</TableCell>
                 <TableCell>
-                  {product.cancel === "N" && product.success === "N" ? (
-                    // 거래가 진행중인 경우
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      onClick={() => transSuccess(product.no)}
-                    >
-                      거래 완료
-                    </Button>
-                  ) : product.cancel === "N" && product.success === "Y" ? (
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      onClick={() => transCancel(product.no)}
-                    >
-                      거래 취소
-                    </Button>
+                  {!order.canceled && !order.completed ? (
+                    <>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        sx={{ mr: 1 }}
+                        onClick={() => handleComplete(order.orderId)}
+                      >
+                        거래 완료
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="error"
+                        onClick={() => handleCancel(order.orderId)}
+                      >
+                        거래 취소
+                      </Button>
+                    </>
+                  ) : order.completed ? (
+                    order.refundRequested ? (
+                      <Typography sx={{ color: "#999", fontStyle: "italic" }}>
+                        환불 완료
+                      </Typography>
+                    ) : order.returnRequested ? (
+                      <Typography sx={{ color: "#999", fontStyle: "italic" }}>
+                        반품 완료
+                      </Typography>
+                    ) : (
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="secondary"
+                        onClick={() => {
+                          setSelectedOrderId(order.orderId);
+                          setDialogOpen(true);
+                        }}
+                      >
+                        환불 / 반품 요청
+                      </Button>
+                    )
                   ) : (
-                    <Typography
-                      sx={{
-                        pl: 1.7,
-                        color: "#999",
-                      }}
-                    >
-                      취소됨
+                    <Typography sx={{ color: "#999", fontStyle: "italic" }}>
+                      취소 완료
                     </Typography>
                   )}
                 </TableCell>
@@ -224,19 +214,44 @@ export default function TransactionPage() {
           </TableBody>
         </Table>
       </TableContainer>
-      {/* sx : style,  1 : 8px  */}
 
-      {}
+      {/* 페이지네이션 */}
       <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
         <Pagination
           count={totalPages}
           page={page}
-          onChange={handlePageChange}
+          onChange={(_, v) => setPage(v)}
           color="primary"
           shape="rounded"
-          size="large"
         />
       </Box>
+
+      {/* 환불 / 반품 다이얼로그 */}
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+        <DialogTitle>요청 선택</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            해당 거래에 대해 어떤 요청을 하시겠습니까?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => requestRefundOrReturn("환불")}
+          >
+            환불 요청
+          </Button>
+          <Button
+            variant="outlined"
+            color="warning"
+            onClick={() => requestRefundOrReturn("반품")}
+          >
+            반품 요청
+          </Button>
+          <Button onClick={() => setDialogOpen(false)}>닫기</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

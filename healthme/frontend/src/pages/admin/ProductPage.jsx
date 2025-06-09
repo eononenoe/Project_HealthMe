@@ -71,19 +71,19 @@ export default function ProductPage() {
   // 삭제하기 체크박스 선택
   const AllCheck = (checked) => {
     if (checked) {
-      const noArray = [];
-      products.forEach((el) => noArray.push(el.no));
-      setCheckItems(noArray);
+      const productIdArray = [];
+      products.forEach((el) => productIdArray.push(el.productId));
+      setCheckItems(productIdArray);
     } else {
       setCheckItems([]);
     }
   };
 
-  const subCheckBox = (checked, no) => {
+  const subCheckBox = (checked, productId) => {
     if (checked) {
-      setCheckItems((prev) => [...prev, no]);
+      setCheckItems((prev) => [...prev, productId]);
     } else {
-      setCheckItems(checkItems.filter((el) => el !== no));
+      setCheckItems(checkItems.filter((el) => el !== productId));
     }
   };
 
@@ -91,7 +91,9 @@ export default function ProductPage() {
   const handledelete = async () => {
     const delteBoolean = window.confirm("정말로 삭제하시겠습니까?");
     if (delteBoolean) {
-      await axios.post("product/delete", checkItems);
+      await axios.post("/product/delete", checkItems, {
+        withCredentials: true,
+      });
       window.alert("삭제 완료되었습니다.");
       setUpdate((prev) => !prev); // 목록 새로고침
     } else {
@@ -119,7 +121,8 @@ export default function ProductPage() {
   useEffect(() => {
     const pagemove = async () => {
       const PageContent = await axios.get(
-        `/product/pagination?page=${page - 1}&size=10`
+        `/product/pagination?page=${page - 1}&size=10`,
+        { withCredentials: true }
       );
       // size는 한페이지에 몇개를 보여줄지 , page-1은 백엔드에서는 0부터 세니까 개발자 편하라고 하는거다.
       console.log("페이지네이션한 데이터", PageContent);
@@ -153,7 +156,9 @@ export default function ProductPage() {
               <TableCell>No</TableCell>
               <TableCell>카테고리</TableCell>
               <TableCell>상품명</TableCell>
-              <TableCell>가격</TableCell>
+              <TableCell>정가</TableCell>
+              <TableCell>최종 판매가</TableCell>
+              <TableCell>할인율</TableCell>
               <TableCell>재고</TableCell>
               <TableCell></TableCell>
             </TableRow>
@@ -161,18 +166,27 @@ export default function ProductPage() {
           <TableBody>
             {/*map()으로 반복 렌더링 */}
             {products.map((product) => (
-              <TableRow key={product.id}>
+              <TableRow key={product.productId}>
                 {/*key는 React가 어떤 항목이 바뀌었는지 정확히 알게 도와주는 고유 식별자입니다. */}
                 <TableCell padding="checkbox">
                   <Checkbox
-                    onChange={(e) => subCheckBox(e.target.checked, product.no)}
-                    checked={checkItems.includes(product.no) ? true : false}
+                    onChange={(e) =>
+                      subCheckBox(e.target.checked, product.productId)
+                    }
+                    checked={
+                      checkItems.includes(product.productId) ? true : false
+                    }
                   ></Checkbox>
                 </TableCell>
-                <TableCell>{product.no}</TableCell>
+                <TableCell>{product.productId}</TableCell>
                 <TableCell>{product.category}</TableCell>
-                <TableCell>{product.productName}</TableCell>
-                <TableCell>{product.productPrice}</TableCell>
+                <TableCell>{product.name}</TableCell>
+                <TableCell>{product.price}</TableCell>
+                <TableCell>{product.salprice}</TableCell>
+                <TableCell>
+                  {Math.round((1 - product.salprice / product.price) * 100)}%
+                </TableCell>
+
                 <TableCell>{product.amount}</TableCell>
                 <TableCell>
                   <Button
