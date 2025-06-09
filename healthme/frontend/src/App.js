@@ -9,7 +9,21 @@ import JoinPage from "pages/login/JoinPage";
 import LoginPage from "pages/login/LoginPage";
 import OAuth2RedirectHandler from "pages/login/OAuth2RedirectHandler";
 
+<<<<<<< HEAD
 // ───── 관리자 영역 ─────
+=======
+// 메인 페이지
+import Index from "pages/index";
+// 설문 페이지
+import QuestionPage from "pages/Question/QuestionPage";
+// 구매 페이지
+import PurchasePage from "pages/Purchase/PurchasePage";
+// 추천재료 페이지
+import NutritionalPage from "pages/Nutritional/NutritionalPage";
+// 제품상세 페이지
+import ProductDetailPage from 'pages/Details/DetailsPage';
+// 관리자 페이지
+>>>>>>> bdc9346857e2a4c554b5feecb5013b6ca28bd68b
 import Layout from "pages/admin/Layout";
 import Dashboard from "pages/admin/Dashboard";
 import ProductPage from "pages/admin/ProductPage";
@@ -34,7 +48,21 @@ function AppRoutes() {
       {!isAdmin && <Header />}
 
       <Routes>
+<<<<<<< HEAD
         {/* ── 일반 사용자 영역 ── */}
+=======
+        {/* 메인 페이지 */}
+        <Route path="/" element={<Index />}></Route>
+        {/* 설문 페이지 */}
+        <Route path="/question" element={<QuestionPage />}></Route>
+        {/* 구매 페이지 */}
+        <Route path="/purchase" element={<PurchasePage />}></Route>
+        {/* 추천재료 페이지 */}
+        <Route path="/nutritional" element={<NutritionalPage />}></Route>
+        {/* 제품상세 페이지 */}
+        <Route path="/details/:productId" element={<ProductDetailPage />} />
+        {/* 사용자용 */}
+>>>>>>> bdc9346857e2a4c554b5feecb5013b6ca28bd68b
         <Route path="/result" element={<ResultPage />} />
         <Route path="/join" element={<JoinPage />} />
         <Route path="/login" element={<LoginPage />} />
