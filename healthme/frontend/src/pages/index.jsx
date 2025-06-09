@@ -113,7 +113,7 @@ const HomePage = () => {
               <li className="content_news">
                 {Array(3).fill().map((_, i) => (
                   <ul key={i} className="news_card">
-                    <a href="pages/Announcement/Announcement.html">
+                    <a href="/announce">
                       {i === 0 && (
                         <ul className="news_card_top">
                           <li className="news_card_title">공지사항</li>

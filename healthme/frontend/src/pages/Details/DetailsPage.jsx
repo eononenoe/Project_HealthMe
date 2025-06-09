@@ -1,6 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import 'static/css/pages/Details.css';
+
+// 쿠키 설정
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+}
 
 function ProductDetailPage() {
     const { productId } = useParams();
@@ -40,9 +49,7 @@ function ProductDetailPage() {
     if (!product) {
         return <div className="detail-product-page-wrapper">상품 정보를 불러올 수 없습니다.</div>;
     }
-    const handleClick = () => {
-        navigate('/login');
-    };
+
     const handleScrollToSection = (id) => {
         const refs = {
             detail: detailRef,
@@ -53,7 +60,60 @@ function ProductDetailPage() {
             window.scrollTo({ top: ref.current.offsetTop - 80, behavior: 'smooth' });
         }
     };
+    // 장바구니 담기
+    const handleAddToCart = async () => {
+        const userId = JSON.parse(localStorage.getItem("loginUser"));
+        if (!userId) {
+            alert('로그인이 필요합니다.');
+            navigate('/login');
+            return;
+        }
 
+        try {
+            await axios.post("http://localhost:8090/healthme/cart", {
+                productId: product.id,
+                quantity: 1
+            }, {
+                withCredentials: true
+            });
+            alert('장바구니에 담겼습니다!');
+        } catch (error) {
+            alert('장바구니 담기에 실패했습니다.');
+            console.error(error);
+        }
+    };
+    // 바로구매
+    const handleBuyNow = () => {
+        const userId = getCookie('userId');
+        if (!userId) {
+            alert('로그인이 필요합니다.');
+            navigate('/login');
+            return;
+        }
+
+        const purchaseData = {
+            userId,
+            productId: product.product_id,
+            name: product.name,
+            imageUrl: product.image_url,
+            price: product.salprice,
+            quantity,
+            totalPrice: product.salprice * quantity,
+        };
+
+        navigate('/approval', {
+            state: {
+                items: [{
+                    productId: product.id,
+                    productName: product.name,
+                    price: product.price,
+                    discountPrice: product.salprice,
+                    quantity: quantity
+                }],
+                userId
+            }
+        });
+    };
     const handleQtyChange = (delta) => {
         setQuantity((prev) => Math.max(1, prev + delta));
     };
@@ -87,7 +147,7 @@ function ProductDetailPage() {
                     <div className="detail-benefit-container">
                         <div className="detail-benefit-title">
                             최대 추가 할인 금액 <strong className="detail-benefit-total">
-                                  {Math.round(product.salprice * (0.03 + 0.02 + 0.01 + 0.12)).toLocaleString()}원
+                                {Math.round(product.salprice * (0.03 + 0.02 + 0.01 + 0.12)).toLocaleString()}원
                             </strong>
                         </div>
                         <ul className="detail-benefit-list">
@@ -99,12 +159,12 @@ function ProductDetailPage() {
                             <li>
                                 <span className="detail-benefit-label">└ 오픈 기념 할인</span>
                                 <span className="detail-benefit-value">  {Math.round(product.salprice * 0.02).toLocaleString()}원
-</span>
+                                </span>
                             </li>
                             <li>
                                 <span className="detail-benefit-label">└ 소량 재고 할인</span>
                                 <span className="detail-benefit-value">  {Math.round(product.salprice * 0.01).toLocaleString()}원
-</span>
+                                </span>
                             </li>
                         </ul>
                         <div className="detail-membership">
@@ -151,8 +211,8 @@ function ProductDetailPage() {
                                 </button>
                             </div>
                         </div>
-                        <button className="detail-btn-cart">장바구니</button>
-                        <button className="detail-btn-buy">구매하기</button>
+                        <button className="detail-btn-cart" onClick={handleAddToCart}>장바구니</button>
+                        <button className="detail-btn-buy" onClick={handleBuyNow}>구매하기</button>
                     </div>
                 </div>
             </div>
@@ -175,7 +235,7 @@ function ProductDetailPage() {
             {activeTab === 'detail' && (
                 <>
                     <div id="detail" className={`detail-tab-content ${isDetailExpanded ? 'expanded' : ''}`} ref={detailRef}>
-                        <img src={product.detailImg} alt="상세 설명 이미지" />
+                        <img src={product.detail_img} alt="상세 설명 이미지" />
                     </div>
                     {!isDetailExpanded && (
                         <button className="detail-show-more-btn" onClick={() => setDetailExpanded(true)}>

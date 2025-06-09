@@ -2,12 +2,13 @@ package com.example.healthme.global.config.auth.principal;
 
 import com.example.healthme.domain.user.dto.UserDto;
 import com.example.healthme.domain.user.entity.User;
-import com.example.healthme.domain.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import com.example.healthme.domain.user.repository.UserRepository;
+
 
 
 // 로그인 시 Spring Security가 내부적으로 호출해 DB에서 유저를 조회하고
