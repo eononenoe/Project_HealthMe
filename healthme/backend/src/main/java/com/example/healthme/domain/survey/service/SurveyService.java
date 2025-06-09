@@ -2,7 +2,7 @@ package com.example.healthme.domain.survey.service;
 
 import com.example.healthme.domain.survey.dto.SurveyAnswerDto;
 import com.example.healthme.domain.survey.dto.SurveyRequestDto;
-import com.example.healthme.domain.survey.entity.Servey;
+import com.example.healthme.domain.survey.entity.Survey;
 import com.example.healthme.domain.survey.repository.ServeyRepository;
 import org.springframework.stereotype.Service;
 
@@ -43,12 +43,21 @@ public class SurveyService {
         }
 
         for (Map.Entry<String, Integer> entry : nutrientScores.entrySet()) {
-            Servey servey = new Servey();
-            servey.setSurveyId(UUID.randomUUID().toString());
-            servey.setUserid(userId);
-            servey.setNutrientName(entry.getKey());
-            servey.setNutrientValue(String.valueOf(entry.getValue()));
-            serveyRepository.save(servey);
+            Survey survey = new Survey();
+            survey.setSurveyId(UUID.randomUUID().toString());
+            survey.setUserid(userId);
+            survey.setNutrientName(entry.getKey());
+            survey.setNutrientValue(String.valueOf(entry.getValue()));
+            serveyRepository.save(survey);
         }
+    }
+    public Map<String, Integer> getScoresByUserId(String userId) {
+        List<Survey> surveys = serveyRepository.findByUserid(userId);
+
+        Map<String, Integer> scores = new HashMap<>();
+        for (Survey survey : surveys) {
+            scores.put(survey.getNutrientName(), Integer.parseInt(survey.getNutrientValue()));
+        }
+        return scores;
     }
 }

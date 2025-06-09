@@ -3,6 +3,7 @@ package com.example.healthme.global.config.security;
 import com.example.healthme.domain.user.repository.UserRepository;
 import com.example.healthme.global.config.auth.handler.loginHandler.CustomLoginFailureHandler;
 import com.example.healthme.global.config.auth.handler.loginHandler.CustomLoginSuccessHandler;
+import com.example.healthme.global.config.auth.handler.loginHandler.OAuth2LoginSuccessHandler;
 import com.example.healthme.global.config.auth.handler.logoutHandler.CustomLogoutHandler;
 import com.example.healthme.global.config.auth.handler.logoutHandler.CustomLogoutSuccessHandler;
 import com.example.healthme.global.config.auth.jwt.JwtAuthorizationFilter;
@@ -25,6 +26,7 @@ public class SecurityConfig {
     private final CustomLoginSuccessHandler customLoginSuccessHandler;
     private final CustomLogoutHandler customLogoutHandler;
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
@@ -41,7 +43,8 @@ public class SecurityConfig {
                                 "/healthme/users/join",
                                 "/healthme/users/check",
                                 "/healthme/users/login",
-                                "/healthme/result/**"
+                                "/healthme/result/**",
+                                "/healthme/survey/**"
                         ).permitAll()
                         .requestMatchers("/user").hasRole("USER")
                         .requestMatchers("/admin").hasRole("ADMIN")
@@ -65,7 +68,7 @@ public class SecurityConfig {
                         .userInfoEndpoint(user -> user
                                 .userService(principalDetailsOAuth2Service)
                         )
-                        .successHandler(customLoginSuccessHandler)
+                        .successHandler(oAuth2LoginSuccessHandler)
                 );
 
         http.addFilterBefore(
