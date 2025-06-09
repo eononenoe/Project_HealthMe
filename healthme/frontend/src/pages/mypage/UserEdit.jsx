@@ -27,7 +27,7 @@ export default function UserEdit() {
   const userinfo = async () => {
     if (loginUser !== null) {
       const getuser = await axios.get("/mypage/getuserinfo", {
-        params: { id: loginUser.id },
+        // params: { id: loginUser.id },
         withCredentials: true,
       });
       console.log("getuser : ", getuser);

@@ -31,7 +31,9 @@ public class MypageService {
 
     public User getuser(PrincipalDetails principalDetails) {
         Optional<User> op_user = userRepository.findById(principalDetails.getUserDto().getId());
+
         if(op_user!=null){
+            System.out.println("op_user.get" + op_user.get());
             User user = op_user.get();
 
             return user;
