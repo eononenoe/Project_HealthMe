@@ -159,7 +159,7 @@ const ProductList = ({ products = [], isSpecial = false }) => {
     console.log("Product:", product);
 
     if (!product?.productId) {
-      alert('상품 ID가 없습니다!');
+      alert('상품 ID가 없습니다! ㅎㅇㅎㅇ'); 
       return;
     }
     navigate(`/details/${product.productId}`);
