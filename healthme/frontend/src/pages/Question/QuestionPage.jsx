@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import 'static/css/pages/Question.css';
-import '@mui/icons-material/Check';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const NutritionSurvey = () => {
@@ -20,7 +19,6 @@ const NutritionSurvey = () => {
             question.classList.add('faded');
           }
 
-          // 다음 그룹으로 부드럽게 스크롤 이동
           const nextGroup = groups[groupIndex + 1];
           if (nextGroup) {
             setTimeout(() => {
@@ -32,7 +30,6 @@ const NutritionSurvey = () => {
     });
   }, []);
 
-  // 선택된 응답 수집
   const collectAnswers = () => {
     const selectedButtons = document.querySelectorAll('.circle.selected');
 
@@ -44,15 +41,7 @@ const NutritionSurvey = () => {
     return answers;
   };
 
-  // 제출 처리
   const handleSubmit = async () => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      alert("로그인이 필요합니다.");
-      window.location.href = "/login";
-      return;
-    }
-
     const answers = collectAnswers();
 
     if (answers.length < 23) {
@@ -61,17 +50,20 @@ const NutritionSurvey = () => {
     }
 
     try {
-      const res = await fetch("/api/survey", {
+      const res = await fetch("/healthme/survey", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
         },
+        credentials: "include",
         body: JSON.stringify({ answers }),
       });
 
       if (res.ok) {
         window.location.href = "/result";
+      } else if (res.status === 401) {
+        alert("로그인이 필요합니다.");
+        window.location.href = "/login";
       } else {
         alert("설문 제출에 실패했습니다.");
       }
@@ -119,7 +111,7 @@ const NutritionSurvey = () => {
         </section>
       </section>
 
-      {/* QUESTIONS */}
+      {/* 설문 문항 */}
       <div className="question-block">
         {questions.map((q, index) => (
           <div key={index}>
@@ -127,7 +119,7 @@ const NutritionSurvey = () => {
             <div className="options">
               <span className="label disagree">그렇지 않다</span>
               {[...Array(7)].map((_, i) => {
-                const value = i; 
+                const value = i;
                 let colorClass = '';
 
                 if (i < 3) colorClass = 'purple';
@@ -147,7 +139,6 @@ const NutritionSurvey = () => {
               })}
               <span className="label agree">그렇다</span>
             </div>
-
           </div>
         ))}
 
@@ -159,13 +150,6 @@ const NutritionSurvey = () => {
       <div id="footer"></div>
     </div>
   );
-};
-
-// 점수 색상
-const getColor = (index) => {
-  if (index < 3) return 'green';
-  if (index === 3) return 'gray';
-  return 'purple';
 };
 
 // 질문 목록

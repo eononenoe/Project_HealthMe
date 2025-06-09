@@ -1,10 +1,12 @@
 package com.example.healthme.domain.user.entity;
 
+
+import com.example.healthme.domain.mypage.entity.Address;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -29,6 +31,13 @@ public class User {
     private String role;
     private String grade;
 
+    private int totalPurchaseAmount;    // 누적 구매 금액
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "default_address_id")
+    private Address defaultAddress; // Address 객체 자체를 참조
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addresses = new ArrayList<>();
 
     @Column(length = 20)
     private String provider;

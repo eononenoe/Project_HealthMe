@@ -115,7 +115,7 @@ const JoinPage = () => {
 
                 {/* 주소 */}
                 <div className="input-wrapper">
-                    <div className="address-box">
+                    <div className="join-address-box">
                         <input type="text" name="zip" className="join-custom-input" placeholder="우편번호" value={formData.zip} onChange={handleChange} />
                         <button type="button" className="btn-small btn-main" onClick={handleAddressSearch}>우편번호 검색</button>
                     </div>

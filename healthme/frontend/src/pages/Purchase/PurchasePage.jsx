@@ -8,11 +8,11 @@ const ProductList = ({ products = [], isSpecial = false }) => {
   const navigate = useNavigate();
 
   const goToDetail = (product) => {
-    if (!product?.product_id) {
+    if (!product?.productId) {
       alert('상품 ID가 없습니다!');
       return;
     }
-    navigate(`/details/${product.product_id}`);
+    navigate(`/details/${product.productId}`);
   };
 
   return (

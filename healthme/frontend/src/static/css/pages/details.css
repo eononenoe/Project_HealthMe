@@ -41,7 +41,7 @@ body {
 }
 
 .detail-product-image img {
-  border-radius: 10px;
+  border-radius: 5px;
   width: 350px;
   height: auto;
   object-fit: cover;
@@ -110,6 +110,10 @@ body {
 .detail-benefit-container {
   border: 1px solid #ddd;
   background: #fff;
+  height: 258px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .detail-benefit-title {
@@ -195,7 +199,7 @@ body {
   color: #222;
 }
 
-.detail-benefit-button {
+/* .detail-benefit-button {
   margin-top: 12px;
   width: 100%;
   background: linear-gradient(to right, orange, #03c75a);
@@ -206,7 +210,7 @@ body {
   font-size: 14px;
   border-radius: 6px;
   cursor: pointer;
-}
+} */
 
 /* 뱃지 */
 .detail-membership-high {
@@ -216,8 +220,7 @@ body {
   line-height: 1.5;
   display: block;
 }
-
-.badge {
+.detail-badge {
   display: inline-block;
   padding: 2px;
   border-radius: 10px;
@@ -227,21 +230,22 @@ body {
   margin-left: 4px;
 }
 
-.badge-green {
+.detail-badge-green {
   color: #03c75a;
 }
 
-.badge-orange {
+.detail-badge-orange {
   color: orange;
 }
 
-.badge-blue {
+.detail-badge-blue {
   color: #007bff;
 }
 
-.badge-purple {
+.detail-badge-purple {
   color: #9c27b0;
 }
+
 
 /* 배송 */
 .detail-delivery-box {
@@ -477,5 +481,5 @@ body {
 
 .detail-nutrition-list li strong {
   font-weight: 600;
-  color: #000;
+  color: #333;
 }

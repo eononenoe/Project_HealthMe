@@ -41,7 +41,7 @@ const Header = () => {
                     </>
                 )}
                 <li className="logo_middle">|</li>
-                <li><Link to="/cart">장바구니</Link></li>
+                <li><Link to="/shoppingcart">장바구니</Link></li>
             </ul>
             {/* 로고 + 중앙 검색창 정렬 */}
             <div className="header_main_row">
@@ -68,7 +68,7 @@ const Header = () => {
             {/* 하단 네비 메뉴 */}
             <ul className="low_header_nav">
                 <li><a href="/question">영양 설문</a></li>
-                <li><a href="result">맞춤형 성분</a></li>
+                <li><a href="/result">맞춤형 성분</a></li>
                 <li><a href="/nutritional">추천 재료</a></li>
                 <li><a href="/purchase">구매</a></li>
             </ul>

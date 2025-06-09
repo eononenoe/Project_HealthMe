@@ -22,6 +22,10 @@ import PurchasePage from "pages/Purchase/PurchasePage";
 import NutritionalPage from "pages/Nutritional/NutritionalPage";
 // 제품상세 페이지
 import ProductDetailPage from 'pages/Details/DetailsPage';
+// 장바구니 페이지
+import ShoppingCart from "pages/shopping cart/shopping_cart";
+// 결제 페이지
+import ApprovalPage from "pages/Approval/Approval";
 // 관리자 페이지
 import Layout from "pages/admin/Layout";
 import Dashboard from "pages/admin/Dashboard";
@@ -59,6 +63,10 @@ function AppRoutes() {
         <Route path="/details/:productId" element={<ProductDetailPage />} />
         {/* 결과 페이지 */}
         <Route path="/result" element={<ResultPage />} />
+        {/* 장바구니 페이지 */}
+        <Route path="/shoppingcart" element={<ShoppingCart />} />
+        {/* 결제 페이지 */}
+        <Route path="/approval" element={<ApprovalPage />} />
         {/* 사용자용 */}
         <Route path="/join" element={<JoinPage />} />
         <Route path="/login" element={<LoginPage />} />

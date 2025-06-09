@@ -25,6 +25,7 @@ function ProductDetailPage() {
                     credentials: 'include',
                 });
                 const data = await response.json();
+                console.log("Fetched product:", data);
                 setProduct(data);
             } catch (error) {
                 console.error('상품 불러오기 실패:', error);
@@ -60,17 +61,13 @@ function ProductDetailPage() {
     const discountRate = Math.round(100 - (product.salprice / product.price) * 100);
     const totalPrice = (product.salprice * quantity).toLocaleString();
     const price = product.salprice;
-    const honorDiscount = price * 0.12;     // 명예등급 시 12% 할인
-    const basicPoint = price * 0.03;        // 기본 적립 3%
-    const maxDiscount = price * 0.15;       // 최대 할인 15%
 
     return (
         <div className="detail-product-page-wrapper">
             <div className="detail-product-detail-box">
                 <div className="detail-product-image">
-                    <img src={product.imageUrl} alt={product.name} />
+                    <img src={product.image_url} alt={product.name} />
                 </div>
-
                 <div className="detail-product-info-area">
                     <span className="detail-product-title">{product.name}</span>
 
@@ -89,24 +86,25 @@ function ProductDetailPage() {
                     </div>
                     <div className="detail-benefit-container">
                         <div className="detail-benefit-title">
-                            최대 할인 금액 <strong className="detail-benefit-total">
-                                {(
-                                    product.salprice * (0.03 + 0.02 + 0.01 + 0.12)
-                                ).toLocaleString()}원
+                            최대 추가 할인 금액 <strong className="detail-benefit-total">
+                                  {Math.round(product.salprice * (0.03 + 0.02 + 0.01 + 0.12)).toLocaleString()}원
                             </strong>
                         </div>
                         <ul className="detail-benefit-list">
                             <li>
                                 <span className="detail-benefit-label">└ 기본 할인</span>
-                                <span className="detail-benefit-value">{(product.salprice * 0.03).toLocaleString()}원</span>
+                                <span className="detail-benefit-value">  {Math.round(product.salprice * 0.03).toLocaleString()}원
+                                </span>
                             </li>
                             <li>
                                 <span className="detail-benefit-label">└ 오픈 기념 할인</span>
-                                <span className="detail-benefit-value">{(product.salprice * 0.02).toLocaleString()}원</span>
+                                <span className="detail-benefit-value">  {Math.round(product.salprice * 0.02).toLocaleString()}원
+</span>
                             </li>
                             <li>
                                 <span className="detail-benefit-label">└ 소량 재고 할인</span>
-                                <span className="detail-benefit-value">{(product.salprice * 0.01).toLocaleString()}원</span>
+                                <span className="detail-benefit-value">  {Math.round(product.salprice * 0.01).toLocaleString()}원
+</span>
                             </li>
                         </ul>
                         <div className="detail-membership">
@@ -116,17 +114,16 @@ function ProductDetailPage() {
                                     등급 시 추가 할인
                                 </div>
                                 <div className="detail-membership-right">
-                                    {(product.salprice * 0.12).toLocaleString()}원
+                                    {Math.round(product.salprice * 0.12).toLocaleString()}원
                                 </div>
                             </div>
-                            <span className="detail-membership-high">
-                                <span className="badge badge-green">새싹</span>: 3% ·
-                                <span className="badge badge-orange">열정</span>: 6% ·
-                                <span className="badge badge-blue">우수</span>: 9% ·
-                                <span className="badge badge-purple">명예</span>: 12% 할인 혜택이 적용됩니다.
-                            </span>
-
-                            <button className="detail-benefit-button" onClick={handleClick}>로그인 하러 가기</button>
+                            <div className='detail-membership-high'>
+                                <span className="detail-badge detail-badge-green">새싹</span>: 3% ·
+                                <span className="detail-badge detail-badge-orange">열정</span>: 6% ·
+                                <span className="detail-badge detail-badge-blue">우수</span>: 9% ·
+                                <span className="detail-badge detail-badge-purple">명예</span>: 12% 할인 혜택이 적용됩니다.
+                            </div>
+                            {/* <button className="detail-benefit-button" onClick={handleClick}>로그인 하러 가기</button> */}
                         </div>
 
                     </div>
@@ -135,7 +132,7 @@ function ProductDetailPage() {
                     <div className="detail-delivery-box">배송비 : 무료배송</div>
 
                     <div className="detail-summary-box">
-                        <div>총 수량 : <strong>{quantity}개</strong></div>
+                        <div>총 수량 : <span>{quantity}개</span></div>
                         <div className="total-price">
                             <span> 합계 : </span>
                             <strong>{totalPrice}원</strong>
@@ -194,16 +191,16 @@ function ProductDetailPage() {
                     <h2 className="detail-nutrition-title">상품 영양성분</h2>
                     <p className="detail-nutrition-desc">{product.name}의 100g 기준 주요 영양성분입니다.</p>
                     <ul className="detail-nutrition-list">
-                        <li><span>단백질</span><strong>{renderNutrient(product.protein, ' g')}</strong></li>
-                        <li><span>철분</span><strong>{renderNutrient(product.iron, ' mg')}</strong></li>
-                        <li><span>비타민 D</span><strong>{renderNutrient(product.vitamin_d, ' µg')}</strong></li>
-                        <li><span>칼슘</span><strong>{renderNutrient(product.calcium, ' mg')}</strong></li>
-                        <li><span>식이섬유</span><strong>{renderNutrient(product.dietary_fiber, ' g')}</strong></li>
-                        <li><span>마그네슘</span><strong>{renderNutrient(product.magnesium, ' mg')}</strong></li>
-                        <li><span>칼륨</span><strong>{renderNutrient(product.potassium, ' mg')}</strong></li>
-                        <li><span>비오틴</span><strong>{renderNutrient(product.biotin, ' µg')}</strong></li>
-                        <li><span>아연</span><strong>{renderNutrient(product.zinc, ' mg')}</strong></li>
-                        <li><span>아르기닌</span><strong>{renderNutrient(product.arginine, ' mg')}</strong></li>
+                        <li><span>단백질</span><strong>{renderNutrient(product.protein)}</strong></li>
+                        <li><span>철분</span><strong>{renderNutrient(product.iron)}</strong></li>
+                        <li><span>비타민 D</span><strong>{renderNutrient(product.vitamin_d)}</strong></li>
+                        <li><span>칼슘</span><strong>{renderNutrient(product.calcium)}</strong></li>
+                        <li><span>식이섬유</span><strong>{renderNutrient(product.dietary_fiber)}</strong></li>
+                        <li><span>마그네슘</span><strong>{renderNutrient(product.magnesium)}</strong></li>
+                        <li><span>칼륨</span><strong>{renderNutrient(product.potassium)}</strong></li>
+                        <li><span>비오틴</span><strong>{renderNutrient(product.biotin)}</strong></li>
+                        <li><span>아연</span><strong>{renderNutrient(product.zinc)}</strong></li>
+                        <li><span>아르기닌</span><strong>{renderNutrient(product.arginine)}</strong></li>
                     </ul>
                 </div>
             )}

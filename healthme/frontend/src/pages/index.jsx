@@ -156,17 +156,20 @@ const ProductList = ({ products = [], isSpecial = false }) => {
   const navigate = useNavigate();
 
   const goToDetail = (product) => {
-    if (!product?.product_id) {
+    console.log("Product:", product);
+
+    if (!product?.productId) {
       alert('상품 ID가 없습니다!');
       return;
     }
-    navigate(`/details/${product.product_id}`);
+    navigate(`/details/${product.productId}`);
   };
+
 
   return (
     <ul className="main_low_low_content">
       {products.map((product) => (
-        <li key={product.product_id} className="item_store">
+        <li key={product.productId} className="item_store">
           <div className="item_img">
             <img src={product.imageUrl} alt={product.name} />
           </div>

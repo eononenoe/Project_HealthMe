@@ -23,8 +23,6 @@ public class TranscationService {
     public Page<ApprovalOrderResponseDto> selectAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size,
                 Sort.by(Sort.Direction.DESC, "orderDate"));
-
-        // Page<ApprovalOrder> ➜ Page<ApprovalOrderResponseDto>
         return transcationRepository.findAll(pageable)
                 .map(ApprovalOrderResponseDto::fromEntity);
     }
@@ -37,7 +35,7 @@ public class TranscationService {
                 Sort.by(Sort.Direction.DESC, "orderDate"));
 
         return transcationRepository
-                .findByUser_UsernameContaining(searchText, pageable)
+                .findByUseridContaining(searchText, pageable)
                 .map(ApprovalOrderResponseDto::fromEntity);
     }
 
@@ -53,7 +51,7 @@ public class TranscationService {
         return true;
     }
 
-    // 환불 반품 요청 처리
+    // 환불 / 반품 요청 처리
     public boolean refundOrReturn(TranscationStatusDto dto, String type) {
         Optional<ApprovalOrder> opt = transcationRepository.findById(dto.getOrderId());
         if (opt.isEmpty()) return false;

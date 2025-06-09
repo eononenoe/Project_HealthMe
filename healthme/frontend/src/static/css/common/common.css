@@ -58,6 +58,11 @@
     color: orange;
   }
 
+  .logout-btn {
+    all: unset;
+    cursor: pointer;
+  }
+
   /* ================ */
   /*   메인 헤더 줄 (로고 + 검색창) */
   /* ================ */

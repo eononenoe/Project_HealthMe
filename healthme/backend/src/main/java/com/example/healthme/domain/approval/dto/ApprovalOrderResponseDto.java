@@ -2,7 +2,6 @@ package com.example.healthme.domain.approval.dto;
 
 import com.example.healthme.domain.approval.entity.ApprovalOrder;
 import com.example.healthme.domain.approval.entity.ApprovalOrderItem;
-import com.example.healthme.domain.mypage.dto.AddressUpdate;
 import com.example.healthme.domain.mypage.entity.Address;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,13 +23,13 @@ public class ApprovalOrderResponseDto {
     private boolean isCompleted;
     private boolean refundRequested;
     private boolean returnRequested;
-    private AddressUpdate  address; // 그대로 포함 (Embedded)
+    private Address address; // 그대로 포함 (Embedded)
     private List<ApprovalOrderItemDto> items;
 
     public static ApprovalOrderResponseDto fromEntity(ApprovalOrder order) {
         ApprovalOrderResponseDto dto = new ApprovalOrderResponseDto();
         dto.setOrderId(order.getOrderId());
-        dto.setUserid(order.getUser().getUserid());
+        dto.setUserid(order.getUserid());
         dto.setOrderDate(order.getOrderDate());
         dto.setStatus(order.getStatus());
         dto.setPaymentMethod(order.getPaymentMethod());
@@ -39,7 +38,7 @@ public class ApprovalOrderResponseDto {
         dto.setCompleted(order.isCompleted());
         dto.setRefundRequested(order.isRefundRequested());
         dto.setReturnRequested(order.isReturnRequested());
-        dto.setAddress(new AddressUpdate(order.getAddress()));
+        dto.setAddress(order.getAddress());
         dto.setItems(order.getApprovalOrderItems().stream()
                 .map(ApprovalOrderItemDto::fromEntity)
                 .collect(Collectors.toList()));

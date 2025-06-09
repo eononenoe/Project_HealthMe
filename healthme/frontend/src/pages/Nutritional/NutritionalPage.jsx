@@ -54,13 +54,11 @@ export default function CustomNutritionalPage() {
   const [expandedItems, setExpandedItems] = useState({});
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-
-    axios
-      .get("http://localhost:8090/healthme/products/details", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+    axios.get('http://localhost:8090/healthme/products/details', {
+      withCredentials: true,
+    })
       .then((res) => {
+        console.log("응답 데이터:", res.data); // 이 줄 추가
         if (!Array.isArray(res.data)) {
           console.error("응답 형식 오류: 배열이 아님");
           return;
@@ -87,7 +85,7 @@ export default function CustomNutritionalPage() {
             price: item.salprice,
             originalPrice: item.price,
             discount: Math.round((1 - item.salprice / item.price) * 100),
-            img: item.imageUrl,
+            img: item.image_url,
             nutrientsLeft: nutrientsRaw.slice(0, 5),
             nutrientsRight: nutrientsRaw.slice(5),
             sales_count: item.sales_count,

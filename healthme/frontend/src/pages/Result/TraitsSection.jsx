@@ -15,10 +15,13 @@ const TraitsSection = ({ type }) => {
   }, [type]);
 
   // 2개씩 묶어 2행으로 렌더링
-  const limitedTips = tips.slice(0, 4);
+  const safeTips = Array.isArray(tips) ? tips : [];
+  const limitedTips = safeTips.slice(0, 4);
+
   const rows = [];
   for (let i = 0; i < limitedTips.length; i += 2) {
-    rows.push(limitedTips.slice(i, i + 2));
+    const row = limitedTips.slice(i, i + 2);
+    if (Array.isArray(row)) rows.push(row);
   }
 
   return (

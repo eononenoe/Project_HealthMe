@@ -39,42 +39,37 @@ public class ProductService {
     }
 
     // 페이지네이션에 맞춰서 제품 가져오기
-    public Page<ProductWithNutrientDto> select_Page_Product(int page, int size){
-        PageRequest pageRequest = PageRequest.of(page, size,Sort.by(Sort.Direction.DESC, "productId"));
+    public Page<ProductWithNutrientDto> select_Page_Product(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "productId"));
         Page<ProductStore> productPage = productRepository.findAll(pageRequest);
 
-        return productPage.map(product ->{
+        return productPage.map(product -> {
+            List<ProductNutrient> nutrientList = nutrientRepository.findByProductStore_ProductId(product.getProductId());
 
-            Optional<ProductNutrient> optional = nutrientRepository.findByProductId(product.getProductId());
-            System.out.println("optional : "+optional);
-            if(optional.isPresent()){
-                ProductNutrient productNutrient = optional.get();
-                //System.out.println("productNutrient : "+productNutrient);
-                return ProductWithNutrientDto.builder()
-                        .productId(product.getProductId())
-                        .name(product.getName())
-                        .category(product.getCategory())
-                        .description(product.getDescription())
-                        .amount(product.getAmount())
-                        .price(product.getPrice())
-                        .salprice(product.getSalprice())
-                        .imageUrl(product.getImageUrl()) // 수정 시만 사용, 조회에서는 null
-                        .protein(productNutrient != null ? productNutrient.getProtein() : "")
-                        .iron(productNutrient != null ? productNutrient.getIron() : "")
-                        .vitaminD(productNutrient != null ? productNutrient.getVitaminD() : "")
-                        .calcium(productNutrient != null ? productNutrient.getCalcium() : "")
-                        .dietaryFiber(productNutrient != null ? productNutrient.getDietaryFiber() : "")
-                        .magnesium(productNutrient != null ? productNutrient.getMagnesium() : "")
-                        .potassium(productNutrient != null ? productNutrient.getPotassium() : "")
-                        .biotin(productNutrient != null ? productNutrient.getBiotin() : "")
-                        .zinc(productNutrient != null ? productNutrient.getZinc() : "")
-                        .arginine(productNutrient != null ? productNutrient.getArginine() : "")
-                        .build();
-            };
+            // 첫 번째 영양소만 사용한다고 가정
+            ProductNutrient nutrient = !nutrientList.isEmpty() ? nutrientList.get(0) : null;
 
-            return null;
+            return ProductWithNutrientDto.builder()
+                    .productId(product.getProductId())
+                    .name(product.getName())
+                    .category(product.getCategory())
+                    .description(product.getDescription())
+                    .amount(product.getAmount())
+                    .price(product.getPrice())
+                    .salprice(product.getSalprice())
+                    .imageUrl(product.getImageUrl()) // 수정 시만 사용, 조회에서는 null
+                    .protein(nutrient != null ? nutrient.getProtein() : "")
+                    .iron(nutrient != null ? nutrient.getIron() : "")
+                    .vitaminD(nutrient != null ? nutrient.getVitaminD() : "")
+                    .calcium(nutrient != null ? nutrient.getCalcium() : "")
+                    .dietaryFiber(nutrient != null ? nutrient.getDietaryFiber() : "")
+                    .magnesium(nutrient != null ? nutrient.getMagnesium() : "")
+                    .potassium(nutrient != null ? nutrient.getPotassium() : "")
+                    .biotin(nutrient != null ? nutrient.getBiotin() : "")
+                    .zinc(nutrient != null ? nutrient.getZinc() : "")
+                    .arginine(nutrient != null ? nutrient.getArginine() : "")
+                    .build();
         });
-
     }
 
 
@@ -109,8 +104,9 @@ public class ProductService {
         productRepository.save(product);
 
         // ProductNutrient 저장
+        // ProductNutrient 저장
         ProductNutrient nutrient = ProductNutrient.builder()
-                .productId(product.getProductId()) // product 저장 후 ID 사용
+                .productStore(product)  // 수정: productId -> productStore
                 .protein(insertProductDto.getProtein())
                 .iron(insertProductDto.getIron())
                 .vitaminD(insertProductDto.getVitaminD())
@@ -123,6 +119,7 @@ public class ProductService {
                 .arginine(insertProductDto.getArginine())
                 .build();
 
+
         nutrientRepository.save(nutrient);
     }
 
@@ -131,14 +128,19 @@ public class ProductService {
 
     // 제품 수정
     public boolean update_product(Long productId, ProductUpdateDto productUpdateDto) {
-        Optional<ProductStore> optional = productRepository.findById(productId);
-        if (optional.isEmpty()) {
-            return false;
-        }
+        // 1. 상품 정보 가져오기
+        Optional<ProductStore> productOptional = productRepository.findById(productId);
+        if (productOptional.isEmpty()) return false;
+        ProductStore product = productOptional.get();
 
-        ProductStore product = optional.get();
+        // 2. 영양소 정보 가져오기 (List로 받기)
+        List<ProductNutrient> nutrientList = nutrientRepository.findByProductStore_ProductId(productId);
+        if (nutrientList.isEmpty()) return false;
 
-        // 기본 필드 업데이트
+        // 첫 번째 영양소 수정 (단일 영양소만 관리한다고 가정)
+        ProductNutrient productNutrient = nutrientList.get(0);
+
+        // 3. 상품 정보 업데이트
         product.setName(productUpdateDto.getName());
         product.setCategory(productUpdateDto.getCategory());
         product.setAmount(productUpdateDto.getAmount());
@@ -146,10 +148,7 @@ public class ProductService {
         product.setSalprice(productUpdateDto.getSalprice());
         product.setDescription(productUpdateDto.getDescription());
 
-        // 영양성분 업데이트
-        Optional<ProductNutrient> nutrient_optional = nutrientRepository.findByProductId(productId);
-        if (nutrient_optional.isEmpty()) return false;
-        ProductNutrient productNutrient = nutrient_optional.get();
+        // 4. 영양소 정보 업데이트
         productNutrient.setArginine(productUpdateDto.getArginine());
         productNutrient.setIron(productUpdateDto.getIron());
         productNutrient.setBiotin(productUpdateDto.getBiotin());
@@ -160,25 +159,25 @@ public class ProductService {
         productNutrient.setDietaryFiber(productUpdateDto.getDietaryFiber());
         productNutrient.setVitaminD(productUpdateDto.getVitaminD());
         productNutrient.setZinc(productUpdateDto.getZinc());
+
         nutrientRepository.save(productNutrient);
 
+        // 5. 이미지가 있는 경우 저장
         String saveDir = "C:/uploads/product/";
         new File(saveDir).mkdirs();
 
         try {
             if (productUpdateDto.getImageUrl() != null && !productUpdateDto.getImageUrl().isEmpty()) {
-                // null이 아닌지 확인 , 이미지 파일이 비어있지 않은지 확인
                 String thumbFileName = System.currentTimeMillis() + "_" + productUpdateDto.getImageUrl().getOriginalFilename();
                 productUpdateDto.getImageUrl().transferTo(new File(saveDir + thumbFileName));
                 product.setImageUrl("/images/product/" + thumbFileName);
             }
-
-
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
 
+        // 6. 최종 저장
         productRepository.save(product);
         return true;
     }
@@ -186,13 +185,15 @@ public class ProductService {
 
 
 
+
+
     @Transactional
     public boolean product_delete(Long[] noArray) {
         if (noArray == null || noArray.length == 0) return false;
-        System.out.println("noArray : "+noArray);
+
         for (Long no : noArray) {
             // 1. nutrient 먼저 삭제
-            nutrientRepository.deleteByProductId(no);
+            nutrientRepository.deleteByProductStore_ProductId(no);
 
             // 2. product 삭제
             productRepository.deleteById(no);

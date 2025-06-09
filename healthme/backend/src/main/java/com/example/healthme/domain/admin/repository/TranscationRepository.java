@@ -8,5 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TranscationRepository extends JpaRepository<ApprovalOrder,Long> {
 
-    Page<ApprovalOrder> findByUser_UsernameContaining(String searchText, Pageable pageable);
+    Page<ApprovalOrder> findByUseridContaining(String keyword, Pageable pageable);
+
 }

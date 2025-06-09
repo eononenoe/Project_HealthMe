@@ -1,10 +1,5 @@
 package com.example.healthme.domain.product.entity;
 
-<<<<<<< HEAD
-import jakarta.persistence.*;
-import lombok.*;
-
-=======
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +7,6 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
->>>>>>> bdc9346857e2a4c554b5feecb5013b6ca28bd68b
 @Entity
 @Getter
 @Setter
@@ -20,19 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class ProductStore {
-<<<<<<< HEAD
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
-    private String name;
-    private String description;
-    private int price;
-    private int salprice;
-    private int amount;
-    private String imageUrl;
-    private String category;
-=======
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
@@ -69,5 +50,4 @@ public class ProductStore {
     @OneToMany(mappedBy = "productStore", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<ProductNutrient> nutrients = new ArrayList<>();
->>>>>>> bdc9346857e2a4c554b5feecb5013b6ca28bd68b
 }

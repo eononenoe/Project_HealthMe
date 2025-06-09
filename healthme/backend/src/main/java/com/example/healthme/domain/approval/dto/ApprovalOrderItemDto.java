@@ -14,7 +14,6 @@ public class ApprovalOrderItemDto {
     private int discountPrice;
     private int unitPrice;
     private int itemTotal;
-    private String productImageurl;
 
     public static ApprovalOrderItemDto fromEntity(ApprovalOrderItem item) {
         ApprovalOrderItemDto dto = new ApprovalOrderItemDto();
@@ -25,9 +24,6 @@ public class ApprovalOrderItemDto {
         dto.setDiscountPrice(item.getDiscountPrice());
         dto.setUnitPrice(item.getUnitPrice());
         dto.setItemTotal(item.getItemTotal());
-        if(item.getProduct() !=null){
-            dto.setProductImageurl(item.getProduct().getImageUrl());
-        }
         return dto;
     }
 }

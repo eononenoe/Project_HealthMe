@@ -42,11 +42,17 @@ public class SecurityConfig {
                                 "/",
                                 "/healthme/users/join",
                                 "/healthme/users/check",
-                                "/healthme/users/login",
-                                "/healthme/result/**",
-                                "/healthme/survey/**"
+                                "/healthme/users/login"
+
                         ).permitAll()
-                        .requestMatchers("/user").hasRole("USER")
+                        .requestMatchers("/user",
+                                "/healthme/result/**",
+                                "/healthme/survey/**",
+                                "/healthme/products",
+                                "/healthme/products/**",
+                                "/healthme/nutrients/**",
+                                "/healthme/mypage/**"
+                        ).hasRole("USER")
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
