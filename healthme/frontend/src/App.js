@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import Header from "components/header";
 import Footer from "components/footer";
+// dddddddd xptmxm
 
 // 결과 페이지
 import ResultPage from 'pages/Result/ResultPage';
