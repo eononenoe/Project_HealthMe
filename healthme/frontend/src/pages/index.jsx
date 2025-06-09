@@ -130,7 +130,7 @@ const HomePage = () => {
               </li>
             </ul>
 
-            {/* 실시간 인기 상품 */}
+            {/* 실시간 인기  상품 */}
             <ul className="main_low_content">
               <ul className="main_low_top_content">
                 <li className="main_low_title">실시간 인기 상품</li>
@@ -157,7 +157,7 @@ const ProductList = ({ products = [], isSpecial = false }) => {
 
   const goToDetail = (product) => {
     console.log("Product:", product);
-
+ 
     if (!product?.productId) {
       alert('상품 ID가 없습니다!'); 
       return;
