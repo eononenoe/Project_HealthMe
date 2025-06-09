@@ -1,0 +1,519 @@
+/* === 글로벌 설정 === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Nanum Gothic", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* === 버튼 리셋 === */
+.nutritional_low_content button {
+  all: unset;
+  cursor: pointer;
+}
+
+/* 레이아웃 */
+.nutritional-container {
+  width: 1280px;
+  min-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  padding-top: 20px;
+}
+
+/* 왼쪽 사이드바  */
+.nutritional-sidebar {
+  width: 280px;
+  max-width: 280px;
+  height: 100vh; 
+  overflow-y: auto; 
+  padding: 30px 20px 20px;
+  border-right: 1px solid #eee;
+  box-sizing: border-box;
+  position: sticky;
+  top: 20px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+
+.nutritional-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.nutritional-sidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+.nutritional-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.nutrition-section-title{
+ padding-bottom: 15px; 
+ border-bottom: 1px solid lightgray;
+ font-size: 16px;
+ color: #333;
+}
+/* 영양성분 */
+.nutritional_card-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px;
+  height: 65px;
+  border-radius: 15px;
+  margin-right: -15px;
+  cursor: pointer;
+}
+
+.nutritional_card-bar:hover {
+  background-color: #f6f6f7;
+}
+
+.nutritional_card-bar > div {
+  text-align: center;
+  margin-bottom: 3px;
+}
+
+.nutritional_bar-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #343c4b;
+  height: auto;
+}
+
+.nutritional_bar-percent {
+  margin-left: 10px;
+}
+
+.nutritional_bar-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  height: 8px;
+  background-color: #e0e0e0;
+}
+
+.nutritional_bar-inner {
+  position: absolute;
+  height: 100%;
+  background-color: #ccc;
+  transition: width 0.5s ease;
+  border-radius: 5px;
+  z-index: 1;
+}
+
+.nutritional_bar-inner.red {
+  background-color: #e74c3c;
+}
+.nutritional_bar-inner.orange {
+  background-color: #f39c12;
+}
+.nutritional_bar-inner.yellow {
+  background-color: #f1c40f;
+}
+.nutritional_bar-inner.green {
+  background-color: #2ecc71;
+}
+.nutritional_bar-inner.blue {
+  background-color: #3498db;
+}
+
+.nutritional_indicator {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  border: 3px solid white;
+  background-color: white;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.nutritional_indicator.red {
+  border-color: #e74c3c;
+}
+.nutritional_indicator.orange {
+  border-color: #f39c12;
+}
+.nutritional_indicator.yellow {
+  border-color: #f1c40f;
+}
+.nutritional_indicator.green {
+  border-color: #2ecc71;
+}
+.nutritional_indicator.blue {
+  border-color: #3498db;
+}
+/* Cart Section */
+.cart-section {
+  margin: 30px 0px;
+}
+
+.cart-section span {
+  display: inline-block;
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.cart-header-left {
+  padding-left: 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+.cart-header label {
+  font-size: 14px;
+  color: #333;
+}
+
+.cart-header button {
+  font-size: 13px;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 3px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-checkbox {
+  min-width: 20px;
+  min-height: 20px;
+  border: 2px solid #007bff;
+  border-radius: 50%;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.custom-checkbox:checked {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.custom-checkbox:checked::after {
+  font-family: 'Material Symbols Outlined';
+  content: 'check';
+  color: white;
+  font-size: 14px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+}
+
+/* Cart Items */
+/* Nutritional Cart Items */
+.nutritional-cart-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nutritional-cart-items li {
+  padding: 15px 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.nutritional-cart-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nutritional-cart-desc {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* 상품 이름 */
+.nutritional-cart-item-name {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 가격 */
+.nutritional-cart-item-price {
+  font-size: 12px;
+}
+
+/* 수량 조절 박스 */
+.nutritional-cart-item-quantity {
+  width: 75px;
+  height: 25px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.nutritional-cart-item-quantity button {
+  all: unset;
+  font-size: 16px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.nutritional-cart-item-quantity span {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  width: 20px;
+  margin: 0 auto;
+}
+
+.cart-item-total-price {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* Cart Footer */
+.cart-footer {
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: right;
+  color: #333;
+}
+
+.cart-footer-button button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  position: relative;
+  right: -78px;
+}
+
+.cart-footer-button button:hover {
+  background-color: #0056b3;
+}
+
+/* Main */
+.nutritional_main {
+  flex: 1;
+  padding: 0 20px;
+  height: fit-content;
+  margin-top: 30px;
+}
+
+/* Filter Section */
+.nutritional_low_content {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  font-size: 14px;
+  color: gray;
+  margin-bottom: 30px;
+}
+
+/* ================ */
+/*     상품 리스트    */
+/* ================ */
+.nutritional_content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+
+  min-height: 1000px;
+  margin-bottom: 100px;
+  /* 푸터랑 거리 벌리기 */
+}
+
+/* ================ */
+/*     아이템 카드    */
+/* ================ */
+.nutritional_item_store {
+  width: 100%;
+  height: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.nutritional_item_img {
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 5px;
+}
+
+.nutritional_item_img>img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.nutritional_item_store:hover .nutritional_item_img>img {
+  transform: scale(1.07);
+  z-index: 1;
+}
+
+
+.nutritional_item_add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  color: gray;
+  width: 100%;
+  height: 45px;
+  font-size: 1.15rem;
+  cursor: pointer;
+  margin-top: 7px;
+}
+
+.nutritional_item_add:hover {
+  border: 1px solid gray;
+  transition: 0.3s;
+}
+
+.nutritional_item_name {
+  width: 100%;
+  height: auto;
+  margin-top: 15px;
+  font-size: 18px;
+  color: black;
+  margin-bottom: 10px;
+}
+
+.item_Nutritional_ingredients ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+  color: rgb(171, 171, 171);
+  line-height: 1.5;
+  margin-bottom: 5px;
+}
+
+.nutritional_item_price {
+  width: 100%;
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+.nutritional_item_price span {
+  margin-right: 8px;
+}
+
+.nutritional_discount {
+  color: #e80000;
+  font-weight: 600;
+}
+
+.nutritional_price {
+  color: black;
+  font-weight: 600;
+}
+
+.nutritional_item_review {
+  color: rgb(171, 171, 171);
+  width: 290px;
+  font-size: 14px;
+}
+
+.nutritional_item_review i {
+  margin-right: 5px;
+}
+
+.nutritional-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.nutritional-banner {
+  width: 100%;
+  height: 250px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 0px 0px 30px 0px;
+}
+
+.nutritional-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nutrient-columns {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.nutrient-column li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 0;
+  font-size: 14px;
+}
+
+.nutrient-column {
+  width: 48%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* 영양성분 더보기 */
+.nutrition-more-button {
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+}
