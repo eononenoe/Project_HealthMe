@@ -24,7 +24,7 @@ export default function AddressEditPage() {
   const fetchUserInfo = async () => {
     if (loginUser) {
       const res = await axios.get("/mypage/getuserinfo", {
-        params: { id: loginUser.id },
+        // params: { id: loginUser.id },
         withCredentials: true,
       });
       const amount = res.data.totalPurchaseAmount ?? 0;

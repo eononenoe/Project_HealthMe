@@ -34,6 +34,8 @@ public class JwtTokenProvider {
 
     // 유저 정보를 가지고 AccessToken, RefreshToken 을 생성하는 메서드
     public TokenInfo generateToken(Authentication authentication) {
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        Long userId = principal.getUserDto().getId();
         // 권한 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -44,6 +46,7 @@ public class JwtTokenProvider {
         Date accessTokenExpiresIn = new Date(now + JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME); // 60초후 만료
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
+                .claim("id", userId)
                 .claim("username", authentication.getName()) //정보저장
                 .claim("auth", authorities)//정보저장
                 .setExpiration(accessTokenExpiresIn)
@@ -82,8 +85,11 @@ public class JwtTokenProvider {
                         .collect(Collectors.toList());
 
         String username = claims.getSubject(); //username
+        String userid = claims.getSubject();
+        Long id = claims.get("id", Integer.class).longValue();
 
         PrincipalDetails principal = new PrincipalDetails(UserDto.builder()
+                .id(id)
                 .userid(username)
                 .role(authorities.stream().findFirst().get().getAuthority()) // 간단히
                 .build());
