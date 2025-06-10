@@ -48,7 +48,7 @@ public class JwtTokenProvider {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
-        // ✅ 수정됨: subject 포함
+        // 수정됨: subject 포함
         String refreshToken = Jwts.builder()
                 .setSubject(authentication.getName()) // 필수!
                 .setExpiration(new Date(now + JwtProperties.REFRESH_TOKEN_EXPIRATION_TIME))
@@ -103,6 +103,9 @@ public class JwtTokenProvider {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
+        } catch (ExpiredJwtException e) {
+            log.warn("validateToken() - 만료된 토큰 감지됨: {}", e.getMessage());
+            throw e;
         } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token", e);
         } catch (UnsupportedJwtException e) {
@@ -112,8 +115,7 @@ public class JwtTokenProvider {
         }
         return false;
     }
-
-    // ✅ 추가: RefreshToken에서 username 추출
+    // RefreshToken에서 username 추출
     public String getUsernameFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -123,7 +125,7 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
-    // ✅ 추가: User → Authentication 변환
+    // User → Authentication 변환
     public Authentication getAuthenticationByUser(User user) {
         String role = user.getRole();
 
@@ -140,10 +142,13 @@ public class JwtTokenProvider {
     }
     public String createAccessToken(User user) {
         long now = System.currentTimeMillis();
-
         Date accessTokenExpiresIn = new Date(now + JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME);
 
-        return Jwts.builder()
+        log.info("AccessToken 생성됨 - userid: {}, 만료시각: {}, 현재시각: {}",
+                user.getUserid(),
+                accessTokenExpiresIn.getTime(),
+                System.currentTimeMillis());
+        String token = Jwts.builder()
                 .setSubject(user.getUserid())  // username 또는 userid
                 .claim("id", user.getId())
                 .claim("username", user.getUserid())
@@ -151,6 +156,10 @@ public class JwtTokenProvider {
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+
+        log.info("새로운 AccessToken 생성됨 - userid: {}, 만료시각: {}", user.getUserid(), accessTokenExpiresIn);
+
+        return token;
     }
     public Key getKey() {
         return this.key;

@@ -63,7 +63,34 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
         } catch (Exception ignored) {
         }
+        if (token == null) {
+            // accessToken 쿠키가 없으면 → refreshToken 검사 시도
+            String refreshToken = null;
+            if (request.getCookies() != null) {
+                refreshToken = Arrays.stream(request.getCookies())
+                        .filter(cookie -> JwtProperties.REFRESH_TOKEN_COOKIE_NAME.equals(cookie.getName()))
+                        .map(Cookie::getValue)
+                        .findFirst()
+                        .orElse(null);
+            }
 
+            if (refreshToken != null && jwtTokenProvider.validateToken(refreshToken)) {
+                String username = jwtTokenProvider.getUsernameFromToken(refreshToken);
+                User user = userRepository.findByUserid(username)
+                        .orElseThrow(() -> new RuntimeException("유저 없음"));
+
+                String newAccessToken = jwtTokenProvider.createAccessToken(user);
+                Cookie newAccessCookie = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME, newAccessToken);
+                newAccessCookie.setHttpOnly(true);
+                newAccessCookie.setMaxAge(JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME / 1000);
+                newAccessCookie.setPath("/");
+                response.addCookie(newAccessCookie);
+
+                Authentication authentication = jwtTokenProvider.getAuthentication(newAccessToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                log.info("AccessToken 재발급 완료 (username: {})", username);
+            }
+        }
         if (token != null) {
             try {
                 if (jwtTokenProvider.validateToken(token)) {
@@ -95,7 +122,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 if (refreshToken != null) {
                     try {
                         if (jwtTokenProvider.validateToken(refreshToken)) {
-                            // 🔽 핵심 변경: auth 없는 refreshToken은 username만 추출
+                            // 핵심 변경: auth 없는 refreshToken은 username만 추출
                             String username = jwtTokenProvider.getUsernameFromToken(refreshToken);
 
                             User user = userRepository.findByUserid(username)
