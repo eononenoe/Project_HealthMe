@@ -1,40 +1,71 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "static/css/pages/approval.css";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function ApprovalPage() {
-  const { state } = useLocation();
+  const { state } = useLocation(); // 이전 페이지로부터 state를 가져옴
   const navigate = useNavigate();
 
-  // ❗받아온 구매 상품 목록 및 유저 ID
-  const items = state?.items || [];
-  const userId = state?.userId;
+  const items = state?.items || []; // 장바구니 상품들
+  const [isDefaultAddress, setIsDefaultAddress] = useState(true); // 기본 주소 사용 여부
+  const [recipient, setRecipient] = useState(""); // 받는 사람
+  const [zipcode, setZipcode] = useState(""); // 우편번호
+  const [address, setAddress] = useState(""); // 주소
+  const [addressDetail, setAddressDetail] = useState(""); // 상세 주소
+  const [phoneFirst, setPhoneFirst] = useState("010"); // 전화번호 앞자리
+  const [phoneMiddle, setPhoneMiddle] = useState(""); // 전화번호 중간자리
+  const [phoneLast, setPhoneLast] = useState(""); // 전화번호 끝자리
+  const [emailId, setEmailId] = useState(""); // 이메일 ID
+  const [emailDomain, setEmailDomain] = useState("naver.com"); // 이메일 도메인
+  const [paymentMethod, setPaymentMethod] = useState("card"); // 결제 방식
 
-  // 배송지 버튼 상태
-  const [isDefaultAddress, setIsDefaultAddress] = useState(true);
-
-  // 배송지 입력 상태
-  const [recipient, setRecipient] = useState("");
-  const [zipcode, setZipcode] = useState("");
-  const [address, setAddress] = useState("");
-  const [addressDetail, setAddressDetail] = useState("");
-  const [phoneFirst, setPhoneFirst] = useState("010");
-  const [phoneMiddle, setPhoneMiddle] = useState("");
-  const [phoneLast, setPhoneLast] = useState("");
-  const [emailId, setEmailId] = useState("");
-  const [emailDomain, setEmailDomain] = useState("naver.com");
-
-  // 결제 수단
-  const [paymentMethod, setPaymentMethod] = useState("card");
-
-  // 총 결제 금액 (할인가 기준)
+  // 총 결제 금액 계산
   const totalAmount = items.reduce(
-    (acc, item) => acc + item.discountPrice * item.quantity,
+    (acc, item) => acc + (item.discountPrice || 0) * item.quantity,
     0
   );
 
-  // 주문 처리
+  const loginUser = localStorage.getItem("loginUser");
+  // 기본 배송지 불러오기
+  useEffect(() => {
+    if (isDefaultAddress) {
+      if (loginUser) {
+        const user = JSON.parse(loginUser); // localStorage에서 가져온 loginUser JSON 데이터
+        setEmailId(user.userid); // 이메일 ID를 localStorage에서 가져온 값으로 설정
+      }
+      axios
+        .get("/approval/default-address", {
+          withCredentials: true,
+        })
+        .then((res) => {
+          const data = res.data;
+          console.log("기본 배송지 데이터 : ", data);
+          setRecipient(data.recipient || "");
+          setZipcode(data.zonecode || "");
+          setAddress(data.address || "");
+          setAddressDetail(data.addressDetail || "");
+
+          if (data.tel) {
+            const [first, middle, last] = data.tel.split("-");
+            setPhoneFirst(first || "010");
+            setPhoneMiddle(middle || "");
+            setPhoneLast(last || "");
+          }
+
+          if (data.email) {
+            const [id, domain] = data.email.split("@");
+            setEmailId(id || "");
+            setEmailDomain(domain || "naver.com");
+          }
+        })
+        .catch((err) => {
+          console.error("기본 배송지 불러오기 실패", err);
+        });
+    }
+  }, [isDefaultAddress, loginUser]);
+
+  // 주문 제출 처리
   const handleOrderSubmit = async () => {
     if (!recipient.trim()) return alert("받는 사람 이름을 입력하세요.");
     if (!zipcode.trim() || !address.trim())
@@ -43,8 +74,9 @@ export default function ApprovalPage() {
       return alert("전화번호를 모두 입력하세요.");
     if (!emailId.trim()) return alert("이메일 아이디를 입력하세요.");
 
+    const email = `${emailId.substring(0, 5)}@${emailDomain}`; // 이메일 주소 합치기
+
     const orderData = {
-      userId,
       address: isDefaultAddress
         ? null
         : {
@@ -53,7 +85,7 @@ export default function ApprovalPage() {
             address,
             addressDetail,
             phone: `${phoneFirst}-${phoneMiddle}-${phoneLast}`,
-            email: `${emailId}@${emailDomain}`,
+            email: email, // 합쳐진 이메일 사용
           },
       items: items.map((item) => ({
         productId: item.productId,
@@ -126,28 +158,30 @@ export default function ApprovalPage() {
   };
 
   return (
-    <main className="approval-main">
-      {/* 배송지 영역 */}
+    <main className="approval-page-main">
       <section className="approval-left">
         <h2>배송지</h2>
         <div className="approval-button-set">
           <button
             type="button"
-            className={`approval-left-button ${isDefaultAddress ? "active" : ""}`}
+            className={`approval-left-button ${
+              isDefaultAddress ? "active" : ""
+            }`}
             onClick={() => setIsDefaultAddress(true)}
           >
             기본 배송지
           </button>
           <button
             type="button"
-            className={`approval-right-button ${!isDefaultAddress ? "active" : ""}`}
+            className={`approval-right-button ${
+              !isDefaultAddress ? "active" : ""
+            }`}
             onClick={() => setIsDefaultAddress(false)}
           >
             직접 입력
           </button>
         </div>
 
-        {/* 배송지 입력 */}
         <div className="approval-main">
           <div className="approval-rec">
             <h4>받는사람 *</h4>
@@ -157,10 +191,12 @@ export default function ApprovalPage() {
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
               disabled={isDefaultAddress}
-              placeholder={isDefaultAddress ? "기본 배송지 사용 시 입력 불가" : ""}
+              placeholder={
+                isDefaultAddress ? "기본 배송지 사용 시 입력 불가" : ""
+              }
             />
           </div>
-          {/* 주소 */}
+
           <div className="approval-address">
             <h4>주소 *</h4>
             <input
@@ -202,10 +238,13 @@ export default function ApprovalPage() {
             />
           </div>
 
-          {/* 연락처 */}
           <div className="approval-phone">
             <h4>휴대전화 *</h4>
-            <select value={phoneFirst} disabled={isDefaultAddress} onChange={(e) => setPhoneFirst(e.target.value)}>
+            <select
+              value={phoneFirst}
+              disabled={isDefaultAddress}
+              onChange={(e) => setPhoneFirst(e.target.value)}
+            >
               <option value="010">010</option>
               <option value="011">011</option>
             </select>
@@ -227,7 +266,6 @@ export default function ApprovalPage() {
             />
           </div>
 
-          {/* 이메일 */}
           <div className="approval-email">
             <h4>이메일 *</h4>
             <input
@@ -250,7 +288,6 @@ export default function ApprovalPage() {
           </div>
         </div>
 
-        {/* 주문 상품 목록 */}
         <div className="approval-product-list">
           <h2>주문 상품</h2>
           {items.map((item, idx) => (
@@ -259,42 +296,55 @@ export default function ApprovalPage() {
               <div className="approval-product-info">
                 <div>{item.productName}</div>
                 <div>{item.quantity}개</div>
-                <div>정가: {item.price.toLocaleString()}원</div>
-                <div>할인가: {item.discountPrice.toLocaleString()}원</div>
+                <div>정가: {(item.price || 0).toLocaleString()}원</div>
+                <div>
+                  할인가: {(item.discountPrice || 0).toLocaleString()}원
+                </div>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* 결제 영역 */}
       <section className="approval-right">
         <div className="approval-price-box">
           <ul>
             <li>
               <span>상품 금액</span>
               <span>
-                {items.reduce((acc, i) => acc + i.price * i.quantity, 0).toLocaleString()}원
+                {items
+                  .reduce((acc, i) => acc + (i.price || 0) * i.quantity, 0)
+                  .toLocaleString()}{" "}
+                원
               </span>
             </li>
             <li>
               <span>할인 금액</span>
               <span className="approval-gray">
-                -
+                -{" "}
                 {items
-                  .reduce((acc, i) => acc + (i.price - i.discountPrice) * i.quantity, 0)
-                  .toLocaleString()}
+                  .reduce(
+                    (acc, i) =>
+                      acc +
+                      ((i.price || 0) - (i.discountPrice || 0)) * i.quantity,
+                    0
+                  )
+                  .toLocaleString()}{" "}
                 원
               </span>
             </li>
             <li>
               <span>총 결제금액</span>
-              <span>{totalAmount.toLocaleString()}원</span>
+              <span>{totalAmount.toLocaleString()} 원</span>
             </li>
           </ul>
         </div>
 
-        <button type="button" className="approval-button" onClick={handleOrderSubmit}>
+        <button
+          type="button"
+          className="approval-button"
+          onClick={handleOrderSubmit}
+        >
           주문하기
         </button>
       </section>
