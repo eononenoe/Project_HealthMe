@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import 'static/css/pages/Result.css';
 import { useNavigate } from "react-router-dom";
 import CardBar from './CardBar';
@@ -135,12 +136,16 @@ const ResultPage = () => {
           </div>
           <div className="recommend-box" style={{ borderTop: selectedIcon ? `4px solid ${selectedIcon.color}` : `4px solid gainsboro` }}>
             {filtered.map((item, idx) => (
-              <button className='recommend-btn'>
-                <div className='recommend-food' key={idx}>
-                  <div className='recommend-img'>
+              <button
+                className="recommend-btn"
+                key={idx}
+                onClick={() => navigate(`/details/${item.productId}`)}
+              >
+                <div className="recommend-food">
+                  <div className="recommend-img">
                     <img src={item.imageUrl} alt={item.name} />
                   </div>
-                  <div className='recommend-name'>{item.name}</div>
+                  <div className="recommend-name">{item.name}</div>
                 </div>
               </button>
             ))}
