@@ -45,7 +45,7 @@ public class ProductStore {
 
     @Column(name = "sales_count")
     private int sales_count;
-    
+
     // Nutrients: 양방향 관계 설정
     @OneToMany(mappedBy = "productStore", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
