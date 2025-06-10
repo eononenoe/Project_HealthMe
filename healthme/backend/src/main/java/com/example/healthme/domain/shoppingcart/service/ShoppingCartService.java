@@ -102,6 +102,28 @@ public class ShoppingCartService {
 
         cartRepo.delete(item);
     }
-
+//    @Transactional
+//    public void deleteItem(String userId, Long productId, boolean isGuest) {
+//        // 회원 장바구니 삭제 로직
+//        if (!isGuest) {
+//            User user = userRepo.findByUserid(userId)
+//                    .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+//            ProductStore product = productRepo.findByProductId(productId)
+//                    .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+//
+//            ShoppingCartItem item = cartRepo.findByUserAndProduct(user, product)
+//                    .orElseThrow(() -> new RuntimeException("장바구니 항목을 찾을 수 없습니다."));
+//
+//            cartRepo.delete(item);
+//        } else {
+//            // 비회원 장바구니 삭제 로직
+//            // 비회원 장바구니는 로컬 스토리지에서 삭제되고, 서버와 동기화가 필요합니다.
+//            // 비회원 사용자 ID와 상품 ID를 기반으로 삭제 작업을 수행
+//            ShoppingCartItem item = cartRepo.findByProductAndGuest(productId)
+//                    .orElseThrow(() -> new RuntimeException("비회원 장바구니 항목을 찾을 수 없습니다."));
+//
+//            cartRepo.delete(item); // 비회원의 장바구니 항목 삭제
+//        }
+//    }
 
 }
