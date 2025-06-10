@@ -143,7 +143,7 @@ public class UserService {
         mailService.sendEmail(
                 user.getUserid(),
                 "임시 비밀번호 안내",
-                "임시 비밀번호는 [" + tempPassword + "] 입니다."
+                "임시 비밀번호는 " + tempPassword + " 입니다."
         );
     }
 }

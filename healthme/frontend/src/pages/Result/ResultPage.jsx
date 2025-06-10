@@ -11,6 +11,7 @@ const ResultPage = () => {
   const [resultMap, setResultMap] = useState({});
   const [selectedNutrient, setSelectedNutrient] = useState(null);
   const [selectedIcon, setSelectedIcon] = useState(null);
+  const [recommendations, setRecommendations] = useState([]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,16 +31,17 @@ const ResultPage = () => {
     })
       .then(res => {
         const scores = res.data;
-        return axios.post("http://localhost:8090/healthme/result/summary", scores, {
-          withCredentials: true
-        });
+        return Promise.all([
+          axios.post("http://localhost:8090/healthme/result/summary", scores, { withCredentials: true }),
+          axios.post("http://localhost:8090/healthme/recommend", scores, { withCredentials: true })
+        ]);
       })
-      .then(res => {
-        console.log("백엔드 응답:", res.data);
-        setResultMap(res.data);
+      .then(([summaryRes, recommendRes]) => {
+        setResultMap(summaryRes.data);
+        setRecommendations(recommendRes.data);
       })
       .catch(err => {
-        console.error("요약 결과 호출 실패", err);
+        console.error("요약/추천 API 실패", err);
       });
 
     return () => window.removeEventListener("scroll", handleScroll);
@@ -62,8 +64,12 @@ const ResultPage = () => {
     { label: "축산물", desc: "이것은 예시1에 대한 설명입니다.", color: "#3d9dbf", img: "/img/categoryMeat.jpg", colorClass: "blue" },
     { label: "농산물", desc: "이것은 예시2에 대한 설명입니다.", color: "#e4b322", img: "/img/categoryVegetable.jpg", colorClass: "yellow" },
     { label: "수산물", desc: "이것은 예시3에 대한 설명입니다.", color: "#2aaf74", img: "/img/categorySeafood.jpg", colorClass: "green" },
-    { label: "유제품", desc: "이것은 예시4에 대한 설명입니다.", color: "#a672c2", img: "/img/categoryEtc.jpg", colorClass: "purple" },
+    { label: "유제품", desc: "이것은 예시4에 대한 설명입니다.", color: "#a672c2", img: "/img/categoryEtc.jpg", colorClass: "purple" }
   ];
+
+  const filtered = selectedIcon
+    ? recommendations.filter(r => r.category === selectedIcon.label).slice(0, 2)
+    : recommendations.slice(0, 2);
 
   return (
     <div className="result-page">
@@ -79,10 +85,7 @@ const ResultPage = () => {
         </div>
         <div className="wave-divider">
           <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
-            <path
-              fill="#ffffff"
-              d="M0,160 C240,-120 480,440 720,160 C960,-120 1200,440 1440,160 L1440,320 L0,320 Z"
-            />
+            <path fill="#ffffff" d="M0,160 C240,-120 480,440 720,160 C960,-120 1200,440 1440,160 L1440,320 L0,320 Z" />
           </svg>
         </div>
       </div>
@@ -94,7 +97,6 @@ const ResultPage = () => {
             {nutrientCards.map((card, idx) => {
               const result = resultMap[card.name];
               if (!result) return null;
-
               return (
                 <CardBar
                   key={idx}
@@ -128,15 +130,16 @@ const ResultPage = () => {
             ))}
           </div>
           <div className="recommend-box" style={{ borderTop: selectedIcon ? `4px solid ${selectedIcon.color}` : `4px solid gainsboro` }}>
-            <div className='recommend-food'>
-              <div className='recommend-img'>
-              </div>
-              <div className='recommend-name'></div>
-            </div>
-            <div className='recommend-food'>
-              <div className='recommend-img'></div>
-              <div className='recommend-name'></div>
-            </div>
+            {filtered.map((item, idx) => (
+              <button className='recommend-btn'>
+                <div className='recommend-food' key={idx}>
+                  <div className='recommend-img'>
+                    <img src={item.imageUrl} alt={item.name} />
+                  </div>
+                  <div className='recommend-name'>{item.name}</div>
+                </div>
+              </button>
+            ))}
           </div>
         </div>
 
