@@ -104,7 +104,6 @@ public class ProductService {
         productRepository.save(product);
 
         // ProductNutrient 저장
-        // ProductNutrient 저장
         ProductNutrient nutrient = ProductNutrient.builder()
                 .productStore(product)  // 수정: productId -> productStore
                 .protein(insertProductDto.getProtein())

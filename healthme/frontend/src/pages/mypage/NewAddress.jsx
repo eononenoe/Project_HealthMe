@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DaumPostcodeModal from "./DaumPostcodeModal";
 import axios from "axios";
-export default function NewAddress({ addrAdd, onClose, newaddr }) {
+export default function NewAddress({ addrAdd, onClose, newaddr, addrupdate }) {
   const [user, setUser] = useState({
     address: "",
     addressDetail: "",
@@ -31,6 +31,8 @@ export default function NewAddress({ addrAdd, onClose, newaddr }) {
         withCredentials: true,
       });
       window.alert("저장되었습니다.");
+      onClose();
+      addrupdate();
     } catch {
       window.alert("저장 실패했습니다.");
     }

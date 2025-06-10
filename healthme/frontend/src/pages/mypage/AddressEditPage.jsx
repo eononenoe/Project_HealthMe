@@ -12,6 +12,7 @@ export default function AddressEditPage() {
   const [deliveryOrders, setDeliveryOrders] = useState([]);
   const [levelEmoji, setLevelEmoji] = useState(null);
   const [newaddr, setNewaddr] = useState(null);
+  const [update, setUpdate] = useState(false);
 
   const loginUser = JSON.parse(localStorage.getItem("loginUser"));
 
@@ -68,7 +69,7 @@ export default function AddressEditPage() {
     fetchDeliveryOrders();
     getAddress();
     fetchUserInfo();
-  }, []);
+  }, [update]);
 
   const addnewAddr = async () => {
     try {
@@ -186,6 +187,7 @@ export default function AddressEditPage() {
         addrAdd={addrAdd}
         onClose={() => setAddrAdd(false)}
         newaddr={newaddr}
+        addrupdate={() => setUpdate((prev) => !prev)}
       />
 
       {showDeliveryDetail && (

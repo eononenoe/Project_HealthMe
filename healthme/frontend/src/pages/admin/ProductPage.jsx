@@ -71,19 +71,19 @@ export default function ProductPage() {
   // 삭제하기 체크박스 선택
   const AllCheck = (checked) => {
     if (checked) {
-      const productIdArray = [];
-      products.forEach((el) => productIdArray.push(el.productId));
-      setCheckItems(productIdArray);
+      const product_idArray = [];
+      products.forEach((el) => product_idArray.push(el.product_id));
+      setCheckItems(product_idArray);
     } else {
       setCheckItems([]);
     }
   };
 
-  const subCheckBox = (checked, productId) => {
+  const subCheckBox = (checked, product_id) => {
     if (checked) {
-      setCheckItems((prev) => [...prev, productId]);
+      setCheckItems((prev) => [...prev, product_id]);
     } else {
-      setCheckItems(checkItems.filter((el) => el !== productId));
+      setCheckItems(checkItems.filter((el) => el !== product_id));
     }
   };
 
@@ -136,7 +136,7 @@ export default function ProductPage() {
 
   return (
     <Box>
-      <Typography variant="h7" fontWeight="bold">
+      <Typography variant="h6" fontWeight="bold">
         상품 관리 페이지입니다
       </Typography>
       <TableContainer>
@@ -166,19 +166,19 @@ export default function ProductPage() {
           <TableBody>
             {/*map()으로 반복 렌더링 */}
             {products.map((product) => (
-              <TableRow key={product.productId}>
+              <TableRow key={product.product_id}>
                 {/*key는 React가 어떤 항목이 바뀌었는지 정확히 알게 도와주는 고유 식별자입니다. */}
                 <TableCell padding="checkbox">
                   <Checkbox
                     onChange={(e) =>
-                      subCheckBox(e.target.checked, product.productId)
+                      subCheckBox(e.target.checked, product.product_id)
                     }
                     checked={
-                      checkItems.includes(product.productId) ? true : false
+                      checkItems.includes(product.product_id) ? true : false
                     }
                   ></Checkbox>
                 </TableCell>
-                <TableCell>{product.productId}</TableCell>
+                <TableCell>{product.product_id}</TableCell>
                 <TableCell>{product.category}</TableCell>
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.price}</TableCell>

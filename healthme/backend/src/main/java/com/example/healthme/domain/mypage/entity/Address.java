@@ -1,6 +1,7 @@
 package com.example.healthme.domain.mypage.entity;
 
 import com.example.healthme.domain.user.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,7 @@ public class Address {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id") // FK
+    @JsonIgnore
     private User user; // 사용자 (N:1 관계)
 
     private String zip;       // 우편번호

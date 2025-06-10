@@ -52,6 +52,7 @@ export default function UserEdit() {
       const res = await axios.get("/mypage/getbuy", {
         withCredentials: true,
       });
+      console.log("결제상품들 : ", res.data);
       setDeliveryOrders(res.data);
     } catch (err) {
       console.error("배송 내역 로딩 실패", err);
