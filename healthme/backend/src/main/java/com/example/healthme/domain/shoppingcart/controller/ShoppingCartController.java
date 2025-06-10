@@ -4,6 +4,7 @@ import com.example.healthme.domain.shoppingcart.dto.ShoppingCartItemRequestDto;
 import com.example.healthme.domain.shoppingcart.dto.ShoppingCartItemResponseDto;
 import com.example.healthme.domain.shoppingcart.service.ShoppingCartService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +25,35 @@ public ResponseEntity<String> addToCart(
         @AuthenticationPrincipal PrincipalDetails principalDetails,
         @RequestBody ShoppingCartItemRequestDto requestDto) {
 
-    String userId = principalDetails.getUserDto().getUserid(); // 또는 getUser().getUserid()
+    System.out.println(">>> principalDetails: " + principalDetails);
+    if (principalDetails == null) {
+        throw new RuntimeException("로그인이 필요합니다.");
+    }
+    String userId = principalDetails.getUserDto().getUserid(); // or getUser().getUserid()
+    System.out.println("userId: " + userId);
+
     cartService.addToCart(userId, requestDto);
     return ResponseEntity.ok("장바구니에 추가되었습니다.");
 }
 
+// 비회원 장바구니 
+    @PostMapping("/healthme/cart/guest-sync")
+    public ResponseEntity<String> syncGuestCart(
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @RequestBody List<ShoppingCartItemRequestDto> guestItems
+    ) {
+        if (principalDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+
+        String userId = principalDetails.getUserDto().getUserid();
+
+        for (ShoppingCartItemRequestDto item : guestItems) {
+            cartService.addToCart(userId, item);
+        }
+
+        return ResponseEntity.ok("비회원 장바구니가 서버와 동기화되었습니다.");
+    }
 
 
 //     장바구니 목록 조회

@@ -4,6 +4,7 @@ import axios from "axios";
 import "static/css/pages/shopping-cart.css";
 
 function ShoppingCart() {
+  const [isGuest, setIsGuest] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const navigate = useNavigate();
@@ -21,33 +22,45 @@ function ShoppingCart() {
   // 장바구니 불러오기
   const loadCart = async () => {
     try {
-      const res = await api.get(`/cart/${userId}`); // ✅ 여기서 선언
+      const res = await api.get(`/healthme/cart`, {
+        withCredentials: true
+      });
 
-      console.log("장바구니 응답:", res.data); // 여기부터는 정상 사용 가능
+      console.log("서버 응답 장바구니:", res.data);
 
-      const items = Array.isArray(res.data)
-        ? res.data
-        : Array.isArray(res.data.data)
-        ? res.data.data
-        : [];
-
+      const items = Array.isArray(res.data) ? res.data : [];
       const withChecked = items.map((item) => ({ ...item, checked: false }));
       setCartItems(withChecked);
     } catch (error) {
-      console.error("장바구니 불러오기 오류:", error);
+      console.error("서버 장바구니 불러오기 오류:", error);
     }
   };
 
+
+
   useEffect(() => {
-    loadCart();
+    const loginUser = localStorage.getItem("loginUser");
+    console.log("로그인 유저 확인:", loginUser);
+
+    if (!loginUser) {
+      console.log("비회원입니다.");
+      setIsGuest(true);
+
+      const guestCart = JSON.parse(localStorage.getItem("guestCart") || "[]");
+      console.log("비회원 장바구니:", guestCart);
+
+      const withChecked = guestCart.map((item) => ({
+        ...item,
+        checked: false
+      }));
+      setCartItems(withChecked);
+    } else {
+      console.log("로그인한 사용자입니다.");
+      setIsGuest(false);
+      loadCart();
+    }
   }, []);
 
-  const handleQuantityChange = async (id, qty) => {
-    await api.put(`/cart/${id}/quantity`, null, {
-      params: { quantity: qty },
-    });
-    loadCart();
-  };
 
   const handleDelete = async (id) => {
     await api.delete(`/cart/${id}`);
@@ -77,10 +90,29 @@ function ShoppingCart() {
     }
     loadCart();
   };
+  const handleQuantityChange = async (id, qty) => {
+    if (isGuest) {
+      const updated = cartItems.map(item =>
+        item.productId === id ? { ...item, quantity: qty } : item
+      );
+      localStorage.setItem("guestCart", JSON.stringify(updated));
+      setCartItems(updated);
+    } else {
+      await api.put(`/cart/${id}/quantity`, null, {
+        params: { quantity: qty },
+      });
+      loadCart();
+    }
+  };
 
   const handlePaymentClick = () => {
-    const selectedItems = cartItems.filter((item) => item.checked);
+    if (isGuest) {
+      alert("비회원은 결제를 위해 로그인이 필요합니다.");
+      navigate("/login");
+      return;
+    }
 
+    const selectedItems = cartItems.filter((item) => item.checked);
     if (selectedItems.length === 0) {
       alert("결제할 상품을 선택해주세요.");
       return;
@@ -92,7 +124,9 @@ function ShoppingCart() {
         totalPrice: totalPrice,
       },
     });
+    console.log("최종 cartItems 상태:", cartItems);
   };
+
 
   return (
     <main className="shopping-main">

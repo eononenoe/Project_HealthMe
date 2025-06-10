@@ -62,26 +62,47 @@ function ProductDetailPage() {
     };
     // 장바구니 담기
     const handleAddToCart = async () => {
-        const userId = JSON.parse(localStorage.getItem("loginUser"));
-        if (!userId) {
-            alert('로그인이 필요합니다.');
-            navigate('/login');
-            return;
-        }
+        const cartItem = {
+            productId: product.id,
+            quantity: quantity,
+        };
 
-        try {
-            await axios.post("http://localhost:8090/healthme/cart", {
-                productId: product.id,
-                quantity: 1
-            }, {
-                withCredentials: true
-            });
-            alert('장바구니에 담겼습니다!');
-        } catch (error) {
-            alert('장바구니 담기에 실패했습니다.');
-            console.error(error);
+        const isLoggedIn = !!localStorage.getItem("accessToken"); // 또는 쿠키 기반 인증 확인
+
+        if (isLoggedIn) {
+            try {
+                await axios.post(
+                    "http://localhost:8090/healthme/cart",
+                    cartItem,
+                    {
+                        withCredentials: true,
+                    }
+                );
+                alert("장바구니에 담겼습니다!");
+            } catch (error) {
+                console.error("장바구니 추가 실패:", error);
+                if (error.response?.status === 401) {
+                    alert("로그인이 만료되었습니다. 다시 로그인해 주세요.");
+                    navigate("/login");
+                } else {
+                    alert("장바구니 담기에 실패했습니다.");
+                }
+            }
+        } else {
+            // 비회원일 경우 localStorage에 저장
+            const guestCart = JSON.parse(localStorage.getItem("guestCart") || "[]");
+            const existingItem = guestCart.find(item => item.productId === cartItem.productId);
+            if (existingItem) {
+                existingItem.quantity += cartItem.quantity;
+            } else {
+                guestCart.push(cartItem);
+            }
+            localStorage.setItem("guestCart", JSON.stringify(guestCart));
+            alert("비회원 장바구니에 담겼습니다!");
         }
     };
+
+
     // 바로구매
     const handleBuyNow = () => {
         const userId = getCookie('userId');

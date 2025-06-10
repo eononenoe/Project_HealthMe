@@ -44,13 +44,11 @@ public class SecurityConfig {
                                 "/healthme/users/check",
                                 "/healthme/users/login",
                                 "/healthme/products",
-                                "/healthme/products/**",
-                                "/healthme/cart/**"
+                                "/healthme/products/**"
                         ).permitAll()
                         .requestMatchers("/user",
                                 "/healthme/result/**",
                                 "/healthme/survey/**",
-
                                 "/healthme/nutrients/**",
                                 "/healthme/mypage/**"
                         ).hasRole("USER")
