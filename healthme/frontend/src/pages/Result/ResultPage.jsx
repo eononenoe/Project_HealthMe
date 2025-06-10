@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'static/css/pages/Result.css';
-
+import { useNavigate } from "react-router-dom";
 import CardBar from './CardBar';
 import NutrientInfo from './NutrientInfo';
 import InfluenceIcon from './InfluenceIcon';
 import TraitsSection from './TraitsSection';
 
 const ResultPage = () => {
+  const navigate = useNavigate();
   const [resultMap, setResultMap] = useState({});
   const [selectedNutrient, setSelectedNutrient] = useState(null);
   const [selectedIcon, setSelectedIcon] = useState(null);
 
   useEffect(() => {
+
     const handleScroll = () => {
       const image = document.querySelector('.header-image img');
       if (image) {
@@ -20,10 +22,12 @@ const ResultPage = () => {
       }
     };
     window.addEventListener('scroll', handleScroll);
-
     const loginUser = JSON.parse(localStorage.getItem("loginUser"));
     const userid = loginUser?.userid;
-
+    if (!loginUser) {
+      alert("이 페이지는 로그인 후 이용 가능합니다.");
+      navigate("/login");
+    }
     axios.get("http://localhost:8090/healthme/survey/scores", {
       params: { userid },
       withCredentials: true

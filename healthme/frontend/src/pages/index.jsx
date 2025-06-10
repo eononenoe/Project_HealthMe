@@ -5,12 +5,38 @@ import 'swiper/css/bundle';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'static/css/home/style.css';
 import axios from 'axios';
+import { v4 as uuidv4 } from "uuid";
+
+// 임시아이디 발급
+const GUEST_ID_KEY = "guestId";
+const GUEST_ID_EXPIRES = "guestIdExpires";
+
+const setupGuestId = () => {
+  const now = Date.now();
+  const expires = localStorage.getItem(GUEST_ID_EXPIRES);
+  const guestId = localStorage.getItem(GUEST_ID_KEY);
+
+  // 만료됐거나 없으면 새로 발급
+  if (!guestId || !expires || now > parseInt(expires, 10)) {
+    const newGuestId = uuidv4();
+    const newExpires = now + 60 * 60 * 1000; // 1시간
+
+    localStorage.setItem(GUEST_ID_KEY, newGuestId);
+    localStorage.setItem(GUEST_ID_EXPIRES, newExpires.toString());
+
+    console.log("새 guestId 발급:", newGuestId);
+  } else {
+    console.log("기존 guestId 유지:", guestId);
+  }
+};
 
 const HomePage = () => {
   const [popularProducts, setPopularProducts] = useState([]);
   const [specialProducts, setSpecialProducts] = useState([]);
 
   useEffect(() => {
+    // 게스트아이디
+    setupGuestId();
     new Swiper('.swiper', {
       direction: 'horizontal',
       loop: true,
@@ -157,9 +183,9 @@ const ProductList = ({ products = [], isSpecial = false }) => {
 
   const goToDetail = (product) => {
     console.log("Product:", product);
- 
+
     if (!product?.productId) {
-      alert('상품 ID가 없습니다!'); 
+      alert('상품 ID가 없습니다!');
       return;
     }
     navigate(`/details/${product.productId}`);

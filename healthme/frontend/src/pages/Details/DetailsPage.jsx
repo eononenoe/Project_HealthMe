@@ -5,11 +5,15 @@ import 'static/css/pages/Details.css';
 
 // 쿠키 설정
 function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-    return null;
+    const cookieString = document.cookie;
+    const cookies = cookieString.split("; ").reduce((acc, current) => {
+        const [key, value] = current.split("=");
+        acc[key] = value;
+        return acc;
+    }, {});
+    return cookies[name];
 }
+
 
 function ProductDetailPage() {
     const { productId } = useParams();
@@ -63,11 +67,12 @@ function ProductDetailPage() {
     // 장바구니 담기
     const handleAddToCart = async () => {
         const cartItem = {
-            productId: product.id,
+            productId: product.product_id,
             quantity: quantity,
         };
 
-        const isLoggedIn = !!localStorage.getItem("accessToken"); // 또는 쿠키 기반 인증 확인
+        const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+        const isLoggedIn = !!loginUser?.userid;
 
         if (isLoggedIn) {
             try {
@@ -75,7 +80,7 @@ function ProductDetailPage() {
                     "http://localhost:8090/healthme/cart",
                     cartItem,
                     {
-                        withCredentials: true,
+                        withCredentials: true, // accessToken 쿠키 자동 전송
                     }
                 );
                 alert("장바구니에 담겼습니다!");
@@ -89,18 +94,29 @@ function ProductDetailPage() {
                 }
             }
         } else {
-            // 비회원일 경우 localStorage에 저장
-            const guestCart = JSON.parse(localStorage.getItem("guestCart") || "[]");
+            const guestId = localStorage.getItem("guestId");
+            if (!guestId) {
+                alert("임시 아이디가 없습니다. 새로고침 후 다시 시도해 주세요.");
+                return;
+            }
+
+            const guestCartKey = `guestCart_${guestId}`;
+            const guestCart = JSON.parse(localStorage.getItem(guestCartKey) || "[]");
+
             const existingItem = guestCart.find(item => item.productId === cartItem.productId);
             if (existingItem) {
                 existingItem.quantity += cartItem.quantity;
             } else {
                 guestCart.push(cartItem);
             }
-            localStorage.setItem("guestCart", JSON.stringify(guestCart));
+
+            localStorage.setItem(guestCartKey, JSON.stringify(guestCart));
             alert("비회원 장바구니에 담겼습니다!");
         }
     };
+
+
+
 
 
     // 바로구매

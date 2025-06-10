@@ -67,4 +67,41 @@ public class ShoppingCartService {
                         .build()
         ).collect(Collectors.toList());
     }
+    @Transactional
+    public void updateQuantityByCartItemId(Long cartItemId, int quantity) {
+        ShoppingCartItem item = cartRepo.findById(cartItemId)
+                .orElseThrow(() -> new RuntimeException("장바구니 항목을 찾을 수 없습니다."));
+        item.setQuantity(quantity);
+    }
+
+    // 수량 변경
+    @Transactional
+    public void updateQuantity(String userId, Long productId, int quantity) {
+        User user = userRepo.findByUserid(userId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+        ProductStore product = productRepo.findByProductId(productId)
+                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+
+        ShoppingCartItem item = cartRepo.findByUserAndProduct(user, product)
+                .orElseThrow(() -> new RuntimeException("장바구니 항목을 찾을 수 없습니다."));
+
+        item.setQuantity(quantity);
+        cartRepo.save(item);
+    }
+
+    // 항목 삭제
+    @Transactional
+    public void deleteItem(String userId, Long productId) {
+        User user = userRepo.findByUserid(userId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+        ProductStore product = productRepo.findByProductId(productId)
+                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+
+        ShoppingCartItem item = cartRepo.findByUserAndProduct(user, product)
+                .orElseThrow(() -> new RuntimeException("장바구니 항목을 찾을 수 없습니다."));
+
+        cartRepo.delete(item);
+    }
+
+
 }
