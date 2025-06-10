@@ -17,6 +17,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    // 상품 추가
     @PostMapping("/insert/data")
     public void insertProduct(@ModelAttribute InsertProductDto insertProductDto){
         if (insertProductDto!=null){

@@ -20,18 +20,22 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-// ───────── 모달 컴포넌트 ─────────
+// 모달창
 function NoticeModal({ open, onClose, onSave, init }) {
   const [form, setForm] = useState(init);
 
   // init 값이 바뀌면 폼 초기화
-  useEffect(() => setForm(init), [init]);
+  useEffect(() => {
+    setForm(init);
+  }, [init]);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async () => {
     await onSave(form);
+    window.alert(form.id ? "수정되었습니다." : "등록되었습니다.");
+    // form.id가 존재한다면 이미 있다는거니까 수정되었습니다. 없으면 등록되었습니다. 출력
     onClose();
   };
 
@@ -82,7 +86,7 @@ function NoticeModal({ open, onClose, onSave, init }) {
   );
 }
 
-// ───────── 메인 페이지 ─────────
+// 메인 페이지
 export default function AdminNoticePage() {
   const [rows, setRows] = useState([]);
   const [selected, setSelected] = useState([]);
@@ -92,28 +96,38 @@ export default function AdminNoticePage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null); // null → 신규, obj → 수정
 
-  // ── CRUD helpers ──
   const fetchRows = () =>
-    axios.get("/api/notices").then((r) => setRows(r.data));
+    axios
+      .get("/api/notices", { withCredentials: true })
+      .then((r) => setRows(r.data))
+      .catch((e) => console.error("공지 조회 실패", e));
 
   const createRow = (dto) =>
-    axios.post("/api/admin/notices", dto).then(fetchRows);
+    axios
+      .post("/api/admin/notices", dto, { withCredentials: true })
+
+      .then(fetchRows);
 
   const updateRow = (dto) =>
-    axios.put(`/api/admin/notices/${dto.id}`, dto).then(fetchRows);
+    axios
+      .put(`/api/admin/notices/${dto.id}`, dto, { withCredentials: true })
+      .then(fetchRows);
 
   const deleteRows = async () => {
     await Promise.all(
-      selected.map((id) => axios.delete(`/api/admin/notices/${id}`))
+      selected.map((id) =>
+        axios.delete(`/api/admin/notices/${id}`, { withCredentials: true })
+      )
     );
     setSelected([]);
     fetchRows();
   };
 
-  // ── side-effect: 최초 조회 ──
-  useEffect(fetchRows, []);
+  // 최초 조회 ──
+  useEffect(() => {
+    fetchRows();
+  }, []);
 
-  // ── render ──
   return (
     <Paper sx={{ p: 3 }}>
       <Typography variant="h6" mb={2}>
@@ -164,7 +178,6 @@ export default function AdminNoticePage() {
                 hover
                 sx={{ cursor: "pointer" }}
                 onClick={(e) => {
-                  // 체크박스 클릭은 수정 모달 열지 않음
                   if (e.target.type === "checkbox") return;
                   setEditing(row);
                   setModalOpen(true);

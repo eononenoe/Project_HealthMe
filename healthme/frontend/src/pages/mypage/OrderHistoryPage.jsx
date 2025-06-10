@@ -30,6 +30,7 @@ export default function OrderHistoryPage() {
     try {
       const res = await axios.get("/mypage/getbuy", { withCredentials: true });
       setOrders(res.data);
+      console.log(res.data);
     } catch (err) {
       console.error("구매 내역 가져오기 실패", err);
     }

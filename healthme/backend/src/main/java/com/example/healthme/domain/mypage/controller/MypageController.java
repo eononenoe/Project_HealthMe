@@ -92,10 +92,11 @@ public class MypageController {
     @GetMapping("/getbuy")
     public ResponseEntity<?> getBuy(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         List<ApprovalOrder> orders = mypageUserService.getbuyproduct(principalDetails);
+
         List<ApprovalOrderResponseDto> result = orders.stream()
                 .map(ApprovalOrderResponseDto::fromEntity)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(result);  // 빈 리스트라도 200 OK로 보내는 게 맞음
+        return ResponseEntity.ok(result);
     }
 }

@@ -25,7 +25,6 @@ import SearchIcon from "@mui/icons-material/Search";
  * 관리자 > 거래 내역 페이지 (DTO 기반 2025.06)
  */
 export default function TransactionPage() {
-  /* --------------------------- 상태 --------------------------- */
   const [orders, setOrders] = useState([]); // 목록
   const [page, setPage] = useState(1); // 현재 페이지 (1-base)
   const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
@@ -39,10 +38,8 @@ export default function TransactionPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
 
-  /* --------------------------- 공통 --------------------------- */
   const toggleRefresh = () => setNeedRefresh((prev) => !prev);
 
-  /* --------------------------- 목록 조회 --------------------------- */
   useEffect(() => {
     const fetchData = async () => {
       const base = searchMode
@@ -61,7 +58,6 @@ export default function TransactionPage() {
     fetchData();
   }, [page, needRefresh, searchMode, keyword]);
 
-  /* --------------------------- 상태 변경 --------------------------- */
   const updateStatus = async (payload) => {
     try {
       await axios.post("/transactions/status", payload, {
@@ -85,7 +81,7 @@ export default function TransactionPage() {
     toggleRefresh();
   };
 
-  /* --------------------------- 환불 / 반품 --------------------------- */
+  // 환불 반품
   const requestRefundOrReturn = async (type) => {
     const payload =
       type === "환불"
@@ -102,7 +98,6 @@ export default function TransactionPage() {
     }
   };
 
-  /* --------------------------- 렌더 --------------------------- */
   const renderItemNames = (items = []) =>
     items.map((i) => i.productName).join(", ");
 
@@ -139,14 +134,14 @@ export default function TransactionPage() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>No</TableCell>
-              <TableCell>상품명</TableCell>
-              <TableCell>가격</TableCell>
-              <TableCell>거래자</TableCell>
-              <TableCell>결제수단</TableCell>
-              <TableCell>거래일시</TableCell>
-              <TableCell>취소여부</TableCell>
-              <TableCell>완료여부</TableCell>
+              <TableCell sx={{ minWidth: 80 }}>No</TableCell>
+              <TableCell sx={{ minWidth: 80 }}>상품명</TableCell>
+              <TableCell sx={{ minWidth: 80 }}>가격</TableCell>
+              <TableCell sx={{ minWidth: 80 }}>거래자</TableCell>
+              <TableCell sx={{ minWidth: 80 }}>결제수단</TableCell>
+              <TableCell sx={{ minWidth: 80 }}>거래일시</TableCell>
+              <TableCell sx={{ minWidth: 80 }}>취소여부</TableCell>
+              <TableCell sx={{ minWidth: 80 }}>완료여부</TableCell>
               <TableCell align="center" width={220}></TableCell>
             </TableRow>
           </TableHead>

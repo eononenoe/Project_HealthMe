@@ -98,8 +98,11 @@ export default function ProductRegisterDialog({ open, onClose, onSubmit }) {
             value={registCategory}
             onChange={(e) => setregistCategory(e.target.value)}
           >
-            <MenuItem value="리빙">리빙</MenuItem>
-            <MenuItem value="가전">가전</MenuItem>
+            <MenuItem value="건강식품">건강식품</MenuItem>
+            <MenuItem value="유제품">유제품</MenuItem>
+            <MenuItem value="축산물">축산물</MenuItem>
+            <MenuItem value="농산물">농산물</MenuItem>
+            <MenuItem value="수산물">수산물</MenuItem>
           </TextField>
 
           <TextField

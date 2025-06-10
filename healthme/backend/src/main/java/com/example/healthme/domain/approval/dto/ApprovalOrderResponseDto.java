@@ -1,7 +1,6 @@
 package com.example.healthme.domain.approval.dto;
 
 import com.example.healthme.domain.approval.entity.ApprovalOrder;
-import com.example.healthme.domain.approval.entity.ApprovalOrderItem;
 import com.example.healthme.domain.mypage.entity.Address;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,6 +38,7 @@ public class ApprovalOrderResponseDto {
         dto.setRefundRequested(order.isRefundRequested());
         dto.setReturnRequested(order.isReturnRequested());
         dto.setAddress(order.getAddress());
+
         dto.setItems(order.getApprovalOrderItems().stream()
                 .map(ApprovalOrderItemDto::fromEntity)
                 .collect(Collectors.toList()));
