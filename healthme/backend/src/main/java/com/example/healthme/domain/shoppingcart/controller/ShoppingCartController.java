@@ -86,7 +86,7 @@ public ResponseEntity<Void> updateQuantity(
 }
 
 // 항목 삭제
-@DeleteMapping("/{productId}")
+@DeleteMapping("/delete/{productId}")
 public ResponseEntity<Void> deleteCartItem(
         @AuthenticationPrincipal PrincipalDetails principalDetails,
         @PathVariable Long productId) {

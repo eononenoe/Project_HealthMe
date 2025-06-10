@@ -22,6 +22,8 @@ function ShoppingCart() {
 
   // 장바구니 불러오기
   const loadCart = async () => {
+    if (cartItems.length === 0) return;
+
     try {
       const res = await api.get(`/cart`, { withCredentials: true });
       const items = Array.isArray(res.data) ? res.data : [];
@@ -89,7 +91,8 @@ function ShoppingCart() {
       localStorage.setItem(guestCartKey, JSON.stringify(updated));
       setCartItems(updated);
     } else {
-      await api.delete(`/healthme/cart/${productId}`);
+      // 백엔드에서 설정한 delete 경로에 맞게 수정
+      await api.delete(`/healthme/cart/delete/${productId}`);
       loadCart();
     }
   };
@@ -121,7 +124,7 @@ function ShoppingCart() {
       setCartItems(updated);
     } else {
       for (const item of selectedItems) {
-        await api.delete(`/cart/${item.cartItemId}`);
+        await api.delete(`/healthme/cart/delete/${item.productId}`);
       }
       loadCart();
     }
