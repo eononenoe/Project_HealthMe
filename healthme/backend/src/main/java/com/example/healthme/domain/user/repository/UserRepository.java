@@ -3,6 +3,7 @@ package com.example.healthme.domain.user.repository;
 import com.example.healthme.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -13,6 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUserid(String userid);
 
     // 아이디 비밀번호 찾기
-    Optional<User> findByUsername(String username);
+    List<User> findByUsername(String username);
+
     Optional<User> findByUsernameAndUserid(String username, String userid);
 }

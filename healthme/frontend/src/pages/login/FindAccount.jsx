@@ -11,8 +11,12 @@ const FindAccount = () => {
 
     const handleFindUsername = () => {
         axios.post("/healthme/users/find-username", { username })
-            .then(res => alert(`아이디(이메일): ${res.data}`))
+            .then(res => {
+                console.log("백엔드 응답:", res.data);
+                alert(`아이디(이메일): ${res.data}`)
+            })
             .catch(() => alert("일치하는 정보가 없습니다."));
+
     };
 
     const handleResetPassword = () => {

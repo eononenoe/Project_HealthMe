@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;   // ← 정확한 패키지
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -123,11 +124,14 @@ public class UserService {
     }
 
     public String findUseridByName(String username) {
-        return userRepository.findByUsername(username)
-                .map(User::getUserid)
-                .orElse(null);
-    }
+        List<User> users = userRepository.findByUsername(username);
+        if (users.isEmpty()) {
+            return null;
+        }
 
+        // 동일 이름 중 가장 먼저 등록된 사용자 반환
+        return users.get(0).getUserid();
+    }
     public void sendTemporaryPassword(String username, String userid) {
         User user = userRepository.findByUsernameAndUserid(username, userid)
                 .orElseThrow(() -> new IllegalArgumentException("정보가 일치하지 않습니다."));

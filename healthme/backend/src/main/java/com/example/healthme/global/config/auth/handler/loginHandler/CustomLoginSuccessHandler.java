@@ -45,7 +45,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		refreshTokenCookie.setMaxAge(JwtProperties.REFRESH_TOKEN_EXPIRATION_TIME / 1000);
 		response.addCookie(refreshTokenCookie);
 
-		log.info("▶▶ [refreshToken 쿠키 추가됨] 값: {}", tokenInfo.getRefreshToken());
+		log.info("[refreshToken 쿠키 추가됨] 값: {}", tokenInfo.getRefreshToken());
 
 		// 쿠키에 accessToken 저장 (선택적, accessToken은 JS에서 직접 써도 됨)
 		Cookie accessTokenCookie = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME, tokenInfo.getAccessToken());

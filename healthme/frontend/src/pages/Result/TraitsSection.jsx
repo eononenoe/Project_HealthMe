@@ -8,8 +8,9 @@ const TraitsSection = ({ type }) => {
 
   // 백엔드에서 데이터 로딩
   useEffect(() => {
-    axios.get(`http://localhost:8090/healthme/result/random/${type}`)
-
+    axios.get(`http://localhost:8090/healthme/result/random/${type}`, {
+      withCredentials: true
+    })
       .then(res => setTips(res.data))
       .catch(err => console.error("TraitsSection 데이터 불러오기 실패", err));
   }, [type]);

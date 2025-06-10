@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/",
+                                "/healthme/users/**",
                                 "/healthme/users/join",
                                 "/healthme/users/check",
                                 "/healthme/users/login",
@@ -50,7 +51,6 @@ public class SecurityConfig {
                         .requestMatchers("/user",
                                 "/healthme/result/**",
                                 "/healthme/survey/**",
-
                                 "/healthme/nutrients/**",
                                 "/healthme/mypage/**"
                         ).hasRole("USER")

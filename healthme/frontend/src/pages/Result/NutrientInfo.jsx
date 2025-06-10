@@ -10,7 +10,7 @@ const NutrientInfo = ({ nutrient }) => {
         );
     }
 
-    const { name, value, desc, tip, foods } = nutrient;
+    const { name, value, desc, tip, foods, info } = nutrient;
 
     const percentText = typeof value === 'number' ? `${value}%` : `${value ?? '-'}%`;
     const displayDesc = desc?.trim() || '설명을 불러올 수 없습니다.';
@@ -18,6 +18,7 @@ const NutrientInfo = ({ nutrient }) => {
     // 공백이거나 undefined/null도 걸러냄
     const hasTip = typeof tip === 'string' && tip.trim().length > 0;
     const hasFoods = Array.isArray(foods) && foods.some(f => f && f.trim().length > 0);
+    const hasInfo = typeof info === 'string' && info.trim().length > 0;
 
     return (
         <div className="info-container">
@@ -39,7 +40,25 @@ const NutrientInfo = ({ nutrient }) => {
                     {hasFoods ? foods.filter(f => f.trim()).join(', ') : <span style={{ color: 'gray' }}>추천 식품 없음</span>}
                 </p>
             </div>
+            <div className='what-is-nutrient'>
+                <li>{name}이란?</li>
+                <div>
+                    {hasInfo
+                        ? info
+                            .split('.')
+                            .filter(sentence => sentence.trim().length > 0)
+                            .map((sentence, idx) => (
+                                <span key={idx}>
+                                    {sentence.trim()}.
+                                    <br />
+                                    <br/>
+                                </span>
+                            ))
+                        : <span style={{ color: 'gray' }}>설명이 없습니다.</span>}
+                </div>
+            </div>
         </div>
+
     );
 };
 
