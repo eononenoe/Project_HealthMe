@@ -34,6 +34,7 @@ export default function UserEdit() {
       if (getuser !== null) {
         setForm({
           ...getuser.data,
+
           tel1: getuser.data.tel.substring(0, 3),
           tel2: getuser.data.tel.substring(4, 8),
           tel3: getuser.data.tel.substring(9, 13),
@@ -81,6 +82,7 @@ export default function UserEdit() {
       return;
     } else {
       try {
+        // 사용자 정보 수정
         await axios.post(`/mypage/user/update?id=${form.id}`, formData, {
           withCredentials: true,
           headers: {
@@ -88,7 +90,19 @@ export default function UserEdit() {
           },
         });
 
+        // address 테이블 recipient 동기화
+        await axios.post(
+          "/mypage/update-recipient",
+          {
+            recipient: form.username,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+
         window.alert("수정에 성공했습니다.");
+
         setUpdate((prev) => !prev);
       } catch (error) {
         window.alert("수정에 실패했습니다.");
@@ -142,6 +156,7 @@ export default function UserEdit() {
             <input
               type="password"
               name="password"
+              value={form.password || ""}
               placeholder="새 비밀번호 입력"
               onChange={updateHandler}
             />
@@ -152,6 +167,7 @@ export default function UserEdit() {
               type="password"
               name="checkPassword"
               placeholder="다시 입력"
+              value={password || ""}
               onChange={checkpasswordHandler}
             />
           </div>

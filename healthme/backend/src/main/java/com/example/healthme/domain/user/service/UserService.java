@@ -22,7 +22,7 @@ import java.util.UUID;
 public class UserService {
 
     /* 의존성 */
-    private final UserRepository    userRepository;
+    private final UserRepository userRepository;
     private final AddressRepository addressRepository;
     private final PasswordEncoder   passwordEncoder;
     private final JwtTokenProvider  jwtTokenProvider;

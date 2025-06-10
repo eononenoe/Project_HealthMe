@@ -11,6 +11,7 @@ export default function AddressEditPage() {
   const [showDeliveryDetail, setShowDeliveryDetail] = useState(false);
   const [deliveryOrders, setDeliveryOrders] = useState([]);
   const [levelEmoji, setLevelEmoji] = useState(null);
+  const [newaddr, setNewaddr] = useState(null);
 
   const loginUser = JSON.parse(localStorage.getItem("loginUser"));
 
@@ -34,6 +35,8 @@ export default function AddressEditPage() {
 
   const handleUpdate = (e, addr) => {
     e.preventDefault();
+    console.log("수정 버튼 : ", addr);
+    setNewaddr(addr);
     setUpdateaddress(addr);
     setOpen(true);
   };
@@ -67,8 +70,19 @@ export default function AddressEditPage() {
     fetchUserInfo();
   }, []);
 
-  const addnewAddr = () => {
-    setAddrAdd(true);
+  const addnewAddr = async () => {
+    try {
+      const newaddr_use_user = await axios.get("/mypage/getuserinfo", {
+        withCredentials: true,
+      });
+      setNewaddr({
+        recipient: newaddr_use_user.data.username,
+        tel: newaddr_use_user.data.tel,
+      });
+      setAddrAdd(true);
+    } catch (e) {
+      console.error("유저 정보 가져오기 실패", e);
+    }
   };
 
   const deafult_address = addr_userDB.filter((addr) => addr._default);
@@ -171,7 +185,7 @@ export default function AddressEditPage() {
       <NewAddress
         addrAdd={addrAdd}
         onClose={() => setAddrAdd(false)}
-        updateaddress={updateaddress}
+        newaddr={newaddr}
       />
 
       {showDeliveryDetail && (

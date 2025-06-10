@@ -1,7 +1,6 @@
 package com.example.healthme.global.config.auth.jwt;
 
 import com.example.healthme.domain.user.entity.User;
-import com.example.healthme.domain.user.repository.UserRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -12,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import com.example.healthme.domain.user.repository.UserRepository;
+
 
 import java.io.IOException;
 import java.util.Arrays;

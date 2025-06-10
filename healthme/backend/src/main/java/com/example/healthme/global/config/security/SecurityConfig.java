@@ -1,6 +1,5 @@
 package com.example.healthme.global.config.security;
 
-import com.example.healthme.domain.user.repository.UserRepository;
 import com.example.healthme.global.config.auth.handler.loginHandler.CustomLoginFailureHandler;
 import com.example.healthme.global.config.auth.handler.loginHandler.CustomLoginSuccessHandler;
 import com.example.healthme.global.config.auth.handler.loginHandler.OAuth2LoginSuccessHandler;
@@ -9,6 +8,7 @@ import com.example.healthme.global.config.auth.handler.logoutHandler.CustomLogou
 import com.example.healthme.global.config.auth.jwt.JwtAuthorizationFilter;
 import com.example.healthme.global.config.auth.jwt.JwtTokenProvider;
 import com.example.healthme.global.config.auth.principal.PrincipalDetailsOAuth2Service;
+import com.example.healthme.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,8 +45,8 @@ public class SecurityConfig {
                                 "/healthme/users/check",
                                 "/healthme/users/login",
                                 "/healthme/products",
-                                "/healthme/products/**"
-
+                                "/healthme/products/**",
+                                "/healthme/cart/**"
                         ).permitAll()
                         .requestMatchers("/user",
                                 "/healthme/result/**",

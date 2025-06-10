@@ -1,8 +1,8 @@
 package com.example.healthme.global.config.auth.principal;
 
+import com.example.healthme.domain.user.repository.UserRepository;
 import com.example.healthme.domain.user.dto.UserDto;
 import com.example.healthme.domain.user.entity.User;
-import com.example.healthme.domain.user.repository.UserRepository;
 import com.example.healthme.domain.user.service.UserService;
 import com.example.healthme.global.config.auth.oauth.userinfo.GoogleUserInfo;
 import com.example.healthme.global.config.auth.oauth.userinfo.KakaoUserInfo;
