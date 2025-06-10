@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "static/css/pages/shopping-cart.css";
+import { useCart } from "static/js/CartContext.js";
+
 
 function ShoppingCart() {
   const [isGuest, setIsGuest] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+  const { cartItems, setCartItems } = useCart();
   const [selectAll, setSelectAll] = useState(false);
+  const [isAllChecked, setIsAllChecked] = useState(true);
   const navigate = useNavigate();
   const totalPrice = cartItems
     .filter((item) => item.checked)
@@ -71,6 +74,11 @@ function ShoppingCart() {
     }
   }, []);
 
+  // 전체 선택
+  const handleAllCheck = (e) => {
+    setIsAllChecked(e.target.checked);
+    // 여기에 전체 항목 체크/해제 로직 추가
+  };
   const handleDelete = async (productId) => {
     if (!productId) return;
 

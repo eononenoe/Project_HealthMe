@@ -3,11 +3,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import 'static/css/common/common.css';
 import axios from 'axios';
+import { useCart } from "static/js/CartContext.js";
 
 const handleLogout = async () => {
     try {
         await axios.post("/healthme/users/logout", {}, {
-            withCredentials: true  
+            withCredentials: true
         });
     } catch (err) {
         console.warn("서버 로그아웃 실패 (무시하고 클라이언트만 정리)", err);
@@ -20,6 +21,8 @@ const handleLogout = async () => {
     }
 };
 const Header = () => {
+    // 장바구니
+    const { cartItems } = useCart();
     const loginUser = JSON.parse(localStorage.getItem("loginUser"));
     return (
         <div className='header'>
@@ -41,7 +44,14 @@ const Header = () => {
                     </>
                 )}
                 <li className="logo_middle">|</li>
-                <li><Link to="/shoppingcart">장바구니</Link></li>
+                <li>
+                    <Link to="/shoppingcart">
+                        장바구니
+                        {cartItems.length > 0 && (
+                            <span className="header-cart-badge">{cartItems.length}</span>
+                        )}
+                    </Link>
+                </li>
             </ul>
             {/* 로고 + 중앙 검색창 정렬 */}
             <div className="header_main_row">

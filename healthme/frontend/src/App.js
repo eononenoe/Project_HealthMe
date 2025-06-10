@@ -1,7 +1,9 @@
 // src/App.js
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import axios from "axios";
 
+import { CartProvider, useCart } from "static/js/CartContext";
 import Header from "components/header";
 import Footer from "components/footer";
 
@@ -45,7 +47,59 @@ import Announcement from "pages/Announcement/Announcement";
 function AppRoutes() {
   const { pathname } = useLocation();
   const isAdmin = pathname.startsWith("/admin");
+  const { setCartItems } = useCart();
+  useEffect(() => {
+    const fetchCart = async () => {
+      const loginUser = localStorage.getItem("loginUser");
+      const guestId = localStorage.getItem("guestId");
+      const guestCartKey = `guestCart_${guestId}`;
 
+      if (!loginUser) {
+        const guestCart = JSON.parse(localStorage.getItem(guestCartKey) || "[]");
+        const enriched = await enrichCartItems(guestCart);
+        setCartItems(enriched);
+      } else {
+        const api = axios.create({
+          baseURL: "http://localhost:8090/healthme",
+          withCredentials: true,
+        });
+
+        try {
+          const res = await api.get(`/cart`);
+          const enriched = await enrichCartItems(res.data || []);
+          setCartItems(enriched);
+        } catch (error) {
+          console.error("전역 장바구니 로딩 실패:", error);
+        }
+      }
+    };
+
+    const enrichCartItems = async (items) => {
+      return await Promise.all(items.map(async (item) => {
+        try {
+          const { data } = await axios.get(
+            `http://localhost:8090/healthme/products/details/${item.productId}`,
+            { withCredentials: true }
+          );
+          return {
+            ...item,
+            name: data.name,
+            price: data.price,
+            salprice: data.salprice,
+            imageUrl: data.image_url,
+            amount: data.amount,
+            quantity: item.quantity ?? 1,
+            checked: false,
+          };
+        } catch (e) {
+          console.warn("상품 정보 로딩 실패:", item.productId, e);
+          return item;
+        }
+      }));
+    };
+
+    fetchCart();
+  }, [setCartItems]);
   return (
     <>
       {!isAdmin && <Header />}
@@ -101,7 +155,9 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AppRoutes />
+      <CartProvider>
+        <AppRoutes />
+      </CartProvider>
     </BrowserRouter>
   );
 }
