@@ -42,7 +42,7 @@ public class ProductStore {
 
     @Column(name = "category")
     private String category;
-
+    
     @Column(name = "sales_count")
     private int sales_count;
 

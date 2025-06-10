@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'static/css/pages/Result.css';
-
+import { useNavigate } from "react-router-dom";
 import CardBar from './CardBar';
 import NutrientInfo from './NutrientInfo';
 import InfluenceIcon from './InfluenceIcon';
 import TraitsSection from './TraitsSection';
 
 const ResultPage = () => {
+  const navigate = useNavigate();
   const [resultMap, setResultMap] = useState({});
   const [selectedNutrient, setSelectedNutrient] = useState(null);
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [recommendations, setRecommendations] = useState([]);
 
   useEffect(() => {
+
     const handleScroll = () => {
       const image = document.querySelector('.header-image img');
       if (image) {
@@ -21,10 +23,12 @@ const ResultPage = () => {
       }
     };
     window.addEventListener('scroll', handleScroll);
-
     const loginUser = JSON.parse(localStorage.getItem("loginUser"));
     const userid = loginUser?.userid;
-
+    if (!loginUser) {
+      alert("이 페이지는 로그인 후 이용 가능합니다.");
+      navigate("/login");
+    }
     axios.get("http://localhost:8090/healthme/survey/scores", {
       params: { userid },
       withCredentials: true
@@ -131,12 +135,16 @@ const ResultPage = () => {
           </div>
           <div className="recommend-box" style={{ borderTop: selectedIcon ? `4px solid ${selectedIcon.color}` : `4px solid gainsboro` }}>
             {filtered.map((item, idx) => (
-              <button className='recommend-btn'>
-                <div className='recommend-food' key={idx}>
-                  <div className='recommend-img'>
+              <button
+                className="recommend-btn"
+                key={idx}
+                onClick={() => navigate(`/details/${item.productId}`)}
+              >
+                <div className="recommend-food">
+                  <div className="recommend-img">
                     <img src={item.imageUrl} alt={item.name} />
                   </div>
-                  <div className='recommend-name'>{item.name}</div>
+                  <div className="recommend-name">{item.name}</div>
                 </div>
               </button>
             ))}

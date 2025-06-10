@@ -15,4 +15,5 @@ public interface ShoppingCartItemRepository extends JpaRepository<ShoppingCartIt
 
     // 유저 + 상품으로 이미 담은 아이템이 있는지 확인 (중복 추가 방지용)
     Optional<ShoppingCartItem> findByUserAndProduct(User user, ProductStore product);
+
 }

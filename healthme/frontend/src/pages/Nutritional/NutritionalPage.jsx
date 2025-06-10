@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'static/css/pages/Nutritional.css';
+import { useNavigate } from "react-router-dom";
 
 const formatNutrient = (label, value, unit) => {
   if (!value) return null;
@@ -52,8 +53,16 @@ export default function CustomNutritionalPage() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [expandedItems, setExpandedItems] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const loginUser = localStorage.getItem("loginUser");
+
+    if (!loginUser) {
+      alert("이 페이지는 로그인 후 이용 가능합니다.");
+      navigate("/login");
+    }
+
     axios.get('http://localhost:8090/healthme/products/details', {
       withCredentials: true,
     })

@@ -2,56 +2,96 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "static/css/pages/shopping-cart.css";
+import { useCart } from "static/js/CartContext.js";
+
 
 function ShoppingCart() {
-  const [cartItems, setCartItems] = useState([]);
+  const [isGuest, setIsGuest] = useState(false);
+  const { cartItems, setCartItems } = useCart();
   const [selectAll, setSelectAll] = useState(false);
+  const [isAllChecked, setIsAllChecked] = useState(true);
   const navigate = useNavigate();
   const totalPrice = cartItems
     .filter((item) => item.checked)
     .reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const userId = "testuser"; // 실제 로그인 사용자로 교체 필요
-
   const api = axios.create({
-    // baseURL: "http://localhost:8080/api",
+    baseURL: "http://localhost:8090/healthme",
     withCredentials: true,
   });
 
   // 장바구니 불러오기
   const loadCart = async () => {
     try {
-      const res = await api.get(`/cart/${userId}`); // ✅ 여기서 선언
-
-      console.log("장바구니 응답:", res.data); // 여기부터는 정상 사용 가능
-
-      const items = Array.isArray(res.data)
-        ? res.data
-        : Array.isArray(res.data.data)
-        ? res.data.data
-        : [];
-
-      const withChecked = items.map((item) => ({ ...item, checked: false }));
-      setCartItems(withChecked);
+      const res = await api.get(`/cart`, { withCredentials: true });
+      const items = Array.isArray(res.data) ? res.data : [];
+      await enrichCartItems(items);
     } catch (error) {
-      console.error("장바구니 불러오기 오류:", error);
+      console.error("서버 장바구니 불러오기 오류:", error);
     }
   };
 
-  useEffect(() => {
-    loadCart();
-  }, []);
+  // product_store에 있는값 불러오기
+  const enrichCartItems = async (items) => {
+    const enriched = await Promise.all(items.map(async (item) => {
+      try {
+        const { data } = await axios.get(
+          `http://localhost:8090/healthme/products/details/${item.productId}`,
+          { withCredentials: true }
+        );
 
-  const handleQuantityChange = async (id, qty) => {
-    await api.put(`/cart/${id}/quantity`, null, {
-      params: { quantity: qty },
-    });
-    loadCart();
+        return {
+          ...item,
+          name: data.name,
+          price: data.price,
+          salprice: data.salprice,
+          imageUrl: data.image_url,
+          amount: data.amount,
+          quantity: item.quantity ?? 1, // ← 여기가 중요!
+        };
+      } catch (e) {
+        console.warn("상품 정보 로딩 실패:", item.productId, e);
+        return item;
+      }
+    }));
+
+    setCartItems(enriched.map(item => ({ ...item, checked: false })));
   };
 
-  const handleDelete = async (id) => {
-    await api.delete(`/cart/${id}`);
-    loadCart();
+  useEffect(() => {
+    const loginUser = localStorage.getItem("loginUser");
+
+    if (!loginUser) {
+      setIsGuest(true);
+      const guestId = localStorage.getItem("guestId");
+      const guestCartKey = `guestCart_${guestId}`;
+      const guestCart = JSON.parse(localStorage.getItem(guestCartKey) || "[]");
+
+      enrichCartItems(guestCart);
+    } else {
+      setIsGuest(false);
+      loadCart();
+    }
+  }, []);
+
+  // 전체 선택
+  const handleAllCheck = (e) => {
+    setIsAllChecked(e.target.checked);
+    // 여기에 전체 항목 체크/해제 로직 추가
+  };
+  const handleDelete = async (productId) => {
+    if (!productId) return;
+
+    if (isGuest) {
+      const guestId = localStorage.getItem("guestId");
+      const guestCartKey = `guestCart_${guestId}`;
+      const updated = cartItems.filter(item => item.productId !== productId);
+      localStorage.setItem(guestCartKey, JSON.stringify(updated));
+      setCartItems(updated);
+    } else {
+      await api.delete(`/healthme/cart/${productId}`);
+      loadCart();
+    }
   };
 
   const toggleSelectAll = () => {
@@ -72,15 +112,54 @@ function ShoppingCart() {
 
   const deleteSelected = async () => {
     const selectedItems = cartItems.filter((item) => item.checked);
-    for (const item of selectedItems) {
-      await api.delete(`/cart/${item.cartItemId}`);
+
+    if (isGuest) {
+      const guestId = localStorage.getItem("guestId");
+      const guestCartKey = `guestCart_${guestId}`;
+      const updated = cartItems.filter(item => !item.checked);
+      localStorage.setItem(guestCartKey, JSON.stringify(updated));
+      setCartItems(updated);
+    } else {
+      for (const item of selectedItems) {
+        await api.delete(`/cart/${item.cartItemId}`);
+      }
+      loadCart();
     }
-    loadCart();
   };
 
-  const handlePaymentClick = () => {
-    const selectedItems = cartItems.filter((item) => item.checked);
+  const handleQuantityChange = async (id, qty) => {
+    if (isGuest) {
+      const guestId = localStorage.getItem("guestId");
+      const guestCartKey = `guestCart_${guestId}`;
 
+      const updated = cartItems.map(item =>
+        item.productId === id ? { ...item, quantity: Math.max(1, qty) } : item
+      );
+
+      localStorage.setItem(guestCartKey, JSON.stringify(updated));
+      setCartItems(updated);
+    } else {
+      await api.put(`/cart/item/${id}/quantity`, null, {
+        params: { quantity: qty },
+      });
+      loadCart();
+    }
+  };
+
+
+  // 비회원 
+  const guestId = localStorage.getItem("guestId");
+  const guestCartKey = `guestCart_${guestId}`; // 고유 키로 관리
+  const guestCart = JSON.parse(localStorage.getItem(guestCartKey) || "[]");
+  const handlePaymentClick = () => {
+
+    if (isGuest) {
+      alert("로그인이 필요합니다. 먼저 로그인 또는 회원가입을 해주세요.");
+      navigate("/login");
+      return;
+    }
+
+    const selectedItems = cartItems.filter((item) => item.checked);
     if (selectedItems.length === 0) {
       alert("결제할 상품을 선택해주세요.");
       return;
@@ -92,7 +171,9 @@ function ShoppingCart() {
         totalPrice: totalPrice,
       },
     });
+    console.log("최종 cartItems 상태:", cartItems);
   };
+
 
   return (
     <main className="shopping-main">
@@ -112,7 +193,7 @@ function ShoppingCart() {
                 check
               </span>
             </label>
-            <span className="cart-all-select">전체 선택</span>
+            <span className="cart-custom-checkbox-all ">전체 선택</span>
             <span>
               <button className="cart-choice-delete" onClick={deleteSelected}>
                 선택 삭제
@@ -121,31 +202,33 @@ function ShoppingCart() {
           </div>
 
           {cartItems.map((item) => (
-            <div className="cart-cart-item" key={item.cartItemId}>
+            <div
+              className="cart-cart-item"
+              key={item.cartItemId || `guest-${item.productId}`}
+            >
               <label className="cart-custom-checkbox">
                 <input
                   type="checkbox"
-                  className="cart-item-checkbox"
                   checked={item.checked}
                   onChange={() => toggleItemChecked(item.cartItemId)}
                 />
-                <span className="cart-checkmark material-symbols-outlined">
-                  check
-                </span>
+                <span className="cart-checkmark material-symbols-outlined">check</span>
               </label>
               <img
-                src={`https://picsum.photos/100?random=${item.productId}`}
-                alt="product"
+                src={item.imageUrl} alt={item.name}
               />
               <div className="cart-item-info">
-                <p className="cart-name">상품 ID: {item.productId}</p>
-                <p className="cart-sub">수량: {item.quantity}</p>
-                <p className="cart-price">가격: -원</p>
+                <p className="cart-name">{item.name}</p>
+                <p className="cart-price">{item.price?.toLocaleString()}원</p>
+                <p className="cart-sub">{item.salprice?.toLocaleString()}원</p>
+                <p className="cart-count">
+                  남은 재고량: {item.amount - item.quantity >= 0 ? item.amount - item.quantity : 0}개
+                </p>
                 <div className="cart-quantity">
                   <button
                     className="cart-qty-btn cart-decrease"
                     onClick={() =>
-                      handleQuantityChange(item.cartItemId, item.quantity - 1)
+                      handleQuantityChange(isGuest ? item.productId : item.cartItemId, item.quantity - 1)
                     }
                     disabled={item.quantity <= 1}
                   >
@@ -154,27 +237,34 @@ function ShoppingCart() {
                   <span className="cart-qty-number">{item.quantity}</span>
                   <button
                     className="cart-qty-btn cart-increase"
-                    onClick={() =>
-                      handleQuantityChange(item.cartItemId, item.quantity + 1)
-                    }
+                    onClick={() => {
+                      const maxQty = item.amount;
+                      if (item.quantity >= maxQty) {
+                        alert(`재고량 ${maxQty}개를 초과할 수 없습니다.`);
+                        return;
+                      }
+                      handleQuantityChange(isGuest ? item.productId : item.cartItemId, item.quantity + 1);
+                    }}
                   >
                     +
                   </button>
                 </div>
               </div>
-              <button
-                className="cart-delete"
-                onClick={() => handleDelete(item.cartItemId)}
-              >
+
+              <button className="cart-delete" onClick={() => handleDelete(item.productId)}>
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
           ))}
-
           <div className="cart-npay-banner">
-            <strong>네이버페이 결제 시</strong>
-            <p>최대 7천원 혜택</p>
-            <div className="cart-npay-icon">N</div>
+            <ul className="cart-npay-banner-one">
+              <strong>네이버페이 결제 시</strong>
+              <p>최대 7천원 혜택</p>
+            </ul>
+            <ul className="cart-npay-banner-two">
+              <div className="cart-npay-icon">N</div>
+              <span>pay</span>
+            </ul>
           </div>
         </section>
 
@@ -203,7 +293,7 @@ function ShoppingCart() {
               <li className="cart-product-item-hline">
                 주문금액
                 <div className="cart-product-item-gray">
-                  <span>-원</span>
+                  <span>{totalPrice.toLocaleString()}원</span>
                 </div>
               </li>
               <li className="cart-product-item-gray">
@@ -219,7 +309,7 @@ function ShoppingCart() {
             <strong>
               결제예정금액
               <div className="cart-product-item-red">
-                <span>-원</span>
+                <span>{totalPrice.toLocaleString()}원</span>
               </div>
             </strong>
           </div>

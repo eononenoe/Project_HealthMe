@@ -27,6 +27,8 @@ const LoginPage = () => {
             const { accessToken, userInfo } = response.data;
             // localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("loginUser", JSON.stringify(userInfo));
+            // 로그인 성공 후 gusetCart  서버로 전송
+            await syncGuestCartToServer();
 
             // 아이디 저장 처리
             if (loginInfo.remember) {
@@ -50,6 +52,22 @@ const LoginPage = () => {
             ...prev,
             [name]: type === 'checkbox' ? checked : value
         }));
+    };
+
+    // 비회원 장바구니 
+    const syncGuestCartToServer = async () => {
+        const guestCart = JSON.parse(localStorage.getItem("guestCart") || "[]");
+        if (guestCart.length === 0) return;
+
+        try {
+            await axios.post("http://localhost:8090/healthme/cart/guest-sync", guestCart, {
+                withCredentials: true,
+            });
+            localStorage.removeItem("guestCart");
+            console.log("비회원 장바구니 동기화 완료");
+        } catch (error) {
+            console.error("비회원 장바구니 동기화 실패:", error);
+        }
     };
 
     // localStorage에 저장된 아이디 자동 입력 (아이디 기억하기 기능)
