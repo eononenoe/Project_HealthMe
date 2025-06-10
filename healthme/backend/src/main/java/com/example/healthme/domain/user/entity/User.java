@@ -2,6 +2,7 @@ package com.example.healthme.domain.user.entity;
 
 
 import com.example.healthme.domain.mypage.entity.Address;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,6 +35,7 @@ public class User {
     private int totalPurchaseAmount;    // 누적 구매 금액
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "default_address_id")
+    @JsonIgnore
     private Address defaultAddress; // Address 객체 자체를 참조
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

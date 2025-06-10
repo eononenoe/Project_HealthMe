@@ -14,11 +14,8 @@ export default function ProductUpdate({
   product,
   updatesucess,
 }) {
-  // ────────────────────────────────────────────────────────────────────────────
-  // 1. 상태 정의 (camelCase 기반으로 통일)
-  // ────────────────────────────────────────────────────────────────────────────
   const [form, setForm] = useState({
-    productId: null,
+    product_id: null,
     category: "",
     name: "",
     price: 0,
@@ -42,13 +39,11 @@ export default function ProductUpdate({
 
   const [imageFile, setImageFile] = useState(null);
 
-  // ────────────────────────────────────────────────────────────────────────────
-  // 2. 초기값 세팅 (product → form)
-  // ────────────────────────────────────────────────────────────────────────────
+  // 초기값 설정
   useEffect(() => {
     if (product) {
       setForm({
-        productId: product.productId ?? null,
+        product_id: product.product_id ?? null,
         category: product.category ?? "",
         name: product.name ?? "",
         price: product.price ?? 0,
@@ -72,9 +67,6 @@ export default function ProductUpdate({
     }
   }, [product, open]);
 
-  // ────────────────────────────────────────────────────────────────────────────
-  // 3. 입력 변경 핸들러
-  // ────────────────────────────────────────────────────────────────────────────
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name in form.nutrient) {
@@ -87,14 +79,11 @@ export default function ProductUpdate({
     }
   };
 
-  // ────────────────────────────────────────────────────────────────────────────
-  // 4. 전송 (FormData 키 ↔ DTO 필드 1:1 매핑)
-  // ────────────────────────────────────────────────────────────────────────────
   const handleSubmit = async () => {
     const fd = new FormData();
 
     // 기본 필드
-    fd.append("productId", form.productId);
+    fd.append("product_id", form.product_id);
     fd.append("category", form.category);
     fd.append("name", form.name); // DTO: name
     fd.append("price", form.price); // DTO: price
@@ -111,7 +100,7 @@ export default function ProductUpdate({
     });
 
     try {
-      await axios.put(`/product/${form.productId}`, fd, {
+      await axios.put(`/product/${form.product_id}`, fd, {
         withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -123,9 +112,6 @@ export default function ProductUpdate({
     }
   };
 
-  // ────────────────────────────────────────────────────────────────────────────
-  // 5. JSX
-  // ────────────────────────────────────────────────────────────────────────────
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>상품 수정</DialogTitle>
