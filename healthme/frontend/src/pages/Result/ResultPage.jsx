@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import 'static/css/pages/Result.css';
 import { useNavigate } from "react-router-dom";
 import CardBar from './CardBar';
