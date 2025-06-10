@@ -56,11 +56,12 @@ public class NutrientResultService {
                         percent,
                         desc.getDescription(),
                         desc.getTip(),
-                        foodsList
+                        foodsList,
+                        desc.getInfo()
                 );
                 result.put(nutrient, dto);
             } else {
-                result.put(nutrient, new NutrientResultDto(percent, "설명을 찾을 수 없습니다.", null, List.of()));
+                result.put(nutrient, new NutrientResultDto(percent, "설명을 찾을 수 없습니다.", null, List.of(),null));
             }
         }
 

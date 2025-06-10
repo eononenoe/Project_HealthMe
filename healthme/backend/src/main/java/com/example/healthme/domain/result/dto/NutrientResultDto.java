@@ -10,8 +10,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NutrientResultDto {
-    private int percent;           // 퍼센트
-    private String description;    // 분석 설명
-    private String tip;            // 개선 팁
-    private List<String> foods;    // 추천 식품 목록
+    private int percent;
+    private String description;
+    private String tip;
+    private List<String> foods;
+    private String info;
 }

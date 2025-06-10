@@ -40,17 +40,18 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/",
+                                "/healthme/users/**",
                                 "/healthme/users/join",
                                 "/healthme/users/check",
                                 "/healthme/users/login",
                                 "/healthme/products",
                                 "/healthme/products/**",
-                                "/healthme/cart/**"
+                                "/healthme/cart/**",
+                                "/healthme/recommend"
                         ).permitAll()
                         .requestMatchers("/user",
                                 "/healthme/result/**",
                                 "/healthme/survey/**",
-
                                 "/healthme/nutrients/**",
                                 "/healthme/mypage/**"
                         ).hasRole("USER")
@@ -64,12 +65,12 @@ public class SecurityConfig {
                         .failureHandler(customLoginFailureHandler)
                         .permitAll()
                 )
-                .logout(logout -> logout
-                        .logoutUrl("/healthme/users/logout")
-                        .permitAll()
-                        .addLogoutHandler(customLogoutHandler)
-                        .logoutSuccessHandler(customLogoutSuccessHandler)
-                )
+//                .logout(logout -> logout
+//                        .logoutUrl("/healthme/users/logout")
+//                        .permitAll()
+//                        .addLogoutHandler(customLogoutHandler)
+//                        .logoutSuccessHandler(customLogoutSuccessHandler)
+//                )
                 .oauth2Login(oauth -> oauth
                         .loginPage("/login")
                         .userInfoEndpoint(user -> user

@@ -1,6 +1,5 @@
 package com.example.healthme.global.config.auth.jwt;
 
-
 import com.example.healthme.domain.user.entity.User;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -19,8 +18,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 
-//JWT 인증 필터
-//매 요청마다 실행되며, 쿠키에 담긴 JWT 토큰이 유효하면 SecurityContext에 인증 정보 저장
 @Slf4j
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
@@ -42,25 +39,57 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             FilterChain chain
     ) throws ServletException, IOException {
         String uri = request.getRequestURI();
-        if (uri.startsWith("/healthme/sms")) {
+        log.info("JwtAuthorizationFilter - 요청 URI: {}", uri); // 로그 찍기
+        if (
+                uri.startsWith("/healthme/users/find-username") ||
+                        uri.startsWith("/healthme/users/reset-password") ||
+                        uri.startsWith("/healthme/users/join") ||
+                        uri.startsWith("/healthme/users/check") ||
+                        uri.startsWith("/healthme/users/login")
+        ) {
             chain.doFilter(request, response);
             return;
         }
+
         String token = null;
 
-        // cookie 에서 JWT token 추출
         try {
-
             if (request.getCookies() != null) {
                 token = Arrays.stream(request.getCookies())
-                        .filter(cookie -> cookie.getName().equals(JwtProperties.ACCESS_TOKEN_COOKIE_NAME))
+                        .filter(cookie -> JwtProperties.ACCESS_TOKEN_COOKIE_NAME.equals(cookie.getName()))
+                        .map(Cookie::getValue)
                         .findFirst()
-                        .map(cookie -> cookie.getValue())
                         .orElse(null);
             }
         } catch (Exception ignored) {
+        }
+        if (token == null) {
+            // accessToken 쿠키가 없으면 → refreshToken 검사 시도
+            String refreshToken = null;
+            if (request.getCookies() != null) {
+                refreshToken = Arrays.stream(request.getCookies())
+                        .filter(cookie -> JwtProperties.REFRESH_TOKEN_COOKIE_NAME.equals(cookie.getName()))
+                        .map(Cookie::getValue)
+                        .findFirst()
+                        .orElse(null);
+            }
 
+            if (refreshToken != null && jwtTokenProvider.validateToken(refreshToken)) {
+                String username = jwtTokenProvider.getUsernameFromToken(refreshToken);
+                User user = userRepository.findByUserid(username)
+                        .orElseThrow(() -> new RuntimeException("유저 없음"));
 
+                String newAccessToken = jwtTokenProvider.createAccessToken(user);
+                Cookie newAccessCookie = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME, newAccessToken);
+                newAccessCookie.setHttpOnly(true);
+                newAccessCookie.setMaxAge(JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME / 1000);
+                newAccessCookie.setPath("/");
+                response.addCookie(newAccessCookie);
+
+                Authentication authentication = jwtTokenProvider.getAuthentication(newAccessToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                log.info("AccessToken 재발급 완료 (username: {})", username);
+            }
         }
         if (token != null) {
             try {
@@ -68,25 +97,67 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     Authentication authentication = getUsernamePasswordAuthenticationToken(token);
                     if (authentication != null) {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
-                        log.debug("인증 성공: {}", authentication.getName());
+                        log.info("AccessToken 인증 성공: {}", authentication.getName());
                     }
                 }
-            } catch (ExpiredJwtException e)     //토큰만료시 예외처리(쿠키 제거)
-            {
-                log.warn("만료된 토큰 감지: {}", e.getMessage());
-                // 만료된 토큰 쿠키 제거
-                Cookie expiredCookie = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME, null);
-                expiredCookie.setMaxAge(0);
-                expiredCookie.setPath("/");
-                response.addCookie(expiredCookie);
+            } catch (ExpiredJwtException e) {
+                log.warn("만료된 AccessToken: {}", e.getMessage());
+
+                // accessToken 쿠키 제거
+                Cookie expiredAccessToken = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME, null);
+                expiredAccessToken.setMaxAge(0);
+                expiredAccessToken.setPath("/");
+                response.addCookie(expiredAccessToken);
+
+                // refreshToken 확인
+                String refreshToken = null;
+                if (request.getCookies() != null) {
+                    refreshToken = Arrays.stream(request.getCookies())
+                            .filter(cookie -> JwtProperties.REFRESH_TOKEN_COOKIE_NAME.equals(cookie.getName()))
+                            .map(Cookie::getValue)
+                            .findFirst()
+                            .orElse(null);
+                }
+
+                if (refreshToken != null) {
+                    try {
+                        if (jwtTokenProvider.validateToken(refreshToken)) {
+                            // 핵심 변경: auth 없는 refreshToken은 username만 추출
+                            String username = jwtTokenProvider.getUsernameFromToken(refreshToken);
+
+                            User user = userRepository.findByUserid(username)
+                                    .orElseThrow(() -> new RuntimeException("유저 없음"));
+
+                            String newAccessToken = jwtTokenProvider.createAccessToken(user);
+                            Cookie newAccessCookie = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME, newAccessToken);
+                            newAccessCookie.setHttpOnly(true);
+                            newAccessCookie.setMaxAge(JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME / 1000);
+                            newAccessCookie.setPath("/");
+                            response.addCookie(newAccessCookie);
+
+                            Authentication authentication = jwtTokenProvider.getAuthentication(newAccessToken);
+                            SecurityContextHolder.getContext().setAuthentication(authentication);
+                            log.info("AccessToken 재발급 완료 (username: {})", username);
+                        }
+                    } catch (ExpiredJwtException refreshEx) {
+                        log.warn("RefreshToken도 만료됨: {}", refreshEx.getMessage());
+
+                        // RefreshToken 쿠키 제거
+                        Cookie expiredRefreshToken = new Cookie(JwtProperties.REFRESH_TOKEN_COOKIE_NAME, null);
+                        expiredRefreshToken.setMaxAge(0);
+                        expiredRefreshToken.setPath("/");
+                        response.addCookie(expiredRefreshToken);
+                    }
+                }
             } catch (Exception e2) {
-                log.error("JWT 인증 필터 처리 중 예외 발생", e2);
+                log.error("JWT 처리 중 예외 발생", e2);
             }
         }
+
+        // 항상 필터 체인 계속 실행
         chain.doFilter(request, response);
     }
 
-    // 토큰에서 인증 객체를 추출하고, DB에 존재하는 유저인지 확인 후 반환
     private Authentication getUsernamePasswordAuthenticationToken(String token) {
         Authentication authentication = jwtTokenProvider.getAuthentication(token);
         Optional<User> user = userRepository.findByUserid(authentication.getName());
@@ -96,7 +167,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         log.warn("인증 실패: 유저 정보 없음 (userid = {})", authentication.getName());
-        return null; // 유저가 없으면 NULL
+        return null;
     }
-
 }
