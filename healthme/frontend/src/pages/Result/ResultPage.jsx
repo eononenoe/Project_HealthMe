@@ -23,12 +23,16 @@ const ResultPage = () => {
 
     const loginUser = JSON.parse(localStorage.getItem("loginUser"));
     const userid = loginUser?.userid;
-    axios.get(`http://localhost:8090/healthme/survey/scores`, {
-      params: { userid }
+
+    axios.get("http://localhost:8090/healthme/survey/scores", {
+      params: { userid },
+      withCredentials: true
     })
       .then(res => {
         const scores = res.data;
-        return axios.post("http://localhost:8090/healthme/result/summary", scores);
+        return axios.post("http://localhost:8090/healthme/result/summary", scores, {
+          withCredentials: true
+        });
       })
       .then(res => {
         console.log("백엔드 응답:", res.data);
@@ -101,9 +105,10 @@ const ResultPage = () => {
                     setSelectedNutrient({
                       name: card.name,
                       value: result.percent,
-                      desc: result.description, 
+                      desc: result.description,
                       tip: result.tip,
-                      foods: result.foods
+                      foods: result.foods,
+                      info: result.info
                     })
                   }
                 />
@@ -122,7 +127,7 @@ const ResultPage = () => {
               <InfluenceIcon key={idx} icon={icon} onClick={setSelectedIcon} />
             ))}
           </div>
-          <div className="recommend-box" style={{ borderTop: selectedIcon ? `4px solid ${selectedIcon.color}` : `4px solid gainsboro`  }}>
+          <div className="recommend-box" style={{ borderTop: selectedIcon ? `4px solid ${selectedIcon.color}` : `4px solid gainsboro` }}>
             <div className='recommend-food'>
               <div className='recommend-img'>
               </div>

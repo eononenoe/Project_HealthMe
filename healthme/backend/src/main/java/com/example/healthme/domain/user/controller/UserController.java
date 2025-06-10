@@ -29,32 +29,33 @@ public class UserController {
     // 회원가입
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody @Valid JoinRequestDto dto, BindingResult bindingResult) {
-        // 유효성 검사
+        // 1. 유효성 검사 실패 시
         if (bindingResult.hasErrors()) {
-            String errorMessage = bindingResult.getFieldError().getDefaultMessage();
-            return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error", errorMessage));
+            Map<String, String> errorMap = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            });
+            return ResponseEntity.badRequest().body(errorMap);
         }
 
-        // 비밀번호 확인
+        // 2. 비밀번호 일치 여부 확인
         if (!dto.getPassword().equals(dto.getPassword2())) {
-            return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error", "비밀번호가 일치하지 않습니다."));
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("password2", "비밀번호가 일치하지 않습니다.");
+            return ResponseEntity.badRequest().body(errorMap);
         }
 
-        // 아이디 중복확인
+        // 3. 아이디 중복 여부
         try {
-            userService.join(dto); // DB 저장 시도 (중복 가능성 있음)
+            userService.join(dto);
             return ResponseEntity.ok(Collections.singletonMap("message", "회원가입 성공"));
         } catch (DataIntegrityViolationException e) {
-            // DB Unique 제약 조건 위반 (예: 아이디 중복)
-            return ResponseEntity.status(409)
-                    .body(Collections.singletonMap("error", "이미 존재하는 아이디입니다."));
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("userid", "이미 존재하는 아이디입니다.");
+            return ResponseEntity.status(409).body(errorMap);
         } catch (Exception e) {
-            // 기타 예상 못한 에러
-            e.printStackTrace(); // 개발 중에는 로그 찍기 추천
-            return ResponseEntity.status(500)
-                    .body(Collections.singletonMap("error", "회원가입 중 서버 오류가 발생했습니다."));
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Collections.singletonMap("error", "회원가입 중 서버 오류가 발생했습니다."));
         }
     }
     

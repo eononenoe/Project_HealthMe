@@ -56,31 +56,26 @@ const JoinPage = () => {
     const handleSubmit = () => {
         const fullPhone = `${formData.tel1}-${formData.tel2}-${formData.tel3}`;
         const joinData = { ...formData, phone: fullPhone };
+
         axios.post('/healthme/users/join', joinData)
             .then((res) => {
                 alert(res.data.message);
                 navigate('/login');
             })
             .catch((err) => {
-                const error = err.response?.data?.error;
-                if (!error) return alert('회원가입 실패 (서버 오류)');
-                const newErrors = {};
-                if (error.includes('아이디')) newErrors.userid = error;
-                if (error.includes('비밀번호') && error.includes('일치')) newErrors.password2 = error;
-                if (error.includes('비밀번호') && !error.includes('일치')) newErrors.password = error;
-                if (error.includes('이름')) newErrors.username = error;
-                if (error.includes('우편번호')) newErrors.zip = error;
-                if (error.includes('주소') && !error.includes('상세')) newErrors.address = error;
-                if (error.includes('상세주소')) newErrors.addressDetail = error;
-                if (error.includes('전화번호')) {
-                    newErrors.tel1 = error;
-                    newErrors.tel2 = error;
-                    newErrors.tel3 = error;
+                const errorData = err.response?.data;
+
+                // 서버 응답이 객체가 아닌 경우 (예: 서버 오류)
+                if (!errorData || typeof errorData !== 'object') {
+                    alert('회원가입 실패 (서버 오류)');
+                    return;
                 }
-                setErrors(newErrors);
+
+                // 서버에서 내려준 에러 객체를 그대로 errors에 반영
+                setErrors(errorData);
             });
     };
-    
+
     return (
         <div className="join_box">
             <div className="box1">
@@ -92,25 +87,25 @@ const JoinPage = () => {
                         <input type="text" name="userid" className="join-custom-input" placeholder="아이디" value={formData.userid} onChange={handleChange} />
                         <button type="button" className="btn-small btn-main" onClick={handleUseridCheck}>중복확인</button>
                     </div>
-                    {errors.userid && <div className="error-message">{errors.userid}</div>}
+                    {errors.userid && <div className="error-message" style={{ whiteSpace: 'pre-line' }}>{errors.userid}</div>}
                 </div>
 
                 {/* 비밀번호 */}
                 <div className="input-wrapper">
                     <input type="password" name="password" className="join-custom-input" placeholder="비밀번호" value={formData.password} onChange={handleChange} />
-                    {errors.password && <div className="error-message">{errors.password}</div>}
+                    {errors.password && <div className="error-message" style={{ whiteSpace: 'pre-line' }}>{errors.password}</div>}
                 </div>
 
                 {/* 비밀번호 확인 */}
                 <div className="input-wrapper">
                     <input type="password" name="password2" className="join-custom-input" placeholder="비밀번호 재확인" value={formData.password2} onChange={handleChange} />
-                    {errors.password2 && <div className="error-message">{errors.password2}</div>}
+                    {errors.password2 && <div className="error-message" style={{ whiteSpace: 'pre-line' }}>{errors.password2}</div>}
                 </div>
 
                 {/* 이름 */}
                 <div className="input-wrapper">
                     <input type="text" name="username" className="join-custom-input" placeholder="이름" value={formData.username} onChange={handleChange} />
-                    {errors.username && <div className="error-message">{errors.username}</div>}
+                    {errors.username && <div className="error-message" style={{ whiteSpace: 'pre-line' }}>{errors.username}</div>}
                 </div>
 
                 {/* 주소 */}
@@ -119,17 +114,17 @@ const JoinPage = () => {
                         <input type="text" name="zip" className="join-custom-input" placeholder="우편번호" value={formData.zip} onChange={handleChange} />
                         <button type="button" className="btn-small btn-main" onClick={handleAddressSearch}>우편번호 검색</button>
                     </div>
-                    {errors.zip && <div className="error-message">{errors.zip}</div>}
+                    {errors.zip && <div className="error-message" style={{ whiteSpace: 'pre-line' }}>{errors.zip}</div>}
                 </div>
 
                 <div className="input-wrapper">
                     <input type="text" name="address" className="join-custom-input" placeholder="주소" value={formData.address} onChange={handleChange} />
-                    {errors.address && <div className="error-message">{errors.address}</div>}
+                    {errors.address && <div className="error-message" style={{ whiteSpace: 'pre-line' }}>{errors.address}</div>}
                 </div>
 
                 <div className="input-wrapper">
                     <input type="text" name="addressDetail" className="join-custom-input" placeholder="상세주소" value={formData.addressDetail} onChange={handleChange} />
-                    {errors.addressDetail && <div className="error-message">{errors.addressDetail}</div>}
+                    {errors.addressDetail && <div className="error-message" style={{ whiteSpace: 'pre-line' }}>{errors.addressDetail}</div>}
                 </div>
 
                 {/* 성별 */}
@@ -162,7 +157,7 @@ const JoinPage = () => {
                         <input type="text" name="tel2" className="join-custom-input tel2" value={formData.tel2} onChange={handleChange} />
                         <span className="tel-hypen">-</span>
                         <input type="text" name="tel3" className="join-custom-input tel3" value={formData.tel3} onChange={handleChange} />
-                
+
                     </div>
                 </div>
 

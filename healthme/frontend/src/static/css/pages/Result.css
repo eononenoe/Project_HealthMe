@@ -237,6 +237,7 @@
     padding: 10px;
     border-radius: 15px;
 }
+
 /* Nutrient Info 우측 박스 전체 */
 .info-container {
     width: 100%;
@@ -244,12 +245,12 @@
     display: flex;
     flex-direction: column;
     padding: 30px 24px;
-    gap: 40px;
     border-radius: 12px;
+    position: relative;
 }
 
 /* 제목 (영양소 이름) */
-.info-container > h2 {
+.info-container>h2 {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 8px;
@@ -259,13 +260,26 @@
 }
 
 /* 퍼센트 표시 */
-.info-container p:nth-of-type(1) {
+.info-container>p:nth-of-type(1) {
     font-size: 18px;
     font-weight: bold;
-    color: #2c3e50;
+    color: orange;
     text-align: left;
+    margin: 10px 0px;
 }
 
+.info-container>div>p:nth-of-type(1) {
+    font-size: 18px;
+    font-weight: bold;
+    color: green;
+    text-align: left;
+    margin-top: 30px;
+}
+.info-container>div> div{
+    font-size: 14px;
+    text-align: left;
+    margin-top: 30px;
+}
 /* 설명 텍스트 */
 .info-container p {
     font-size: 15px;
@@ -274,8 +288,21 @@
     text-align: left;
 }
 
-
-
+.what-is-nutrient {
+    position: absolute;
+    height: 300px;
+    padding: 25px;
+    border: 1px solid #eee;
+    bottom: 0;
+    width: 300px;
+    margin-bottom: 20px;
+    border-radius: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.what-is-nutrient > li{
+    font-size: 16px;
+    font-weight: bold;
+}
 /* 두번째 카드 */
 .card-nutrient-result {
     display: flex;
