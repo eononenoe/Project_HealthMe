@@ -38,4 +38,6 @@ public class ApprovalOrder {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<ApprovalOrderItem> approvalOrderItems; // 주문 항목 리스트
+
+
 }

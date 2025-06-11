@@ -8,12 +8,12 @@ import Header from "components/header";
 import Footer from "components/footer";
 
 // 결과 페이지
-import ResultPage from 'pages/Result/ResultPage';
+import ResultPage from "pages/Result/ResultPage";
 // 로그인 페이지
-import JoinPage from 'pages/login/JoinPage';
-import LoginPage from 'pages/login/LoginPage';
-import FindAccount from 'pages/login/FindAccount';
-import OAuth2RedirectHandler from 'pages/login/OAuth2RedirectHandler';
+import JoinPage from "pages/login/JoinPage";
+import LoginPage from "pages/login/LoginPage";
+import FindAccount from "pages/login/FindAccount";
+import OAuth2RedirectHandler from "pages/login/OAuth2RedirectHandler";
 // 메인 페이지
 import Index from "pages/index";
 // 설문 페이지
@@ -23,7 +23,7 @@ import PurchasePage from "pages/Purchase/PurchasePage";
 // 추천재료 페이지
 import NutritionalPage from "pages/Nutritional/NutritionalPage";
 // 제품상세 페이지
-import ProductDetailPage from 'pages/Details/DetailsPage';
+import ProductDetailPage from "pages/Details/DetailsPage";
 // 장바구니 페이지
 import ShoppingCart from "pages/shopping cart/shopping_cart";
 // 결제 페이지
@@ -44,6 +44,9 @@ import AddressEditPage from "pages/mypage/AddressEditPage";
 //공지사항
 import Announcement from "pages/Announcement/Announcement";
 
+// 결제 성공시 보여지는 페이지
+import Complete from "pages/Complete/complete";
+
 function AppRoutes() {
   const { pathname } = useLocation();
   const isAdmin = pathname.startsWith("/admin");
@@ -55,7 +58,9 @@ function AppRoutes() {
       const guestCartKey = `guestCart_${guestId}`;
 
       if (!loginUser) {
-        const guestCart = JSON.parse(localStorage.getItem(guestCartKey) || "[]");
+        const guestCart = JSON.parse(
+          localStorage.getItem(guestCartKey) || "[]"
+        );
         const enriched = await enrichCartItems(guestCart);
         setCartItems(enriched);
       } else {
@@ -75,27 +80,29 @@ function AppRoutes() {
     };
 
     const enrichCartItems = async (items) => {
-      return await Promise.all(items.map(async (item) => {
-        try {
-          const { data } = await axios.get(
-            `http://localhost:8090/healthme/products/details/${item.productId}`,
-            { withCredentials: true }
-          );
-          return {
-            ...item,
-            name: data.name,
-            price: data.price,
-            salprice: data.salprice,
-            imageUrl: data.image_url,
-            amount: data.amount,
-            quantity: item.quantity ?? 1,
-            checked: false,
-          };
-        } catch (e) {
-          console.warn("상품 정보 로딩 실패:", item.productId, e);
-          return item;
-        }
-      }));
+      return await Promise.all(
+        items.map(async (item) => {
+          try {
+            const { data } = await axios.get(
+              `http://localhost:8090/healthme/products/details/${item.productId}`,
+              { withCredentials: true }
+            );
+            return {
+              ...item,
+              name: data.name,
+              price: data.price,
+              salprice: data.salprice,
+              imageUrl: data.image_url,
+              amount: data.amount,
+              quantity: item.quantity ?? 1,
+              checked: false,
+            };
+          } catch (e) {
+            console.warn("상품 정보 로딩 실패:", item.productId, e);
+            return item;
+          }
+        })
+      );
     };
 
     fetchCart();
@@ -145,6 +152,9 @@ function AppRoutes() {
 
         {/* ── 고객센터 공지 목록(사용자용) ── */}
         <Route path="/announce" element={<Announcement />} />
+
+        {/* ── 고객센터 공지 목록(사용자용) ── */}
+        <Route path="/Complete" element={<Complete />} />
       </Routes>
 
       {!isAdmin && <Footer />}

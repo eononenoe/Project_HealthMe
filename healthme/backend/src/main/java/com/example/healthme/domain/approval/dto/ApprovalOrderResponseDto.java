@@ -2,6 +2,7 @@ package com.example.healthme.domain.approval.dto;
 
 import com.example.healthme.domain.approval.entity.ApprovalOrder;
 import com.example.healthme.domain.mypage.entity.Address;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +23,8 @@ public class ApprovalOrderResponseDto {
     private boolean isCompleted;
     private boolean refundRequested;
     private boolean returnRequested;
+
+    @JsonIgnore
     private Address address; // 그대로 포함 (Embedded)
     private List<ApprovalOrderItemDto> items;
 
