@@ -220,7 +220,7 @@ function ShoppingCart() {
             <span className="cart-custom-checkbox-all ">전체 선택</span>
             <span>
               <button className="cart-choice-delete" onClick={deleteSelected}>
-                삭제
+                선택 삭제
               </button>
             </span>
           </div>

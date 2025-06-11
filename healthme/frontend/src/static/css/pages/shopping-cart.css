@@ -178,7 +178,7 @@ body {
 
 .cart-delete>.material-symbols-outlined {
   pointer-events: none;
-  font-size: 24px;
+  font-size: 1.3rem;
   color: #333;
 }
 

@@ -53,16 +53,17 @@ const ResultPage = () => {
 
   const nutrientCards = [
     { name: "단백질", color: "red" },
-    { name: "철분", color: "brown" },
-    { name: "비타민 D", color: "yellow" },
-    { name: "칼슘", color: "indigo" },
-    { name: "식이섬유", color: "green" },
     { name: "마그네슘", color: "purple" },
-    { name: "칼륨", color: "orange" },
-    { name: "비오틴", color: "pink" },
+    { name: "칼슘", color: "indigo" },
+    { name: "비타민 D", color: "yellow" },
     { name: "아연", color: "teal" },
-    { name: "아르기닌", color: "blue" }
+    { name: "철분", color: "brown" },
+    { name: "식이섬유", color: "green" },
+    { name: "칼륨", color: "orange" },
+    { name: "아르기닌", color: "blue" },
+    { name: "비오틴", color: "pink" }
   ];
+
 
   const influenceIcons = [
     { label: "축산물", desc: "이것은 예시1에 대한 설명입니다.", color: "#3d9dbf", img: "/img/categoryMeat.jpg", colorClass: "blue" },
