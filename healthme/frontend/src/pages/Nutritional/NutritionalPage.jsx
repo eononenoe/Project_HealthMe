@@ -53,6 +53,10 @@ export default function CustomNutritionalPage() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [expandedItems, setExpandedItems] = useState({});
+  const [resultMap, setResultMap] = useState({});
+  const [selectedNutrient, setSelectedNutrient] = useState(null);
+  const [recommendations, setRecommendations] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,13 +65,18 @@ export default function CustomNutritionalPage() {
     if (!loginUser) {
       alert("이 페이지는 로그인 후 이용 가능합니다.");
       navigate("/login");
+      return;
     }
 
+    const userid = JSON.parse(loginUser).userid;
+
+    // 제품 정보 로딩
     axios.get('http://localhost:8090/healthme/products/details', {
       withCredentials: true,
     })
       .then((res) => {
-        console.log("응답 데이터:", res.data); // 이 줄 추가
+        console.log("응답 데이터:", res.data);
+
         if (!Array.isArray(res.data)) {
           console.error("응답 형식 오류: 배열이 아님");
           return;
@@ -87,7 +96,10 @@ export default function CustomNutritionalPage() {
             formatNutrient('아연', item.zinc, 'mg'),
             formatNutrient('아르기닌', item.arginine, 'mg'),
           ].filter(Boolean);
-
+          const nutrientMap = nutrientsRaw.reduce((acc, cur) => {
+            acc[cur.label] = parseFloat(cur.value);
+            return acc;
+          }, {});
           return {
             id: String(productId),
             name: item.name,
@@ -98,6 +110,7 @@ export default function CustomNutritionalPage() {
             nutrientsLeft: nutrientsRaw.slice(0, 5),
             nutrientsRight: nutrientsRaw.slice(5),
             sales_count: item.sales_count,
+            nutrientValues: nutrientMap,
           };
         });
 
@@ -106,7 +119,28 @@ export default function CustomNutritionalPage() {
       .catch((error) => {
         console.error("API 요청 실패:", error);
       });
+
+    // 설문 결과 및 추천 정보 가져오기
+    axios.get("http://localhost:8090/healthme/survey/scores", {
+      params: { userid },
+      withCredentials: true
+    })
+      .then(res => {
+        const scores = res.data;
+        return Promise.all([
+          axios.post("http://localhost:8090/healthme/result/summary", scores, { withCredentials: true }),
+        ]);
+      })
+      .then(([summaryRes, recommendRes]) => {
+        setResultMap(summaryRes.data);
+        setRecommendations(recommendRes.data);
+      })
+      .catch(err => {
+        console.error("요약/추천 API 실패", err);
+      });
+
   }, []);
+
 
   const toggleExpand = (productId) => {
     setExpandedItems((prev) => ({
@@ -159,17 +193,27 @@ export default function CustomNutritionalPage() {
     setProducts(sorted);
   };
 
-  const NUTRIENTS = [
-    { name: '탄수화물', value: 22 },
-    { name: '단백질', value: 52 },
-    { name: '지방', value: 78 },
-    { name: '비타민', value: 11 },
-    { name: '아이오딘', value: 90 },
-    { name: '비오틴', value: 47 },
-    { name: '비타민D', value: 47 },
-    { name: '지방', value: 47 },
-    { name: '식이섬유', value: 47 },
-    { name: '아연', value: 47 },
+  // 영양소별 정렬 
+  const sortByNutrient = (nutrientName) => {
+    const sorted = [...products].sort((a, b) => {
+      const aValue = a.nutrientValues?.[nutrientName] ?? 0;
+      const bValue = b.nutrientValues?.[nutrientName] ?? 0;
+      return bValue - aValue; // 높은 값이 위로
+    });
+
+    setProducts(sorted);
+  };
+  const nutrientCards = [
+    { name: "단백질", color: "red" },
+    { name: "철분", color: "brown" },
+    { name: "비타민 D", color: "yellow" },
+    { name: "칼슘", color: "indigo" },
+    { name: "식이섬유", color: "green" },
+    { name: "마그네슘", color: "purple" },
+    { name: "칼륨", color: "orange" },
+    { name: "비오틴", color: "pink" },
+    { name: "아연", color: "teal" },
+    { name: "아르기닌", color: "blue" }
   ];
 
   return (
@@ -178,9 +222,30 @@ export default function CustomNutritionalPage() {
       <aside className="nutritional-sidebar">
         <div className="nutritional-contents-main">
           <h3 className="nutrition-section-title">영양소 정보</h3>
-          {NUTRIENTS.map((n, i) => (
-            <CardBar key={i} name={n.name} percent={n.value} />
-          ))}
+          {nutrientCards.map((card, idx) => {
+            const result = resultMap[card.name];
+            if (!result) return null;
+            return (
+              <CardBar
+                key={idx}
+                name={card.name}
+                color={card.color}
+                percent={result.percent}
+                onClick={() => {
+                  setSelectedNutrient({
+                    name: card.name,
+                    value: result.percent,
+                    desc: result.description,
+                    tip: result.tip,
+                    foods: result.foods,
+                    info: result.info
+                  });
+                  sortByNutrient(card.name);
+                }}
+              />
+
+            );
+          })}
         </div>
 
         {/* 장바구니 */}
