@@ -85,19 +85,26 @@ public ResponseEntity<Void> updateQuantity(
     return ResponseEntity.ok().build();
 }
 
-// 항목 삭제
-@DeleteMapping("/delete/{productId}")
-public ResponseEntity<Void> deleteCartItem(
-        @AuthenticationPrincipal PrincipalDetails principalDetails,
-        @PathVariable Long productId) {
+    // 항목 삭제
+    @DeleteMapping("/delete/{productId}")
+    public ResponseEntity<?> deleteCartItem(
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @PathVariable Long productId,
+            @RequestParam(required = false) String guestId) {
 
-    if (principalDetails == null) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        boolean isGuest = guestId != null && !guestId.isEmpty();
+        String userId = null;
+
+        if (!isGuest && principalDetails != null) {
+            userId = principalDetails.getUserDto().getUserid();
+        }
+        try {
+            cartService.deleteItem(userId, productId, isGuest, guestId);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
+        }
     }
-
-    String userId = principalDetails.getUserDto().getUserid();
-    cartService.deleteItem(userId, productId);
-    return ResponseEntity.ok().build();
-}
-
 }

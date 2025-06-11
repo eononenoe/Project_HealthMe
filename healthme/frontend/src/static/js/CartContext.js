@@ -4,9 +4,10 @@ const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]); // 전역 장바구니 상태
+  const [loading, setLoading] = useState(true);
 
   return (
-    <CartContext.Provider value={{ cartItems, setCartItems }}>
+    <CartContext.Provider value={{ cartItems, setCartItems, loading, setLoading }}>
       {children}
     </CartContext.Provider>
   );
@@ -15,3 +16,4 @@ export function CartProvider({ children }) {
 export function useCart() {
   return useContext(CartContext);
 }
+

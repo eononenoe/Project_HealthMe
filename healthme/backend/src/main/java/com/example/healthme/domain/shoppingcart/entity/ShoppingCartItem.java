@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "cart_item")
 @Getter
@@ -38,4 +37,7 @@ public class ShoppingCartItem {
     protected void onCreate() {
         this.addedAt = LocalDateTime.now();
     }
+
+    // 비회원 장바구니를 위한 guestId
+    private String guestId;
 }
