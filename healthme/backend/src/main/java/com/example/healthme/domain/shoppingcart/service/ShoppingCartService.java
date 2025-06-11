@@ -24,7 +24,6 @@ public class ShoppingCartService {
     private final UserRepository userRepo;
 
 //      장바구니에 상품 추가
-//      이미 있으면 수량만 증가
     @Transactional
     public void addToCart(String userId, ShoppingCartItemRequestDto requestDto) {
         User user = userRepo.findByUserid(userId)
@@ -91,39 +90,51 @@ public class ShoppingCartService {
 
     // 항목 삭제
     @Transactional
-    public void deleteItem(String userId, Long productId) {
-        User user = userRepo.findByUserid(userId)
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-        ProductStore product = productRepo.findByProductId(productId)
-                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+    public void deleteItem(String userId, Long productId, boolean isGuest, String guestId) {
+        if (isGuest) {
+            // 비회원 장바구니 항목 삭제
+            ShoppingCartItem item = cartRepo.findByProduct_ProductIdAndGuestId(productId, guestId)
+                    .orElseThrow(() -> new RuntimeException("비회원 장바구니 항목을 찾을 수 없습니다."));
 
-        ShoppingCartItem item = cartRepo.findByUserAndProduct(user, product)
-                .orElseThrow(() -> new RuntimeException("장바구니 항목을 찾을 수 없습니다."));
+            cartRepo.delete(item); // 비회원의 장바구니 항목 삭제
+        } else {
+            // 회원 장바구니 항목 삭제
+            User user = userRepo.findByUserid(userId)
+                    .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+            ProductStore product = productRepo.findByProductId(productId)
+                    .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
 
-        cartRepo.delete(item);
+            ShoppingCartItem item = cartRepo.findByUserAndProduct(user, product)
+                    .orElseThrow(() -> new RuntimeException("장바구니 항목을 찾을 수 없습니다."));
+
+            cartRepo.delete(item); // 회원의 장바구니 항목 삭제
+        }
     }
-//    @Transactional
-//    public void deleteItem(String userId, Long productId, boolean isGuest) {
-//        // 회원 장바구니 삭제 로직
-//        if (!isGuest) {
-//            User user = userRepo.findByUserid(userId)
-//                    .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-//            ProductStore product = productRepo.findByProductId(productId)
-//                    .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
-//
-//            ShoppingCartItem item = cartRepo.findByUserAndProduct(user, product)
-//                    .orElseThrow(() -> new RuntimeException("장바구니 항목을 찾을 수 없습니다."));
-//
-//            cartRepo.delete(item);
-//        } else {
-//            // 비회원 장바구니 삭제 로직
-//            // 비회원 장바구니는 로컬 스토리지에서 삭제되고, 서버와 동기화가 필요합니다.
-//            // 비회원 사용자 ID와 상품 ID를 기반으로 삭제 작업을 수행
-//            ShoppingCartItem item = cartRepo.findByProductAndGuest(productId)
-//                    .orElseThrow(() -> new RuntimeException("비회원 장바구니 항목을 찾을 수 없습니다."));
-//
-//            cartRepo.delete(item); // 비회원의 장바구니 항목 삭제
-//        }
-//    }
+
+    // 비회원 장바구니 동기화 처리
+    @Transactional
+    public void syncGuestCart(String guestId, List<ShoppingCartItem> guestItems) {
+        // 비회원 장바구니 데이터 서버에 저장
+        for (ShoppingCartItem item : guestItems) {
+            // 비회원 장바구니 항목을 서버에 저장하는 로직
+            cartRepo.save(item); // 비회원 장바구니를 저장할 때 guestId를 함께 저장하는 방식 필요
+        }
+    }
+
+    // 비회원 장바구니 불러오기
+    public List<ShoppingCartItemResponseDto> getGuestCart(String guestId) {
+        List<ShoppingCartItem> guestCartItems = cartRepo.findByGuestId(guestId); // 비회원 장바구니 항목 조회
+        return guestCartItems.stream().map(item ->
+                ShoppingCartItemResponseDto.builder()
+                        .cartItemId(item.getCartItemId())
+                        .productId(item.getProduct().getProductId())
+                        .productName(item.getProduct().getName())
+                        .imageUrl(item.getProduct().getImageUrl())
+                        .price(item.getProduct().getPrice())
+                        .quantity(item.getQuantity())
+                        .totalPrice(item.getProduct().getPrice() * item.getQuantity())
+                        .build()
+        ).collect(Collectors.toList());
+    }
 
 }

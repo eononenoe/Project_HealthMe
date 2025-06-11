@@ -6,42 +6,30 @@ import { useCart } from "static/js/CartContext.js";
 
 function ShoppingCart() {
   const [isGuest, setIsGuest] = useState(false);
-  const { cartItems, setCartItems } = useCart();
+  const { cartItems, setCartItems, loading, setLoading } = useCart();
   const [selectAll, setSelectAll] = useState(false);
-  const [isAllChecked, setIsAllChecked] = useState(true);
   const navigate = useNavigate();
+
+  const api = axios.create({
+    baseURL: "http://localhost:8090",
+    withCredentials: true,
+  });
+
   const totalPrice = cartItems
     .filter((item) => item.checked)
     .reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const api = axios.create({
-    baseURL: "http://localhost:8090/healthme",
-    withCredentials: true,
-  });
-
-  // 장바구니 불러오기
+  // 장바구니 불러오기 (회원용)
   const loadCart = async () => {
-    if (cartItems.length === 0) return;
-
     try {
-      const res = await api.get(`/cart`, { withCredentials: true });
+      const res = await api.get("/cart");
       const items = Array.isArray(res.data) ? res.data : [];
-      await enrichCartItems(items);
-    } catch (error) {
-      console.error("서버 장바구니 불러오기 오류:", error);
-    }
-  };
 
-  // product_store에 있는값 불러오기
-  const enrichCartItems = async (items) => {
-    const enriched = await Promise.all(
-      items.map(async (item) => {
-        try {
+      const enriched = await Promise.all(
+        items.map(async (item) => {
           const { data } = await axios.get(
-            `http://localhost:8090/healthme/products/details/${item.productId}`,
-            { withCredentials: true }
+            `http://localhost:8090/healthme/products/details/${item.productId}`
           );
-
           return {
             ...item,
             name: data.name,
@@ -49,7 +37,58 @@ function ShoppingCart() {
             salprice: data.salprice,
             imageUrl: data.image_url,
             amount: data.amount,
-            quantity: item.quantity ?? 1, // ← 여기가 중요!
+            quantity: item.quantity ?? 1,
+          };
+        })
+      );
+
+      setCartItems(enriched.map((item) => ({ ...item, checked: false })));
+    } catch (error) {
+      console.error("장바구니 불러오기 오류:", error);
+    }
+  };
+
+  useEffect(() => {
+    const initializeCart = async () => {
+      setLoading(true);
+      const loginUser = localStorage.getItem("loginUser");
+
+      if (!loginUser) {
+        setIsGuest(true);
+        const guestId = localStorage.getItem("guestId");
+        const guestCartKey = `guestCart_${guestId}`;
+        const guestCart = JSON.parse(localStorage.getItem(guestCartKey) || "[]");
+        await enrichCartItems(guestCart);
+      } else {
+        setIsGuest(false);
+        localStorage.removeItem("guestId");
+        Object.keys(localStorage)
+          .filter((key) => key.startsWith("guestCart_"))
+          .forEach((key) => localStorage.removeItem(key));
+
+        await loadCart();
+      }
+      setLoading(false);
+    };
+
+    initializeCart();
+  }, []);
+
+  const enrichCartItems = async (items) => {
+    const enriched = await Promise.all(
+      items.map(async (item) => {
+        try {
+          const { data } = await axios.get(
+            `http://localhost:8090/healthme/products/details/${item.productId}`
+          );
+          return {
+            ...item,
+            name: data.name,
+            price: data.price,
+            salprice: data.salprice,
+            imageUrl: data.image_url,
+            amount: data.amount,
+            quantity: item.quantity ?? 1,
           };
         } catch (e) {
           console.warn("상품 정보 로딩 실패:", item.productId, e);
@@ -61,48 +100,70 @@ function ShoppingCart() {
     setCartItems(enriched.map((item) => ({ ...item, checked: false })));
   };
 
-  useEffect(() => {
-    const loginUser = localStorage.getItem("loginUser");
-
-    if (!loginUser) {
-      setIsGuest(true);
-      const guestId = localStorage.getItem("guestId");
-      const guestCartKey = `guestCart_${guestId}`;
-      const guestCart = JSON.parse(localStorage.getItem(guestCartKey) || "[]");
-
-      enrichCartItems(guestCart);
-    } else {
-      setIsGuest(false);
-      loadCart();
-    }
-  }, []);
-
-  // 전체 선택
-  const handleAllCheck = (e) => {
-    setIsAllChecked(e.target.checked);
-    // 여기에 전체 항목 체크/해제 로직 추가
-  };
+  // 삭제 버튼 클릭
   const handleDelete = async (productId) => {
     if (!productId) return;
+
+    const updated = cartItems.filter((item) => item.productId !== productId);
+    setCartItems(updated);
+
+    try {
+      if (isGuest) {
+        const guestId = localStorage.getItem("guestId");
+        const guestCartKey = `guestCart_${guestId}`;
+        localStorage.setItem(guestCartKey, JSON.stringify(updated));
+      } else {
+        await api.delete(`/healthme/cart/delete/${productId}`);
+      }
+    } catch (error) {
+      console.error("삭제 실패:", error);
+    }
+  };
+
+  const deleteSelected = async () => {
+    const selectedItems = cartItems.filter((item) => item.checked);
+    const updated = cartItems.filter((item) => !item.checked);
+    setCartItems(updated);
+
+    try {
+      if (isGuest) {
+        const guestId = localStorage.getItem("guestId");
+        const guestCartKey = `guestCart_${guestId}`;
+        localStorage.setItem(guestCartKey, JSON.stringify(updated));
+      } else {
+        for (const item of selectedItems) {
+          await api.delete(`/healthme/cart/delete/${item.productId}`);
+        }
+      }
+    } catch (error) {
+      console.error("삭제 실패:", error);
+    }
+  };
+
+  const handleQuantityChange = async (id, qty) => {
+    const quantity = Math.max(1, qty);
 
     if (isGuest) {
       const guestId = localStorage.getItem("guestId");
       const guestCartKey = `guestCart_${guestId}`;
-      const updated = cartItems.filter((item) => item.productId !== productId);
+
+      const updated = cartItems.map((item) =>
+        item.productId === id ? { ...item, quantity } : item
+      );
+
       localStorage.setItem(guestCartKey, JSON.stringify(updated));
       setCartItems(updated);
     } else {
-      // 백엔드에서 설정한 delete 경로에 맞게 수정
-      await api.delete(`/healthme/cart/delete/${productId}`);
+      await api.put(`/cart/item/${id}/quantity`, null, {
+        params: { quantity },
+      });
       loadCart();
     }
   };
 
   const toggleSelectAll = () => {
     const newValue = !selectAll;
-    setCartItems((prev) =>
-      prev.map((item) => ({ ...item, checked: newValue }))
-    );
+    setCartItems((prev) => prev.map((item) => ({ ...item, checked: newValue })));
     setSelectAll(newValue);
   };
 
@@ -114,46 +175,6 @@ function ShoppingCart() {
     );
   };
 
-  const deleteSelected = async () => {
-    const selectedItems = cartItems.filter((item) => item.checked);
-
-    if (isGuest) {
-      const guestId = localStorage.getItem("guestId");
-      const guestCartKey = `guestCart_${guestId}`;
-      const updated = cartItems.filter((item) => !item.checked);
-      localStorage.setItem(guestCartKey, JSON.stringify(updated));
-      setCartItems(updated);
-    } else {
-      for (const item of selectedItems) {
-        await api.delete(`/healthme/cart/delete/${item.productId}`);
-      }
-      loadCart();
-    }
-  };
-
-  const handleQuantityChange = async (id, qty) => {
-    if (isGuest) {
-      const guestId = localStorage.getItem("guestId");
-      const guestCartKey = `guestCart_${guestId}`;
-
-      const updated = cartItems.map((item) =>
-        item.productId === id ? { ...item, quantity: Math.max(1, qty) } : item
-      );
-
-      localStorage.setItem(guestCartKey, JSON.stringify(updated));
-      setCartItems(updated);
-    } else {
-      await api.put(`/cart/item/${id}/quantity`, null, {
-        params: { quantity: qty },
-      });
-      loadCart();
-    }
-  };
-  const loginUser = localStorage.getItem("loginUser");
-  // 비회원
-  const guestId = localStorage.getItem("guestId");
-  const guestCartKey = `guestCart_${guestId}`; // 고유 키로 관리
-  const guestCart = JSON.parse(localStorage.getItem(guestCartKey) || "[]");
   const handlePaymentClick = () => {
     if (isGuest) {
       alert("로그인이 필요합니다. 먼저 로그인 또는 회원가입을 해주세요.");
@@ -167,14 +188,15 @@ function ShoppingCart() {
       return;
     }
 
+    const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+
     navigate("/approval", {
       state: {
         items: selectedItems,
-        totalPrice: totalPrice,
+        totalPrice,
         userId: loginUser?.id,
       },
     });
-    console.log("최종 cartItems 상태:", cartItems);
   };
 
   return (
@@ -203,10 +225,10 @@ function ShoppingCart() {
             </span>
           </div>
 
-          {cartItems.map((item) => (
+          {cartItems.map((item, index) => (
             <div
               className="cart-cart-item"
-              key={item.cartItemId || `guest-${item.productId}`}
+              key={item.cartItemId || `guest-${item.productId}`||`fallback-${index}`}
             >
               <label className="cart-custom-checkbox">
                 <input
