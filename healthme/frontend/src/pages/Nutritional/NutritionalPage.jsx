@@ -3,6 +3,20 @@ import axios from 'axios';
 import 'static/css/pages/Nutritional.css';
 import { useNavigate } from "react-router-dom";
 
+// 성인 남성 기준 영양소 권장 섭취량 (단위: g 또는 mg)
+const maxScoreMap = {
+  "단백질": 154,
+  "칼슘": 1200,
+  "철분": 18,
+  "비타민 D": 800,
+  "식이섬유": 30,
+  "마그네슘": 400,
+  "칼륨": 4700,
+  "비오틴": 30,
+  "아연": 15,
+  "아르기닌": 6
+};
+
 const formatNutrient = (label, value, unit) => {
   if (!value) return null;
   const numericValue = parseFloat(value);
@@ -20,7 +34,7 @@ const formatNutrient = (label, value, unit) => {
 };
 
 // CardBar
-const CardBar = ({ name, percent, onClick }) => {
+const CardBar = ({ name, color, percent, onClick }) => {
   const getColorClass = (percent) => {
     if (percent <= 20) return 'red';
     if (percent <= 40) return 'orange';
@@ -55,7 +69,8 @@ export default function CustomNutritionalPage() {
   const [expandedItems, setExpandedItems] = useState({});
   const [resultMap, setResultMap] = useState({});
   const [selectedNutrient, setSelectedNutrient] = useState(null);
-  const [recommendations, setRecommendations] = useState([]);
+  const [userNutrientScores, setUserNutrientScores] = useState({});
+
 
   const navigate = useNavigate();
 
@@ -75,8 +90,6 @@ export default function CustomNutritionalPage() {
       withCredentials: true,
     })
       .then((res) => {
-        console.log("응답 데이터:", res.data);
-
         if (!Array.isArray(res.data)) {
           console.error("응답 형식 오류: 배열이 아님");
           return;
@@ -131,16 +144,14 @@ export default function CustomNutritionalPage() {
           axios.post("http://localhost:8090/healthme/result/summary", scores, { withCredentials: true }),
         ]);
       })
-      .then(([summaryRes, recommendRes]) => {
+      .then(([summaryRes]) => {
         setResultMap(summaryRes.data);
-        setRecommendations(recommendRes.data);
       })
       .catch(err => {
         console.error("요약/추천 API 실패", err);
       });
 
   }, []);
-
 
   const toggleExpand = (productId) => {
     setExpandedItems((prev) => ({
@@ -156,8 +167,43 @@ export default function CustomNutritionalPage() {
         ? prev.map((p) => p.id === product.id ? { ...p, qty: p.qty + 1 } : p)
         : [...prev, { ...product, qty: 1, selected: true }];
     });
+
+    // 영양소 추가 및 누적
+    addNutrientsToScores(product.nutrientValues); // 이 부분 추가
   };
 
+  const addNutrientsToScores = (nutrientValues) => {
+    setUserNutrientScores((prevScores) => {
+      const updatedScores = { ...prevScores };
+      // 각 영양소 값을 누적
+      for (const [nutrient, value] of Object.entries(nutrientValues)) {
+        updatedScores[nutrient] = (updatedScores[nutrient] || 0) + value;
+      }
+
+      // 영양소 퍼센트 갱신
+      summarize(updatedScores);
+
+      return updatedScores;
+    });
+  };
+
+  const summarize = (nutrientMap) => {
+    const updatedResultMap = {};
+
+    // 각 영양소를 기준으로 퍼센트를 계산
+    for (const [nutrient, userValue] of Object.entries(nutrientMap)) {
+      const maxValue = maxScoreMap[nutrient] || 1; // 각 영양소에 대한 권장 섭취량
+      const percent = Math.min(100, Math.round((userValue / maxValue) * 100)); // 100%를 넘지 않도록 처리
+
+      // resultMap에 갱신
+      updatedResultMap[nutrient] = { percent };
+    }
+
+    // 갱신된 resultMap을 상태로 저장
+    setResultMap(updatedResultMap);
+  };
+
+  // 장바구니 관련 UI
   const toggleAll = (checked) =>
     setCart((prev) => prev.map((it) => ({ ...it, selected: checked })));
 
@@ -175,10 +221,8 @@ export default function CustomNutritionalPage() {
 
   const deleteSelected = () =>
     setCart((prev) => prev.filter((it) => !it.selected));
-
   const selected = cart.filter((c) => c.selected);
   const totalPrice = selected.reduce((sum, v) => sum + v.price * v.qty, 0);
-
   const sortProducts = (order) => {
     let sorted = [];
     if (order === 'asc' || order === 'desc') {
@@ -222,28 +266,25 @@ export default function CustomNutritionalPage() {
       <aside className="nutritional-sidebar">
         <div className="nutritional-contents-main">
           <h3 className="nutrition-section-title">영양소 정보</h3>
-          {nutrientCards.map((card, idx) => {
-            const result = resultMap[card.name];
-            if (!result) return null;
+          {Object.keys(resultMap).map((nutrientName, idx) => {
+            const result = resultMap[nutrientName];
             return (
               <CardBar
                 key={idx}
-                name={card.name}
-                color={card.color}
+                name={nutrientName} // nutrientName을 사용
                 percent={result.percent}
                 onClick={() => {
                   setSelectedNutrient({
-                    name: card.name,
+                    name: nutrientName,
                     value: result.percent,
                     desc: result.description,
                     tip: result.tip,
                     foods: result.foods,
                     info: result.info
                   });
-                  sortByNutrient(card.name);
+                  sortByNutrient(nutrientName); // 영양소별 정렬
                 }}
               />
-
             );
           })}
         </div>
@@ -300,6 +341,7 @@ export default function CustomNutritionalPage() {
           </div>
         </section>
       </aside>
+
 
       {/* ---------------- 메인 콘텐츠 ---------------- */}
       <main className="nutritional_main">
@@ -385,6 +427,6 @@ export default function CustomNutritionalPage() {
           ))}
         </ul>
       </main>
-    </div>
+    </div >
   );
 }
