@@ -6,7 +6,7 @@ import { useCart } from "static/js/CartContext.js";
 
 function ShoppingCart() {
   const [isGuest, setIsGuest] = useState(false);
-  const { cartItems, setCartItems, loading, setLoading } = useCart();
+  const { cartItems, setCartItems, setLoading } = useCart(); // loading 상태 제거, setCartItems와 setLoading만 사용
   const [selectAll, setSelectAll] = useState(false);
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);
@@ -28,67 +28,36 @@ function ShoppingCart() {
 
       const enriched = await Promise.all(
         items.map(async (item) => {
-          const { data } = await axios.get(
-            `http://localhost:8090/healthme/products/details/${item.productId}`
-          );
-          return {
-            ...item,
-            name: data.name,
-            price: data.price,
-            salprice: data.salprice,
-            imageUrl: data.image_url,
-            amount: data.amount,
-            quantity: item.quantity ?? 1,
-          };
+          try {
+            const { data } = await axios.get(
+              `http://localhost:8090/healthme/products/details/${item.productId}`
+            );
+            return {
+              ...item,
+              name: data.name,
+              price: data.price,
+              salprice: data.salprice,
+              imageUrl: data.image_url,
+              amount: data.amount,
+              quantity: item.quantity ?? 1,
+            };
+          } catch (e) {
+            console.warn("상품 정보 로딩 실패:", item.productId, e);
+            return item; // 상품 정보 로딩 실패 시 기존 item 반환
+          }
         })
       );
 
       setCartItems(enriched.map((item) => ({ ...item, checked: false })));
+      // 전체 선택 상태 초기화 (장바구니 내용이 변경될 수 있으므로)
+      setSelectAll(false);
     } catch (error) {
       console.error("장바구니 불러오기 오류:", error);
     }
   };
 
-  useEffect(() => {
-    const initializeCart = async () => {
-      setLoading(true);
-      const loginUserString = localStorage.getItem("loginUser"); // loginUser 값을 가져옴
-
-      if (!loginUserString) { // 로그인 정보가 없는 경우 (비회원)
-        setIsGuest(true);
-        setUserInfo(null); // 비회원이므로 사용자 정보 초기화
-        const guestId = localStorage.getItem("guestId");
-        const guestCartKey = `guestCart_${guestId}`;
-        const guestCart = JSON.parse(localStorage.getItem(guestCartKey) || "[]");
-        await enrichCartItems(guestCart);
-      } else { // 로그인 정보가 있는 경우 (회원)
-        setIsGuest(false);
-        try {
-          const parsedUser = JSON.parse(loginUserString); // loginUserString을 파싱
-          setUserInfo({ // 파싱된 값에서 username과 grade를 추출하여 userInfo 상태에 저장
-            username: parsedUser.username,
-            grade: parsedUser.grade
-          });
-        } catch (e) {
-          console.error("Failed to parse loginUser from localStorage", e);
-          setUserInfo(null); // 파싱 실패 시 정보 초기화
-        }
-
-        // 게스트 장바구니 관련 로컬스토리지 정리
-        localStorage.removeItem("guestId");
-        Object.keys(localStorage)
-          .filter((key) => key.startsWith("guestCart_"))
-          .forEach((key) => localStorage.removeItem(key));
-
-        await loadCart();
-      }
-      setLoading(false);
-    };
-
-    initializeCart();
-  }, []);
-
-  const enrichCartItems = async (items) => {
+  // 게스트 장바구니 항목들을 상세 정보와 함께 불러와서 state에 저장
+  const enrichGuestCartItems = async (items) => {
     const enriched = await Promise.all(
       items.map(async (item) => {
         try {
@@ -103,92 +72,179 @@ function ShoppingCart() {
             imageUrl: data.image_url,
             amount: data.amount,
             quantity: item.quantity ?? 1,
+            checked: false, // 게스트 장바구니도 초기엔 체크 해제 상태
           };
         } catch (e) {
-          console.warn("상품 정보 로딩 실패:", item.productId, e);
+          console.warn("게스트 상품 정보 로딩 실패:", item.productId, e);
           return item;
         }
       })
     );
-
-    setCartItems(enriched.map((item) => ({ ...item, checked: false })));
+    setCartItems(enriched);
+    setSelectAll(false);
   };
+
+  // 게스트 장바구니를 회원 장바구니로 마이그레이션 (로그인 시)
+  const migrateGuestCartToUserCart = async () => {
+    const guestId = localStorage.getItem("guestId");
+    if (!guestId) return; // 게스트 ID가 없으면 마이그레이션할 장바구니도 없음
+
+    const guestCartKey = `guestCart_${guestId}`;
+    const guestCart = JSON.parse(localStorage.getItem(guestCartKey) || "[]");
+
+    if (guestCart.length === 0) return; // 게스트 장바구니가 비어있으면 할 일 없음
+
+    try {
+      console.log("게스트 장바구니 통합 시작:", guestCart);
+      for (const item of guestCart) {
+        // 각 게스트 장바구니 항목을 회원 장바구니에 추가 또는 수량 업데이트
+        await api.post("/healthme/cart", {
+          productId: item.productId,
+          quantity: item.quantity,
+        });
+      }
+      console.log("게스트 장바구니 통합 완료");
+      // 성공적으로 통합 후 로컬 스토리지에서 게스트 장바구니 삭제
+      localStorage.removeItem(guestCartKey);
+      localStorage.removeItem("guestId");
+    } catch (error) {
+      console.error("게스트 장바구니 통합 중 오류 발생:", error);
+      // 오류 발생 시 사용자에게 알림 (선택 사항)
+      alert("이전 비회원 장바구니를 불러오는 데 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  useEffect(() => {
+    const initializeCart = async () => {
+      setLoading(true);
+      const loginUserString = localStorage.getItem("loginUser");
+
+      if (!loginUserString) { // 비회원
+        setIsGuest(true);
+        setUserInfo(null);
+        const guestId = localStorage.getItem("guestId");
+        const guestCartKey = `guestCart_${guestId}`;
+        const guestCart = JSON.parse(localStorage.getItem(guestCartKey) || "[]");
+        await enrichGuestCartItems(guestCart); // 게스트 장바구니 내용 로드
+      } else { // 회원
+        setIsGuest(false);
+        try {
+          const parsedUser = JSON.parse(loginUserString);
+          setUserInfo({
+            username: parsedUser.username,
+            grade: parsedUser.grade,
+          });
+        } catch (e) {
+          console.error("Failed to parse loginUser from localStorage", e);
+          setUserInfo(null);
+        }
+
+        // 로그인 시 게스트 장바구니를 회원 장바구니로 통합
+        await migrateGuestCartToUserCart();
+        // 회원 장바구니 불러오기 (통합된 내용 포함)
+        await loadCart();
+      }
+      setLoading(false);
+    };
+
+    initializeCart();
+  }, []); // 의존성 배열을 비워 컴포넌트 마운트 시 한 번만 실행되도록 함
 
   // 삭제 버튼 클릭
   const handleDelete = async (productId) => {
     if (!productId) return;
 
-    const updated = cartItems.filter((item) => item.productId !== productId);
-    setCartItems(updated);
-
-    try {
-      if (isGuest) {
-        const guestId = localStorage.getItem("guestId");
-        const guestCartKey = `guestCart_${guestId}`;
-        localStorage.setItem(guestCartKey, JSON.stringify(updated));
-      } else {
+    if (isGuest) {
+      const guestId = localStorage.getItem("guestId");
+      const guestCartKey = `guestCart_${guestId}`;
+      const updatedGuestCart = cartItems.filter((item) => item.productId !== productId);
+      localStorage.setItem(guestCartKey, JSON.stringify(updatedGuestCart));
+      setCartItems(updatedGuestCart);
+    } else {
+      try {
         await api.delete(`/healthme/cart/delete/${productId}`);
+        await loadCart(); // 서버에서 삭제 후 장바구니 다시 로드하여 UI 업데이트
+      } catch (error) {
+        console.error("회원 장바구니 삭제 실패:", error);
       }
-    } catch (error) {
-      console.error("삭제 실패:", error);
     }
   };
 
+  // 선택 삭제 버튼 클릭
   const deleteSelected = async () => {
     const selectedItems = cartItems.filter((item) => item.checked);
-    const updated = cartItems.filter((item) => !item.checked);
-    setCartItems(updated);
-
-    try {
-      if (isGuest) {
-        const guestId = localStorage.getItem("guestId");
-        const guestCartKey = `guestCart_${guestId}`;
-        localStorage.setItem(guestCartKey, JSON.stringify(updated));
-      } else {
-        for (const item of selectedItems) {
-          await api.delete(`/healthme/cart/delete/${item.productId}`);
-        }
-      }
-    } catch (error) {
-      console.error("삭제 실패:", error);
-    }
-  };
-
-  const handleQuantityChange = async (id, qty) => {
-    const quantity = Math.max(1, qty);
+    const updatedCart = cartItems.filter((item) => !item.checked);
+    setCartItems(updatedCart); // UI 먼저 업데이트
 
     if (isGuest) {
       const guestId = localStorage.getItem("guestId");
       const guestCartKey = `guestCart_${guestId}`;
+      localStorage.setItem(guestCartKey, JSON.stringify(updatedCart));
+    } else {
+      try {
+        for (const item of selectedItems) {
+          await api.delete(`/healthme/cart/delete/${item.productId}`);
+        }
+        await loadCart(); // 서버에서 삭제 후 장바구니 다시 로드하여 UI 업데이트
+      } catch (error) {
+        console.error("선택된 회원 장바구니 항목 삭제 실패:", error);
+      }
+    }
+    setSelectAll(false); // 선택 삭제 후 전체 선택 상태 해제
+  };
 
+  // 수량 변경
+  const handleQuantityChange = async (id, qty) => {
+    const newQuantity = Math.max(1, qty); // 수량은 최소 1
+
+    // 재고량 확인
+    const itemToUpdate = cartItems.find(item => (isGuest ? item.productId : item.cartItemId) === id);
+    if (itemToUpdate && newQuantity > itemToUpdate.amount) {
+      alert(`재고량 ${itemToUpdate.amount}개를 초과할 수 없습니다.`);
+      return;
+    }
+
+    if (isGuest) {
+      const guestId = localStorage.getItem("guestId");
+      const guestCartKey = `guestCart_${guestId}`;
       const updated = cartItems.map((item) =>
-        item.productId === id ? { ...item, quantity } : item
+        (item.productId === id) ? { ...item, quantity: newQuantity } : item
       );
-
       localStorage.setItem(guestCartKey, JSON.stringify(updated));
       setCartItems(updated);
     } else {
-      await api.put(`/cart/item/${id}/quantity`, null, {
-        params: { quantity },
-      });
-      loadCart();
+      try {
+        // 서버에 수량 변경 요청
+        await api.put(`/healthme/cart/item/${id}/quantity`, null, {
+          params: { quantity: newQuantity },
+        });
+        await loadCart(); // 서버에서 업데이트 후 장바구니 다시 로드
+      } catch (error) {
+        console.error("회원 장바구니 수량 변경 실패:", error);
+      }
     }
   };
 
+  // 전체 선택/해제
   const toggleSelectAll = () => {
     const newValue = !selectAll;
     setCartItems((prev) => prev.map((item) => ({ ...item, checked: newValue })));
     setSelectAll(newValue);
   };
 
+  // 개별 아이템 선택/해제
   const toggleItemChecked = (id) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.cartItemId === id ? { ...item, checked: !item.checked } : item
-      )
-    );
+    setCartItems((prev) => {
+      const updated = prev.map((item) =>
+        (isGuest ? item.productId : item.cartItemId) === id ? { ...item, checked: !item.checked } : item
+      );
+      // 모든 항목이 체크되었는지 확인하여 '전체 선택' 체크박스 상태 업데이트
+      setSelectAll(updated.every(item => item.checked));
+      return updated;
+    });
   };
 
+  // 결제하기 버튼 클릭
   const handlePaymentClick = () => {
     if (isGuest) {
       alert("로그인이 필요합니다. 먼저 로그인 또는 회원가입을 해주세요.");
@@ -208,10 +264,20 @@ function ShoppingCart() {
       state: {
         items: selectedItems,
         totalPrice,
-        userId: loginUser?.id,
+        userId: loginUser?.userid, // userId는 'id'가 아니라 'userid'일 가능성이 높습니다.
       },
     });
   };
+
+  // cartItems가 변경될 때마다 selectAll 상태를 동기화
+  useEffect(() => {
+    if (cartItems.length > 0 && cartItems.every(item => item.checked)) {
+      setSelectAll(true);
+    } else {
+      setSelectAll(false);
+    }
+  }, [cartItems]);
+
 
   return (
     <main className="shopping-main">
@@ -248,7 +314,7 @@ function ShoppingCart() {
                 <input
                   type="checkbox"
                   checked={item.checked}
-                  onChange={() => toggleItemChecked(item.cartItemId)}
+                  onChange={() => toggleItemChecked(isGuest ? item.productId : item.cartItemId)}
                 />
                 <span className="cart-checkmark material-symbols-outlined">
                   check
@@ -283,11 +349,7 @@ function ShoppingCart() {
                   <button
                     className="cart-qty-btn cart-increase"
                     onClick={() => {
-                      const maxQty = item.amount;
-                      if (item.quantity >= maxQty) {
-                        alert(`재고량 ${maxQty}개를 초과할 수 없습니다.`);
-                        return;
-                      }
+                      // 재고량은 handleQuantityChange에서 체크하므로 여기서는 호출만 합니다.
                       handleQuantityChange(
                         isGuest ? item.productId : item.cartItemId,
                         item.quantity + 1
@@ -323,7 +385,7 @@ function ShoppingCart() {
           {/* 로그인 박스 / 회원 정보 표시 부분 */}
           <div className="cart-login-box">
             {isGuest ? (
-              <>
+              <div>
                 <p>
                   로그인을 하시면 지금 보고있는 제품을
                   <br />
@@ -332,18 +394,14 @@ function ShoppingCart() {
                 <button>
                   <a href="/login">로그인하기</a>
                 </button>
-              </>
+              </div>
             ) : (
               userInfo && ( // userInfo가 있을 때만 렌더링
-                <>
-                  <p>
-                    안녕하세요, <strong className="cart-username">{userInfo.username}</strong> 님!
-                    <br />
-                    회원 등급: <strong className="cart-grade">{userInfo.grade}</strong>
-                  </p>
-                  {/* 필요하다면 회원 페이지로 이동하는 버튼 추가 */}
-                  {/* <button onClick={() => navigate('/my-page')}>내 정보</button> */}
-                </>
+                <div>
+                  <span>안녕하세요 <strong className="cart-username">{userInfo.username}</strong>님</span>
+                  <br />
+                  <span>등급 : <strong className="cart-grade">{userInfo.grade}</strong></span>
+                </div>
               )
             )}
           </div>

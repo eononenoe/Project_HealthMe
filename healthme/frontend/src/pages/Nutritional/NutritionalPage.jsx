@@ -128,6 +128,8 @@ export default function CustomNutritionalPage() {
       }));
 
       // 모든 장바구니 항목을 서버에 저장
+      // NOTE: 서버에서 개별 POST 요청이 아닌, 한 번에 여러 항목을 받는 API가 있다면 그것을 사용하는 것이 효율적입니다.
+      // 현재는 각 아이템별로 POST 요청을 보냅니다.
       for (const item of cartItemsToSave) {
         await api.post("/cart", item); // POST /healthme/cart 로 요청
       }
@@ -513,6 +515,17 @@ export default function CustomNutritionalPage() {
     setProducts(sorted);
   };
 
+  // 새로 추가된 goToDetail 함수
+  const goToDetail = (product) => {
+    console.log("Product clicked for detail:", product);
+    // product.id가 이미 string으로 매핑되어 있으므로, product.id를 사용합니다.
+    if (!product?.id) {
+      alert('상품 ID가 없습니다!');
+      return;
+    }
+    navigate(`/details/${product.id}`); // product.id를 사용
+  };
+
   return (
     <div className="nutritional-container">
       <aside className="nutritional-sidebar">
@@ -628,9 +641,11 @@ export default function CustomNutritionalPage() {
         <ul className="nutritional_content">
           {products.map((p, idx) => (
             <li key={`product-${p.id}-${idx}`} className="nutritional_item_store">
-              <div className="nutritional_item_img">
+              {/* 이미지 클릭 시 상세 페이지로 이동 */}
+              <div className="nutritional_item_img" onClick={() => goToDetail(p)}>
                 <img src={p.img} alt={p.name} />
               </div>
+              {/* 담기 버튼 클릭 시 장바구니에 담기 */}
               <div className="nutritional_item_add" onClick={() => addToCart(p)}>
                 <i className="fas fa-cart-shopping" /> 담기
               </div>

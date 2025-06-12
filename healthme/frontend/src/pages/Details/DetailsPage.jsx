@@ -83,7 +83,7 @@ function ProductDetailPage() {
                         withCredentials: true, // accessToken 쿠키 자동 전송
                     }
                 );
-                alert("장바구니에 담겼습니다!");
+                alert("장바구니에 담겼습니다.");
             } catch (error) {
                 console.error("장바구니 추가 실패:", error);
                 if (error.response?.status === 401) {
@@ -96,7 +96,7 @@ function ProductDetailPage() {
         } else {
             const guestId = localStorage.getItem("guestId");
             if (!guestId) {
-                alert("임시 아이디가 없습니다. 새로고침 후 다시 시도해 주세요.");
+                alert("새로고침 후 다시 시도해 주세요.");
                 return;
             }
 
@@ -111,7 +111,7 @@ function ProductDetailPage() {
             }
 
             localStorage.setItem(guestCartKey, JSON.stringify(guestCart));
-            alert("비회원 장바구니에 담겼습니다!");
+            alert("장바구니에 담겼습니다.");
         }
     };
 
