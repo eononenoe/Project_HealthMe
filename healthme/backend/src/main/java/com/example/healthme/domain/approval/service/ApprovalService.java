@@ -5,6 +5,7 @@ import com.example.healthme.domain.approval.dto.ApprovalOrderRequestDto;
 import com.example.healthme.domain.approval.dto.ApprovalOrderResponseDto;
 import com.example.healthme.domain.approval.entity.ApprovalOrder;
 import com.example.healthme.domain.approval.entity.ApprovalOrderItem;
+import com.example.healthme.domain.approval.repository.ApprovalCartItemRepository;
 import com.example.healthme.domain.approval.repository.ApprovalOrderItemRepository;
 import com.example.healthme.domain.approval.repository.ApprovalOrderRepository;
 import com.example.healthme.domain.mypage.dto.AddressUpdate;
@@ -14,6 +15,7 @@ import com.example.healthme.domain.user.entity.User;
 import com.example.healthme.domain.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +32,8 @@ public class ApprovalService {
     private final ApprovalOrderItemRepository approvalOrderItemRepository;
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
-
+    @Autowired
+    private ApprovalCartItemRepository approvalCartItemRepository;
     @Transactional
     public ApprovalOrderResponseDto processPaymentAndSaveOrder(ApprovalOrderRequestDto requestDto, String userId) {
         // user ID(String)를 기반으로 User 엔티티를 조회합니다.
@@ -114,6 +117,9 @@ public class ApprovalService {
                 .collect(Collectors.toList());
 
         approvalOrderItemRepository.saveAll(orderItems);
+
+        // 장바구니 비우기
+        approvalCartItemRepository.deleteByUser(currentUser);
 
         // 응답 DTO 생성을 위해 주문 항목들을 주문 엔티티에 설정
         approvalOrder.setApprovalOrderItems(orderItems);

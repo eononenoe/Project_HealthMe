@@ -1,7 +1,7 @@
 package com.example.healthme.domain.approval.controller;
 
-import com.example.healthme.domain.approval.entity.ApprovalCartItem;
 import com.example.healthme.domain.approval.service.ApprovalCartItemService;
+import com.example.healthme.domain.shoppingcart.entity.ShoppingCartItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +17,15 @@ public class ApprovalCartItemController {
 
     // 사용자 장바구니 아이템 전체 조회
     @GetMapping("/{userid}")
-    public ResponseEntity<List<ApprovalCartItem>> getCartItemsByUserid(@PathVariable String userid) {
-        List<ApprovalCartItem> approvalCartItems = approvalCartItemService.getCartItemsByUserid(userid);
+    public ResponseEntity<List<ShoppingCartItem>> getCartItemsByUserid(@PathVariable String userid) {
+        List<ShoppingCartItem> approvalCartItems = approvalCartItemService.getCartItemsByUserid(userid);
         return ResponseEntity.ok(approvalCartItems);
     }
 
     // 장바구니 아이템 추가
     @PostMapping
-    public ResponseEntity<ApprovalCartItem> addCartItem(@RequestBody ApprovalCartItem approvalCartItem) {
-        ApprovalCartItem savedItem = approvalCartItemService.saveCartItem(approvalCartItem);
+    public ResponseEntity<ShoppingCartItem> addCartItem(@RequestBody ShoppingCartItem approvalCartItem) {
+        ShoppingCartItem savedItem = approvalCartItemService.saveCartItem(approvalCartItem);
         return ResponseEntity.ok(savedItem);
     }
 

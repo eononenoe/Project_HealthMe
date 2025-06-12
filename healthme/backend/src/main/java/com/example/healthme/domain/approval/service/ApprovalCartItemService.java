@@ -1,8 +1,11 @@
 package com.example.healthme.domain.approval.service;
 
-import com.example.healthme.domain.approval.entity.ApprovalCartItem;
 import com.example.healthme.domain.approval.repository.ApprovalCartItemRepository;
+import com.example.healthme.domain.shoppingcart.entity.ShoppingCartItem;
+import com.example.healthme.domain.user.entity.User;
+import com.example.healthme.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,17 +13,24 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ApprovalCartItemService {
-    private final ApprovalCartItemRepository approvalCartItemRepository;
+    @Autowired
+    private ApprovalCartItemRepository approvalCartItemRepository;
 
-    public List<ApprovalCartItem> getCartItemsByUserid(String userid) {
-        return approvalCartItemRepository.findByUserid(userid);
+    @Autowired
+    private UserRepository userRepository;
+
+
+    public List<ShoppingCartItem> getCartItemsByUserid(String userid) {
+        return approvalCartItemRepository.findByUserUserid(userid);
     }
 
     public void deleteCartItemsByUserid(String userid) {
-        approvalCartItemRepository.deleteByUserid(userid);
+        User user = userRepository.findByUserid(userid)
+                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        approvalCartItemRepository.deleteByUser(user);
     }
 
-    public ApprovalCartItem saveCartItem(ApprovalCartItem approvalCartItem) {
+    public ShoppingCartItem saveCartItem(ShoppingCartItem approvalCartItem) {
         return approvalCartItemRepository.save(approvalCartItem);
     }
 }
