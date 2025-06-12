@@ -12,6 +12,7 @@ body {
   gap: 60px;
   padding: 0 15px;
   min-width: 700px;
+  margin-top: 30px;
 }
 
 /* 왼쪽, 오른쪽 영역 비율 */
@@ -37,7 +38,7 @@ body {
 /* 제목 스타일 */
 h2 {
   font-size: 20px;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
   font-weight: bold;
 }
 
@@ -59,12 +60,41 @@ h4 {
   box-sizing: border-box;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
+.approval-post-container{
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+.approval-post-input {
+  width: 20%;
+  height: 40px;
+  margin-bottom: 10px;
+  padding: 0 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.approval-input-tel1 {
+  width: 15%;
+  height: 40px;
+  margin-bottom: 10px;
+  padding: 0 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
 
 .approval-input[type="text"]:focus {
   outline: none;
   border-color: #03c75a;
   box-shadow: 0 0 5px rgba(3, 199, 90, 0.5);
 }
+
 .approval-phone-first {
   width: 20%;
   height: 40px;
@@ -76,11 +106,13 @@ h4 {
   box-sizing: border-box;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
+
 .approval-phone-first:focus {
   outline: none;
   border-color: #03c75a;
   box-shadow: 0 0 5px rgba(3, 199, 90, 0.5);
 }
+
 .approval-select {
   width: 40%;
   height: 40px;
@@ -92,11 +124,13 @@ h4 {
   box-sizing: border-box;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
+
 .approval-select:focus {
   outline: none;
   border-color: #03c75a;
   box-shadow: 0 0 5px rgba(3, 199, 90, 0.5);
 }
+
 /* 주소검색 input + 버튼 한 줄 묶음 */
 .approval-address-search-wrapper {
   display: flex;
@@ -134,8 +168,7 @@ h4 {
   background-color: #029c4a;
 }
 
-.approval-address-hold {
-}
+.approval-address-hold {}
 
 #find-address-btn {
   height: 40px;
@@ -162,19 +195,23 @@ h4 {
 }
 
 /* 휴대폰, 이메일 가로 배열 */
-.approval-phone,
-.approval-email {
+.approval-phone {
   display: flex;
+  flex-direction: column;
   gap: 10px;
-  align-items: center;
 }
 
-.approval-phone h4,
-.approval-email h4 {
-  margin-top: 0;
+.phone-tel-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 15px;
+}
+
+.approval-phone h4 {
   font-weight: 600;
   color: #333;
-  min-width: 90px;
+  display: flex;
 }
 
 .approval-phone input:first-of-type {
@@ -198,11 +235,13 @@ h4 {
   user-select: none;
   margin-top: -10px;
 }
+
 /* 결제 방식 선택 */
 .approval-payment-options {
   display: flex;
   flex-direction: column;
 }
+
 .approval-payment-options input {
   margin-bottom: 20px;
   margin-right: 5px;
@@ -239,7 +278,6 @@ h4 {
   border-color: #03c75a;
   color: white;
   font-weight: 700;
-  box-shadow: 0 4px 8px rgba(3, 199, 90, 0.4);
 }
 
 .approval-left-button:hover:not(.active),
@@ -266,12 +304,14 @@ h4 {
   align-items: center;
   margin-bottom: 25px;
 }
+
 .approval-product-item-master {
   display: flex;
   height: 100%;
   flex-direction: column;
   gap: 4px;
 }
+
 .approval-product-item img {
   width: 80px;
   height: 100px;
@@ -284,10 +324,12 @@ h4 {
   font-size: 14px;
   color: #222;
 }
+
 .approval-product-count {
   font-size: 14px;
   color: gray;
 }
+
 .approval-product-sale {
   font-size: 14px;
   text-decoration: line-through;
@@ -324,7 +366,8 @@ h4 {
 }
 
 /* 할인, 적립금은 붉은색 계열로 강조 */
-.approval-price-box li:nth-child(2) span:last-child,  /* 할인 금액 */
+.approval-price-box li:nth-child(2) span:last-child,
+/* 할인 금액 */
 .approval-price-box li:nth-child(3) span:last-child,
 .approval-price-box li:nth-child(4) span:last-child {
   /* 적립금 사용 */
@@ -339,13 +382,16 @@ h4 {
   margin-top: 3px;
   padding-top: 15px !important;
 }
-.approval-total-price-right{
+
+.approval-total-price-right {
   display: flex;
   gap: 10px;
 }
-.approval-total-price-red{
+
+.approval-total-price-red {
   color: #e74c3c;
 }
+
 /* 총 결제 금액 강조 */
 .approval-price-box li.approval-price-total {
   font-weight: bold;
