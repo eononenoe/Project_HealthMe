@@ -8,6 +8,7 @@ export default function ApprovalPage() {
   const navigate = useNavigate();
   const items = state?.items || [];
 
+  // 배송지 상태
   const [isDefaultAddress, setIsDefaultAddress] = useState(true);
   const [recipient, setRecipient] = useState("");
   const [zip, setZip] = useState("");
@@ -17,54 +18,33 @@ export default function ApprovalPage() {
   const [phoneMiddle, setPhoneMiddle] = useState("");
   const [phoneLast, setPhoneLast] = useState("");
 
-  // 로컬 스토리지에서 로그인한 사용자 정보 불러오기
+  // 사용자/등급·할인 계산
   const loginUser = JSON.parse(localStorage.getItem("loginUser"));
-
-  // 사용자 등급 추출 (grade가 없으면 기본값은 '새싹')
   const userGrade = loginUser?.grade || "새싹";
 
-  // 등급별 할인율 정의
-  const gradeDiscountRates = {
-    새싹: 0.03, // 3%
-    열정: 0.06, // 6%
-    우수: 0.09, // 9%
-    명예: 0.12, // 12%
-  };
-
-  // 현재 사용자의 등급에 해당하는 할인율 가져오기 (기본값은 0)
+  const gradeDiscountRates = { 새싹: 0.03, 열정: 0.06, 우수: 0.09, 명예: 0.12 };
   const gradeDiscountRate = gradeDiscountRates[userGrade] || 0;
 
-  // 정가 총합 계산: price * quantity
   const originalTotalPrice = items.reduce(
     (acc, i) => acc + (i.price || 0) * i.quantity,
     0
   );
-
-  // 할인가 총합 계산: salprice * quantity
   const saleTotalPrice = items.reduce(
     (acc, i) => acc + (i.salprice || 0) * i.quantity,
     0
   );
 
-  // 상품 자체 할인 금액 계산
   const productDiscount = originalTotalPrice - saleTotalPrice;
-
-  // 등급 할인 금액 계산: saleTotalPrice * 할인율
   const totalGradeDiscount = Math.floor(saleTotalPrice * gradeDiscountRate);
-
-  // 최종 결제 금액 계산: 할인가 총합 - 등급 할인
   const totalAmount = saleTotalPrice - totalGradeDiscount;
 
-  // 총 할인 금액 (상품 자체 할인 + 등급 할인)
   const totalOverallDiscount = productDiscount + totalGradeDiscount;
-
-  // 최종 할인율 계산 (원래 가격 대비 총 할인 금액)
   const discountPercentage =
     originalTotalPrice > 0
       ? Math.floor((totalOverallDiscount / originalTotalPrice) * 100)
       : 0;
 
-
+  // 기본 주소 불러오기
   useEffect(() => {
     const fetchDefaultAddress = async () => {
       if (!isDefaultAddress) return;
@@ -99,6 +79,7 @@ export default function ApprovalPage() {
     setPhoneLast("");
   };
 
+  // 주문 처리
   const handleOrderSubmit = async () => {
     if (
       !recipient.trim() ||
@@ -109,7 +90,9 @@ export default function ApprovalPage() {
     ) {
       return alert("모든 필수 정보를 입력해 주세요.");
     }
+
     const combinedRecipientPhone = `${phoneFirst}-${phoneMiddle}-${phoneLast}`;
+
     const newAddress = {
       recipient,
       zip,
@@ -117,8 +100,9 @@ export default function ApprovalPage() {
       addressDetail,
       recipientPhone: combinedRecipientPhone,
     };
+
     const orderData = {
-      address: isDefaultAddress ? null : newAddress,
+      address: isDefaultAddress ? null : newAddress, // 기본 배송지 사용 시 null
       items: items.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
@@ -130,20 +114,16 @@ export default function ApprovalPage() {
       totalPrice: totalAmount,
       paymentMethod: "card",
     };
+
     try {
-      if (!isDefaultAddress) {
-        await axios.post("/mypage/newAddr", newAddress, {
-          headers: { "Content-Type": "application/json" },
-        });
-      }
       if (window.IMP) {
-        const IMP = window.IMP;
+        const { IMP } = window;
         IMP.init("imp32678348");
         IMP.request_pay(
           {
             pg: "nice_v2",
             pay_method: "card",
-            merchant_uid: `order_${new Date().getTime()}`,
+            merchant_uid: `order_${Date.now()}`,
             name: items.map((i) => i.productName).join(", "),
             amount: orderData.totalPrice,
             buyer_name: orderData.address?.recipient || recipient,
@@ -152,7 +132,7 @@ export default function ApprovalPage() {
             buyer_addr: orderData.address?.address || address,
             buyer_postcode: orderData.address?.zip || zip,
           },
-          async function (rsp) {
+          async (rsp) => {
             if (rsp.error_code) {
               alert(`결제 실패: ${rsp.error_msg || "알 수 없는 오류"}`);
             } else {
@@ -162,21 +142,23 @@ export default function ApprovalPage() {
               }
               alert("결제가 완료되었습니다.");
               navigate("/complete");
+
               try {
+                // 주소를 먼저 저장하지 않고, 여기서 바로 주문만 저장
                 await axios.post("/healthme/purchase", {
                   ...orderData,
                   imp_uid: rsp.imp_uid,
                   merchant_uid: rsp.merchant_uid,
                 });
-              } catch (error) {
-                console.error("백엔드 주문 실패:", error);
+              } catch (backendErr) {
+                console.error("백엔드 주문 실패:", backendErr);
               }
             }
           }
         );
       }
-    } catch (error) {
-      console.error("주문 처리 오류:", error);
+    } catch (err) {
+      console.error("주문 처리 오류:", err);
     }
   };
 
@@ -185,23 +167,23 @@ export default function ApprovalPage() {
       <section className="approval-left">
         <h2>배송지</h2>
         <div className="approval-button-set">
-          {/* 기본 배송지 선택 버튼 */}
           <button
             type="button"
-            className={`approval-left-button ${isDefaultAddress ? "active" : ""
-              }`}
+            className={`approval-left-button ${
+              isDefaultAddress ? "active" : ""
+            }`}
             onClick={() => setIsDefaultAddress(true)}
           >
             기본 배송지
           </button>
-          {/* 직접 입력 선택 버튼 */}
           <button
             type="button"
-            className={`approval-right-button ${!isDefaultAddress ? "active" : ""
-              }`}
+            className={`approval-right-button ${
+              !isDefaultAddress ? "active" : ""
+            }`}
             onClick={() => {
               setIsDefaultAddress(false);
-              clearAddressFields(); // 직접 입력 선택 시 필드 초기화
+              clearAddressFields();
             }}
           >
             직접 입력
@@ -209,37 +191,38 @@ export default function ApprovalPage() {
         </div>
 
         <div className="approval-main">
+          {/* 받는 사람 */}
           <div className="approval-rec">
             <h4>받는사람 *</h4>
             <input
               className="approval-input"
               type="text"
               value={recipient}
-              disabled={true} // 받는 사람은 현재 로그인한 사용자로 고정되거나 기본 배송지에서 가져오므로 수정 불가
+              disabled={true}
               placeholder="받는 사람"
             />
           </div>
 
+          {/* 주소 */}
           <div className="approval-address">
             <h4>주소 *</h4>
             <div className="approval-post-container">
-              {/* 우편번호 입력 필드 */}
               <input
                 className="approval-input"
                 type="text"
                 placeholder="우편번호"
-                value={zip} // 'zipcode' 대신 'zip' 사용
-                disabled={true} // 주소 검색을 통해서만 입력되므로 비활성화
-                readOnly={isDefaultAddress} // 기본 배송지 선택 시 읽기 전용
-                onChange={(e) => setZip(e.target.value)} // 'zipcode' 대신 'zip' 상태 업데이트
+                value={zip}
+                disabled={true}
+                readOnly={isDefaultAddress}
+                onChange={(e) => setZip(e.target.value)}
               />
-              {/* 주소 검색 버튼 */}
-              <button className="approval-post-input"
-                disabled={isDefaultAddress} // 기본 배송지 선택 시 비활성화
+              <button
+                className="approval-post-input"
+                disabled={isDefaultAddress}
                 onClick={() =>
                   new window.daum.Postcode({
                     oncomplete: (data) => {
-                      setZip(data.zonecode); // 'zipcode' 대신 'zip' 상태 업데이트
+                      setZip(data.zonecode);
                       setAddress(data.roadAddress);
                     },
                   }).open()
@@ -248,62 +231,58 @@ export default function ApprovalPage() {
                 주소 검색
               </button>
             </div>
-            {/* 주소 입력 필드 */}
             <input
               className="approval-input"
               type="text"
               placeholder="주소"
               value={address}
-              disabled={true} // 주소 검색을 통해서만 입력되므로 비활성화
+              disabled={true}
               onChange={(e) => setAddress(e.target.value)}
             />
-            {/* 상세 주소 입력 필드 */}
             <input
               className="approval-input"
               type="text"
               placeholder="상세주소"
               value={addressDetail}
-              disabled={isDefaultAddress} // 기본 배송지 선택 시 비활성화
+              disabled={isDefaultAddress}
               onChange={(e) => setAddressDetail(e.target.value)}
             />
           </div>
 
+          {/* 휴대전화 */}
           <div className="approval-phone">
             <h4>휴대전화 *</h4>
             <div className="phone-tel-container">
-              {/* 전화번호 앞자리 선택 */}
               <select
                 value={phoneFirst}
                 className="approval-input-tel1"
-                disabled={isDefaultAddress} // 기본 배송지 선택 시 비활성화
+                disabled={isDefaultAddress}
                 onChange={(e) => setPhoneFirst(e.target.value)}
               >
                 <option value="010">010</option>
                 <option value="011">011</option>
               </select>
-              {/* 전화번호 중간자리 입력 */}
               <input
                 className="approval-input"
                 type="text"
                 maxLength="4"
                 value={phoneMiddle}
-                disabled={isDefaultAddress} // 기본 배송지 선택 시 비활성화
+                disabled={isDefaultAddress}
                 onChange={(e) => setPhoneMiddle(e.target.value)}
               />
-              {/* 전화번호 끝자리 입력 */}
               <input
                 className="approval-input"
                 type="text"
                 maxLength="4"
                 value={phoneLast}
-                disabled={isDefaultAddress} // 기본 배송지 선택 시 비활성화
+                disabled={isDefaultAddress}
                 onChange={(e) => setPhoneLast(e.target.value)}
               />
             </div>
           </div>
         </div>
 
-        {/* 주문 상품 목록 섹션 */}
+        {/* 주문 상품 목록 */}
         <div className="approval-product-list">
           <h2>주문 상품</h2>
           {items.map((item, idx) => (
@@ -321,6 +300,7 @@ export default function ApprovalPage() {
           ))}
         </div>
       </section>
+
       <section className="approval-right">
         <div className="approval-price-box">
           <ul>
@@ -335,23 +315,21 @@ export default function ApprovalPage() {
               </span>
             </li>
             <li>
-              <span>
-                등급 할인
-              </span>
+              <span>등급 할인</span>
               <span className="approval-gray">
                 -{totalGradeDiscount.toLocaleString()} 원
               </span>
             </li>
             <li>
               <span>배송비</span>
-              <span className="approval-gray">
-                무료배송
-              </span>
+              <span className="approval-gray">무료배송</span>
             </li>
             <li className="approval-total-price">
               <span>총 결제금액</span>
               <div className="approval-total-price-right">
-                <span className="approval-total-price-red">{discountPercentage}%</span>
+                <span className="approval-total-price-red">
+                  {discountPercentage}%
+                </span>
                 <span>{totalAmount.toLocaleString()}원</span>
               </div>
             </li>
