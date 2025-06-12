@@ -79,41 +79,42 @@
 
 ## 기술 스택
 
-- **개발 도구**
-  - IntelliJ (백엔드), VSCode (프론트엔드)
+- **개발 도구**  
+  IntelliJ (백엔드), VSCode (프론트엔드)
 
-- **백엔드**
+- **백엔드**  
+<div>
+  <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=openjdk&logoColor=white">
+  <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+  <img src="https://img.shields.io/badge/JPA-59666C?style=for-the-badge&logo=hibernate&logoColor=white">
+  <img src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
+  <img src="https://img.shields.io/badge/Lombok-FF4444?style=for-the-badge&logo=lombok&logoColor=white">
+  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white">
+  <img src="https://img.shields.io/badge/HikariCP-00BFFF?style=for-the-badge&logo=spring&logoColor=white">
+  <img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
+</div>
 
-<img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=openjdk&logoColor=white">
-<img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
-<img src="https://img.shields.io/badge/JPA-59666C?style=for-the-badge&logo=hibernate&logoColor=white">
-<img src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
-<img src="https://img.shields.io/badge/Lombok-FF4444?style=for-the-badge&logo=lombok&logoColor=white">
-<img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white">
-<img src="https://img.shields.io/badge/HikariCP-00BFFF?style=for-the-badge&logo=spring&logoColor=white">
-<img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
+- **프론트엔드**  
+<div>
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white">
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+</div>
 
+- **데이터베이스**  
+<div>
+  <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+</div>
 
-- **프론트엔드**
-
-<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white">
-<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
-<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
-<img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
-
-- **데이터베이스**
-<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
-
-- **외부 API 연동**
-  - Kakao 로그인 / 지도 API
-  - Google 로그인 API
-  - PortOne (아임포트) 결제 API
+- **외부 API 연동**  
+  - Kakao 로그인 / 지도 API  
+  - Google 로그인 API  
+  - PortOne (아임포트) 결제 API  
   - 다음 주소 검색 API
 
-- **버전 관리 / 협업**
-  - GitHub
-
-
+- **버전 관리 / 협업**  
+  GitHub
 ---
 
 ## 주요 END POINT
