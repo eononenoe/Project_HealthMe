@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Swiper from 'swiper/bundle';
-import 'swiper/css/bundle';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'static/css/home/style.css';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Swiper from "swiper/bundle";
+import "swiper/css/bundle";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import "static/css/home/style.css";
+import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 
-// 임시아이디 발급
+// 임시 아이디 발급 로직
 const GUEST_ID_KEY = "guestId";
 const GUEST_ID_EXPIRES = "guestIdExpires";
 
@@ -16,14 +16,11 @@ const setupGuestId = () => {
   const expires = localStorage.getItem(GUEST_ID_EXPIRES);
   const guestId = localStorage.getItem(GUEST_ID_KEY);
 
-  // 만료됐거나 없으면 새로 발급
   if (!guestId || !expires || now > parseInt(expires, 10)) {
     const newGuestId = uuidv4();
     const newExpires = now + 60 * 60 * 1000; // 1시간
-
     localStorage.setItem(GUEST_ID_KEY, newGuestId);
     localStorage.setItem(GUEST_ID_EXPIRES, newExpires.toString());
-
     console.log("새 guestId 발급:", newGuestId);
   } else {
     console.log("기존 guestId 유지:", guestId);
@@ -31,36 +28,41 @@ const setupGuestId = () => {
 };
 
 const HomePage = () => {
+  const [notices, setNotices] = useState([]);
   const [popularProducts, setPopularProducts] = useState([]);
   const [specialProducts, setSpecialProducts] = useState([]);
 
   useEffect(() => {
-    // 게스트아이디
+    // 1. 게스트 ID 설정 및 Swiper 초기화
     setupGuestId();
-    new Swiper('.swiper', {
-      direction: 'horizontal',
+    new Swiper(".swiper", {
+      direction: "horizontal",
       loop: true,
-      autoplay: {
-        delay: 5000,
-      },
-      effect: 'slide',
+      autoplay: { delay: 5000 },
+      effect: "slide",
       mousewheel: true,
       speed: 500,
       pagination: {
-        el: '.swiper-pagination',
+        el: ".swiper-pagination",
         clickable: true,
-        type: 'fraction',
+        type: "fraction",
       },
       navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
       },
     });
 
+    // 2. 공지사항 불러오기
+    fetch("/api/notices")
+      .then((res) => res.json())
+      .then((data) => setNotices(data.slice(0, 3)))
+      .catch((err) => console.error("공지사항 로딩 오류:", err));
+
+    // 3. 상품 데이터 불러오기
     axios
       .get("http://localhost:8090/healthme/products", { withCredentials: true })
       .then((response) => {
-        console.log('응답:', response.data);
         const all = response.data;
 
         const popular = [...all]
@@ -79,102 +81,94 @@ const HomePage = () => {
         setPopularProducts(popular);
         setSpecialProducts(special);
       })
-      .catch((err) => {
-        console.error('상품 로딩 오류:', err);
-      });
+      .catch((err) => console.error("상품 로딩 오류:", err));
   }, []);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
+  };
+
   return (
-    <>
-      <main>
-        <section>
-          {/* 배너 */}
-          <div className="wrapper">
-            <section className="banner-section">
-              <div className="swiper">
-                <div className="swiper-wrapper">
-                  <div className="swiper-slide">
-                    <img src={`${process.env.PUBLIC_URL}/img/main/Banner1.jpg`} alt="배너" />
+    <main>
+      <section>
+        {/* 배너 Swiper */}
+        <div className="wrapper">
+          <section className="banner-section">
+            <div className="swiper">
+              <div className="swiper-wrapper">
+                {[1, 2, 3, 4].map((n) => (
+                  <div className="swiper-slide" key={n}>
+                    <img
+                      src={`${process.env.PUBLIC_URL}/img/main/Banner${n}.jpg`}
+                      alt={`배너${n}`}
+                    />
                   </div>
-                  <div className="swiper-slide">
-                    <img src={`${process.env.PUBLIC_URL}/img/main/Banner2.jpg`} alt="배너" />
-                  </div>
-                  <div className="swiper-slide">
-                    <img src={`${process.env.PUBLIC_URL}/img/main/Banner3.jpg`} alt="배너" />
-                  </div>
-                  <div className="swiper-slide">
-                    <img src={`${process.env.PUBLIC_URL}/img/main/Banner4.jpg`} alt="배너" />
-                  </div>
-                </div>
-                <div className="swiper-pagination" />
-              </div>
-            </section>
-          </div>
-
-          {/* 아이템 */}
-          <div>
-            <ul className="main_top_content">
-              <li className="are_you_Health">
-                <a href="/question">
-                  <img
-                    className="are_you_Health"
-                    width="400"
-                    height="400"
-                    src="img/main/MyHealth.jpg"
-                    alt="건강 찾기"
-                  />
-                </a>
-              </li>
-              <li className="what_health_food">
-                <a href="/nutritional">
-                  <img
-                    className="what_health_food"
-                    width="400"
-                    height="400"
-                    src="img/main/HealthFood.jpg"
-                    alt="건강 재료 찾기"
-                  />
-                </a>
-              </li>
-              <li className="content_news">
-                {Array(3).fill().map((_, i) => (
-                  <ul key={i} className="news_card">
-                    <a href="/announce">
-                      {i === 0 && (
-                        <ul className="news_card_top">
-                          <li className="news_card_title">공지사항</li>
-                          <li className="news_card_subtitle">NEW</li>
-                        </ul>
-                      )}
-                      <li className="news_card_content">
-                        공식 홈페이지 서버 점검 <br />
-                        (2025.2.2 0시 ~ 2025.2.2 02시 약 2시간)
-                      </li>
-                    </a>
-                  </ul>
                 ))}
-              </li>
-            </ul>
+              </div>
+              <div className="swiper-pagination" />
+            </div>
+          </section>
+        </div>
 
-            {/* 실시간 인기  상품 */}
-            <ul className="main_low_content">
-              <ul className="main_low_top_content">
-                <li className="main_low_title">실시간 인기 상품</li>
-                <li>가장 인기있는 상품만 모아보세요!</li>
+        {/* 상단 컨텐츠 */}
+        <ul className="main_top_content">
+          <li className="are_you_Health">
+            <a href="/question">
+              <img
+                width="400"
+                height="400"
+                src="img/main/MyHealth.jpg"
+                alt="건강 찾기"
+              />
+            </a>
+          </li>
+          <li className="what_health_food">
+            <a href="/nutritional">
+              <img
+                width="400"
+                height="400"
+                src="img/main/HealthFood.jpg"
+                alt="건강 재료 찾기"
+              />
+            </a>
+          </li>
+          {/* 공지사항 카드 */}
+          <li className="content_news">
+            {notices.map((notice, i) => (
+              <ul key={i} className="news_card">
+                <a href="/announce">
+                  {i === 0 && (
+                    <ul className="news_card_top">
+                      <li className="news_card_title">공지사항</li>
+                      <li className="news_card_subtitle">NEW</li>
+                    </ul>
+                  )}
+                  <li className="news_card_content">
+                    {notice.title} <br />({formatDate(notice.createdDate)})
+                  </li>
+                </a>
               </ul>
-              <ProductList products={popularProducts} />
+            ))}
+          </li>
+        </ul>
 
-              {/* 오늘의 특가 */}
-              <ul className="main_low_top_content">
-                <li className="main_low_title">오늘의 특가</li>
-                <li>헬시미 추천 특가템 최대 50%</li>
-              </ul>
-              <ProductList products={specialProducts} isSpecial />
-            </ul>
-          </div>
-        </section>
-      </main>
-    </>
+        {/* 인기 상품 & 특가 상품 */}
+        <ul className="main_low_content">
+          <ul className="main_low_top_content">
+            <li className="main_low_title">실시간 인기 상품</li>
+            <li>가장 인기있는 상품만 모아보세요!</li>
+          </ul>
+          <ProductList products={popularProducts} />
+
+          <ul className="main_low_top_content">
+            <li className="main_low_title">오늘의 특가</li>
+            <li>헬시미 추천 특가템 최대 50%</li>
+          </ul>
+          <ProductList products={specialProducts} isSpecial />
+        </ul>
+      </section>
+    </main>
   );
 };
 
@@ -182,15 +176,12 @@ const ProductList = ({ products = [], isSpecial = false }) => {
   const navigate = useNavigate();
 
   const goToDetail = (product) => {
-    console.log("Product:", product);
-
     if (!product?.productId) {
-      alert('상품 ID가 없습니다!');
+      alert("상품 ID가 없습니다!");
       return;
     }
     navigate(`/details/${product.productId}`);
   };
-
 
   return (
     <ul className="main_low_low_content">
@@ -217,9 +208,7 @@ const ProductList = ({ products = [], isSpecial = false }) => {
               <li className="discount">
                 {Math.round(100 - (product.salprice / product.price) * 100)}%
               </li>
-              <li className="price">
-                {product.salprice?.toLocaleString()}원
-              </li>
+              <li className="price">{product.salprice?.toLocaleString()}원</li>
             </ul>
           </div>
           <div className="item_review">

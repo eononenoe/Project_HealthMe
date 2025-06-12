@@ -193,3 +193,10 @@ INSERT INTO `health_tip` (`id`, `category`, `description`, `icon`, `title`) VALU
 UNLOCK TABLES;
 -- 마무리
 SET FOREIGN_KEY_CHECKS = 1;
+
+INSERT INTO announcement (category, content, created_date, title) VALUES
+('공지사항', '첫 구매 시 10% 할인 쿠폰을 드립니다!', NOW(), '신규 회원 첫 구매 이벤트 안내'),
+('공지사항', '냉장 제품은 폭염으로 인해 배송이 1~2일 지연될 수 있습니다.', NOW(), '냉장 식품 배송 지연 안내'),
+('공지사항', '6월 20일 오전 2시부터 4시까지 서비스 점검이 있습니다.', NOW(), '정기 점검 안내'),
+('공지사항', '신선한 여름 채소와 과일이 새로 입고되었습니다.', NOW(), '여름 제철 식재료 입고 안내');
+
