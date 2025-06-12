@@ -47,7 +47,8 @@ public class SecurityConfig {
                                 "/healthme/products",
                                 "/healthme/products/**",
                                 "/healthme/cart/**",
-                                "/healthme/recommend"
+                                "/healthme/recommend",
+                                "/api/notices"
                         ).permitAll()
                         .requestMatchers("/user",
                                 "/healthme/result/**",
