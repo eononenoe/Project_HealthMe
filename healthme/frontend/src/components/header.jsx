@@ -86,10 +86,10 @@ const Header = () => {
       </div>
 
       <ul className="low_header_nav">
-        <li><a href="/question">영양 설문</a></li>
-        <li><a href="/result">맞춤형 성분</a></li>
-        <li><a href="/nutritional">추천 재료</a></li>
-        <li><a href="/purchase">구매</a></li>
+        <li><a href="/question">설문하기</a></li>
+        <li><a href="/result">결과보기</a></li>
+        <li><a href="/nutritional">추천재료</a></li>
+        <li><a href="/purchase">쇼핑하기</a></li>
       </ul>
     </div>
   );

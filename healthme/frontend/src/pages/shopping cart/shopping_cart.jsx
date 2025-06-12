@@ -9,6 +9,7 @@ function ShoppingCart() {
   const { cartItems, setCartItems, loading, setLoading } = useCart();
   const [selectAll, setSelectAll] = useState(false);
   const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState(null);
 
   const api = axios.create({
     baseURL: "http://localhost:8090",
@@ -22,7 +23,7 @@ function ShoppingCart() {
   // 장바구니 불러오기 (회원용)
   const loadCart = async () => {
     try {
-      const res = await api.get("/cart");
+      const res = await api.get("/healthme/cart");
       const items = Array.isArray(res.data) ? res.data : [];
 
       const enriched = await Promise.all(
@@ -51,16 +52,29 @@ function ShoppingCart() {
   useEffect(() => {
     const initializeCart = async () => {
       setLoading(true);
-      const loginUser = localStorage.getItem("loginUser");
+      const loginUserString = localStorage.getItem("loginUser"); // loginUser 값을 가져옴
 
-      if (!loginUser) {
+      if (!loginUserString) { // 로그인 정보가 없는 경우 (비회원)
         setIsGuest(true);
+        setUserInfo(null); // 비회원이므로 사용자 정보 초기화
         const guestId = localStorage.getItem("guestId");
         const guestCartKey = `guestCart_${guestId}`;
         const guestCart = JSON.parse(localStorage.getItem(guestCartKey) || "[]");
         await enrichCartItems(guestCart);
-      } else {
+      } else { // 로그인 정보가 있는 경우 (회원)
         setIsGuest(false);
+        try {
+          const parsedUser = JSON.parse(loginUserString); // loginUserString을 파싱
+          setUserInfo({ // 파싱된 값에서 username과 grade를 추출하여 userInfo 상태에 저장
+            username: parsedUser.username,
+            grade: parsedUser.grade
+          });
+        } catch (e) {
+          console.error("Failed to parse loginUser from localStorage", e);
+          setUserInfo(null); // 파싱 실패 시 정보 초기화
+        }
+
+        // 게스트 장바구니 관련 로컬스토리지 정리
         localStorage.removeItem("guestId");
         Object.keys(localStorage)
           .filter((key) => key.startsWith("guestCart_"))
@@ -228,7 +242,7 @@ function ShoppingCart() {
           {cartItems.map((item, index) => (
             <div
               className="cart-cart-item"
-              key={item.cartItemId || `guest-${item.productId}`||`fallback-${index}`}
+              key={item.cartItemId || `guest-${item.productId}` || `fallback-${index}`}
             >
               <label className="cart-custom-checkbox">
                 <input
@@ -306,16 +320,32 @@ function ShoppingCart() {
         </section>
 
         <aside className="cart-checkout-info">
+          {/* 로그인 박스 / 회원 정보 표시 부분 */}
           <div className="cart-login-box">
-            <span className="material-symbols-outlined">person</span>
-            <p>
-              로그인을 하시면 지금 보고있는 제품을
-              <br />
-              나중에도 확인하실 수 있습니다.
-            </p>
-            <button>
-              <a href="/login">로그인하기</a>
-            </button>
+            {isGuest ? (
+              <>
+                <p>
+                  로그인을 하시면 지금 보고있는 제품을
+                  <br />
+                  나중에도 확인하실 수 있습니다.
+                </p>
+                <button>
+                  <a href="/login">로그인하기</a>
+                </button>
+              </>
+            ) : (
+              userInfo && ( // userInfo가 있을 때만 렌더링
+                <>
+                  <p>
+                    안녕하세요, <strong className="cart-username">{userInfo.username}</strong> 님!
+                    <br />
+                    회원 등급: <strong className="cart-grade">{userInfo.grade}</strong>
+                  </p>
+                  {/* 필요하다면 회원 페이지로 이동하는 버튼 추가 */}
+                  {/* <button onClick={() => navigate('/my-page')}>내 정보</button> */}
+                </>
+              )
+            )}
           </div>
 
           <div className="cart-payment-summary">

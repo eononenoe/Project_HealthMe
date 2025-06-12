@@ -33,13 +33,12 @@ public ResponseEntity<String> addToCart(
     System.out.println("quantity: " + requestDto.getQuantity());
     String userId = principalDetails.getUserDto().getUserid();
     cartService.addToCart(userId, requestDto);
-
     return ResponseEntity.ok("장바구니에 추가되었습니다.");
 }
 
 
 // 비회원 장바구니
-    @PostMapping("/healthme/cart/guest-sync")
+    @PostMapping("1/guest-sync")
     public ResponseEntity<String> syncGuestCart(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
             @RequestBody List<ShoppingCartItemRequestDto> guestItems
@@ -67,6 +66,7 @@ public ResponseEntity<List<ShoppingCartItemResponseDto>> getCartItems(
     List<ShoppingCartItemResponseDto> cartItems = cartService.getCartItems(userId);
     return ResponseEntity.ok(cartItems);
 }
+
 // 장바구니 수량 변경
 @PutMapping("/item/{cartItemId}/quantity")
 public ResponseEntity<Void> updateQuantity(
