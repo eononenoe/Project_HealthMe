@@ -125,6 +125,7 @@ export default function ApprovalPage() {
         productName: item.productName,
         price: item.price,
         discountPrice: item.salprice,
+        productImageUrl: item.imageUrl,
       })),
       totalPrice: totalAmount,
       paymentMethod: "card",

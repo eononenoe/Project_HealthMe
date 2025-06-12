@@ -11,6 +11,9 @@ import com.example.healthme.domain.approval.repository.ApprovalOrderRepository;
 import com.example.healthme.domain.mypage.dto.AddressUpdate;
 import com.example.healthme.domain.mypage.entity.Address;
 import com.example.healthme.domain.mypage.repository.AddressRepository;
+import com.example.healthme.domain.product.entity.ProductStore;
+import com.example.healthme.domain.product.repository.ProductStoreRepository;
+import com.example.healthme.domain.product.service.ProductStoreService;
 import com.example.healthme.domain.user.entity.User;
 import com.example.healthme.domain.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -34,8 +37,11 @@ public class ApprovalService {
     private final UserRepository userRepository;
     @Autowired
     private ApprovalCartItemRepository approvalCartItemRepository;
+    @Autowired
+    private ProductStoreRepository productStoreRepository;
     @Transactional
     public ApprovalOrderResponseDto processPaymentAndSaveOrder(ApprovalOrderRequestDto requestDto, String userId) {
+
         // user ID(String)를 기반으로 User 엔티티를 조회합니다.
         // User 엔티티의 getId() 메서드를 통해 Long 타입의 user_id를 얻을 수 있습니다.
         User currentUser = userRepository.findByUserid(userId)
@@ -103,6 +109,9 @@ public class ApprovalService {
                     int unitPrice = discountPrice; // 할인된 가격을 단가로 사용
                     int itemTotal = unitPrice * quantity; // 상품별 총 가격
 
+                    ProductStore product = productStoreRepository.findById(itemDto.getProductId())
+                            .orElseThrow(() -> new EntityNotFoundException("상품을 찾을 수 없습니다: " + itemDto.getProductId()));
+
                     return ApprovalOrderItem.builder()
                             .order(finalApprovalOrder)
                             .productId(itemDto.getProductId())
@@ -112,6 +121,7 @@ public class ApprovalService {
                             .discountPrice(discountPrice)
                             .unitPrice(unitPrice)
                             .itemTotal(itemTotal)
+                            .productImageUrl(product.getImageUrl()) // 이미지 경로 저장
                             .build();
                 })
                 .collect(Collectors.toList());

@@ -113,7 +113,7 @@ public class MypageService {
 
 
     public List<ApprovalOrder> getbuyproduct(PrincipalDetails principalDetails) {
-        String userid= String.valueOf(principalDetails.getUserDto().getId());
+        String userid= principalDetails.getUsername();
 
         List<ApprovalOrder> order_li = approvalOrderRepository.findByUserid(userid);
         System.out.println("order_li : "+order_li);
