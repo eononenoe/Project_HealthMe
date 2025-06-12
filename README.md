@@ -1,4 +1,4 @@
-<p>
+<p align="center">
   <img src="./healthme/READMEimg/healthmeTitle.png" alt="healthme 메인 타이틀">
 </p>
 
@@ -46,12 +46,12 @@
 ---
 ## MEMBER
 
-| 이름   | 역할             | 담당 파트                                               | 주요 기여 내용                                                |
-|--------|------------------|----------------------------------------------------------|---------------------------------------------------------------|
-| 전정현 | 팀장 / 백엔드 개발 | 회원가입, 로그인, 인증 시스템, DB 모델링, 추천 알고리즘   | 프로젝트 구조 설계 및 백엔드 핵심 로직 구현 전체 리딩         |
-| 하태형 | 프론트엔드 개발   | 메인 페이지, 설문 페이지, 결과 페이지 UI/UX             | 사용자 중심의 화면 설계 및 설문 흐름 인터페이스 구현          |
-| 김종호 | AI 추천 시스템    | 추천 모델 설계, Flask 기반 API 서버                     | 성향 분석 기반의 맞춤 식품 추천 알고리즘 구현 및 백 연동       |
-| 심민재 | 배포 / 풀스택     | CI/CD 구축, 배포 자동화, 백-프론트 연동 테스트          | AWS 기반 배포 환경 구성 및 운영 자동화, 전반적인 QA 및 테스트 |
+| 이름   | 역할 | 담당 파트                        | 주요 기여 내용                                                      |
+|--------|------|----------------------------------|---------------------------------------------------------------------|
+| 전정현 | 팀장 | 메인, 추천재료, 설문조사, 재료구매 |  사용자 설문 기반 영양 성향 분석 로직 구현 및 결과 타입 분류, 추천 식품 매칭 알고리즘 설계, 재료 구매 프로세스 로직 개발 |
+| 하태형 | 조원 | 로그인/소셜로그인, 회원가입, 아이디/비밀번호찾기, 설문결과  | 인증 및 회원 흐름 구현, 설문 응답 기반 영양 성향 분석, 추천 알고리즘 설계 및 구현 |
+| 김종호 | 조원 | 관리자페이지, 마이페이지, 공지사항 | 관리자 기능 및 유저 정보 관리 구현, 게시판 및 공지 기능 담당 |
+| 심민재 | 조원 | 결제 페이지, 장바구니              | 장바구니 기능 구현, 결제 API 연동 |
 
 ---
 
@@ -61,18 +61,32 @@
 
 ## **주요 기능**
 
-### **1. USER**
+### 1. 사용자 인증 및 계정 관리
+- JWT 기반 로그인 및 토큰 인증
+- OAuth2 소셜 로그인 (Google, Naver, Kakao)
+- 회원가입, 회원 탈퇴
+- 이메일 및 휴대폰 인증 기능
 
-- **Jwt 기반 로그인**
-  - 유효성 검사, 아이디 중복확인, 다음 API를 통한 주소 검색
-- **Oauth2 소셜 로그인**
-  - google, kakao 
-- **회원 가입 및 탈퇴**
-  - Email, 휴대폰 인증
-- **아이디 찾기**
+### 2. 설문 및 개인화 분석
+- 영양 성향 설문 조사
+- 성향 결과 분류 및 시각화
+- 성향에 맞는 추천 재료 제공
 
-- **임시 비밀번호 발급**
-  - Spring mail 을 통한 임시 비밀번호 발급
+### 3. 식품 탐색 및 구매
+- 추천 재료 상세 보기
+- 장바구니 기능 (수량 조절, 삭제)
+- 결제 페이지 및 결제 연동
+
+### 4. 마이페이지
+- 회원 정보 확인 및 수정
+- 내가 구매한 재료, 설문 결과 확인
+
+### 5. 관리자 기능
+- 관리자 전용 대시보드
+- 회원, 주문, 추천 데이터 관리
+
+### 6. 공지사항
+- 공지사항 등록 및 열람 기능
 
 
 ---
@@ -80,7 +94,10 @@
 ## 기술 스택
 
 - **개발 도구**  
-  IntelliJ (백엔드), VSCode (프론트엔드)
+<div>
+  <img src="https://img.shields.io/badge/IntelliJ-000000?style=for-the-badge&logo=intellijidea&logoColor=white">
+  <img src="https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
+</div>
 
 - **백엔드**  
 <div>
@@ -100,6 +117,7 @@
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
   <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
   <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+  <img src="https://img.shields.io/badge/MUI-007FFF?style=for-the-badge&logo=mui&logoColor=white">
 </div>
 
 - **데이터베이스**  
@@ -108,60 +126,47 @@
 </div>
 
 - **외부 API 연동**  
-  - Kakao 로그인 / 지도 API  
+  - Kakao 로그인 API
   - Google 로그인 API  
   - PortOne (아임포트) 결제 API  
   - 다음 주소 검색 API
 
 - **버전 관리 / 협업**  
   GitHub
----
-
-## 주요 END POINT
-
-### **1. **
 
 ---
+## 의존 주입 리스트
 
-## 의존주입 list
-
-| CAT             | NAME                                                                | DESCRIPTION                                                 |
-| --------------- | ------------------------------------------------------------------- | ----------------------------------------------------------- |
-| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-thymeleaf              | Thymeleaf 템플릿 엔진을 지원하는 Spring Boot 스타터         |
-| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-web                    | Spring Web을 위한 기본적인 의존성                           |
-| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-security               | Spring Security를 위한 기본적인 의존성                      |
-| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-oauth2-resource-server | OAuth2 리소스 서버 지원                                     |
-| **BUILD TOOLS** | org.thymeleaf.extras:thymeleaf-extras-springsecurity6               | Thymeleaf와 Spring Security 통합을 위한 추가 라이브러리     |
-| **BUILD TOOLS** | org.springframework.security:spring-security-test                   | Spring Security 테스트를 위한 의존성                        |
-| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-test                   | Spring Boot 테스트 스타터                                   |
-| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-oauth2-client          | OAuth2 클라이언트를 위한 Spring Boot 스타터                 |
-| **DATABASE**    | com.mysql:mysql-connector-j:8.3.0                                   | MySQL 데이터베이스 연결을 위한 JDBC 드라이버                |
-| **DATABASE**    | org.springframework.boot:spring-boot-starter-data-jpa               | JPA를 위한 Spring Boot 스타터                               |
-| **DATABASE**    | org.springframework.boot:spring-boot-starter-data-redis             | Redis 데이터 저장소 지원                                    |
-| **DATABASE**    | org.springframework.boot:spring-boot-starter-data-redis-reactive    | Reactive Redis 지원                                         |
-| **SECURITY**    | io.jsonwebtoken:jjwt-api:0.11.2                                     | JWT 생성 및 검증을 위한 API 라이브러리                      |
-| **SECURITY**    | io.jsonwebtoken:jjwt-impl:0.11.2                                    | JWT 구현체                                                  |
-| **SECURITY**    | io.jsonwebtoken:jjwt-jackson:0.11.2                                 | Jackson을 사용한 JWT 라이브러리                             |
-| **VALIDATION**  | org.springframework.boot:spring-boot-starter-validation             | Spring Validation을 위한 기본적인 의존성                    |
-| **VALIDATION**  | jakarta.validation:jakarta.validation-api:3.1.0                     | Jakarta Validation API                                      |
-| **VALIDATION**  | org.hibernate.validator:hibernate-validator:8.0.1.Final             | Hibernate Validator (JSR-303 표준 구현)                     |
-| **REST**        | com.fasterxml.jackson.core:jackson-core:2.18.1                      | Jackson JSON 라이브러리 핵심 기능                           |
-| **REST**        | com.fasterxml.jackson.core:jackson-databind:2.18.1                  | Jackson 데이터 바인딩 기능                                  |
-| **REST**        | com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.18.1      | Jackson XML 데이터 포맷 지원                                |
-| **REST**        | com.google.code.gson:gson:2.11.0                                    | Google Gson JSON 라이브러리                                 |
-| **REST**        | org.springframework.boot:spring-boot-starter-hateoas:3.4.0          | HATEOAS를 위한 Spring Boot 스타터                           |
-| **UTIL**        | org.springframework.boot:spring-boot-starter-mail                   | 이메일 발송을 위한 Spring Boot 스타터                       |
-| **UTIL**        | commons-fileupload:commons-fileupload:1.4                           | 파일 업로드를 위한 Commons FileUpload 라이브러리            |
-| **UTIL**        | commons-io:commons-io:2.8.0                                         | 파일 I/O 관련 유틸리티                                      |
-| **UTIL**        | net.nurigo:sdk:4.3.2                                                | 문자 전송(CoolSMS) 관련 SDK                                 |
-| **UTIL**        | org.projectlombok:lombok                                            | 자바 코드에서 반복적인 작업을 줄이기 위한 Lombok 라이브러리 |
-| **TEST**        | org.mockito:mockito-core:4.5.1                                      | Mockito 핵심 라이브러리                                     |
-| **TEST**        | org.mockito:mockito-junit-jupiter:4.5.1                             | JUnit 5에서 Mockito 사용을 위한 의존성                      |
+| 카테고리       | 라이브러리 명                                                      | 설명                                                         |
+|----------------|--------------------------------------------------------------------|--------------------------------------------------------------|
+| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-web                  | Spring Web을 위한 기본 의존성                                |
+| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-validation           | 입력값 검증을 위한 Validation 기능 지원                      |
+| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-security             | Spring Security 보안 기능 지원                               |
+| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-oauth2-client        | OAuth2 로그인 (Google, Kakao 등) 클라이언트 기능              |
+| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-test                 | 통합 테스트를 위한 기본 테스트 도구                          |
+| **DATABASE**    | org.springframework.boot:spring-boot-starter-data-jpa             | Spring Data JPA 기능                                          |
+| **DATABASE**    | com.mysql:mysql-connector-j                                       | MySQL 데이터베이스 드라이버                                  |
+| **SECURITY**    | io.jsonwebtoken:jjwt-api:0.11.5                                   | JWT 생성 및 검증을 위한 API 라이브러리                       |
+| **SECURITY**    | io.jsonwebtoken:jjwt-impl:0.11.5                                  | JWT 구현체 (runtimeOnly로 사용)                              |
+| **SECURITY**    | io.jsonwebtoken:jjwt-jackson:0.11.5                               | JWT 파싱 시 Jackson 연동 (runtimeOnly로 사용)               |
+| **UTIL**        | org.springframework.boot:spring-boot-starter-mail                 | 이메일 발송 기능 지원                                        |
+| **UTIL**        | org.projectlombok:lombok                                          | Getter/Setter/Builder 자동 생성                              |
+| **TEST**        | org.junit.platform:junit-platform-launcher                        | JUnit5 테스트 플랫폼 런처                                    |
 
 ---
 
 ## ERD
 
-![ERD](erd 사진)
+<p align="center">
+  <img src="./healthme/READMEimg/ERD.png" alt="ERD">
+</p>
 
-```
+---
+
+## 폴더 구조
+
+<p align="center">
+  <img src="./healthme/READMEimg/FrontEndStructure.png" alt="FrontEndStructure">
+  <img src="./healthme/READMEimg/BackEndStructure.png" alt="BackEndStructure">
+</p>
+---
