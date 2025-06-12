@@ -184,15 +184,13 @@ export default function UserEdit() {
           <div className="input-row">
             <label>휴대폰</label>
             <div className="phone-box">
-              <select name="tel1" value={form.tel1} onChange={updateHandler}>
+              <select className="mypage-phone-input" name="tel1" value={form.tel1} onChange={updateHandler}>
                 <option value="">선택</option>
                 <option value="010">010</option>
                 <option value="011">011</option>
               </select>
-              <span>-</span>
-              <input name="tel2" value={form.tel2} onChange={updateHandler} />
-              <span>-</span>
-              <input name="tel3" value={form.tel3} onChange={updateHandler} />
+              <input className="mypage-phone-input" name="tel2" value={form.tel2} onChange={updateHandler} />
+              <input className="mypage-phone-input" name="tel3" value={form.tel3} onChange={updateHandler} />
             </div>
           </div>
           <div className="button-group">

@@ -54,9 +54,16 @@ const HomePage = () => {
     });
 
     // 2. 공지사항 불러오기
+    // fetch("/api/notices")
+    //   .then((res) => res.json())
+    //   .then((data) => setNotices(data.slice(0, 3)))
+    //   .catch((err) => console.error("공지사항 로딩 오류:", err));
     fetch("/api/notices")
       .then((res) => res.json())
-      .then((data) => setNotices(data.slice(0, 3)))
+      .then((data) => {
+        console.log("응답 데이터:", data);
+        setNotices(data.slice(0, 3)); // 에러 나는 부분
+      })
       .catch((err) => console.error("공지사항 로딩 오류:", err));
 
     // 3. 상품 데이터 불러오기

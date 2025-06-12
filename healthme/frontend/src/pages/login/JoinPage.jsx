@@ -84,7 +84,7 @@ const JoinPage = () => {
                 {/* 아이디 */}
                 <div className="input-wrapper">
                     <div className="id-box">
-                        <input type="text" name="userid" className="join-custom-input" placeholder="아이디" value={formData.userid} onChange={handleChange} />
+                        <input type="text" name="userid" className="join-custom-input" placeholder="이메일" value={formData.userid} onChange={handleChange} />
                         <button type="button" className="btn-small btn-main" onClick={handleUseridCheck}>중복확인</button>
                     </div>
                     {errors.userid && <div className="error-message" style={{ whiteSpace: 'pre-line' }}>{errors.userid}</div>}

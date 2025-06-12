@@ -47,13 +47,15 @@ public class SecurityConfig {
                                 "/healthme/products",
                                 "/healthme/products/**",
                                 "/healthme/cart/**",
-                                "/healthme/recommend"
+                                "/healthme/recommend",
+                                "/api/notices"
                         ).permitAll()
                         .requestMatchers("/user",
                                 "/healthme/result/**",
                                 "/healthme/survey/**",
                                 "/healthme/nutrients/**",
-                                "/healthme/mypage/**"
+                                "/healthme/mypage/**",
+                                "/api/admin"
                         ).hasRole("USER")
                         .requestMatchers("/admin","/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()

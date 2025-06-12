@@ -55,6 +55,16 @@ export default function ApprovalPage() {
   // 최종 결제 금액 계산: 할인가 총합 - 등급 할인
   const totalAmount = saleTotalPrice - totalGradeDiscount;
 
+  // 총 할인 금액 (상품 자체 할인 + 등급 할인)
+  const totalOverallDiscount = productDiscount + totalGradeDiscount;
+
+  // 최종 할인율 계산 (원래 가격 대비 총 할인 금액)
+  const discountPercentage =
+    originalTotalPrice > 0
+      ? Math.floor((totalOverallDiscount / originalTotalPrice) * 100)
+      : 0;
+
+
   useEffect(() => {
     const fetchDefaultAddress = async () => {
       if (!isDefaultAddress) return;
@@ -178,9 +188,8 @@ export default function ApprovalPage() {
           {/* 기본 배송지 선택 버튼 */}
           <button
             type="button"
-            className={`approval-left-button ${
-              isDefaultAddress ? "active" : ""
-            }`}
+            className={`approval-left-button ${isDefaultAddress ? "active" : ""
+              }`}
             onClick={() => setIsDefaultAddress(true)}
           >
             기본 배송지
@@ -188,9 +197,8 @@ export default function ApprovalPage() {
           {/* 직접 입력 선택 버튼 */}
           <button
             type="button"
-            className={`approval-right-button ${
-              !isDefaultAddress ? "active" : ""
-            }`}
+            className={`approval-right-button ${!isDefaultAddress ? "active" : ""
+              }`}
             onClick={() => {
               setIsDefaultAddress(false);
               clearAddressFields(); // 직접 입력 선택 시 필드 초기화
@@ -214,30 +222,32 @@ export default function ApprovalPage() {
 
           <div className="approval-address">
             <h4>주소 *</h4>
-            {/* 우편번호 입력 필드 */}
-            <input
-              className="approval-input"
-              type="text"
-              placeholder="우편번호"
-              value={zip} // 'zipcode' 대신 'zip' 사용
-              disabled={true} // 주소 검색을 통해서만 입력되므로 비활성화
-              readOnly={isDefaultAddress} // 기본 배송지 선택 시 읽기 전용
-              onChange={(e) => setZip(e.target.value)} // 'zipcode' 대신 'zip' 상태 업데이트
-            />
-            {/* 주소 검색 버튼 */}
-            <button
-              disabled={isDefaultAddress} // 기본 배송지 선택 시 비활성화
-              onClick={() =>
-                new window.daum.Postcode({
-                  oncomplete: (data) => {
-                    setZip(data.zonecode); // 'zipcode' 대신 'zip' 상태 업데이트
-                    setAddress(data.roadAddress);
-                  },
-                }).open()
-              }
-            >
-              주소 검색
-            </button>
+            <div className="approval-post-container">
+              {/* 우편번호 입력 필드 */}
+              <input
+                className="approval-input"
+                type="text"
+                placeholder="우편번호"
+                value={zip} // 'zipcode' 대신 'zip' 사용
+                disabled={true} // 주소 검색을 통해서만 입력되므로 비활성화
+                readOnly={isDefaultAddress} // 기본 배송지 선택 시 읽기 전용
+                onChange={(e) => setZip(e.target.value)} // 'zipcode' 대신 'zip' 상태 업데이트
+              />
+              {/* 주소 검색 버튼 */}
+              <button className="approval-post-input"
+                disabled={isDefaultAddress} // 기본 배송지 선택 시 비활성화
+                onClick={() =>
+                  new window.daum.Postcode({
+                    oncomplete: (data) => {
+                      setZip(data.zonecode); // 'zipcode' 대신 'zip' 상태 업데이트
+                      setAddress(data.roadAddress);
+                    },
+                  }).open()
+                }
+              >
+                주소 검색
+              </button>
+            </div>
             {/* 주소 입력 필드 */}
             <input
               className="approval-input"
@@ -260,33 +270,36 @@ export default function ApprovalPage() {
 
           <div className="approval-phone">
             <h4>휴대전화 *</h4>
-            {/* 전화번호 앞자리 선택 */}
-            <select
-              value={phoneFirst}
-              disabled={isDefaultAddress} // 기본 배송지 선택 시 비활성화
-              onChange={(e) => setPhoneFirst(e.target.value)}
-            >
-              <option value="010">010</option>
-              <option value="011">011</option>
-            </select>
-            {/* 전화번호 중간자리 입력 */}
-            <input
-              className="approval-input"
-              type="text"
-              maxLength="4"
-              value={phoneMiddle}
-              disabled={isDefaultAddress} // 기본 배송지 선택 시 비활성화
-              onChange={(e) => setPhoneMiddle(e.target.value)}
-            />
-            {/* 전화번호 끝자리 입력 */}
-            <input
-              className="approval-input"
-              type="text"
-              maxLength="4"
-              value={phoneLast}
-              disabled={isDefaultAddress} // 기본 배송지 선택 시 비활성화
-              onChange={(e) => setPhoneLast(e.target.value)}
-            />
+            <div className="phone-tel-container">
+              {/* 전화번호 앞자리 선택 */}
+              <select
+                value={phoneFirst}
+                className="approval-input-tel1"
+                disabled={isDefaultAddress} // 기본 배송지 선택 시 비활성화
+                onChange={(e) => setPhoneFirst(e.target.value)}
+              >
+                <option value="010">010</option>
+                <option value="011">011</option>
+              </select>
+              {/* 전화번호 중간자리 입력 */}
+              <input
+                className="approval-input"
+                type="text"
+                maxLength="4"
+                value={phoneMiddle}
+                disabled={isDefaultAddress} // 기본 배송지 선택 시 비활성화
+                onChange={(e) => setPhoneMiddle(e.target.value)}
+              />
+              {/* 전화번호 끝자리 입력 */}
+              <input
+                className="approval-input"
+                type="text"
+                maxLength="4"
+                value={phoneLast}
+                disabled={isDefaultAddress} // 기본 배송지 선택 시 비활성화
+                onChange={(e) => setPhoneLast(e.target.value)}
+              />
+            </div>
           </div>
         </div>
 
@@ -318,20 +331,29 @@ export default function ApprovalPage() {
             <li>
               <span>할인 금액</span>
               <span className="approval-gray">
-                - {productDiscount.toLocaleString()} 원
+                -{productDiscount.toLocaleString()} 원
               </span>
             </li>
             <li>
               <span>
-                등급 할인 ({userGrade} {gradeDiscountRate * 100}%)
+                등급 할인
               </span>
               <span className="approval-gray">
-                - {totalGradeDiscount.toLocaleString()} 원
+                -{totalGradeDiscount.toLocaleString()} 원
               </span>
             </li>
             <li>
+              <span>배송비</span>
+              <span className="approval-gray">
+                무료배송
+              </span>
+            </li>
+            <li className="approval-total-price">
               <span>총 결제금액</span>
-              <span>{totalAmount.toLocaleString()} 원</span>
+              <div className="approval-total-price-right">
+                <span className="approval-total-price-red">{discountPercentage}%</span>
+                <span>{totalAmount.toLocaleString()}원</span>
+              </div>
             </li>
           </ul>
         </div>
