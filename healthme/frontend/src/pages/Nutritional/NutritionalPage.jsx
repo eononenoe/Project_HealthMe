@@ -74,12 +74,8 @@ export default function CustomNutritionalPage() {
   const [expandedItems, setExpandedItems] = useState({});
   const [resultMap, setResultMap] = useState({});
   const [selectedNutrient, setSelectedNutrient] = useState(null);
-
-  // userNutrientScores: 설문 결과를 나타내는 '점수'를 누적 (백엔드에서 받은 초기값 + 제품 추가 시 점수 환산)
   const [userNutrientScores, setUserNutrientScores] = useState({});
 
-  // accumulatedNutrients: 장바구니에 담긴 제품들의 '실제 영양소 총합' (g, mg, µg 단위)
-  // CardBar의 displayValue에 직접 사용될 실제량
   const [accumulatedNutrients, setAccumulatedNutrients] = useState({
     "단백질": 154,
     "마그네슘": 400,
@@ -93,9 +89,6 @@ export default function CustomNutritionalPage() {
     "칼슘": 1200
   });
 
-  // userNutrientMaxScores: 설문의 '최대 가능 점수' (예: 단백질 18점, 칼슘 12점 등)
-  // 이 값은 백엔드에서 사용자별 맞춤형 최대 점수를 제공해야 합니다.
-  // 현재는 임시로 설정한 값. 실제로는 백엔드에서 정확한 값을 받아와야 합니다.
   const [userNutrientMaxScores, setUserNutrientMaxScores] = useState({
     "단백질": 18,
     "마그네슘": 12,
@@ -111,21 +104,57 @@ export default function CustomNutritionalPage() {
 
   const navigate = useNavigate();
 
-  // 제품의 실제 영양소량(g, mg, µg)을 설문 점수로 변환하는 헬퍼 함수
-  // 이 함수는 'maxScoreMap' (실제 권장량)과 'userNutrientMaxScores' (최대 점수)를 사용하여
-  // 제품의 영양소량이 최대 점수 대비 몇 점에 해당하는지 비례적으로 계산합니다.
-  const convertNutrientValueToScore = (nutrientName, value) => {
-    const recommendedAmount = maxScoreMap[nutrientName]; // 이 영양소의 실제 권장량 (g, mg 등)
-    const maxScore = userNutrientMaxScores[nutrientName]; // 이 영양소의 최대 점수 (18점 등)
+  // axios 인스턴스 생성 (loadCart 함수에서 사용할 api) - 이 부분은 CustomNutritionalPage 컴포넌트 내부에 있어야 합니다.
+  const api = axios.create({
+    baseURL: 'http://localhost:8090/healthme', // 장바구니 API의 기본 URL을 여기에 맞춰주세요.
+    withCredentials: true,
+  });
 
-    // 유효성 검사: 기준값이 없거나 0 이하면 점수 계산 불가
+  // 장바구니 db로 담기는 로직
+  const saveCartToServer = async () => {
+    try {
+      const loginUser = localStorage.getItem("loginUser");
+      if (!loginUser) {
+        alert("로그인 후 이용 가능합니다.");
+        navigate("/login");
+        return;
+      }
+      const userid = JSON.parse(loginUser).userid;
+
+      // 현재 장바구니에 있는 모든 항목을 서버에 보낼 형식으로 변환
+      const cartItemsToSave = cart.map(item => ({
+        productId: item.id,
+        quantity: item.qty
+      }));
+
+      // 모든 장바구니 항목을 서버에 저장
+      // NOTE: 서버에서 개별 POST 요청이 아닌, 한 번에 여러 항목을 받는 API가 있다면 그것을 사용하는 것이 효율적입니다.
+      // 현재는 각 아이템별로 POST 요청을 보냅니다.
+      for (const item of cartItemsToSave) {
+        await api.post("/cart", item); // POST /healthme/cart 로 요청
+      }
+
+      alert("장바구니에 성공적으로 담겼습니다!");
+      navigate("/shoppingcart"); // 예시: 실제 장바구니 페이지 경로로 변경
+    } catch (error) {
+      console.error("장바구니 저장 중 오류 발생:", error);
+      // 에러 발생 시 더 상세한 정보를 제공
+      if (error.response && error.response.data) {
+        alert(`장바구니 저장에 실패했습니다: ${error.response.data}`);
+      } else {
+        alert("장바구니 저장에 실패했습니다. 다시 시도해주세요.");
+      }
+    }
+  };
+  // 제품의 실제 영양소량(g, mg, µg)을 설문 점수로 변환하는 헬퍼 함수
+  const convertNutrientValueToScore = (nutrientName, value) => {
+    const recommendedAmount = maxScoreMap[nutrientName];
+    const maxScore = userNutrientMaxScores[nutrientName];
+
     if (!recommendedAmount || !maxScore || recommendedAmount <= 0 || maxScore <= 0) {
       console.warn(`[convertNutrientValueToScore] ${nutrientName}: 유효한 권장량(${recommendedAmount}) 또는 최대 점수(${maxScore})가 없어 점수 환산 불가.`);
       return 0;
     }
-
-    // 환산 로직: (제품의 실제량 / 영양소의 실제 권장량) * 해당 영양소의 최대 점수
-    // 예: (단백질 24g / 단백질 154g 권장량) * 단백질 18점 = X점
     const score = (value / recommendedAmount) * maxScore;
     return score;
   };
@@ -133,53 +162,107 @@ export default function CustomNutritionalPage() {
   // 영양소 정보(percent, displayValue, unit)를 계산하여 resultMap에 저장하는 함수
   const summarize = () => {
     const updatedResultMap = {};
-
-    // maxScoreMap의 모든 키를 순회하여 영양소 처리
     for (const nutrientName of Object.keys(maxScoreMap)) {
-      // 1. 퍼센트 계산 (그래프 길이에 사용): 설문 점수 기반
-      const userScore = userNutrientScores[nutrientName] || 0; // 현재 사용자의 설문 점수
-      const maxPossibleScore = userNutrientMaxScores[nutrientName]; // 해당 영양소의 설문 최대 점수
+      const userScore = userNutrientScores[nutrientName] || 0;
+      const maxPossibleScore = userNutrientMaxScores[nutrientName];
 
       let percent = 0;
       if (maxPossibleScore > 0) {
         percent = Math.min(100, Math.round((userScore / maxPossibleScore) * 100));
       }
 
-      // 2. 표시될 실제 섭취량 계산 (텍스트에 사용): accumulatedNutrients 기반
       let currentAccumulatedValue = accumulatedNutrients[nutrientName] || 0;
       let unit = '';
       let finalDisplayValue;
 
       if (['단백질', '식이섬유'].includes(nutrientName)) {
         unit = 'g';
-        finalDisplayValue = currentAccumulatedValue.toFixed(1); // g 단위는 소수점 1자리로 표현
+        finalDisplayValue = currentAccumulatedValue.toFixed(1);
       } else if (['칼슘', '철분', '마그네슘', '칼륨', '아연', '아르기닌'].includes(nutrientName)) {
         unit = 'mg';
-        // mg 값이 1000 이상이면 g으로 변환
         if (currentAccumulatedValue >= 1000) {
           finalDisplayValue = (currentAccumulatedValue / 1000).toFixed(1);
           unit = 'g';
         } else {
-          finalDisplayValue = Math.round(currentAccumulatedValue); // 1000mg 미만은 정수로 표현
+          finalDisplayValue = Math.round(currentAccumulatedValue);
         }
       } else if (['비타민 D', '비오틴'].includes(nutrientName)) {
         unit = 'µg';
-        finalDisplayValue = Math.round(currentAccumulatedValue); // µg 단위는 정수로 표현
+        finalDisplayValue = Math.round(currentAccumulatedValue);
       } else {
-        // 정의되지 않은 영양소 처리 (안전 장치)
         unit = '';
         finalDisplayValue = currentAccumulatedValue.toFixed(1);
       }
-
-      // 최종적으로 숫자로 파싱하여 저장
       updatedResultMap[nutrientName] = { percent, displayValue: parseFloat(finalDisplayValue), unit };
     }
     setResultMap(updatedResultMap);
   };
 
+  // 장바구니 불러오기 (회원용) 함수 정의
+  const loadCart = async (initialUserScores) => { // initialUserScores를 매개변수로 받도록 변경
+    try {
+      const res = await api.get("/cart");
+      const items = Array.isArray(res.data) ? res.data : [];
+
+      const enriched = await Promise.all(
+        items.map(async (item) => {
+          const { data } = await axios.get(
+            `http://localhost:8090/healthme/products/details/${item.productId}`
+          );
+
+          const trueNutrientValues = {
+            "단백질": parseFloat(data.protein) || 0,
+            "철분": parseFloat(data.iron) || 0,
+            "칼슘": parseFloat(data.calcium) || 0,
+            "비타민 D": parseFloat(data.vitamin_d) || 0,
+            "식이섬유": parseFloat(data.dietary_fiber) || 0,
+            "마그네슘": parseFloat(data.magnesium) || 0,
+            "칼륨": parseFloat(data.potassium) || 0,
+            "비오틴": parseFloat(data.biotin) || 0,
+            "아르기닌": parseFloat(data.arginine) || 0,
+            "아연": parseFloat(data.zinc) || 0
+          };
+
+          return {
+            id: String(item.productId),
+            name: data.name,
+            price: data.salprice,
+            originalPrice: data.price,
+            img: data.image_url,
+            qty: item.quantity ?? 1,
+            selected: true,
+            nutrientValues: trueNutrientValues,
+          };
+        })
+      );
+      setCart(enriched); // 장바구니 상태 업데이트
+
+      // 장바구니 로드 후 초기 누적 영양소 및 점수 계산
+      let currentAccumulated = { ...initialUserScores }; // 설문 결과를 기본으로 시작
+      let currentScores = { ...initialUserScores }; // 설문 결과를 기본으로 시작
+
+      enriched.forEach(cartItem => {
+        for (let i = 0; i < cartItem.qty; i++) {
+          for (const [nutrient, value] of Object.entries(cartItem.nutrientValues)) {
+            currentAccumulated[nutrient] = (currentAccumulated[nutrient] || 0) + value;
+            const scoreToAdd = convertNutrientValueToScore(nutrient, value);
+            currentScores[nutrient] = (currentScores[nutrient] || 0) + scoreToAdd;
+          }
+        }
+      });
+
+      setAccumulatedNutrients(currentAccumulated);
+      setUserNutrientScores(currentScores);
+
+    } catch (error) {
+      console.error("장바구니 불러오기 오류:", error);
+    }
+  };
+
   useEffect(() => {
     const loginUser = localStorage.getItem("loginUser");
 
+    // 로그인 여부 확인 및 리디렉션
     if (!loginUser) {
       alert("이 페이지는 로그인 후 이용 가능합니다.");
       navigate("/login");
@@ -188,78 +271,85 @@ export default function CustomNutritionalPage() {
 
     const userid = JSON.parse(loginUser).userid;
 
-    // 1. 제품 데이터 로드
-    axios.get('http://localhost:8090/healthme/products/details', { withCredentials: true })
-      .then((res) => {
-        if (!Array.isArray(res.data)) {
-          console.error("응답 형식 오류: 배열이 아님");
+    // 비동기 함수로 묶어 내부에서 await를 사용할 수 있도록 합니다.
+    const fetchData = async () => {
+      try {
+        // 1. 제품 데이터 로드
+        const productsRes = await axios.get('http://localhost:8090/healthme/products/details', { withCredentials: true });
+        console.log(productsRes.data);
+
+        if (!Array.isArray(productsRes.data)) {
+          console.error("제품 응답 형식 오류: 배열이 아님");
           return;
         }
 
-        const mappedProducts = res.data.map((item, idx) => {
-          const productId = item.productId ?? `temp-${idx}`;
-          const nutrientsRaw = [
-            // '영양정보 더보기' 섹션에 표시될 포맷된 영양소 정보 (단위 변환 포함)
-            formatNutrient('단백질', item.protein, 'g'),
-            formatNutrient('철분', item.iron, 'mg'),
-            formatNutrient('칼슘', item.calcium, 'mg'),
-            formatNutrient('비타민 D', item.vitamin_d, 'µg'),
-            formatNutrient('식이섬유', item.dietary_fiber, 'g'),
-            formatNutrient('마그네슘', item.magnesium, 'mg'),
-            formatNutrient('칼륨', item.potassium, 'mg'),
-            formatNutrient('비오틴', item.biotin, 'µg'),
-            formatNutrient('아르기닌', item.arginine, 'mg'),
-            formatNutrient('아연', item.zinc, 'mg'),
-          ].filter(Boolean);
+        // NutritionalPage.jsx 파일 내의 mappedProducts 생성 부분
+        const mappedProducts = productsRes.data
+          .map((item, idx) => {
+            // productId가 무조건 유효한 숫자라고 가정합니다.
+            // 만약 여전히 'Skipping product due to missing productId' 경고가 뜨면,
+            // 이 가정(productId가 무조건 들어온다)이 틀린 것이므로 백엔드를 다시 확인해야 합니다.
+            const productId = Number(item.product_id);
+            // 혹시 모를 경우를 대비한 유효성 검사는 남겨두는 것이 좋습니다.
+            // 백엔드에서 productId가 항상 유효하게 온다면 이 if 블록은 실행되지 않습니다.
+            if (isNaN(productId) || productId === null || productId === undefined) {
+              console.warn(`[심각] 백엔드에서 productId가 유효하지 않게 도착했습니다. 상품: ${item.name || 'Unnamed Product'} (원래 ID: ${item.productId})`);
+              return null; // 유효하지 않은 상품은 필터링하여 제외
+            }
 
-          // 계산에 사용될 실제 영양소 값 (단위 변환 없음)
-          // 이 값들은 product.nutrientValues에 저장되어 addToCart 시 사용됩니다.
-          const trueNutrientValues = {
-            "단백질": parseFloat(item.protein) || 0,
-            "철분": parseFloat(item.iron) || 0,
-            "칼슘": parseFloat(item.calcium) || 0,
-            "비타민 D": parseFloat(item.vitamin_d) || 0,
-            "식이섬유": parseFloat(item.dietary_fiber) || 0,
-            "마그네슘": parseFloat(item.magnesium) || 0,
-            "칼륨": parseFloat(item.potassium) || 0,
-            "비오틴": parseFloat(item.biotin) || 0,
-            "아르기닌": parseFloat(item.arginine) || 0,
-            "아연": parseFloat(item.zinc) || 0
-          };
+            const nutrientsRaw = [
+              formatNutrient('단백질', item.protein, 'g'),
+              formatNutrient('철분', item.iron, 'mg'),
+              formatNutrient('칼슘', item.calcium, 'mg'),
+              formatNutrient('비타민 D', item.vitamin_d, 'µg'),
+              formatNutrient('식이섬유', item.dietary_fiber, 'g'),
+              formatNutrient('마그네슘', item.magnesium, 'mg'),
+              formatNutrient('칼륨', item.potassium, 'mg'),
+              formatNutrient('비오틴', item.biotin, 'µg'),
+              formatNutrient('아르기닌', item.arginine, 'mg'),
+              formatNutrient('아연', item.zinc, 'mg'),
+            ].filter(Boolean);
 
-          return {
-            id: String(productId),
-            name: item.name,
-            price: item.salprice,
-            originalPrice: item.price,
-            discount: Math.round((1 - item.salprice / item.price) * 100),
-            img: item.image_url,
-            nutrientsLeft: nutrientsRaw.slice(0, 5),
-            nutrientsRight: nutrientsRaw.slice(5),
-            sales_count: item.sales_count,
-            nutrientValues: trueNutrientValues, // 실제 영양소 값
-          };
-        });
+            const trueNutrientValues = {
+              "단백질": parseFloat(item.protein) || 0,
+              "철분": parseFloat(item.iron) || 0,
+              "칼슘": parseFloat(item.calcium) || 0,
+              "비타민 D": parseFloat(item.vitamin_d) || 0,
+              "식이섬유": parseFloat(item.dietary_fiber) || 0,
+              "마그네슘": parseFloat(item.magnesium) || 0,
+              "칼륨": parseFloat(item.potassium) || 0,
+              "비오틴": parseFloat(item.biotin) || 0,
+              "아르기닌": parseFloat(item.arginine) || 0,
+              "아연": parseFloat(item.zinc) || 0
+            };
+
+            return {
+              id: String(productId), // 여전히 `id`는 String으로 유지 (객체 키 사용 편의성)
+              name: item.name,
+              price: item.salprice,
+              originalPrice: item.price,
+              discount: Math.round((1 - item.salprice / item.price) * 100),
+              img: item.image_url,
+              nutrientsLeft: nutrientsRaw.slice(0, 5),
+              nutrientsRight: nutrientsRaw.slice(5),
+              sales_count: item.sales_count,
+              nutrientValues: trueNutrientValues,
+            };
+          })
+          .filter(Boolean); // 유효하지 않은 상품(null)은 걸러냅니다.
         setProducts(mappedProducts);
-      })
-      .catch((error) => {
-        console.error("제품 API 요청 실패:", error);
-      });
 
-    // 2. 사용자 설문 점수 로드 (userNutrientScores 초기화)
-    // 이 API는 사용자의 초기 영양소 '점수'를 반환해야 합니다.
-    axios.get("http://localhost:8090/healthme/survey/scores", {
-      params: { userid },
-      withCredentials: true
-    })
-      .then(res => {
-        setUserNutrientScores(res.data);
+        // 2. 사용자 설문 점수 로드 (userNutrientScores 초기화)
+        const surveyRes = await axios.get("http://localhost:8090/healthme/survey/scores", {
+          params: { userid },
+          withCredentials: true
+        });
+        const initialUserScores = surveyRes.data;
+        setUserNutrientScores(initialUserScores);
 
-        // 초기 accumulatedNutrients를 설문 점수를 기반으로 환산하여 설정 (옵션)
-        // 만약 초기 accumulatedNutrients를 설문 점수와 무관하게 0부터 시작하고 싶다면 이 블록을 제거
         const initialAccumulated = {};
-        for (const nutrientName of Object.keys(res.data)) {
-          const score = res.data[nutrientName];
+        for (const nutrientName of Object.keys(initialUserScores)) {
+          const score = initialUserScores[nutrientName];
           const maxScore = userNutrientMaxScores[nutrientName];
           const recommended = maxScoreMap[nutrientName];
 
@@ -272,21 +362,25 @@ export default function CustomNutritionalPage() {
         setAccumulatedNutrients(initialAccumulated);
         console.log("초기 누적 영양소 (accumulatedNutrients):", initialAccumulated);
 
-      })
-      .catch(err => {
-        console.error("설문 결과 API 실패:", err);
-      });
+        // 3. 장바구니 데이터 로드 (설문 점수 로드 후에 실행하여 초기 점수를 반영)
+        // loadCart 함수에 초기 설문 점수(initialUserScores)를 전달하여 장바구니 항목 합산 시 활용
+        await loadCart(initialUserScores);
 
-  }, []); // 컴포넌트 마운트 시 한 번만 실행
+      } catch (error) {
+        console.error("데이터 로드 중 오류 발생:", error);
+        // 사용자에게 오류 알림 등 추가적인 에러 처리
+      }
+    };
 
-  // userNutrientScores 또는 accumulatedNutrients가 변경될 때마다 summarize 함수 호출
-  // (userNutrientMaxScores는 거의 변하지 않으므로 의존성에서 제거해도 무방)
+    fetchData(); // 비동기 함수 호출
+
+  }, []); // 의존성 배열은 빈 배열로 유지하여 컴포넌트 마운트 시 한 번만 실행되도록 합니다.
+
   useEffect(() => {
-    // 두 상태 모두 내용이 있을 때만 summarize 실행
     if (Object.keys(userNutrientScores).length > 0 && Object.keys(accumulatedNutrients).length > 0) {
       summarize();
     }
-  }, [userNutrientScores, accumulatedNutrients]); // 의존성 배열 업데이트
+  }, [userNutrientScores, accumulatedNutrients]);
 
   const toggleExpand = (productId) => {
     setExpandedItems((prev) => ({
@@ -295,12 +389,10 @@ export default function CustomNutritionalPage() {
     }));
   };
 
-  // 장바구니에 제품을 추가할 때 '점수'를 userNutrientScores에 합산하는 함수
   const addScoresFromProduct = (nutrientValues) => {
     setUserNutrientScores((prevScores) => {
       const updatedScores = { ...prevScores };
       for (const [nutrient, value] of Object.entries(nutrientValues)) {
-        // 제품의 실제 영양소 값(value)을 점수로 변환하여 더함
         const scoreToAdd = convertNutrientValueToScore(nutrient, value);
         updatedScores[nutrient] = (updatedScores[nutrient] || 0) + scoreToAdd;
       }
@@ -308,7 +400,6 @@ export default function CustomNutritionalPage() {
     });
   };
 
-  // 장바구니에 제품을 추가할 때 '실제 영양소량'을 accumulatedNutrients에 합산하는 함수
   const addNutrientsToAccumulated = (nutrientValues) => {
     setAccumulatedNutrients((prevAcc) => {
       const updatedAcc = { ...prevAcc };
@@ -319,26 +410,22 @@ export default function CustomNutritionalPage() {
     });
   };
 
-  // 장바구니에서 제품을 제거할 때 '점수'를 userNutrientScores에서 차감하는 함수
   const removeScoresFromProduct = (nutrientValues) => {
     setUserNutrientScores((prevScores) => {
       const updatedScores = { ...prevScores };
       for (const [nutrient, value] of Object.entries(nutrientValues)) {
         const scoreToRemove = convertNutrientValueToScore(nutrient, value);
         updatedScores[nutrient] = Math.max(0, (updatedScores[nutrient] || 0) - scoreToRemove);
-        console.log(`[removeScoresFromProduct] Removing ${scoreToRemove.toFixed(2)} score for ${nutrient}. New total score: ${updatedScores[nutrient].toFixed(2)}`);
       }
       return updatedScores;
     });
   };
 
-  // 장바구니에서 제품을 제거할 때 '실제 영양소량'을 accumulatedNutrients에서 차감하는 함수
   const removeNutrientsFromAccumulated = (nutrientValues) => {
     setAccumulatedNutrients((prevAcc) => {
       const updatedAcc = { ...prevAcc };
       for (const [nutrient, value] of Object.entries(nutrientValues)) {
-        updatedAcc[nutrient] = Math.max(0, (updatedAcc[nutrient] || 0) - value); // 0 미만으로 내려가지 않도록
-        console.log(`[removeNutrientsFromAccumulated] Removing ${value.toFixed(2)} ${nutrient}. New total actual amount: ${updatedAcc[nutrient].toFixed(2)}`);
+        updatedAcc[nutrient] = Math.max(0, (updatedAcc[nutrient] || 0) - value);
       }
       return updatedAcc;
     });
@@ -348,15 +435,16 @@ export default function CustomNutritionalPage() {
     setCart((prev) => {
       const existing = prev.find((p) => p.id === product.id);
       if (existing) {
-        addScoresFromProduct(product.nutrientValues); // 제품 추가 시 점수 합산
-        addNutrientsToAccumulated(product.nutrientValues); // 제품 추가 시 실제량 합산
+        addScoresFromProduct(product.nutrientValues);
+        addNutrientsToAccumulated(product.nutrientValues);
         return prev.map((p) => p.id === product.id ? { ...p, qty: p.qty + 1 } : p);
       } else {
-        addScoresFromProduct(product.nutrientValues); // 새 제품 추가 시 점수 합산
-        addNutrientsToAccumulated(product.nutrientValues); // 새 제품 추가 시 실제량 합산
+        addScoresFromProduct(product.nutrientValues);
+        addNutrientsToAccumulated(product.nutrientValues);
         return [...prev, { ...product, qty: 1, selected: true }];
       }
     });
+    console.log(product.id);
   };
 
   const toggleAll = (checked) => {
@@ -375,11 +463,11 @@ export default function CustomNutritionalPage() {
         if (i === idx) {
           const newQty = Math.max(1, item.qty + diff);
           if (diff > 0) {
-            addScoresFromProduct(item.nutrientValues); // 수량 증가 시 점수 합산
-            addNutrientsToAccumulated(item.nutrientValues); // 수량 증가 시 실제량 합산
+            addScoresFromProduct(item.nutrientValues);
+            addNutrientsToAccumulated(item.nutrientValues);
           } else if (diff < 0 && item.qty > 1) {
-            removeScoresFromProduct(item.nutrientValues); // 수량 감소 시 점수 차감
-            removeNutrientsFromAccumulated(item.nutrientValues); // 수량 감소 시 실제량 차감
+            removeScoresFromProduct(item.nutrientValues);
+            removeNutrientsFromAccumulated(item.nutrientValues);
           }
           return { ...item, qty: newQty };
         }
@@ -392,10 +480,9 @@ export default function CustomNutritionalPage() {
     setCart((prev) => {
       const itemsToDelete = prev.filter((it) => it.selected);
       itemsToDelete.forEach(item => {
-        // 제거되는 아이템의 수량만큼 영양소를 차감
         for (let i = 0; i < item.qty; i++) {
-          removeScoresFromProduct(item.nutrientValues); // 점수 차감
-          removeNutrientsFromAccumulated(item.nutrientValues); // 실제량 차감
+          removeScoresFromProduct(item.nutrientValues);
+          removeNutrientsFromAccumulated(item.nutrientValues);
         }
       });
       return prev.filter((it) => !it.selected);
@@ -428,6 +515,17 @@ export default function CustomNutritionalPage() {
     setProducts(sorted);
   };
 
+  // 새로 추가된 goToDetail 함수
+  const goToDetail = (product) => {
+    console.log("Product clicked for detail:", product);
+    // product.id가 이미 string으로 매핑되어 있으므로, product.id를 사용합니다.
+    if (!product?.id) {
+      alert('상품 ID가 없습니다!');
+      return;
+    }
+    navigate(`/details/${product.id}`); // product.id를 사용
+  };
+
   return (
     <div className="nutritional-container">
       <aside className="nutritional-sidebar">
@@ -446,7 +544,7 @@ export default function CustomNutritionalPage() {
                   onClick={() => {
                     setSelectedNutrient({
                       name: nutrientName,
-                      value: result.displayValue, // 이제 value는 displayValue (실제 누적량)
+                      value: result.displayValue,
                     });
                     sortByNutrient(nutrientName);
                   }}
@@ -505,7 +603,7 @@ export default function CustomNutritionalPage() {
             총 합계 : <span>{totalPrice.toLocaleString()}원</span>
           </div>
           <div className="cart-footer-button">
-            <button onClick={() => alert('장바구니 이동')}>장바구니 담기</button>
+            <button onClick={saveCartToServer}>장바구니 담기</button>
           </div>
         </section>
       </aside>
@@ -543,9 +641,11 @@ export default function CustomNutritionalPage() {
         <ul className="nutritional_content">
           {products.map((p, idx) => (
             <li key={`product-${p.id}-${idx}`} className="nutritional_item_store">
-              <div className="nutritional_item_img">
+              {/* 이미지 클릭 시 상세 페이지로 이동 */}
+              <div className="nutritional_item_img" onClick={() => goToDetail(p)}>
                 <img src={p.img} alt={p.name} />
               </div>
+              {/* 담기 버튼 클릭 시 장바구니에 담기 */}
               <div className="nutritional_item_add" onClick={() => addToCart(p)}>
                 <i className="fas fa-cart-shopping" /> 담기
               </div>

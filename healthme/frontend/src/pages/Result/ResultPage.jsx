@@ -158,9 +158,8 @@ const ResultPage = () => {
         <div className="title"><h1>오늘의 건강 팁</h1></div>
         <TraitsSection type="today-tip" />
 
-        <button className="next-button">
-          추천 페이지
-          <span className="material-symbols-outlined">arrow_forward_ios</span>
+        <button className="next-button"><a href="/nutritional">추천 페이지
+          <span className="material-symbols-outlined">arrow_forward_ios</span></a>
         </button>
       </div>
     </div>
