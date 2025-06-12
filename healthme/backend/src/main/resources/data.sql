@@ -194,6 +194,16 @@ UNLOCK TABLES;
 -- 마무리
 SET FOREIGN_KEY_CHECKS = 1;
 
+DROP TABLE IF EXISTS `announcement`;
+
+CREATE TABLE announcement (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category VARCHAR(50) NOT NULL,
+    content TEXT NOT NULL,
+    created_date DATETIME NOT NULL,
+    title VARCHAR(255) NOT NULL
+);
+
 INSERT INTO announcement (category, content, created_date, title) VALUES
 ('공지사항', '첫 구매 시 10% 할인 쿠폰을 드립니다!', NOW(), '신규 회원 첫 구매 이벤트 안내'),
 ('공지사항', '냉장 제품은 폭염으로 인해 배송이 1~2일 지연될 수 있습니다.', NOW(), '냉장 식품 배송 지연 안내'),
