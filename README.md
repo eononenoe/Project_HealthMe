@@ -1,6 +1,5 @@
 <p align="center">
-  <img src="./healthme/READMEimg/healthmeT
-    le.png" alt="healthme 메인 타이틀">
+  <img src="./healthme/READMEimg/healthmeTitle.png" alt="healthme 메인 타이틀">
 </p>
 
 #### 사용자의 건강 성향을 분석해 개인 맞춤형 식품을 추천하고, 직접 장바구니에 담아 쇼핑까지 할 수 있는 영양 큐레이션 플랫폼입니다.
