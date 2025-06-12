@@ -55,7 +55,7 @@ public class SecurityConfig {
                                 "/healthme/nutrients/**",
                                 "/healthme/mypage/**"
                         ).hasRole("USER")
-                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/admin","/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login

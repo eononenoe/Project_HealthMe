@@ -1,6 +1,12 @@
 // src/App.js
 import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 import axios from "axios";
 
 import { CartProvider, useCart } from "static/js/CartContext";
@@ -51,9 +57,12 @@ function AppRoutes() {
   const { pathname } = useLocation();
   const isAdmin = pathname.startsWith("/admin");
   const { setCartItems } = useCart();
+
+  const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+  const userRole = loginUser?.role;
+
   useEffect(() => {
     const fetchCart = async () => {
-      const loginUser = localStorage.getItem("loginUser");
       const guestId = localStorage.getItem("guestId");
       const guestCartKey = `guestCart_${guestId}`;
 
@@ -107,35 +116,32 @@ function AppRoutes() {
 
     fetchCart();
   }, [setCartItems]);
+
   return (
     <>
       {!isAdmin && <Header />}
 
       <Routes>
-        {/* 메인 페이지 */}
-        <Route path="/" element={<Index />}></Route>
-        {/* 설문 페이지 */}
-        <Route path="/question" element={<QuestionPage />}></Route>
-        {/* 구매 페이지 */}
-        <Route path="/purchase" element={<PurchasePage />}></Route>
-        {/* 추천재료 페이지 */}
-        <Route path="/nutritional" element={<NutritionalPage />}></Route>
-        {/* 제품상세 페이지 */}
+        <Route path="/" element={<Index />} />
+        <Route path="/question" element={<QuestionPage />} />
+        <Route path="/purchase" element={<PurchasePage />} />
+        <Route path="/nutritional" element={<NutritionalPage />} />
         <Route path="/details/:productId" element={<ProductDetailPage />} />
-        {/* 결과 페이지 */}
         <Route path="/result" element={<ResultPage />} />
-        {/* 장바구니 페이지 */}
         <Route path="/shoppingcart" element={<ShoppingCart />} />
-        {/* 결제 페이지 */}
         <Route path="/approval" element={<ApprovalPage />} />
-        {/* 사용자용 */}
         <Route path="/join" element={<JoinPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/find" element={<FindAccount />} />
         <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
 
         {/* ── 관리자 영역 ── */}
-        <Route path="/admin" element={<Layout />}>
+        <Route
+          path="/admin/*"
+          element={
+            userRole === "ROLE_ADMIN" ? <Layout /> : <Navigate to="/" replace />
+          }
+        >
           <Route index element={<Dashboard />} />
           <Route path="products" element={<ProductPage />} />
           <Route path="transactions" element={<TransactionPage />} />
@@ -150,10 +156,7 @@ function AppRoutes() {
           <Route path="address_edit" element={<AddressEditPage />} />
         </Route>
 
-        {/* ── 고객센터 공지 목록(사용자용) ── */}
         <Route path="/announce" element={<Announcement />} />
-
-        {/* ── 고객센터 공지 목록(사용자용) ── */}
         <Route path="/Complete" element={<Complete />} />
       </Routes>
 

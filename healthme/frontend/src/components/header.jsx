@@ -1,15 +1,19 @@
 // src/components/Header.jsx
-import React from 'react';
-import { useNavigate } from 'react-router-dom'; // ✅ Link 대신 useNavigate 사용
-import 'static/css/common/common.css';
-import axios from 'axios';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "static/css/common/common.css";
+import axios from "axios";
 import { useCart } from "static/js/CartContext.js";
 
 const handleLogout = async () => {
   try {
-    await axios.post("/healthme/users/logout", {}, {
-      withCredentials: true
-    });
+    await axios.post(
+      "/healthme/users/logout",
+      {},
+      {
+        withCredentials: true,
+      }
+    );
   } catch (err) {
     console.warn("서버 로그아웃 실패 (무시하고 클라이언트만 정리)", err);
   } finally {
@@ -21,11 +25,10 @@ const handleLogout = async () => {
 };
 
 const Header = () => {
-  const navigate = useNavigate(); // ✅ 네비게이터 훅 사용
+  const navigate = useNavigate();
   const { cartItems } = useCart();
   const loginUser = JSON.parse(localStorage.getItem("loginUser"));
 
-  // ✅ 장바구니 클릭 핸들러
   const goToCart = () => {
     if (!loginUser) {
       alert("로그인이 필요합니다.");
@@ -35,27 +38,43 @@ const Header = () => {
     }
   };
 
+  const isAdmin = loginUser?.role === "ROLE_ADMIN";
+
   return (
-    <div className='header'>
+    <div className="header">
       <ul className="top_of_top_header">
         {loginUser ? (
           <>
-            <li><span>{loginUser.username}님</span></li>
+            <li>
+              <span>{loginUser.username}님</span>
+            </li>
             <li className="logo_middle">|</li>
-            <li><a href="/mypage">마이페이지</a></li>
+            <li>
+              {isAdmin ? (
+                <a href="/admin">관리자페이지</a>
+              ) : (
+                <a href="/mypage">마이페이지</a>
+              )}
+            </li>
             <li className="logo_middle">|</li>
-            <li><button className='logout-btn' onClick={handleLogout}>로그아웃</button></li>
+            <li>
+              <button className="logout-btn" onClick={handleLogout}>
+                로그아웃
+              </button>
+            </li>
           </>
         ) : (
           <>
-            <li><a href="/join">회원가입</a></li>
+            <li>
+              <a href="/join">회원가입</a>
+            </li>
             <li className="logo_middle">|</li>
-            <li><a href="/login">로그인</a></li>
+            <li>
+              <a href="/login">로그인</a>
+            </li>
           </>
         )}
         <li className="logo_middle">|</li>
-
-        {/* ✅ 수정된 장바구니 버튼 */}
         <li>
           <a href="/shoppingcart">장바구니</a>
           {cartItems.length > 0 && (
@@ -86,10 +105,18 @@ const Header = () => {
       </div>
 
       <ul className="low_header_nav">
-        <li><a href="/question">설문하기</a></li>
-        <li><a href="/result">결과보기</a></li>
-        <li><a href="/nutritional">추천재료</a></li>
-        <li><a href="/purchase">쇼핑하기</a></li>
+        <li>
+          <a href="/question">설문하기</a>
+        </li>
+        <li>
+          <a href="/result">결과보기</a>
+        </li>
+        <li>
+          <a href="/nutritional">추천재료</a>
+        </li>
+        <li>
+          <a href="/purchase">쇼핑하기</a>
+        </li>
       </ul>
     </div>
   );
