@@ -1,5 +1,5 @@
-<p>
-  <img src="#" alt="healthme 메인 타이틀">
+<p align="center">
+  <img src="./healthme/READMEimg/healthmeTitle.png" alt="healthme 메인 타이틀">
 </p>
 
 #### 사용자의 건강 성향을 분석해 개인 맞춤형 식품을 추천하고, 직접 장바구니에 담아 쇼핑까지 할 수 있는 영양 큐레이션 플랫폼입니다.
@@ -122,41 +122,23 @@
 ### **1. **
 
 ---
+## 의존 주입 리스트
 
-## 의존주입 list
-
-| CAT             | NAME                                                                | DESCRIPTION                                                 |
-| --------------- | ------------------------------------------------------------------- | ----------------------------------------------------------- |
-| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-thymeleaf              | Thymeleaf 템플릿 엔진을 지원하는 Spring Boot 스타터         |
-| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-web                    | Spring Web을 위한 기본적인 의존성                           |
-| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-security               | Spring Security를 위한 기본적인 의존성                      |
-| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-oauth2-resource-server | OAuth2 리소스 서버 지원                                     |
-| **BUILD TOOLS** | org.thymeleaf.extras:thymeleaf-extras-springsecurity6               | Thymeleaf와 Spring Security 통합을 위한 추가 라이브러리     |
-| **BUILD TOOLS** | org.springframework.security:spring-security-test                   | Spring Security 테스트를 위한 의존성                        |
-| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-test                   | Spring Boot 테스트 스타터                                   |
-| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-oauth2-client          | OAuth2 클라이언트를 위한 Spring Boot 스타터                 |
-| **DATABASE**    | com.mysql:mysql-connector-j:8.3.0                                   | MySQL 데이터베이스 연결을 위한 JDBC 드라이버                |
-| **DATABASE**    | org.springframework.boot:spring-boot-starter-data-jpa               | JPA를 위한 Spring Boot 스타터                               |
-| **DATABASE**    | org.springframework.boot:spring-boot-starter-data-redis             | Redis 데이터 저장소 지원                                    |
-| **DATABASE**    | org.springframework.boot:spring-boot-starter-data-redis-reactive    | Reactive Redis 지원                                         |
-| **SECURITY**    | io.jsonwebtoken:jjwt-api:0.11.2                                     | JWT 생성 및 검증을 위한 API 라이브러리                      |
-| **SECURITY**    | io.jsonwebtoken:jjwt-impl:0.11.2                                    | JWT 구현체                                                  |
-| **SECURITY**    | io.jsonwebtoken:jjwt-jackson:0.11.2                                 | Jackson을 사용한 JWT 라이브러리                             |
-| **VALIDATION**  | org.springframework.boot:spring-boot-starter-validation             | Spring Validation을 위한 기본적인 의존성                    |
-| **VALIDATION**  | jakarta.validation:jakarta.validation-api:3.1.0                     | Jakarta Validation API                                      |
-| **VALIDATION**  | org.hibernate.validator:hibernate-validator:8.0.1.Final             | Hibernate Validator (JSR-303 표준 구현)                     |
-| **REST**        | com.fasterxml.jackson.core:jackson-core:2.18.1                      | Jackson JSON 라이브러리 핵심 기능                           |
-| **REST**        | com.fasterxml.jackson.core:jackson-databind:2.18.1                  | Jackson 데이터 바인딩 기능                                  |
-| **REST**        | com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.18.1      | Jackson XML 데이터 포맷 지원                                |
-| **REST**        | com.google.code.gson:gson:2.11.0                                    | Google Gson JSON 라이브러리                                 |
-| **REST**        | org.springframework.boot:spring-boot-starter-hateoas:3.4.0          | HATEOAS를 위한 Spring Boot 스타터                           |
-| **UTIL**        | org.springframework.boot:spring-boot-starter-mail                   | 이메일 발송을 위한 Spring Boot 스타터                       |
-| **UTIL**        | commons-fileupload:commons-fileupload:1.4                           | 파일 업로드를 위한 Commons FileUpload 라이브러리            |
-| **UTIL**        | commons-io:commons-io:2.8.0                                         | 파일 I/O 관련 유틸리티                                      |
-| **UTIL**        | net.nurigo:sdk:4.3.2                                                | 문자 전송(CoolSMS) 관련 SDK                                 |
-| **UTIL**        | org.projectlombok:lombok                                            | 자바 코드에서 반복적인 작업을 줄이기 위한 Lombok 라이브러리 |
-| **TEST**        | org.mockito:mockito-core:4.5.1                                      | Mockito 핵심 라이브러리                                     |
-| **TEST**        | org.mockito:mockito-junit-jupiter:4.5.1                             | JUnit 5에서 Mockito 사용을 위한 의존성                      |
+| 카테고리       | 라이브러리 명                                                      | 설명                                                         |
+|----------------|--------------------------------------------------------------------|--------------------------------------------------------------|
+| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-web                  | Spring Web을 위한 기본 의존성                                |
+| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-validation           | 입력값 검증을 위한 Validation 기능 지원                      |
+| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-security             | Spring Security 보안 기능 지원                               |
+| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-oauth2-client        | OAuth2 로그인 (Google, Kakao 등) 클라이언트 기능              |
+| **BUILD TOOLS** | org.springframework.boot:spring-boot-starter-test                 | 통합 테스트를 위한 기본 테스트 도구                          |
+| **DATABASE**    | org.springframework.boot:spring-boot-starter-data-jpa             | Spring Data JPA 기능                                          |
+| **DATABASE**    | com.mysql:mysql-connector-j                                       | MySQL 데이터베이스 드라이버                                  |
+| **SECURITY**    | io.jsonwebtoken:jjwt-api:0.11.5                                   | JWT 생성 및 검증을 위한 API 라이브러리                       |
+| **SECURITY**    | io.jsonwebtoken:jjwt-impl:0.11.5                                  | JWT 구현체 (runtimeOnly로 사용)                              |
+| **SECURITY**    | io.jsonwebtoken:jjwt-jackson:0.11.5                               | JWT 파싱 시 Jackson 연동 (runtimeOnly로 사용)               |
+| **UTIL**        | org.springframework.boot:spring-boot-starter-mail                 | 이메일 발송 기능 지원                                        |
+| **UTIL**        | org.projectlombok:lombok                                          | Getter/Setter/Builder 자동 생성                              |
+| **TEST**        | org.junit.platform:junit-platform-launcher                        | JUnit5 테스트 플랫폼 런처                                    |
 
 ---
 
