@@ -30,4 +30,6 @@ public class ApprovalOrderItem {
     // 선택 필드
     private int unitPrice;
     private int itemTotal;
+
+    private String productImageUrl;
 }

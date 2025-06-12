@@ -15,6 +15,8 @@ public class ApprovalOrderItemDto {
     private int unitPrice;
     private int itemTotal;
 
+    private String productImageUrl;
+
     public static ApprovalOrderItemDto fromEntity(ApprovalOrderItem item) {
         ApprovalOrderItemDto dto = new ApprovalOrderItemDto();
         dto.setProductId(item.getProductId());
@@ -24,6 +26,9 @@ public class ApprovalOrderItemDto {
         dto.setDiscountPrice(item.getDiscountPrice());
         dto.setUnitPrice(item.getUnitPrice());
         dto.setItemTotal(item.getItemTotal());
+
+        // DTO 변환시 이미지 저장
+        dto.setProductImageUrl(item.getProductImageUrl());
         return dto;
     }
 }
