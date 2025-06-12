@@ -1,5 +1,4 @@
-// src/components/ProductRegisterDialog.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -16,46 +15,73 @@ export default function ProductRegisterDialog({ open, onClose, onSubmit }) {
   const [registCategory, setregistCategory] = useState("");
   const [productName, setProductName] = useState("");
   const [price, setPrice] = useState(0);
+  const [salePrice, setSalePrice] = useState(0); // 추가
   const [amount, setAmount] = useState(0);
   const [description, setDescription] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
-  const [detailImage, setDetailImage] = useState("");
+  const [image_url, setImage_url] = useState(null);
 
-  // 등록 버튼 이벤트
+  const [nutrients, setNutrients] = useState({
+    protein: "",
+    iron: "",
+    vitaminD: "",
+    calcium: "",
+    dietaryFiber: "",
+    magnesium: "",
+    potassium: "",
+    biotin: "",
+    zinc: "",
+    arginine: "",
+  });
+
+  useEffect(() => {
+    if (open) {
+      setregistCategory("");
+      setProductName("");
+      setPrice(0);
+      setSalePrice(0); // 초기화
+      setAmount(0);
+      setDescription("");
+      setImage_url(null);
+      setNutrients({
+        protein: "",
+        iron: "",
+        vitaminD: "",
+        calcium: "",
+        dietaryFiber: "",
+        magnesium: "",
+        potassium: "",
+        biotin: "",
+        zinc: "",
+        arginine: "",
+      });
+    }
+  }, [open]);
+
   const AddProduct = async () => {
-    // 등록버튼 눌렀을때 실행되는 이벤트
     const foamData = new FormData();
     foamData.append("category", registCategory);
     foamData.append("productName", productName);
     foamData.append("productPrice", Number(price));
+    foamData.append("salePrice", Number(salePrice)); // 추가
     foamData.append("amount", Number(amount));
     foamData.append("description", description);
-    foamData.append("thumbnailUrl", thumbnail);
-    foamData.append("detailUrl", detailImage);
+    foamData.append("image_url", image_url);
 
-    // HTML 폼 데이터를 key-value 쌍으로 저장하고 서버로 전송할 수 있게 해주는 특수한 객체이다(브라우저가 제공하는 객체이다).
+    for (const key in nutrients) {
+      foamData.append(key, nutrients[key]);
+    }
+
     try {
-      await axios.post("/product/insert/data", foamData);
-      // post의 3번째 매개변수에 headers: {
-      // "Content-Type": "multipart/form-data" 넣어주면 좋긴한데 axios 사용하면 안 넣어도 된다.
-
-      // setUpdate((prev) => {
-      //   return !prev;
-      // }); // 트리거로 인해서 useEffect가 의존성배열 때문에 다시 실행되고 바뀐 db의 데이터를 가져온다.
-      onSubmit(); // 등록했을때 첫페이지로 이동한다.
+      await axios.post("/product/insert/data", foamData, {
+        withCredentials: true,
+      });
+      onSubmit();
       onClose();
-      // 초기화
-      setregistCategory("");
-      setProductName("");
-      setPrice(0);
-      setAmount(0);
-      setDescription("");
-      setThumbnail("");
-      setDetailImage("");
     } catch (error) {
-      window.alert("등록되지 않았습니다.", error);
+      window.alert("등록되지 않았습니다.");
     }
   };
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>상품 등록</DialogTitle>
@@ -70,14 +96,15 @@ export default function ProductRegisterDialog({ open, onClose, onSubmit }) {
             required
             fullWidth
             value={registCategory}
-            onChange={(e) => {
-              console.log(e);
-              setregistCategory(e.target.value);
-            }}
+            onChange={(e) => setregistCategory(e.target.value)}
           >
-            <MenuItem value="리빙">리빙</MenuItem>
-            <MenuItem value="가전">가전</MenuItem>
+            <MenuItem value="건강식품">건강식품</MenuItem>
+            <MenuItem value="유제품">유제품</MenuItem>
+            <MenuItem value="축산물">축산물</MenuItem>
+            <MenuItem value="농산물">농산물</MenuItem>
+            <MenuItem value="수산물">수산물</MenuItem>
           </TextField>
+
           <TextField
             label="제품명"
             required
@@ -85,6 +112,7 @@ export default function ProductRegisterDialog({ open, onClose, onSubmit }) {
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
           />
+
           <TextField
             label="가격"
             type="number"
@@ -93,6 +121,16 @@ export default function ProductRegisterDialog({ open, onClose, onSubmit }) {
             value={price}
             onChange={(e) => setPrice(e.target.value)}
           />
+
+          <TextField
+            label="할인 가격"
+            type="number"
+            required
+            fullWidth
+            value={salePrice}
+            onChange={(e) => setSalePrice(e.target.value)}
+          />
+
           <TextField
             label="수량"
             type="number"
@@ -101,6 +139,7 @@ export default function ProductRegisterDialog({ open, onClose, onSubmit }) {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
+
           <TextField
             label="제품 상세 설명"
             multiline
@@ -110,25 +149,29 @@ export default function ProductRegisterDialog({ open, onClose, onSubmit }) {
             onChange={(e) => setDescription(e.target.value)}
           />
 
-          <Button variant="contained" component="label">
-            썸네일 이미지 업로드
-            <input
-              type="file"
-              hidden
-              onChange={(e) => setThumbnail(e.target.files[0])}
+          {Object.entries(nutrients).map(([key, value]) => (
+            <TextField
+              key={key}
+              label={key}
+              fullWidth
+              value={value}
+              onChange={(e) =>
+                setNutrients((prev) => ({ ...prev, [key]: e.target.value }))
+              }
             />
-          </Button>
+          ))}
 
           <Button variant="contained" component="label">
-            상세 이미지 업로드
+            이미지 업로드
             <input
               type="file"
               hidden
-              onChange={(e) => setDetailImage(e.target.files[0])}
+              onChange={(e) => setImage_url(e.target.files[0])}
             />
           </Button>
         </Box>
       </DialogContent>
+
       <DialogActions>
         <Button onClick={onClose} color="secondary">
           취소

@@ -58,6 +58,11 @@
     color: orange;
   }
 
+  .logout-btn {
+    all: unset;
+    cursor: pointer;
+  }
+
   /* ================ */
   /*   메인 헤더 줄 (로고 + 검색창) */
   /* ================ */
@@ -157,6 +162,24 @@
     text-underline-offset: 8px;
   }
 
+  /* 장바구니 */
+  .header-cart-badge{
+    position: absolute;
+    right: -2px;
+    top: -1px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0px 5px;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 10px;
+    background-color: rgba(128, 128, 128, 0.384);
+    font-size: 9px;
+    color: rgb(255, 255, 255);
+    line-height: 15px;
+    text-align: center;
+    white-space: nowrap;
+
+  }
 
   @media (max-width: 600px) {
     header {

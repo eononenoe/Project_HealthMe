@@ -5,75 +5,107 @@ import {
   DialogContent,
   TextField,
   Button,
-  Box,
 } from "@mui/material";
 import axios from "axios";
 
 export default function ProductUpdate({
-  // 정의된 컴포넌트 이름
-  open, // 앞에서 넘긴 props를 받는다(객체의 구조 분해 할당)
+  open,
   onClose,
   product,
   updatesucess,
 }) {
   const [form, setForm] = useState({
-    // 수정될 폼
+    product_id: null,
     category: "",
-    productName: "",
-    productPrice: 0,
+    name: "",
+    price: 0,
+    salprice: 0,
     amount: 0,
     description: "",
+    imageUrl: null, // 프론트 내부 변수도 camelCase 로
+    nutrient: {
+      protein: "",
+      iron: "",
+      vitaminD: "",
+      calcium: "",
+      dietaryFiber: "",
+      magnesium: "",
+      potassium: "",
+      biotin: "",
+      zinc: "",
+      arginine: "",
+    },
   });
 
-  const [thumbnail, setThumbnail] = useState();
-  const [detailImage, setDetailImage] = useState();
+  const [imageFile, setImageFile] = useState(null);
 
+  // 초기값 설정
   useEffect(() => {
-    // 수정할 product값을 form에 넣어두기 위해서.
     if (product) {
-      setForm(product);
-    }
-  }, [product]); // 의존성 배열 추가 안하면 컴포넌트가 리렌더링될 때마다 setForm(product)가 계속 실행되면서, 사용자가 입력한 값이 매번 product 값으로 덮어씌워짐
-
-  const handleChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setForm((prevform) => ({
-      // prevform은 가장 최신의 상태값이다.
-      ...prevform,
-      [name]: value, //form을 수정한 내용으로 변경.
-      // 객체에서 key자리에 변수를 사용할려면 []
-    }));
-  };
-
-  //useEffect(() => {
-  //  setForm(dataform);
-  //}, [saveform]);
-
-  const handleSubmit = async () => {
-    const formData = new FormData();
-    formData.append("category", form.category);
-    formData.append("productName", form.productName);
-    formData.append("productPrice", form.productPrice);
-    formData.append("amount", form.amount);
-    formData.append("description", form.description);
-
-    if (thumbnail) {
-      formData.append("thumbnailUrl", thumbnail);
-    }
-
-    if (detailImage) {
-      formData.append("detailUrl", detailImage);
-    }
-
-    try {
-      await axios.put(`/product/${form.no}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
+      setForm({
+        product_id: product.product_id ?? null,
+        category: product.category ?? "",
+        name: product.name ?? "",
+        price: product.price ?? 0,
+        salprice: product.salprice ?? 0,
+        amount: product.amount ?? 0,
+        description: product.description ?? "",
+        imageUrl: product.imageUrl ?? "",
+        nutrient: {
+          protein: product.protein ?? "",
+          iron: product.iron ?? "",
+          vitaminD: product.vitamin_d ?? "",
+          calcium: product.calcium ?? "",
+          dietaryFiber: product.dietary_fiber ?? "",
+          magnesium: product.magnesium ?? "",
+          potassium: product.potassium ?? "",
+          biotin: product.biotin ?? "",
+          zinc: product.zinc ?? "",
+          arginine: product.arginine ?? "",
         },
       });
+    }
+  }, [product, open]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name in form.nutrient) {
+      setForm((prev) => ({
+        ...prev,
+        nutrient: { ...prev.nutrient, [name]: value },
+      }));
+    } else {
+      setForm((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleSubmit = async () => {
+    const fd = new FormData();
+
+    // 기본 필드
+    fd.append("product_id", form.product_id);
+    fd.append("category", form.category);
+    fd.append("name", form.name); // DTO: name
+    fd.append("price", form.price); // DTO: price
+    fd.append("salprice", form.salprice); // DTO: salprice
+    fd.append("amount", form.amount);
+    fd.append("description", form.description);
+
+    // 파일
+    if (imageFile) fd.append("imageUrl", imageFile); // DTO: imageUrl
+
+    // 영양소 (camel → camel 그대로)
+    Object.entries(form.nutrient).forEach(([key, val]) => {
+      fd.append(key, val);
+    });
+
+    try {
+      await axios.put(`/product/${form.product_id}`, fd, {
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       onClose();
-      updatesucess(); // 부모 컴포넌트에게 성공 알림
+      updatesucess();
     } catch (err) {
       console.error("수정 실패", err);
       window.alert("수정 실패!");
@@ -94,47 +126,58 @@ export default function ProductUpdate({
         />
         <TextField
           label="상품명"
-          name="productName"
-          value={form.productName}
+          name="name"
+          value={form.name}
           onChange={handleChange}
         />
         <TextField
-          label="가격"
-          name="productPrice"
-          value={form.productPrice}
-          onChange={handleChange}
+          label="정가"
+          name="price"
           type="number"
+          value={form.price}
+          onChange={handleChange}
+        />
+        <TextField
+          label="할인가"
+          name="salprice"
+          type="number"
+          value={form.salprice}
+          onChange={handleChange}
         />
         <TextField
           label="수량"
           name="amount"
+          type="number"
           value={form.amount}
           onChange={handleChange}
-          type="number"
         />
         <TextField
-          label="제품 상세 설명"
+          label="제품 설명"
           name="description"
           value={form.description}
           onChange={handleChange}
         />
+
+        {/* 영양 성분 */}
+        {Object.entries(form.nutrient).map(([key, val]) => (
+          <TextField
+            key={key}
+            label={key}
+            name={key}
+            value={val}
+            onChange={handleChange}
+          />
+        ))}
+
         <Button variant="contained" component="label">
           썸네일 이미지 업로드
           <input
             type="file"
             hidden
-            onChange={(e) => setThumbnail(e.target.files[0])}
+            onChange={(e) => setImageFile(e.target.files[0])}
           />
         </Button>
 
-        <Button variant="contained" component="label">
-          상세 이미지 업로드
-          <input
-            type="file"
-            hidden
-            onChange={(e) => setDetailImage(e.target.files[0])}
-          />
-        </Button>
         <Button variant="outlined" onClick={onClose}>
           취소
         </Button>

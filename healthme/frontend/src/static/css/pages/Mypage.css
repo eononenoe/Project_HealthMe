@@ -2,7 +2,11 @@ body {
   font-family: "Nanum Gothic", sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f7f7f7;
+}
+
+h2 {
+  margin: 10px 0 10px 0;
+  font-size: 24px;
 }
 
 .container {
@@ -96,8 +100,10 @@ body {
 }
 
 .form-box form {
-  display: inline; /* 나란히 정렬될 수 있게 설정 */
-  margin: 0 10px; /* 버튼 사이 여백 */
+  display: inline;
+  /* 나란히 정렬될 수 있게 설정 */
+  margin: 0 10px;
+  /* 버튼 사이 여백 */
 }
 
 .form-box button {
@@ -134,8 +140,10 @@ body {
 }
 
 .profile-edit-form {
-  display: inline-block; /* inline-block 으로 바꿔서 너비가 컨텐츠만큼만 차지 */
-  width: auto; /* 100% → auto */
+  display: inline-block;
+  /* inline-block 으로 바꿔서 너비가 컨텐츠만큼만 차지 */
+  width: auto;
+  /* 100% → auto */
   vertical-align: middle;
 }
 
@@ -167,7 +175,22 @@ body {
 .phone-box {
   display: flex;
   gap: 15px;
-  flex: 1;
+  width: 600px;
+}
+.mypage-phone-input:nth-child(1){
+  width: 100px;
+  text-align: center;
+}
+.mypage-phone-input:nth-child(2),
+.mypage-phone-input:nth-child(3){
+  width: 235px;
+}
+.mypage-phone-input {
+  /* flex: 1; */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
 .verify-btn {
@@ -247,7 +270,7 @@ body {
   font-size: 13px;
   color: gray;
   margin-top: 20px;
-  text-align: left;
+  text-align: right;
   padding-left: 5px;
 }
 
@@ -257,11 +280,18 @@ body {
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
+
+  width: 100%;
+  /* 부모 영역을 꽉 채우도록 */
+  max-width: 1000px;
+  /* 너무 넓어지지 않도록 제한 (선택사항) */
+  box-sizing: border-box;
+  /* padding 포함한 계산 */
 }
 
 .address-header {
-  flex-direction: column;
-  align-items: center;
+  /* flex-direction: column;
+  align-items: center; */
   margin-bottom: 10px;
 }
 
@@ -278,12 +308,14 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .address-info {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 17px;
+  align-items: flex-start;
 }
 
 .address-text {
@@ -292,17 +324,27 @@ body {
   font-weight: bold;
 }
 
+.address-addressDetail {
+  font-weight: bold;
+}
+
 .address-sub {
   font-size: 14px;
+  color: rgb(0, 0, 0);
+}
+
+.address-username {
   color: gray;
 }
 
 .address-adjustment {
   font-size: 14px;
   color: #6c757d;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: auto;
   text-align: right;
-  position: relative;
-  top: 24px;
+  margin-top: 30px;
 }
 
 .address-label {
@@ -342,55 +384,80 @@ body {
 
 .order-box {
   border: 1px solid #ddd;
-  padding: 20px;
+  width: 80%;
+  max-width: 770px;
+  /* 최대 폭 제한 (예: 600px 정도 적당) */
+  padding: 16px;
   border-radius: 12px;
   background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  /* 카드 입체감 추가 */
 }
 
 .order-date {
   font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.order-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.order-info {
-  flex: 1 1 60%;
+  margin-bottom: 6px;
+  font-size: 15px;
+  color: #555;
 }
 
 .order-status {
-  font-size: 14px;
-  margin-bottom: 10px;
+  font-size: 13px;
+  margin-bottom: 12px;
+  color: #666;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 80vh;
+  /* 고정 높이 */
+  overflow-y: auto;
+  /* 세로 스크롤 */
+  position: relative;
 }
 
 .product-title {
   display: flex;
-  gap: 15px;
   align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid #eee;
+}
+
+.product-title:first-of-type {
+  border-top: none;
 }
 
 .product-img {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.product-detail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .product-detail .title {
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: #222;
 }
 
 .product-detail .price {
-  color: #777;
-  font-size: 14px;
+  font-size: 13px;
+  color: #666;
 }
+
 
 .order-buttons {
   display: flex;
@@ -420,6 +487,7 @@ body {
   border-radius: 8px;
   font-size: 16px;
 }
+
 .badge {
   display: inline-block;
   background-color: #2ecc71;
@@ -433,6 +501,7 @@ body {
   margin-top: 10px;
   margin-bottom: 20px;
 }
+
 .delivery-detail-button button {
   padding: 8px 14px;
   background-color: #434343;
@@ -442,37 +511,84 @@ body {
   font-size: 14px;
   cursor: pointer;
 }
+
 .delivery-detail-button button:hover {
   background-color: #696969;
 }
 
-.modal {
-  display: none;
+/* */
+.modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
+  /*뒷 배경 약간 어둡게*/
+  display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
+
 .modal-content {
   background: white;
-  padding: 20px;
-  border-radius: 8px;
-  min-width: 400px;
-  max-width: 800px;
-  max-height: 80vh;
-  overflow-y: auto;
+  padding: 30px;
+  border-radius: 12px;
+  width: 1000%;
+  max-width: 500px;
+  position: relative;
 }
-.modal.show {
-  display: flex;
+
+.modal-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 20px;
+  border: none;
+  background: none;
+  color: #999;
+  cursor: pointer;
 }
-.modal-content h4 {
-  margin-top: 0;
+
+.input-group {
+  margin-bottom: 20px;
 }
+
+.input-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+#address {
+  width: 80%;
+}
+
+.address-search-btn {
+  padding: 8px 12px;
+  margin-left: 7px;
+  background-color: #ffffff;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.address-search-btn:hover {
+  background-color: #e0e0e0;
+}
+
 .delivery-group {
   flex: 1 1 45%;
   background: #f9f9f9;
@@ -482,19 +598,41 @@ body {
   box-sizing: border-box;
   margin-bottom: 24px;
 }
+
 .delivery-detail {
   margin-bottom: 10px;
   font-size: 14px;
   line-height: 1.6;
 }
+
 .delivery-status-list {
   list-style: none;
   padding: 0;
   font-size: 13px;
 }
+
 .delivery-status-list li {
   padding: 4px 0;
   border-bottom: 1px solid #eee;
+}
+
+/* 배송지 수정 모달창 안에서의 다음 주소 api */
+.postcode-modal {
+  width: 500px;
+  height: 550px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.postcode-container {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 
 /* 상품 문의 */
@@ -588,59 +726,3 @@ body {
   background-color: #aaa;
 }
 
-/* 회원 정보 수정 전봐번호 파트 */
-
-/* 1) 셀렉트 박스 기본 화살표 제거 (optional) */
-.phone-box select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,\
-    %3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5'%3E\
-    %3Cpath fill='%23999' d='M0 0l5 5 5-5z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 10px 5px;
-}
-
-/* input 과 동일한 스타일 적용 */
-.phone-box select,
-.phone-box input.custom-input {
-  height: 40px; /* input 높이와 동일하게 */
-  padding: 10px; /* input padding 과 동일 */
-  border: 1px solid #ccc; /* 테두리 */
-  border-radius: 4px; /* 둥근 모서리 */
-  font-size: 14px; /* 폰트 크기 */
-  background-color: #fff; /* 배경색 */
-  box-sizing: border-box;
-  margin-bottom: 7px;
-}
-
-/* 앞번호 select만 적당한 너비 고정 */
-.phone-box select {
-  width: 80px;
-  flex: 0 0 auto;
-}
-
-/* phone-box 안에서 자식 요소들(셀렉트, 인풋, 스팬, 버튼)을 세로 가운데 정렬 */
-.phone-box {
-  display: flex;
-  align-items: center;
-}
-
-/* 하이픈(span) 스타일링 */
-.tel-hypen {
-  display: inline-flex;
-  align-items: center;
-  margin: 0 8px;
-  font-size: 14px;
-  color: #555;
-  user-select: none;
-}
-
-/* 2·3번째 휴대폰 입력란 너비 고정 */
-.phone-box input#tel2,
-.phone-box input#tel3 {
-  flex: 0 0 120px; /* 고정 너비 */
-  width: 150px; /* 원하는 크기로 조절 (예: 100~150px 사이) */
-}

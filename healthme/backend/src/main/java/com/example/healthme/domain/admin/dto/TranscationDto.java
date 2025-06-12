@@ -20,9 +20,12 @@ public class TranscationDto {
 
     private String transcationBank;
 
-    private LocalDateTime transcationTime;
+    private LocalDateTime orderDate;
 
-    private String cancel;
+    private String isCanceled;
 
-    private String success;
+    private String isCompleted;
+
+    private String refundRequested;   // 환불 요청 여부
+    private String returnRequested;   // 반품 요청 여부
 }
