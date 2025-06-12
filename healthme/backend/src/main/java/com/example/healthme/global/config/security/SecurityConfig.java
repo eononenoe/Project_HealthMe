@@ -53,7 +53,8 @@ public class SecurityConfig {
                                 "/healthme/result/**",
                                 "/healthme/survey/**",
                                 "/healthme/nutrients/**",
-                                "/healthme/mypage/**"
+                                "/healthme/mypage/**",
+                                "/api/admin"
                         ).hasRole("USER")
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated()

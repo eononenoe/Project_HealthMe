@@ -16,9 +16,21 @@ function ShoppingCart() {
     withCredentials: true,
   });
 
+  // 주문 금액 (할인 전 원래 가격의 총합)
   const totalPrice = cartItems
     .filter((item) => item.checked)
     .reduce((sum, item) => sum + item.price * item.quantity, 0);
+  // 총 할인 금액 (원래 가격 - 할인가)의 총합
+  const totalDiscount = cartItems
+    .filter((item) => item.checked)
+    .reduce(
+      (sum, item) => sum + ((item.price ?? 0) - (item.salprice ?? 0)) * item.quantity,
+      0
+    );
+  // 총 결제 금액 (할인가의 총합)
+  const finalPaymentPrice = cartItems
+    .filter((item) => item.checked)
+    .reduce((sum, item) => sum + (item.salprice ?? 0) * item.quantity, 0);
 
   // 장바구니 불러오기 (회원용)
   const loadCart = async () => {
@@ -286,16 +298,14 @@ function ShoppingCart() {
           <h2>장바구니</h2>
 
           <div className="cart-cart-all">
-            <label className="cart-custom-checkbox">
+            <label htmlFor="select-all">
               <input
                 type="checkbox"
+                className="cart-custom-checkbox"
                 id="select-all"
                 checked={selectAll}
                 onChange={toggleSelectAll}
               />
-              <span className="cart-checkmark material-symbols-outlined">
-                check
-              </span>
             </label>
             <span className="cart-custom-checkbox-all ">전체 선택</span>
             <span>
@@ -310,16 +320,12 @@ function ShoppingCart() {
               className="cart-cart-item"
               key={item.cartItemId || `guest-${item.productId}` || `fallback-${index}`}
             >
-              <label className="cart-custom-checkbox">
                 <input
                   type="checkbox"
+                  className="cart-custom-checkbox"
                   checked={item.checked}
                   onChange={() => toggleItemChecked(isGuest ? item.productId : item.cartItemId)}
                 />
-                <span className="cart-checkmark material-symbols-outlined">
-                  check
-                </span>
-              </label>
               <img src={item.imageUrl} alt={item.name} />
               <div className="cart-item-info">
                 <p className="cart-name">{item.name}</p>
@@ -385,22 +391,20 @@ function ShoppingCart() {
           {/* 로그인 박스 / 회원 정보 표시 부분 */}
           <div className="cart-login-box">
             {isGuest ? (
-              <div>
-                <p>
+              <div className="cart-login-info">
+                <span>
                   로그인을 하시면 지금 보고있는 제품을
-                  <br />
                   나중에도 확인하실 수 있습니다.
-                </p>
+                </span>
                 <button>
                   <a href="/login">로그인하기</a>
                 </button>
               </div>
             ) : (
               userInfo && ( // userInfo가 있을 때만 렌더링
-                <div>
-                  <span>안녕하세요 <strong className="cart-username">{userInfo.username}</strong>님</span>
-                  <br />
-                  <span>등급 : <strong className="cart-grade">{userInfo.grade}</strong></span>
+                <div className="cart-login-info">
+                  <span>안녕하세요 {userInfo.username}님</span>
+                  <span>등급 : {userInfo.grade}</span>
                 </div>
               )
             )}
@@ -408,21 +412,25 @@ function ShoppingCart() {
 
           <div className="cart-payment-summary">
             <h3>결제정보</h3>
-            <p style={{ color: "black" }}>
-              * 최종 할인혜택은 주문서에서 적용됩니다.
-            </p>
-            <p style={{ color: "red" }}>
-              * 최종결제금액에 따라 증정품이 변경될 수 있습니다.
-            </p>
+            <div className="cart-payment-info">
+              <span>최종 할인혜택은 주문서에서 적용됩니다.</span>
+              <span>최종 결제금액에 따라 증정품이 변경될 수 있습니다.</span>
+            </div>
             <ul>
               <li className="cart-product-item-hline">
                 주문금액
                 <div className="cart-product-item-gray">
                   <span>{totalPrice.toLocaleString()}원</span>
+                  {/* 원래 가격의 총합 */}
                 </div>
               </li>
               <li className="cart-product-item-gray">
-                ┗ 제품할인 <span>0원</span>
+                ┗ 제품할인
+                <span>
+                  {totalDiscount.toLocaleString()}원
+
+                </span>
+                {/* 할인 금액 및 할인율 */}
               </li>
               <li className="cart-product-item-uline">
                 배송비
@@ -432,9 +440,9 @@ function ShoppingCart() {
               </li>
             </ul>
             <strong>
-              결제예정금액
+              총 결제 금액
               <div className="cart-product-item-red">
-                <span>{totalPrice.toLocaleString()}원</span>
+                <span>{finalPaymentPrice.toLocaleString()}원</span>
               </div>
             </strong>
           </div>

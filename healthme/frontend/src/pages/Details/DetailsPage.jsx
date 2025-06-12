@@ -121,33 +121,29 @@ function ProductDetailPage() {
 
     // 바로구매
     const handleBuyNow = () => {
-        const userId = getCookie('userId');
+        const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+        const userId = loginUser?.userid; // localStorage에서 userid 가져오기
+
         if (!userId) {
             alert('로그인이 필요합니다.');
             navigate('/login');
             return;
         }
 
-        const purchaseData = {
-            userId,
-            productId: product.product_id,
-            name: product.name,
-            imageUrl: product.image_url,
-            price: product.salprice,
-            quantity,
-            totalPrice: product.salprice * quantity,
-        };
+        // 바로 구매할 상품 정보를 배열에 담습니다.
+        const purchaseItems = [{
+            productId: product.product_id, // 백엔드에서 사용하는 product_id 사용
+            productName: product.name,
+            price: product.price,
+            salprice: product.salprice, // 할인가도 함께 전달
+            quantity: quantity,
+            imageUrl: product.image_url // 이미지 URL도 추가
+        }];
 
         navigate('/approval', {
             state: {
-                items: [{
-                    productId: product.id,
-                    productName: product.name,
-                    price: product.price,
-                    discountPrice: product.salprice,
-                    quantity: quantity
-                }],
-                userId
+                items: purchaseItems, // 단일 상품만 포함된 배열 전달
+                userId // userId도 함께 전달
             }
         });
     };

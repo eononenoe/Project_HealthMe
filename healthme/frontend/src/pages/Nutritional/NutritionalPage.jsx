@@ -552,7 +552,7 @@ export default function CustomNutritionalPage() {
               );
             })
           ) : (
-            <p>영양소 정보를 불러오는 중...</p>
+            <p></p>
           )}
         </div>
 

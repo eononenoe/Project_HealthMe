@@ -325,18 +325,27 @@ h4 {
 
 /* 할인, 적립금은 붉은색 계열로 강조 */
 .approval-price-box li:nth-child(2) span:last-child,  /* 할인 금액 */
-.approval-price-box li:nth-child(3) span:last-child {
+.approval-price-box li:nth-child(3) span:last-child,
+.approval-price-box li:nth-child(4) span:last-child {
   /* 적립금 사용 */
-  color: #e74c3c;
-  font-weight: bold;
+  color: #007bff;
 }
 
 /* 배송비는 약하게 */
-.approval-price-box li:nth-child(4) span:last-child {
-  color: #999;
-  font-weight: normal;
+.approval-total-price {
+  color: black;
+  font-weight: bold;
+  border-top: 1px solid lightgray;
+  margin-top: 3px;
+  padding-top: 15px !important;
 }
-
+.approval-total-price-right{
+  display: flex;
+  gap: 10px;
+}
+.approval-total-price-red{
+  color: #e74c3c;
+}
 /* 총 결제 금액 강조 */
 .approval-price-box li.approval-price-total {
   font-weight: bold;

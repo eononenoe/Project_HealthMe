@@ -55,6 +55,16 @@ export default function ApprovalPage() {
   // 최종 결제 금액 계산: 할인가 총합 - 등급 할인
   const totalAmount = saleTotalPrice - totalGradeDiscount;
 
+  // 총 할인 금액 (상품 자체 할인 + 등급 할인)
+  const totalOverallDiscount = productDiscount + totalGradeDiscount;
+
+  // 최종 할인율 계산 (원래 가격 대비 총 할인 금액)
+  const discountPercentage =
+    originalTotalPrice > 0
+      ? Math.floor((totalOverallDiscount / originalTotalPrice) * 100)
+      : 0;
+
+
   useEffect(() => {
     const fetchDefaultAddress = async () => {
       if (!isDefaultAddress) return;
@@ -177,9 +187,8 @@ export default function ApprovalPage() {
           {/* 기본 배송지 선택 버튼 */}
           <button
             type="button"
-            className={`approval-left-button ${
-              isDefaultAddress ? "active" : ""
-            }`}
+            className={`approval-left-button ${isDefaultAddress ? "active" : ""
+              }`}
             onClick={() => setIsDefaultAddress(true)}
           >
             기본 배송지
@@ -187,9 +196,8 @@ export default function ApprovalPage() {
           {/* 직접 입력 선택 버튼 */}
           <button
             type="button"
-            className={`approval-right-button ${
-              !isDefaultAddress ? "active" : ""
-            }`}
+            className={`approval-right-button ${!isDefaultAddress ? "active" : ""
+              }`}
             onClick={() => {
               setIsDefaultAddress(false);
               clearAddressFields(); // 직접 입력 선택 시 필드 초기화
@@ -317,20 +325,29 @@ export default function ApprovalPage() {
             <li>
               <span>할인 금액</span>
               <span className="approval-gray">
-                - {productDiscount.toLocaleString()} 원
+                -{productDiscount.toLocaleString()} 원
               </span>
             </li>
             <li>
               <span>
-                등급 할인 ({userGrade} {gradeDiscountRate * 100}%)
+                등급 할인
               </span>
               <span className="approval-gray">
-                - {totalGradeDiscount.toLocaleString()} 원
+                -{totalGradeDiscount.toLocaleString()} 원
               </span>
             </li>
             <li>
+              <span>배송비</span>
+              <span className="approval-gray">
+                무료배송
+              </span>
+            </li>
+            <li className="approval-total-price">
               <span>총 결제금액</span>
-              <span>{totalAmount.toLocaleString()} 원</span>
+              <div className="approval-total-price-right">
+                <span className="approval-total-price-red">{discountPercentage}%</span>
+                <span>{totalAmount.toLocaleString()}원</span>
+              </div>
             </li>
           </ul>
         </div>
