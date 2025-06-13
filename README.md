@@ -132,7 +132,7 @@
 | **2주차** | - 관리자 상품 관리, 거래 내역 관리, 구매 상태 변경 기능 개발<br>- 공지사항 목록/상세 보기 팝업 방식 구현          |
 | **3주차** | - 관리자 기능 최종 정리 및 오류 수정<br>- 전체 관리자 흐름 점검 및 보완<br>- 공지사항 작성/수정 기능 추가 시 검토 |
 
-### 트러블 슈팅 주소 : https://alive-piccolo-3c7.notion.site/Report-a-Error-1cb8eac6c6b1801fabc2f2886545c78f
+## 트러블 슈팅 주소 : https://alive-piccolo-3c7.notion.site/Report-a-Error-1cb8eac6c6b1801fabc2f2886545c78f
 
 ---
 
