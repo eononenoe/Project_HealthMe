@@ -87,8 +87,6 @@
 
 # MEMBER
 
-<h2>MEMBER</h2>
-
 <table>
   <thead>
     <tr>
@@ -100,8 +98,8 @@
   </thead>
   <tbody>
     <tr>
-      <td style="white-space: nowrap;">전정현</td>
-      <td style="white-space: nowrap;">팀장</td>
+      <td style="white-space: nowrap;">전정현&nbsp;&nbsp;</td>
+      <td style="white-space: nowrap;">팀장&nbsp;&nbsp;</td>
       <td>메인, 추천재료, 설문조사, 재료구매, 상품 상세, 헤더, 푸터</td>
       <td>
         메인 페이지: 동적 배너, 상품 목록 로드, 비회원 임시 ID 발급 및 권한 제한<br>
@@ -113,8 +111,8 @@
       </td>
     </tr>
     <tr>
-      <td style="white-space: nowrap;">하태형</td>
-      <td style="white-space: nowrap;">조원</td>
+      <td style="white-space: nowrap;">하태형&nbsp;&nbsp;</td>
+      <td style="white-space: nowrap;">조원&nbsp;&nbsp;</td>
       <td>로그인/소셜로그인, 회원가입, 아이디/비밀번호찾기, 설문결과</td>
       <td>
         로그인/회원가입: JWT 기반 로그인 및 회원가입 처리, 이메일·휴대폰 인증 기능 구현, 비밀번호 재설정 프로세스 설계<br>
@@ -125,8 +123,8 @@
       </td>
     </tr>
     <tr>
-      <td style="white-space: nowrap;">김종호</td>
-      <td style="white-space: nowrap;">조원</td>
+      <td style="white-space: nowrap;">김종호&nbsp;&nbsp;</td>
+      <td style="white-space: nowrap;">조원&nbsp;&nbsp;</td>
       <td>관리자페이지, 마이페이지, 공지사항</td>
       <td>
         마이페이지: 회원 정보 수정, 배송지 관리, 구매 내역 및 배송 상세 보기 구현<br>
@@ -135,8 +133,8 @@
       </td>
     </tr>
     <tr>
-      <td style="white-space: nowrap;">심민재</td>
-      <td style="white-space: nowrap;">조원</td>
+      <td style="white-space: nowrap;">심민재&nbsp;&nbsp;</td>
+      <td style="white-space: nowrap;">조원&nbsp;&nbsp;</td>
       <td>결제 페이지, 장바구니</td>
       <td>
         장바구니: 화면 UI 구성 및 수량 조절/삭제/전체 선택 기능 구현<br>
