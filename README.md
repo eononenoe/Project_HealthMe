@@ -189,6 +189,12 @@
 - Google 로그인 API
 - PortOne (아임포트) 결제 API
 - 다음 주소 검색 API
+- <div>
+  <img src="https://img.shields.io/badge/Kakao%20Login-FFCD00?style=for-the-badge&logo=kakaotalk&logoColor=black"/>
+  <img src="https://img.shields.io/badge/Google%20Login-4285F4?style=for-the-badge&logo=google&logoColor=white"/>
+  <img src="https://img.shields.io/badge/PortOne(아임포트)-009DD7?style=for-the-badge&logo=paypal&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Daum%20Address%20API-222222?style=for-the-badge&logo=internetexplorer&logoColor=white"/>
+</div>
 
 - **버전 관리 / 협업**
 <div>
