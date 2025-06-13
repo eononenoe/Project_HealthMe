@@ -6,15 +6,50 @@
 
 ---
 
-# 주요 기능
+## 주요 기능
 
-- 회원가입
-- 로그인 및 소셜 로그인
-<p align="center">
-  <img src="./healthme/READMEimg/회원가입.gif">
-</p>
+- 회원가입 / 로그인
+
+<div align="center">
+  <img src="./healthme/READMEimg/GIF/태형/회원가입.gif" width="900" height="470">
+</div>
+
+- 설문조사 / 설문조사 결과
+
+<div align="center">
+  <img src="./healthme/READMEimg/GIF/정현/설문조사.gif" width="900" height="470"><br>
+  <img src="./healthme/READMEimg/GIF/태형/결과보기.gif" width="900" height="470">
+</div>
+
+- 추천재료 / 쇼핑 / 상세
+
+<div align="center">
+  <img src="./healthme/READMEimg/GIF/정현/추천재료.gif" width="900" height="470"><br>
+  <img src="./healthme/READMEimg/GIF/정현/쇼핑하기.gif" width="900" height="470"><br>
+  <img src="./healthme/READMEimg/GIF/정현/상품상세.gif" width="900" height="470">
+</div>
+
+- 장바구니 / 결제
+
+<div align="center">
+  <img src="./healthme/READMEimg/GIF/민재/장바구니.gif" width="900" height="470"><br>
+  <img src="./healthme/READMEimg/GIF/민재/결제.gif" width="900" height="470">
+</div>
+
+- 마이페이지 / 공지사항
+
+<div align="center">
+  <img src="./healthme/READMEimg/GIF/종호/마이페이지_전부&공지사항.gif" width="900" height="470">
+</div>
+
+- 관리자페이지
+
+<div align="center">
+  <img src="./healthme/READMEimg/GIF/종호/관리자페이지.gif" width="900" height="470">
+</div>
 
 ---
+
 
 # **개발 동기**
 
