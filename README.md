@@ -185,15 +185,16 @@
 
 - **외부 API 연동**
 
-Kakao 로그인 API
-Google 로그인 API
-PortOne (아임포트) 결제 API
-다음 주소 검색 API
+- Kakao 로그인 API
+- Google 로그인 API
+- PortOne (아임포트) 결제 API
+- 다음 주소 검색 API
 
 - **버전 관리 / 협업**
+<div>
   <img src="https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white"/>
   <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/>
-
+</div>
 ---
 
 # 의존 주입 리스트
