@@ -184,11 +184,6 @@
 </div>
 
 - **외부 API 연동**
-
-- Kakao 로그인 API
-- Google 로그인 API
-- PortOne (아임포트) 결제 API
-- 다음 주소 검색 API
 - <div>
   <img src="https://img.shields.io/badge/Kakao%20Login-FFCD00?style=for-the-badge&logo=kakaotalk&logoColor=black"/>
   <img src="https://img.shields.io/badge/Google%20Login-4285F4?style=for-the-badge&logo=google&logoColor=white"/>
