@@ -48,11 +48,12 @@
 # MEMBER
 
 | 이름   | 역할 | 담당 파트 | 맡은 내용 |
-| ------ | ---- | --------------- | ------------------------- |
-| 전정현 | 팀장 | 메인, 추천재료, 설문조사, 재료구매 , 상품 상세 ,헤더 , 푸터            | 메인 페이지: 동적 배너, 상품 목록 로드, 비회원 임시 ID 발급 및 권한 제한 <br>상품 상세 페이지: 아이템 정보 표시, 실시간 결제 금액 계산, 장바구니/바로 구매 기능 (회원/비회원 장바구니 연동 - 로그인 시 비회원 장바구니 내용 유지)<br>설문지 페이지: 설문 문항 로드, 영양 성향 점수 부여 로직, 자동 문항 전환<br>추천 재료 페이지: 설문 기반 결과 그래프, 영양 성분별 그래프 동적 변경, 다양한 정렬, 장바구니 기능, 추천 상품 로드<br>구매 페이지: 선택 상품 정보 로드, 정렬 기능 <br>헤더&푸터: 전체적인 구성 및 장바구니 알림 기능 |
-| 하태형 | 조원 | 로그인/소셜로그인, 회원가입, 아이디/비밀번호찾기, 설문결과 | 로그인/회원가입: JWT 기반 로그인 및 회원가입 처리, 이메일·휴대폰 인증 기능 구현, 비밀번호 재설정 프로세스 설계<br>소셜 로그인(OAuth2): 카카오·네이버·구글 연동 로그인 기능 구현 및 사용자 정보 통합 처리<br>설문 결과: 사용자 설문 응답을 기반으로 영양 성향 점수를 산출하는 분석 로직 고안 및 구현<br>추천 로직 설계: Content-Based Filtering 기반 추천 알고리즘 설계 및 영양소 유사도 점수화, 가중치 기반 매칭 로직 구현<br>기타: 전체 사용자 흐름 테스트 및 예외 케이스 디버깅 전담 |
-| 김종호 | 조원 | 관리자페이지, 마이페이지, 공지사항                         | 마이페이지: 회원 정보 수정, 배송지 관리, 구매 내역 및 배송 상세 보기 구현<br>관리자페이지: 대시보드, 상품 관리 / 거래 내역(구매 상태 변경 포함) / 공지 관리 기능 구현<br>공지사항: 공지 목록/상세 보기(팝업 방식)                                                                                                                                                           |
-| 심민재 | 조원 | 결제 페이지, 장바구니                                      | 장바구니 기능 구현, 결제 API 연동                                                                                                                                                                                                                                                                                                                                           |
+|--------|------|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 전정현 | 팀장 | 메인, 추천재료, 설문조사, 재료구매, 상품 상세, 헤더, 푸터 | 메인 페이지: 동적 배너, 상품 목록 로드, 비회원 임시 ID 발급 및 권한 제한 <br> 상품 상세 페이지: 아이템 정보 표시, 실시간 결제 금액 계산, 장바구니/바로 구매 기능 (회원/비회원 장바구니 연동 - 로그인 시 비회원 장바구니 내용 유지) <br> 설문지 페이지: 설문 문항 로드, 영양 성향 점수 부여 로직, 자동 문항 전환 <br> 추천 재료 페이지: 설문 기반 결과 그래프, 영양 성분별 그래프 동적 변경, 다양한 정렬, 장바구니 기능, 추천 상품 로드 <br> 구매 페이지: 선택 상품 정보 로드, 정렬 기능 <br> 헤더&푸터: 전체적인 구성 및 장바구니 알림 기능 |
+| 하태형 | 조원 | 로그인/소셜로그인, 회원가입, 아이디/비밀번호찾기, 설문결과 | 로그인/회원가입: JWT 기반 로그인 및 회원가입 처리, 이메일·휴대폰 인증 기능 구현, 비밀번호 재설정 프로세스 설계 <br> 소셜 로그인(OAuth2): 카카오·네이버·구글 연동 로그인 기능 구현 및 사용자 정보 통합 처리 <br> 설문 결과: 사용자 설문 응답을 기반으로 영양 성향 점수를 산출하는 분석 로직 고안 및 구현 <br> 추천 로직 설계: Content-Based Filtering 기반 추천 알고리즘 설계 및 영양소 유사도 점수화, 가중치 기반 매칭 로직 구현 <br> 기타: 전체 사용자 흐름 테스트 및 예외 케이스 디버깅 전담 |
+| 김종호 | 조원 | 관리자페이지, 마이페이지, 공지사항 | 마이페이지: 회원 정보 수정, 배송지 관리, 구매 내역 및 배송 상세 보기 구현 <br> 관리자페이지: 대시보드, 상품 관리 / 거래 내역(구매 상태 변경 포함) / 공지 관리 기능 구현 <br> 공지사항: 공지 목록/상세 보기(팝업 방식) |
+| 심민재 | 조원 | 결제 페이지, 장바구니 | 장바구니: 장바구니 화면 UI 구성 및 수량 조절/삭제/전체 선택 기능 구현 <br> 실시간 총 결제 금액 계산 및 localStorage 연동 <br> 비회원 장바구니 로그인 시 병합 처리 <br> 결제 페이지: 상품 정보 전달, 입력값 유효성 검증 <br> 결제 API 연동, 주문 등록 및 장바구니 초기화 처리 |
+
 
 ---
 
@@ -174,7 +175,7 @@
   <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
   <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
-  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white"/>
   <img src="https://img.shields.io/badge/MUI-007FFF?style=for-the-badge&logo=mui&logoColor=white">
 </div>
 
@@ -184,16 +185,21 @@
 </div>
 
 - **외부 API 연동**
+<div>
+  <img src="https://img.shields.io/badge/Kakao-FFCD00?style=for-the-badge&logo=kakaotalk&logoColor=black"/>
+  <img src="https://img.shields.io/badge/Google-4285F4?style=for-the-badge&logo=google&logoColor=white"/>
+  <img src="https://img.shields.io/badge/PortOne-009DD7?style=for-the-badge&logo=paypal&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Daum-222222?style=for-the-badge&logo=internetexplorer&logoColor=white"/>
+</div>
 
-  - Kakao 로그인 API
-  - Google 로그인 API
-  - PortOne (아임포트) 결제 API
-  - 다음 주소 검색 API
-
-- **버전 관리 / 협업**  
-  GitHub
+- **버전 관리 / 협업**
+<div>
+  <img src="https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white"/>
+  <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/>
+</div>
 
 ---
+
 
 # 의존 주입 리스트
 
