@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import 'static/css/pages/Details.css';
+import 'static/css/pages/details.css';
 
 // 쿠키 설정
 function getCookie(name) {

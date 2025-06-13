@@ -6,12 +6,12 @@
 
 ---
 
-# gif 및 설명 예시 (주요 기능)
+# 주요 기능
 
-- 여행지 검색, 마커를 통해 상세 일정 순서 및 동선 확인
-- 작성한 플래너를 프로필에서 확인, 수정 및 삭제 가능
+- 회원가입
+- 로그인 및 소셜 로그인
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/7db17fd3-2875-42ee-a929-ce6f7f8fe20d">
+  <img src="./healthme/READMEimg/회원가입.gif">
 </p>
 
 ---
